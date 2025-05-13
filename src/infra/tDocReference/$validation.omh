@@ -1,0 +1,43 @@
+Calculate icValidationMessage as ''
+Do ilValidation.$clear()
+
+# compound key check
+If $cinst.DRF_TABLE_PREFIX<>''
+	# mandatory
+Else
+	Do ilValidation.$add('DRF_TABLE_PREFIX_LBL','VAL_MANDATORY','the column prefix of the connected db table is missing',0)
+	If ilValidation.[ilValidation.$linecount].message<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),ilValidation.[ilValidation.$linecount].message)
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),ilValidation.[ilValidation.$linecount].default)
+	End If
+End If
+
+If $cinst.DRF_PKEY>0
+	# mandatory
+Else
+	Do ilValidation.$add('DRF_PKEY_LBL','VAL_MANDATORY',' the primary key of the connected db table is missing',0)
+	If ilValidation.[ilValidation.$linecount].message<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),ilValidation.[ilValidation.$linecount].message)
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),ilValidation.[ilValidation.$linecount].default)
+	End If
+End If
+
+If $cinst.DRF_WHERE<>''
+	# mandatory
+Else
+	Do ilValidation.$add('DRF_WHERE_LBL','VAL_MANDATORY',' document being referenced is missing',0)
+	If ilValidation.[ilValidation.$linecount].message<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),ilValidation.[ilValidation.$linecount].message)
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),ilValidation.[ilValidation.$linecount].default)
+	End If
+End If
+
+If lcMessage<>''
+	Calculate $cinst.icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

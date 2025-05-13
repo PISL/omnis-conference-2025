@@ -1,0 +1,15 @@
+# overloaded for CS APIs' XML
+# Enter your initialization code here
+Do ilHeaders.$define(lcHeaderName,lcHeaderValue)
+# Do ilHeaders.$add("content-type","application/json")
+# Do ilHeaders.$add("key",ccToken)
+
+Do $objects.$findname('oRestTZ') Returns lrefObj
+If lrefObj
+	Do lrefObj.$newref() Returns ioRest ## wrapped this with the $findname to avoid errors in libs such as HTMLp
+	Do ioRest.$setCaller(prefCaller)
+End If
+
+Calculate ccURLkey as con("?key=",ccToken)
+
+Calculate ibRunAsynchronously as kFalse

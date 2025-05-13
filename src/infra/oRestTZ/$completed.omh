@@ -1,0 +1,19 @@
+# overloaded as the CS API returns XML
+
+# called by the client worker with the results
+Calculate irResponse as pRow
+Calculate irResponseHeaders as pRow.responseHeaders
+Do OXML.$maybexml(irResponse.responseContent) Returns lbXML
+If lbXML
+	
+	Do loXML.$parseXmlUtf8ToTreeList(irResponse.responseContent,ilResult) Returns lbOK
+	
+Else ## should be JSON
+	Do OJSON.$jsontolistorrow(irResponse.responseContent,lcError,kTrue) Returns ilResult ## kTrue Returnｓ the JSON as a list of rows rather than a list with one row, multiple columns
+End If
+
+If ibAsynchronous
+	If irefCaller
+		Do irefCaller.$completed()
+	End If
+End If

@@ -1,0 +1,47 @@
+Begin critical block
+	# 2020-04-23 GRS added the critical block as this is called from a timer
+	# hoping to prevent notation errors in $refresh when someone logs out wile this is running
+	# see Sentry Issues ASINGB-5 & ASINGB-6
+	
+	Calculate lnCountTasks as ilRemoteTasks.$linecount
+	If ilRemoteTasks.$cols.$findname('connectionTime')
+		Calculate ldtConnectionTimeOrig as ilRemoteTasks.1.connectionTime
+	End If
+	
+	Do $cinst.$refresh()
+	If ilRemoteTasks.$cols.$findname('connectionTime')
+		Calculate ldtConnectionTimeNew as ilRemoteTasks.1.connectionTime
+	End If
+	
+	If ilRemoteTasks.$linecount>lnCountTasks ## new connect
+		If icPathForNewConnection<>''
+			Do ioPlayWav.$playwavfile(icPathForNewConnection)
+		Else
+			Sound bell
+		End If
+		If ibSpeakAppName
+			Do sleep(1000)
+			Do ioApplescript.$SpeakText(icNameOfApplication)
+		End If
+	Else If ilRemoteTasks.$linecount<lnCountTasks ## disconnect
+		If icPathForLostConnection<>''
+			Do ioPlayWav.$playwavfile(icPathForLostConnection)
+		Else
+			Sound bell
+		End If
+		If ibSpeakAppName
+			Do sleep(1000)
+			Do ioApplescript.$SpeakText(icNameOfApplication)
+		End If
+	Else If ldtConnectionTimeNew<>ldtConnectionTimeOrig
+		# something has changed
+		Sound bell
+		If ibSpeakAppName
+			Do sleep(1000)
+			Do ioApplescript.$SpeakText(icNameOfApplication)
+		End If
+	End If
+End critical block
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

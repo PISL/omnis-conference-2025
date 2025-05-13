@@ -1,0 +1,4 @@
+On evClick
+	Calculate irCurrentRecord.countryCode as ilCountries.REF_VALUE
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

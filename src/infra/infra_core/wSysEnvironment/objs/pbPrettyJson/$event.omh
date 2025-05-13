@@ -1,0 +1,7 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# Calculate icStructure as replaceall(icStructure,con(']',kCr,'['),con(kCr,kCr))
+	# Calculate icStructure as replaceall(icStructure,',',kCr)
+	
+	Do OJSON.$formatjson(icStructure) Returns icStructure
+	
+	Do $cinst.$redraw()

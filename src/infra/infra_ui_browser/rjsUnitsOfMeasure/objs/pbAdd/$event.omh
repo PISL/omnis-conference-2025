@@ -1,0 +1,16 @@
+On evClick
+	
+	Calculate $cinst.$objs.PagedPane.$currentpage as 1
+	
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'I' ## insert
+	Do irCurrentRecord.$clear()
+	Calculate ilUOM_GROUP.$line as 0
+	Calculate irCurrentRecord.UOM_ACTIVE as 1
+	
+	Do ilSynonyms.$clear()
+	Do irCurrentSynonym.$clear()
+	
+	Calculate ilDisplayRecords.$line as 0
+	
+	Do $cinst.$behaviour()

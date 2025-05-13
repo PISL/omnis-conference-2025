@@ -1,0 +1,26 @@
+# called from the JS Yes/No message
+Calculate llEmailsToDelete as ilDisplayRecords
+Calculate lrEmail as ilDisplayRecords
+Do llEmailsToDelete.$remove(kListKeepSelected)
+Do lrEmail.$beginTransaction(,loSessionObj,loStatementObj) Returns lbRunningAsTransaction
+If lbRunningAsTransaction
+	For llEmailsToDelete.$line from 1 to llEmailsToDelete.$linecount step 1
+		Do lrEmail.$assignrow(llEmailsToDelete.[llEmailsToDelete.$line])
+		Do lrEmail.$delete_pk() Returns lbOK
+		If not(lbOK)
+			Calculate icDisplayMessage as lrEmail.irErrorSQL.NativeErrorText
+			Break to end of loop
+		End If
+	End For
+	
+	If lbOK
+		Do lrEmail.$commitTransaction(,loSessionObj,loStatementObj)
+		Do method FetchRecords
+	Else
+		Calculate icDisplayMessage as 'Error'
+	End If
+Else
+	Calculate icDisplayMessage as 'Error'
+End If
+
+Do $cinst.$behaviour()

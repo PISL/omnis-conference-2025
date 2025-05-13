@@ -1,0 +1,12 @@
+# comma separated reference CLASS values that require eval() checking
+
+Calculate icClassesRequiringEvalCheckOnJSON as ",FORMCOLOURS,"
+
+# initialise extra parameters row variable
+Do irParamsFetchClass.$define(pnGO_SEQ,pbIncludeNonActive,pbAppend,pdDate,pcJSONQuery)
+If $columnExists(trGroupOrg,'GO_SEQ')
+	Calculate pnGO_SEQ as trGroupOrg.GO_SEQ
+End If
+Do irParamsFetchClass.$assigncols(pnGO_SEQ,pbIncludeNonActive,pbAppend,pdDate,pcJSONQuery)
+
+Do inherited

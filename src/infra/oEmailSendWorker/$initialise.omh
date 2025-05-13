@@ -1,0 +1,68 @@
+# = = = = = = = = = = =        setup the remail worker      = = = = = = = = = = =
+
+If icErrors=''
+	# are we using MIME for email content ?
+	Do toStrings.$TagContent(irConfigEmail.ELT_MSG_HTML,'body') Returns lcHTMLcontent
+	Calculate lcHTMLcontent as replaceall(lcHTMLcontent,kCr,'')
+	Calculate lcHTMLcontent as replaceall(lcHTMLcontent,kLf,'')
+	Calculate lcHTMLcontent as trim(lcHTMLcontent)
+	
+	Calculate ibNoMIME as lcHTMLcontent=''&icEventSpec=''&icVcardSpec=''&binlength(ibinPDF)=0
+	
+	If ibNoMIME
+		# sending text message only
+		Calculate ibinContent as chartoutf8(irConfigEmail.ELT_MSG_TEXT)
+		If ibCombinedSenderAddressAndName
+			Do $cinst.$init(irConfigEmail.ELC_SERVER,irConfigEmail.ELC_LOGIN_NAME,irConfigEmail.ELC_LOGIN_PW,row(irConfigEmail.ELC_SENDER_ADDR,irConfigEmail.ELC_SENDER_NAME),ilTo,ilCC,ilBCC,irConfigEmail.ELT_SUBJECT,inPriority,ilHeaders,ibinContent,irConfigEmail.ELC_IS_MAILSHOT) Returns lbOK
+		Else
+			Do $cinst.$init(irConfigEmail.ELC_SERVER,irConfigEmail.ELC_LOGIN_NAME,irConfigEmail.ELC_LOGIN_PW,irConfigEmail.ELC_SENDER_ADDR,ilTo,ilCC,ilBCC,irConfigEmail.ELT_SUBJECT,inPriority,ilHeaders,ibinContent,irConfigEmail.ELC_IS_MAILSHOT) Returns lbOK
+		End If
+		
+	Else
+		# Do ilMIME.$define(Level,ContentType,Filename,CharacterData,BinaryData,CharacterSet,Encoding,ContentDisposition)
+		
+		Do ilMIME.$add(0,'multipart','mixed')
+		# add the calendar event
+		If lcHTMLcontent<>''&irConfigEmail.ELT_MSG_TEXT<>''
+			Do ilMIME.$add(1,'multipart','alternative')
+			Do ilMIME.$add(2,'text','plain',,irConfigEmail.ELT_MSG_TEXT)
+			Do ilMIME.$add(2,'text','html',,irConfigEmail.ELT_MSG_HTML)
+			
+		Else If lcHTMLcontent<>''
+			Do ilMIME.$add(1,'text','html',,irConfigEmail.ELT_MSG_HTML)
+			
+		Else
+			Do ilMIME.$add(1,'text','plain',,irConfigEmail.ELT_MSG_TEXT)
+		End If
+		
+		If icEventSpec<>''
+			Do ilMIME.$add(1,'text','plain','event.ics',icEventSpec) ## refer to Omnis sample library for more sophisticated entry
+		End If
+		If icVcardSpec<>''
+			Do ilMIME.$add(1,'text','plain','ContactDetails.vcf',icVcardSpec)
+		End If
+		
+		# other files
+		# If binlength(ibinPDF)>0
+		# Do ilMIME.$add(1,'application','pdf','attachment.pdf',,ibinPDF)
+		# End If
+		Do ilMIME.$merge(ilMimeAppend)
+		
+		# sending text message only
+		If ibCombinedSenderAddressAndName
+			Do $cinst.$init(irConfigEmail.ELC_SERVER,irConfigEmail.ELC_LOGIN_NAME,irConfigEmail.ELC_LOGIN_PW,row(irConfigEmail.ELC_SENDER_ADDR,irConfigEmail.ELC_SENDER_NAME),ilTo,ilCC,ilBCC,irConfigEmail.ELT_SUBJECT,inPriority,ilHeaders,ilMIME,irConfigEmail.ELC_IS_MAILSHOT) Returns lbOK
+		Else
+			Do $cinst.$init(irConfigEmail.ELC_SERVER,irConfigEmail.ELC_LOGIN_NAME,irConfigEmail.ELC_LOGIN_PW,irConfigEmail.ELC_SENDER_ADDR,ilTo,ilCC,ilBCC,irConfigEmail.ELT_SUBJECT,inPriority,ilHeaders,ilMIME,irConfigEmail.ELC_IS_MAILSHOT) Returns lbOK
+		End If
+		
+	End If
+	
+End If
+
+# test if there was an error using $init
+If not(lbOK)
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('error code :',$cinst.$errorcode,', error text :',$cinst.$errortext))
+	Breakpoint [$cinst.$errorcode]  [$cinst.$errortext]
+End If
+
+Quit method lbOK

@@ -1,0 +1,241 @@
+# specification obtained from    https://en.wikipedia.org/wiki/VCard
+# categories (required, optional, undefined) set for v4 of vCard
+
+Do lrName.$cols.$add('FAMILYNAME',kCharacter,kSimplechar,50)
+Do lrName.$cols.$add('FIRSTNAME',kCharacter,kSimplechar,50)
+Do lrName.$cols.$add('MIDDLENAMES',kCharacter,kSimplechar,255)
+Do lrName.$cols.$add('PREFIX',kCharacter,kSimplechar,50)
+Do lrName.$cols.$add('SUFFIX',kCharacter,kSimplechar,50)
+# FAMILYNAME, FIRSTNAME, MIDDLENAMES, PREFIX, SUFFIX
+
+# Phones and addresses can be multiple so it may be better to define these as lists instead of rows
+Do lrPhone.$cols.$add('TYPE',kCharacter,kSimplechar,20)
+Do lrPhone.$cols.$add('CODE',kCharacter,kSimplechar,100) ## also used for emails
+# TYPE, CODE
+
+Do lrAddress.$cols.$add('TYPE',kCharacter,kSimplechar,20)
+Do lrAddress.$cols.$add('BUILDING',kCharacter,kSimplechar,50)
+Do lrAddress.$cols.$add('STREET',kCharacter,kSimplechar,100) ## 123 Main St
+Do lrAddress.$cols.$add('LOCALITY',kCharacter,kSimplechar,50)
+Do lrAddress.$cols.$add('TOWN',kCharacter,kSimplechar,50) ## Springfield
+Do lrAddress.$cols.$add('POSTCODE',kCharacter,kSimplechar,50) ## 12345
+Do lrAddress.$cols.$add('STATE',kCharacter,kSimplechar,50) ## IL
+Do lrAddress.$cols.$add('COUNTRY',kCharacter,kSimplechar,50) ## USA
+# TYPE, BUILDING, STREET, LOCALITY, TOWN, POSTCODE, STATE, COUNTRY
+
+Do lrTimezone.$cols.$add('COUNTRY',kCharacter,kSimplechar,50)
+Do lrTimezone.$cols.$add('CITY',kCharacter,kSimplechar,50)
+# COUNTRY, CITY
+
+Do lrUID.$cols.$add('TYPE',kCharacter,kSimplechar,10) ## urn
+Do lrUID.$cols.$add('SUBTYPE',kCharacter,kSimplechar,10) ## uuid
+Do lrUID.$cols.$add('CODE',kCharacter,kSimplechar,50) ## da418720-3754-4631-a169-db89a02b831b
+Calculate lrUID.TYPE as 'urn'
+Calculate lrUID.SUBTYPE as 'uuid'
+# TYPE, SUBTYPE, CODE
+
+Do lrGEO.$cols.$add('LAT',kCharacter,kSimplechar,10)
+Do lrGEO.$cols.$add('LONG',kCharacter,kSimplechar,10)
+# LAT, LONG
+
+Do lrLogo.$cols.$add('URL',kCharacter,kSimplechar,255)
+Do lrLogo.$cols.$add('IMAGEb64',kCharacter,kSimplechar,10000000)
+# URL, IMAGE64
+
+#      e.g. ORG:Google;GMail Team;Spam Detection Squad
+Do lrX520Organisation.$cols.$add('NAME',kCharacter,kSimplechar,100)
+Do lrX520Organisation.$cols.$add('DIVISION',kCharacter,kSimplechar,100)
+Do lrX520Organisation.$cols.$add('DEPT',kCharacter,kSimplechar,100)
+# NAME, DIVISION, DEPT
+
+# required - column name prefixed with "r"
+# The formatted name string associated with the vCard object.     e.g. FN:Dr. John Doe
+Do irVcardConfig.$cols.$add('rFN',kCharacter,kSimplechar,100)
+# The version of the vCard specification. In version 4.0, this must come right after the BEGIN property.   e.g. VERSION:4.0
+Do irVcardConfig.$cols.$add('rVERSION',kCharacter,kSimplechar,10)
+
+# optional   some optional entries always provided - column name prefixed with "o"
+
+# A structured representation of the name of the person, place or thing associated with the vCard object.
+#    Structure recognizes, in order separated by semicolons: Family Name, Given Name, Additional/Middle Names, Honorific Prefixes, and Honorific Suffixes
+#    e.g. N:Doe;John;;Dr;
+Do irVcardConfig.$cols.$add('oN',kRow)
+Calculate irVcardConfig.oN as lrName
+
+# A structured representation of the physical delivery address for the vCard object   e.g.  ADR;TYPE=home:;;123 Main St.;Springfield;IL;12345;USA
+Do irVcardConfig.$cols.$add('oADR',kRow)
+Calculate irVcardConfig.oADR as lrAddress
+
+# A list of "tags" that can be used to describe the object represented by this vCard   e.g.  CATEGORIES:swimmer,biker
+Do irVcardConfig.$cols.$add('oCATEGORIES',kCharacter,kSimplechar,255)
+
+# The address for electronic mail communication with the vCard object   e.g. EMAIL:johndoe@hotmail.com
+Do irVcardConfig.$cols.$add('oEMAIL',kRow)
+Calculate irVcardConfig.oEMAIL as lrPhone
+
+# The canonical number string for a telephone number for telephony communication with the vCard object.   e.g. TEL;TYPE=cell:(123) 555-5832
+Do irVcardConfig.$cols.$add('oTEL',kRow)
+Calculate irVcardConfig.oTEL as lrPhone
+
+# Specifies the job title, functional position or function of the individual associated with the vCard object within an organization.   e.g. TITLE:V.P. Research and Development
+Do irVcardConfig.$cols.$add('oTITLE',kCharacter,kSimplechar,255)
+
+# The time zone of the vCard object.    e.g. TZ:America/New_York
+Do irVcardConfig.$cols.$add('oTZ',kRow)
+Calculate irVcardConfig.oTZ as lrTimezone
+
+# Specifies a value that represents a persistent, globally unique identifier associated with the object.    e.g. UID:urn:uuid:da418720-3754-4631-a169-db89a02b831b
+Do irVcardConfig.$cols.$add('oUID',kRow)
+Calculate irVcardConfig.oUID as lrUID
+
+# A URL pointing to a website that represents the person in some way.    e.g. URL:http://www.johndoe.com
+Do irVcardConfig.$cols.$add('oURL',kCharacter,kSimplechar,255)
+
+
+If pos(',ANNIVERSARY,',pcExclude)=0
+	# Defines the person's anniversary.    e.g. ANNIVERSARY:19901021
+	Do irVcardConfig.$cols.$add('oANNIVERSARY',kCharacter,kSimplechar,20)
+End If
+If pos(',BDAY,',pcExclude)=0
+	# Date of birth of the individual associated with the vCard.   e.g. BDAY:19700310
+	Do irVcardConfig.$cols.$add('oBDAY',kCharacter,kSimplechar,20)
+End If
+
+If pos(',CALADRURI,',pcExclude)=0
+	# A URL to use for sending a scheduling request to the person's calendar
+	Do irVcardConfig.$cols.$add('oCALADRURI',kCharacter,kSimplechar,255)
+End If
+If pos(',CALURI,',pcExclude)=0
+	# A URL to the person's calendar
+	Do irVcardConfig.$cols.$add('oCALURI',kCharacter,kSimplechar,255)
+End If
+
+If pos(',CLIENTPIDMAP,',pcExclude)=0
+	# Used for synchronizing different revisions of the same vCard
+	Do irVcardConfig.$cols.$add('oCLIENTPIDMAP',kCharacter,kSimplechar,500)
+End If
+
+If pos(',FBURL,',pcExclude)=0
+	# Defines a URL that shows when the person is "free" or "busy" on their calendar
+	Do irVcardConfig.$cols.$add('oFBURL',kCharacter,kSimplechar,255)
+End If
+If pos(',GENDER,',pcExclude)=0
+	# Defines the person's gender    e.g. GENDER:F
+	Do irVcardConfig.$cols.$add('oGENDER',kCharacter,kSimplechar,10)
+End If
+If pos(',GEO,',pcExclude)=0
+	# Specifies a latitude and longitude   e.g. GEO:39.95,-75.1667
+	Do irVcardConfig.$cols.$add('oGEO',kRow)
+	Calculate irVcardConfig.oGEO as lrGEO
+	
+End If
+If pos(',IMPP,',pcExclude)=0
+	# Defines an instant messenger handle      e.g. IMPP:aim:johndoe@aol.com
+	Do irVcardConfig.$cols.$add('oIMPP',kRow)
+	Calculate irVcardConfig.oIMPP as lrPhone
+	
+End If
+
+If pos(',KEY,',pcExclude)=0
+	# The public encryption key associated with the vCard object. It may point to an external URL, may be plain text, or may be embedded in the vCard as a Base64 encoded block of text.
+	Do irVcardConfig.$cols.$add('oKEY',kCharacter,kSimplechar,255)
+End If
+If pos(',KIND,',pcExclude)=0
+	# Defines the type of entity that this vCard represents: 'application', 'individual', 'group', 'location' or 'organization'; 'x-*' values may be used for experimental purposes.  e.g. KIND:individual
+	Do irVcardConfig.$cols.$add('oKIND',kCharacter,kSimplechar,20)
+End If
+
+If pos(',LANG,',pcExclude)=0
+	# Defines a language that the person speaks      e.g. LANG:fr-CA
+	Do irVcardConfig.$cols.$add('oLANG',kCharacter,kSimplechar,10)
+End If
+If pos(',LOGO,',pcExclude)=0
+	# An image or graphic of the logo of the organization that is associated with the individual to which the vCard belongs. It may point to an external URL or may be embedded in the vCard as a Base64 encoded block of text.
+	Do irVcardConfig.$cols.$add('oLOGO',kRow)
+	Calculate irVcardConfig.oLOGO as lrLogo
+	
+End If
+If pos(',MEMBER,',pcExclude)=0
+	# Defines a member that is part of the group that this vCard represents. Acceptable values include:
+	#      a "mailto:" URL containing an email address
+	#      a UID which references the member's own vCard
+	#      The KIND property must be set to "group" in order to use this property.
+	Do irVcardConfig.$cols.$add('oMEMBER',kRow)
+	Calculate irVcardConfig.oMEMBER as lrUID
+	
+End If
+
+If pos(',NICKNAME,',pcExclude)=0
+	# One or more descriptive/familiar names for the object represented by this vCard.   e.g. NICKNAME:Jon,Johnny
+	Do irVcardConfig.$cols.$add('oNICKNAME',kCharacter,kSimplechar,100)
+End If
+If pos(',NOTE,',pcExclude)=0
+	# Specifies supplemental information or a comment that is associated with the vCard.
+	Do irVcardConfig.$cols.$add('oNOTE',kCharacter,kSimplechar,10000)
+End If
+
+If pos(',ORG,',pcExclude)=0
+	# The name and optionally the unit(s) of the organization associated with the vCard object. This property is based on the X.520 Organization Name attribute and the X.520 Organization Unit attribute.
+	#      e.g. ORG:Google;GMail Team;Spam Detection Squad
+	Do irVcardConfig.$cols.$add('oORG',kRow)
+	Calculate irVcardConfig.oORG as lrX520Organisation
+	
+End If
+If pos(',PHOTO,',pcExclude)=0
+	# An image or photograph of the individual associated with the vCard. It may point to an external URL or may be embedded in the vCard as a Base64 encoded block of text.
+	Do irVcardConfig.$cols.$add('oPHOTO',kCharacter,kSimplechar,255)
+	Calculate irVcardConfig.oPHOTO as lrLogo
+	
+End If
+If pos(',PRODID,',pcExclude)=0
+	# The identifier for the product that created the vCard object.   e.g. PRODID:-//ONLINE DIRECTORY//NONSGML Version 1//EN
+	Do irVcardConfig.$cols.$add('oPRODID',kCharacter,kSimplechar,255)
+End If
+
+If pos(',RELATED,',pcExclude)=0
+	# Another entity that the person is related to. Acceptable values include:
+	#     a "mailto:" URL containing an email address
+	#     a UID which references the person's own vCard
+	#     e.g.  RELATED;TYPE=friend:urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af
+	Do irVcardConfig.$cols.$add('oRELATED',kRow)
+	Calculate irVcardConfig.oRELATED as lrUID
+	
+End If
+If pos(',REV,',pcExclude)=0
+	# A timestamp for the last time the vCard was updated.    e.g. REV:20121201T134211Z
+	Do irVcardConfig.$cols.$add('oREV',kCharacter,kSimplechar,20)
+End If
+If pos(',ROLE,',pcExclude)=0
+	# The role, occupation, or business category of the vCard object within an organization.    e.g. ROLE:Executive
+	Do irVcardConfig.$cols.$add('oROLE',kCharacter,kSimplechar,50)
+End If
+
+If pos(',SOUND,',pcExclude)=0
+	# By default, if this property is not grouped with other properties it specifies the pronunciation of the FN property of the vCard object. It may point to an external URL or may be embedded in the vCard as a Base64 encoded block of text.
+	# e.g. 4.0: SOUND:data:audio/ogg;base64,[base64-data]
+	Do irVcardConfig.$cols.$add('oSOUND',kRow)
+	Calculate irVcardConfig.oSOUND as lrLogo
+	
+End If
+If pos(',SOURCE,',pcExclude)=0
+	# A URL that can be used to get the latest version of this vCard.    e.g. SOURCE:http://johndoe.com/vcard.vcf
+	Do irVcardConfig.$cols.$add('oSOURCE',kCharacter,kSimplechar,255)
+End If
+
+If pos(',XML,',pcExclude)=0
+	# Any XML data that is attached to the vCard.
+	Do irVcardConfig.$cols.$add('oXML',kCharacter,kSimplechar,255)
+End If
+
+If 1=0
+	# undefined
+	Do irVcardConfig.$cols.$add('uCLASS',kCharacter,kSimplechar,255)
+	Do irVcardConfig.$cols.$add('uAGENT',kCharacter,kSimplechar,255)
+	Do irVcardConfig.$cols.$add('uMAILER',kCharacter,kSimplechar,255)
+	Do irVcardConfig.$cols.$add('uNAME',kCharacter,kSimplechar,255)
+	Do irVcardConfig.$cols.$add('uPROFILE',kCharacter,kSimplechar,255)
+	
+	# not available in v4
+	Do irVcardConfig.$cols.$add('nLABEL',kCharacter,kSimplechar,255)
+	Do irVcardConfig.$cols.$add('nSORT-STRING',kCharacter,kSimplechar,255)
+End If

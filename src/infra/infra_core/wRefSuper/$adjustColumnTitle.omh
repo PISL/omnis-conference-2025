@@ -1,0 +1,13 @@
+Calculate lnWhichCol as 1
+Do ilSortColumns.$search($ref.Listname=nam(ilData)&$ref.SortCol1=icSortColObjectName,1,0,0,0) Returns lbFound
+If not(lbFound)
+	Calculate lnWhichCol as 2
+	Do ilSortColumns.$search($ref.Listname=nam(ilData)&$ref.SortCol2=icSortColObjectName,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Calculate lnWhichCol as 3
+		Do ilSortColumns.$search($ref.Listname=nam(ilData)&$ref.SortCol3=icSortColObjectName,1,0,0,0) Returns lbFound
+	End If
+End If
+
+Calculate pretWhichColumn as lnWhichCol
+Quit method lbFound

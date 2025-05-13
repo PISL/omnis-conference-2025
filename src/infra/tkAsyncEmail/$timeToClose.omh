@@ -1,0 +1,8 @@
+# check if the worker is still running and if it is, restart the timer, otherwise close this instance
+
+If ioSmtpWorker.$state=kWorkerStateRunning
+	# if the worker is still running, let's wait another timeout
+	Do iorTimeout.$starttimer()
+Else
+	Do $cinst.$close()
+End If

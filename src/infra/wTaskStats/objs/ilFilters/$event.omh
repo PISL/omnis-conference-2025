@@ -1,0 +1,25 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	Do ilTaskStats.$unfilter()
+	If ilFilters.code='DURATION'
+		Do ilTaskStats.$filter($ref.elapsedTask=ilFilters.desc)
+		
+	Else If ilFilters.code='IP4'
+		Do ilTaskStats.$filter($ref.STS_IP4=ilFilters.desc)
+		
+	Else If ilFilters.code='TYPE'
+		Do ilTaskStats.$filter($ref.STS_TYPE=ilFilters.desc)
+		
+	Else If ilFilters.code='WEBSITE'
+		Do ilTaskStats.$filter($ref.STS_GO_REF=ilFilters.desc)
+		
+	Else If ilFilters.code=''
+		# leave list full - no filter
+		
+	Else
+		Breakpoint
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()
+	
+On evDoubleClick ## Event Parameters - pRow ( Itemreference )

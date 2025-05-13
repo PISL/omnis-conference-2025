@@ -1,0 +1,28 @@
+# this method will be used by rjsProducts to display the currently assigned leaf for a selected product
+# and we fetch all siblings at each level so the expanded nodes will display all children
+
+If isclear(pnLeafKey)
+	Quit method
+End If
+
+Do $cinst.$treeFetchParent(pnLeafKey) Returns llParent
+Do $cinst.$treeFetchNode(pnLeafKey) Returns llChild
+
+If left(llParent.1.nodeTag,5)<>'LEVEL'
+	# stop, we are at the root
+Else
+	While left(llParent.1.nodeTag,5)='LEVEL'
+		Do $cinst.$treeFetchChildren(llParent.1.nodeID) Returns llChildren
+		If llChild.1.nodeChildren.$linecount
+			Do llChildren.$search($ref.nodeID=llChild.1.nodeID,1,0,0,0) Returns lnLine
+			Calculate llChildren.nodeChildren as llChild.1.nodeChildren
+			Calculate llChildren.nodeFlags as llChildren.nodeFlags+kJSTreeFlagExpanded
+		End If
+		Calculate llParent.1.nodeChildren as llChildren
+		Calculate llParent.1.nodeFlags as llParent.1.nodeFlags+kJSTreeFlagExpanded
+		Calculate llChild as llParent
+		Do $cinst.$treeFetchParent(llChild.1.nodeID) Returns llParent
+	End While
+End If
+
+Quit method llChild

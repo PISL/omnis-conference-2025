@@ -1,0 +1,14 @@
+On evClick
+	# Adding a leaf to a selected node works effortlessly.
+	# Adding a top level node only works when there is no selected node and once a node is selected there is no way to de-selected it.
+	
+	# This functionally disassociates the selected node but it doesn't get reflected within the tree,
+	# so users will still think its selected.
+	Do irCurrentStructure.$clear()
+	Do ilStructureType.$unfilter(0)
+	
+	#   This will clear the node visually
+	Do $cinst.$objs.ilCorporateTree.$currentnodeident.$assign(0)
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

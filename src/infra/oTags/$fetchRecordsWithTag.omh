@@ -1,0 +1,6 @@
+Calculate llRecords as irParent
+Do llRecords.$addLinkedCols('PSN_SEQ,PSN_FIRST_NAME,PSN_SURNAME,PSN_COMPANY,PSN_COUNTRY')
+Do llRecords.$clear()
+Do llRecords.$fetchWithTag(pcTag)
+
+Quit method llRecords

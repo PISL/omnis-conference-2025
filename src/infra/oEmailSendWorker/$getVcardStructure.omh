@@ -1,0 +1,46 @@
+Breakpoint not tested
+
+# Do irVcardConfig.$clear() ## this will remove embedded row  structure
+For lnColNo from 1 to irVcardConfig.$colcount step 1
+	If irVcardConfig.C[lnColNo].$name='oUID'
+		# this column has some predefined content
+		Calculate irVcardConfig.oUID.CODE as OW3.$makeuuid()
+		
+	Else If irVcardConfig.C[lnColNo].$type=kRow
+		# Calculate lRow as irVcardConfig.oN ## lrName
+		# Calculate lRow as irVcardConfig.oADR ## lrAddress
+		# Calculate lRow as irVcardConfig.oEMAIL ## lrPhone
+		# Calculate lRow as irVcardConfig.oTEL ## lrPhone
+		# Calculate lRow as irVcardConfig.oTZ ## lrTimezone
+		# Calculate lRow as irVcardConfig.oUID ## lrUID
+		# Calculate lRow as irVcardConfig.oGEO ## lrGEO
+		# Calculate lRow as irVcardConfig.oIMPP ## lrPhone
+		# Calculate lRow as irVcardConfig.oLOGO ## lrLogo
+		# Calculate lRow as irVcardConfig.oMEMBER ## lrUID
+		# Calculate lRow as irVcardConfig.oPHOTO ## lrLogo
+		# Calculate lRow as irVcardConfig.oORG ## lrX520Organisation
+		# Calculate lRow as irVcardConfig.oRELATED ## lrUID
+		# Calculate lRow as irVcardConfig.oSOUND ## lrLogo
+		
+		Calculate lRow as irVcardConfig.C[lnColNo]
+		Do lRow.$clear()
+		Calculate irVcardConfig.C[lnColNo] as lRow
+		
+	Else If irVcardConfig.C[lnColNo].$type=kCharacter
+		Calculate irVcardConfig.C[lnColNo] as ''
+		
+	Else If irVcardConfig.C[lnColNo].$type=kInteger
+		Calculate irVcardConfig.C[lnColNo] as #NULL
+		
+	Else If irVcardConfig.C[lnColNo].$type=kNumber
+		Calculate irVcardConfig.C[lnColNo] as #NULL
+		
+	Else If irVcardConfig.C[lnColNo].$type=kDate
+		Calculate irVcardConfig.C[lnColNo] as #NULL
+		
+	Else
+		Breakpoint
+	End If
+End For
+
+Quit method irVcardConfig

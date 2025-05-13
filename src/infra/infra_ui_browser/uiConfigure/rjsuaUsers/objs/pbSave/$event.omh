@@ -1,0 +1,50 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate lcTemp as icMode
+	Calculate $cinst.$objs.pbSave.$errortext as ''
+	
+	If $cinst.icMode='I' ## new user
+		Do method passwordCheck Returns lbOK
+	Else If icMode='E'&irCurrentRecord.PW<>'' ## editing and changing the password
+		Do method passwordCheck Returns lbOK
+	Else
+		Calculate lbOK as kTrue
+	End If
+	
+	If lbOK
+		Do $cinst.$saveData(#NULL) Returns lbOK
+		If lbOK
+			If pos('I',lcTemp)
+				# link the new user record to the current business
+				Do $DefineList(lrUserOrgLink,'tuaGroupOrgLinks')
+				Calculate lrUserOrgLink.UGO_GO_REF as trGroupOrg.GO_SEQ
+				Calculate lrUserOrgLink.UGO_USR_REF as irCurrentRecord.USR_SEQ
+				Do lrUserOrgLink.$insert() Returns lbOK
+				If not(lbOK)
+					Calculate $cinst.$objs.pbSave.$errortext as lrUserOrgLink.irErrorSQL.NativeErrorText
+				End If
+			End If
+			
+			# maintain visual order
+			Do irCurrentRecord.$DisplayName()
+			
+			Calculate irOriginalRecord as irCurrentRecord
+			If pos('I',lcTemp)
+				Do ilDisplayRecords.$add()
+				Calculate ilDisplayRecords.$line as ilDisplayRecords.$linecount
+				Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+				Do ilDisplayRecords.$displayName('F')
+			Else If pos('E',lcTemp)
+				Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+				Do ilDisplayRecords.$displayName('F')
+			End If
+			
+			Calculate icMode as ''
+			
+		End If
+	Else
+		Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage ## from passwordCheck
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

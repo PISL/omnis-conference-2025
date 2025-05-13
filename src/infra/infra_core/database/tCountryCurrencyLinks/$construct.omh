@@ -1,0 +1,3 @@
+Calculate icPrefix as 'CCL_'
+Calculate icPrimarykey as 'CCL_SEQ'
+Do inherited

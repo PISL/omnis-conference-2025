@@ -1,0 +1,5 @@
+If $cinst.UOS_NAME_EN<>''
+	Calculate $cinst.DisplayName as con($cinst.UOS_NAME_EN)
+Else
+	Calculate $cinst.DisplayName as con($cinst.UOS_CODE)
+End If

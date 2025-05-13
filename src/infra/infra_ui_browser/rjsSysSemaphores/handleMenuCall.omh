@@ -1,0 +1,15 @@
+# Return true if this form has handled the shortcut key
+Do ilMenuCommands.$search($ref.ident=pIdent,1,0,0,0) Returns lbFound
+If lbFound
+	Switch pIdent
+		Case 1201
+			Do method confirmDelete
+			Quit method kTrue ## tell the parent that we've dealt with it
+			
+		Default
+			Quit method kFalse ## pass it back to the parent
+			
+	End Switch
+Else
+	Quit method kFalse ## pass it back to the parent
+End If

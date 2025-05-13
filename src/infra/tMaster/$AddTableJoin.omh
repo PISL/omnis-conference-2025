@@ -1,0 +1,40 @@
+# Breakpoint
+# Add a table to be joined to without needing any of its columns
+# copied from $addLinkedCols and cut down to suit
+
+If $ctask.tlDatabases.DAM='WebService'
+	Do ilRESTextensions.$add('alc',pcForeignTable,pbOuterJoin,pcTableAlias)
+	# Quit method kTrue
+End If
+
+If pcTableAlias<>'' ## Use a table alias
+	If pcTableAlias<>''
+		Calculate lcForeignTableAlias as pcTableAlias ## required for multiple columns being sought from table
+	Else
+		Calculate lcForeignTableAlias as replaceall(pcForeignTable,'.','_')
+	End If
+End If
+
+If pbOuterJoin
+	# see if we have the table as an outer join
+	Do ilLinkTables.$search($ref.TABLE=pick(lcForeignTableAlias<>'',pcForeignTable,lcForeignTableAlias)&$ref.OUTER=kTrue,1,0,0,0) Returns lnLine
+Else
+	# see if we have the table at all
+	Do ilLinkTables.$search($ref.TABLE=pick(lcForeignTableAlias<>'',pcForeignTable,con(pcForeignTable,kSp,lcForeignTableAlias)),1,0,0,0) Returns lnLine
+End If
+
+If lnLine=0 ## we haven't got a link to this table yet (outer joined, if necessary)
+	# Get the link chain
+	
+	Do irefCORETASK.$FindLink($cinst.$servertablenames,pcForeignTable,pick(lcForeignTableAlias<>'',lcColPath,lcForeignTableAlias)) Returns lcLinkString
+	If lcLinkString=''
+		Breakpoint
+		Calculate icErrorMessage as con('The table ',pcForeignTable,' can not be linked to table ',$cinst.$servertablenames())
+		Quit method kFalse
+	End If
+	
+	# Generate the linked sql text
+	Do method LinkstoSQL (lcLinkString,pbOuterJoin,lcForeignTableAlias)
+End If
+
+Quit method kTrue

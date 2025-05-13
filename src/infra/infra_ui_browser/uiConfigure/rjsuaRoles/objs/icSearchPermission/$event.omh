@@ -1,0 +1,11 @@
+On evBefore
+	
+On evAfter
+	
+On evKeyPress
+	If len(icSearchPermission)>inMinSearchPermission
+		Do $cinst.$stringSearchPermission()
+	Else
+		Do ilChoiceOfPermissions.$unfilter()
+	End If
+	Calculate inChoicePerm_linecount as ilChoiceOfPermissions.$linecount

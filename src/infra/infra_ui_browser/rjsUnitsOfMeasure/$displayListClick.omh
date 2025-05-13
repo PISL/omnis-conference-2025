@@ -1,0 +1,13 @@
+Calculate icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+Do ilUOM_GROUP.$search($ref.RFG_VALUE=irCurrentRecord.UOM_GROUP,1,0,0,0)
+
+Do ilSynonyms.$clear()
+Do $cinst.$getSynonyms()
+Do irCurrentSynonym.$clear()
+Do ilSynonyms.$search($ref.UOS_CODE=$ref.UOM_CODE,1,0,0,0)
+Do ilSynonyms.$remove(ilSynonyms.$line)
+Calculate ilSynonyms.$line as 1
+Calculate irCurrentSynonym as ilSynonyms
+
+Do $cinst.$behaviour()

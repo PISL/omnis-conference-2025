@@ -1,0 +1,4 @@
+On evAfter
+	
+	# Do irefParent.$addLine(irParams)
+	Do irefParent.$setValue(nam(irDocReference),irDocReference)

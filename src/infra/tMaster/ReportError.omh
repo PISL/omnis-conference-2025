@@ -1,0 +1,19 @@
+
+If ibThisIsProductionServer
+	If $ctask.tConstants.SentryEnabled
+		Signal error 999000,con(irErrorSQL.ErrorCode,kCr,irErrorSQL.ErrorText,kCr,con(irErrorSQL.NativeErrorCode,": ",irErrorSQL.NativeErrorText))
+		
+	Else
+		Calculate lcDatabase as $cinst.$WhichDatabase()
+		
+		If pos('syslogerrors',$cinst.$servertablenames())|pos('sysasyncemails',$cinst.$servertablenames())
+			# if we don't trap this the stack gets blown
+			Breakpoint [irErrorSQL.ErrorText]  [irErrorSQL.NativeErrorText]
+		Else
+			Do $AppError(999000,con('sql error on execute',kCr,'errorcode ',irErrorSQL.ErrorCode,kCr,'errortext ',irErrorSQL.ErrorText,kCr,kCr,'library: ',$ctask.tcCurrentLibrary,kCr,'connection details: ',lcDatabase,kCr,kCr,'nativeerrorcode ',irErrorSQL.NativeErrorCode,kCr,'nativeerrortext ',irErrorSQL.NativeErrorText,kCr,kCr,'sql text:',kCr,irErrorSQL.StatementSQL),kFalse)
+			Do $LogError('SQL_EXECUTE',irErrorSQL.NativeErrorCode,con(irErrorSQL.NativeErrorText,kCr,irErrorSQL.StatementSQL))
+		End If
+	End If
+Else
+	Breakpoint [irErrorSQL.ErrorText]  [irErrorSQL.NativeErrorText]  [irErrorSQL.StatementSQL]
+End If

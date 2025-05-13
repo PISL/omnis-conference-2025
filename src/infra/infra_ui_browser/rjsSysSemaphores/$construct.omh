@@ -1,0 +1,28 @@
+Set reference $cinst.irefContainer to $cinst.$container
+Do inherited
+
+Do $DefineList(ilDisplayRecords,'infra.tsysSemaphores')
+Do ilDisplayRecords.$addDisplayName()
+Calculate irCurrentRecord as ilDisplayRecords
+
+# this is a queue, not a log, so sub-selection is much less important - irrelevant even.
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','SMH_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','SMH_Intro','label')
+
+Do method UserPermissions
+
+Do method FetchRecords
+
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_semaphores','label'),'DisplayName') ## ilDisplayList
+# now set the replacement list display column
+Do ilDisplayRecords.$cols.$findname('DisplayName') Returns lrefCol
+
+
+Do $cinst.$container().$initToolsMenu('') Returns ilMenuCommands
+Do ilMenuCommands.$add('FACT_DELSEL',1201)
+Do irefContainer.$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Do $cinst.$behaviour()

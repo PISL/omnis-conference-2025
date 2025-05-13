@@ -1,0 +1,12 @@
+On evClick
+	If ibCompareUsers
+		# Calculate ibComparePermissions as kFalse
+	End If
+	If not(ibCompareUsers)
+		Do method ClearPrevious ('U')
+	End If
+	
+	Do $cinst.$objs.PagedPane.$currentpage.$assign(3)
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

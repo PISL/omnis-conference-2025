@@ -1,0 +1,7 @@
+On evAfter
+	If pos('@',irCurrentRecord.email)>0
+		# good
+	Else
+		Do toStrings.$StringTableEntry('MSG_VALIDEMAILMANDATORY',icDisplayMessage,'this must be a valid email address')
+	End If
+	Quit event handler (Discard event)

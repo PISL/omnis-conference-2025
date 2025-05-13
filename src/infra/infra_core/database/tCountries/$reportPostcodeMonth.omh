@@ -1,0 +1,117 @@
+If isclear(pcCoCode)
+	Calculate pcCoCode as 'GBR'
+End If
+If pnVhost>1
+	# good
+Else
+	# convert console to myEcoCost
+	Calculate pnVhost as 3
+End If
+
+Do llFetch.$cols.$add($cinst.CO_ISO3)
+Do llFetch.$cols.$add($cinst.CO_NAME)
+Do llFetch.$cols.$add($cinst.CO_NAME_LOCAL)
+Do llFetch.$cols.$add($cinst.CO_CONTINENT)
+Do llFetch.$cols.$add($cinst.CO_REGION)
+Do llFetch.$cols.$add('WUS_POSTCODE',kCharacter,kSimplechar,20)
+Do llFetch.$cols.$add('cwhen_year',kInteger,k32bitint)
+Do llFetch.$cols.$add('cwhen_month',kInteger,kShortint)
+Do llFetch.$cols.$add('sumSharesOrdered',kInteger,k32bitint)
+Do llFetch.$cols.$add('countShareOrders',kInteger,k32bitint)
+Do llFetch.$cols.$add('sumIndicativeShares',kInteger,k32bitint)
+Do llFetch.$cols.$add('countIndicativeOrders',kInteger,k32bitint)
+
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch(llFetch,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcCoCode,pnVhost),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do lrClient.$definefromsqlclass('htcommon.sClient')
+Do lrClientAttributes.$definefromsqlclass('htcommon.sClientAttributes')
+Do lrRegUser.$definefromsqlclass('htcommon.sWebUsers')
+Do lrRegUserAttributes.$definefromsqlclass('htcommon.sUserAttributes')
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# fetch share order information
+Begin statement
+Sta:select CO_ISO3, CO_NAME, CO_NAME_LOCAL, CO_CONTINENT, CO_REGION
+Sta: , case when position(' ' in WUS_POSTCODE)>0 then substring(WUS_postcode,1,position(' ' in WUS_POSTCODE)) else WUS_POSTCODE end as pcode
+Sta: , date_part('year',CA_CWHEN) as cwhen_year,    date_part('month',CA_CWHEN) as cwhen_month
+Sta: , sum( cast(substring(CA_ATTRIBUTE, 1, ( position('M' in CA_ATTRIBUTE)-1 ) ) as integer ) )
+Sta: , count(*)
+Sta:from [lrClientAttributes.$servertablenames()]
+Sta:join [lrClient.$servertablenames] on CL_SEQ = CA_CL_REF  and CL_VHOST_NO = @[pnVhost]
+Sta:join [lrRegUser.$servertablenames()] on WUS_SEQ = CL_WUS_REF
+Sta:join [$cinst.$servertablenames] on CO_ISO3 = WUS_COUNTRY
+Sta:where CA_TYPE = 'SHARES'
+Sta:   and  CA_STATUS <= '020'
+# optional country code
+If len(pcCoCode)=3
+	Sta:   and CO_ISO3 = @[pcCoCode]
+Else If len(pcCoCode)=2
+	Sta:   and CO_ISO2 = @[pcCoCode]
+End If
+Sta:group by CO_ISO3, CO_NAME, CO_NAME_LOCAL, CO_CONTINENT, CO_REGION
+Sta:, pcode, cwhen_year, cwhen_month
+End statement
+Do $cinst.$executesqlandfetch(llFetch) Returns lbOK
+
+# fetch the indicative share interest
+Begin statement
+Sta:select CO_ISO3, CO_NAME, CO_NAME_LOCAL, CO_CONTINENT, CO_REGION
+Sta: , case when position(' ' in WUS_POSTCODE)>0 then substring(WUS_postcode,1,position(' ' in WUS_POSTCODE)) else WUS_POSTCODE end as pcode
+Sta: , date_part('year',RUA_CWHEN) as cwhen_year,    date_part('month',RUA_CWHEN) as cwhen_month
+Sta: , null, null
+Sta: , sum( cast(substring(RUA_ATTRIBUTE, 1, ( position('M' in RUA_ATTRIBUTE)-1 ) ) as integer ) )
+Sta: , count(*)
+Sta:from [lrRegUserAttributes.$servertablenames()]
+Sta:join [lrRegUser.$servertablenames()] on WUS_SEQ = RUA_WUS_REF and WUS_VHOST_NO = @[pnVhost]
+Sta:join [$cinst.$servertablenames] on CO_ISO3 = WUS_COUNTRY
+Sta:where RUA_TYPE = 'SHARES'
+# optional country code
+If len(pcCoCode)=3
+	Sta:   and CO_ISO3 = @[pcCoCode]
+Else If len(pcCoCode)=2
+	Sta:   and CO_ISO2 = @[pcCoCode]
+End If
+Sta:group by CO_ISO3, CO_NAME, CO_NAME_LOCAL, CO_CONTINENT, CO_REGION
+Sta:, pcode, cwhen_year, cwhen_month
+End statement
+Do $cinst.$executesqlandfetch(llFetch,kTrue) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+# blend the rows into 1 country per row
+Do llFetch.$sort($ref.CO_ISO3,0,$ref.WUS_POSTCODE,0,$ref.cwhen_year,0,$ref.cwhen_month,0,$ref.sumSharesOrdered,1)
+Calculate llFetch.$line as 0
+While $Loop(llFetch)
+	If llFetch.$line>1
+		If llFetch.CO_ISO3=llFetch.[llFetch.$line-1].CO_ISO3&llFetch.WUS_POSTCODE=llFetch.[llFetch.$line-1].WUS_POSTCODE&llFetch.cwhen_year=llFetch.[llFetch.$line-1].cwhen_year&llFetch.cwhen_month=llFetch.[llFetch.$line-1].cwhen_month
+			Calculate llFetch.[llFetch.$line-1].sumIndicativeShares as llFetch.sumIndicativeShares
+			Calculate llFetch.[llFetch.$line-1].countIndicativeOrders as llFetch.countIndicativeOrders
+			
+			Calculate llFetch.[llFetch.$line].$selected as kTrue
+		End If
+	End If
+End While
+Do llFetch.$remove(kListDeleteSelected)
+
+Quit method llFetch

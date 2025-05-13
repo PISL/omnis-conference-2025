@@ -1,0 +1,31 @@
+# prefRow is expected to be a row but could be a list
+If pcAltColName<>''
+	Calculate lcColName as pcAltColName
+Else
+	Calculate lcColName as prefValue.$name
+End If
+
+Do prefRow.$cols.$findname(lcColName) Returns liColRef
+If liColRef
+	# column name already exists
+	# OK message type=[prefValue.$type]/[prefRow.[lcColName].$type]  subtype=[prefValue.$subtype]/[prefRow.[lcColName].$subtype]    sublen=[prefValue.$sublen]/[prefRow.[lcColName].$sublen]
+	Calculate lbOK as kTrue
+Else
+	Do prefRow.$cols.$add(lcColName,prefValue.$type,prefValue.$subtype,prefValue.$sublen) Returns lbOK
+	If isnull(lbOK)
+		Calculate lbOK as kFalse
+	End If
+End If
+
+If lbOK
+	If prefRow.$type=kList
+		If prefRow.$linecount=0
+			Do prefRow.$add()
+			Calculate prefRow.$line as 1
+		End If
+	End If
+	
+	Calculate prefRow.[lcColName] as prefValue
+End If
+
+Quit method lbOK

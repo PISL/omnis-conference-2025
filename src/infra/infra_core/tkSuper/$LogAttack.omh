@@ -1,0 +1,152 @@
+If isclear(pcServiceType)
+	If tcCurrentLibrary='HTMLp'
+		Calculate pcServiceType as 'ultra'
+	Else If tcCurrentLibrary='MEC'|tcCurrentLibrary='LOGS'
+		Calculate pcServiceType as 'rjs forms'
+	Else If tcCurrentLibrary='MEC'
+		Calculate pcServiceType as 'rest service'
+	Else
+		Calculate pcServiceType as '???'
+	End If
+End If
+
+Do method $DynamicSession (loSession,loStatement,irConfigFile.Name) Returns lbOK
+If lbOK
+	Do lrLog.$definefromsqlclass('tsysLogAttack')
+	Do lrLog.$SetSession(loSession,loStatement)
+	
+	Calculate lrLog.SLA_CWHEN as #D
+	Calculate lrLog.SLA_ENVIRONMENT as pcEnvironment
+	Calculate lrLog.SLA_CODE as pcCode
+	Calculate lrLog.SLA_SUBCODE as pcSubCode
+	Calculate lrLog.SLA_MESSAGE as pcMessage
+	Calculate lrLog.SLA_SERVICE_TYPE as pcServiceType
+	Calculate lrLog.SLA_RESPONSE as pcResponse
+	Calculate lrLog.SLA_WS_REF as trSession.WS_SEQ ## HTMLp specific, in some cases empty
+	Calculate lrLog.SLA_STS_REF as trTaskStats.STS_SEQ ## should be relevant in web service calls
+	Calculate lrLog.SLA_TRACE as trPageTrace.PT_TRACE
+	
+	# Omnis specific code identification
+	Do prParams.$cols.$findname('SERVER_TIME') Returns liColRef
+	If liColRef
+		# e.g. "SERVER_TIME": "1721663244"
+		Calculate lrLog.SLA_SERVER_TIME as prParams.SERVER_TIME
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('OmnisLibrary') Returns liColRef
+	If liColRef
+		# e.g. "OmnisLibrary": "HTMLp"
+		Calculate lrLog.SLA_LIBRARY as prParams.OmnisLibrary
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('OmnisClass') Returns liColRef
+	If liColRef
+		# e.g.    "OmnisClass": "rtWebSales"
+		Calculate lrLog.SLA_CLASS as prParams.OmnisClass
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('OmnisServer') Returns liColRef
+	If liColRef
+		# e.g.    "OmnisServer": "192.168.10.66:51112"
+		Calculate lrLog.SLA_SERVER as prParams.OmnisServer
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	
+	# attacker identification
+	Do prParams.$cols.$findname('REMOTE_ADDR') Returns liColRef
+	If liColRef
+		# e.g.    "REMOTE_ADDR": "141.98.81.39"
+		Calculate lrLog.SLA_REMOTE_ADDR as prParams.REMOTE_ADDR
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('REMOTE_PORT') Returns liColRef
+	If liColRef
+		# e.g.    "REMOTE_PORT": "50736"
+		Calculate lrLog.SLA_REMOTE_PORT as prParams.REMOTE_PORT
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	
+	# standard HTTP columns provided by Omnis module
+	Do prParams.$cols.$findname('HTTP_HOST') Returns liColRef
+	If liColRef
+		# e.g.    "HTTP_HOST": "www.myecocost.org"
+		Calculate lrLog.SLA_HTTP_HOST as prParams.HTTP_HOST
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('HTTP_USER_AGENT') Returns liColRef
+	If liColRef
+		# e.g.    "HTTP_USER_AGENT": "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1b3) Gecko/20090312 Firefox/3.1b3"
+		Calculate lrLog.SLA_HTTP_USER_AGENT as prParams.HTTP_USER_AGENT
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('HTTP_PAGE_ID') Returns liColRef
+	If liColRef
+		# e.g.    "HTTP_PAGE_ID": ""
+		Calculate lrLog.SLA_HTTP_PAGE_ID as prParams.HTTP_PAGE_ID
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('HTTP_COOKIE') Returns liColRef
+	If liColRef
+		# e.g.    "HTTP_PAGE_ID": ""
+		Calculate lrLog.SLA_COOKIE as prParams.HTTP_COOKIE
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	
+	# HTMLp specific columns
+	Do prParams.$cols.$findname('WebAction') Returns liColRef
+	If liColRef
+		# e.g.    "WebAction": ""
+		Calculate lrLog.SLA_WEB_ACTION as prParams.WebAction
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	End If
+	Do prParams.$cols.$findname('btnPageTurn') Returns liColRef
+	If liColRef
+		# e.g.    "btnPageTurn": "HOW_01"
+		Calculate lrLog.SLA_PAGETURN as prParams.btnPageTurn
+		# Calculate lcRecordedColumns as con(lcRecordedColumns,pick(lcRecordedColumns<>'','',','),liColRef.$name)
+		Do prParams.$cols.$remove(liColRef) Returns lbOK
+	Else
+		# if this is HTMLp then we are expecting a parameter like oWebComLogin or oWebComBuyShares
+		# we need to resolve this by looping through the columns which is done below
+		If upp(tcCurrentLibrary)='HTMLP'
+			Calculate lbExpectWebComObject as kTrue
+		End If
+	End If
+	
+	# We now know that using prParams.$cols.$remove(licolref) does not actually remove the column
+	# So now we will create a row var from unknown columns from prParams and save the left overs :-)
+	For lnColNo from 1 to prParams.$colcount step 1
+		Calculate lcColName as prParams.$cols.[lnColNo].$name
+		# If pos(lcColName,lcRecordedColumns)
+		# it is known and recorded
+		# Else
+		# Do lrRemainingCols.$cols.$add(lcColName,kCharacter,kSimplechar,255)
+		# Calculate lrRemainingCols.[lcColName] as prParams.C[lnColNo]
+		# End If
+		
+		If lbExpectWebComObject
+			If left(lcColName,3)='btn'&lcColName<>'btnPageTurn'&lcColName<>'btnFile'
+				Calculate lrLog.SLA_WEBOBJ as mid(lcColName,10,99)
+			End If
+		End If
+	End For
+	
+	# columns have been "added"
+	Calculate lrLog.SLA_MESSAGE as con(pcMessage)
+	Calculate lrLog.SLA_REMAINING_PARAMS_JSON as OJSON.$listorrowtojson(prParams,kUniTypeCharacter)
+	
+	Do lrLog.$insert__() Returns lbOK
+	# Do method $ReleaseSession (loSession,loStatement) ## required to destroy this session from task var trSequences
+End If
+Quit method lbOK

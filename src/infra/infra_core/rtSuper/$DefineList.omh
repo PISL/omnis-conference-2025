@@ -1,0 +1,31 @@
+# Breakpoint {pcColumns}
+If pos('.',pTableClass)
+	# ok, good to go
+Else
+	# this is a class without a library name
+	Do $itasks.[tcCurrentLibrary].$getTableLibrary(pTableClass) Returns lcLib
+	# RSM 18-JAN-21 added test for lcLib, coped from tkSuper
+	If lcLib<>''
+		Calculate pTableClass as con(lcLib,'.',pTableClass)
+	Else
+		# this is not supposed to happen
+		# Breakpoint
+		# even though the library has not been identified the $definefromsqlclass below will still work if table class exists in this library.
+		# Do $AppError(10030,con('db class ',pTableClass,' is not resolving its parent library'),'tabel class infrastructure')
+	End If
+End If
+
+If len(pcColumns)
+	If pos(kSq,pcColumns)=0
+		Calculate pcColumns as replaceall(pcColumns,',',"','")
+		Calculate pcColumns as con(kSq,pcColumns,kSq)
+	End If
+	Do pListOrRow.$definefromsqlclass[con("('",pTableClass,"',",pcColumns,')')] Returns #F
+Else
+	Do pListOrRow.$definefromsqlclass(pTableClass) Returns #F
+End If
+
+If flag false
+	Breakpoint
+End If
+Quit method #F

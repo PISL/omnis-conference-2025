@@ -1,0 +1,62 @@
+
+Do ilTaskStats.$clear()
+If idtTime>tim('00:00')
+	Calculate ldtFrom as idFrom+idtTime
+	Do ilTaskStats.$fetchAroundThisTime(ldtFrom,inPlusMinusSeconds)
+Else
+	Do ilTaskStats.$fetchBetweenDates(idFrom,idTo)
+End If
+
+While $Loop(ilTaskStats)
+	Do ilTaskStats.$calculatedCols()
+End While
+
+Do ilFilters.$clear()
+
+# count distinct IPaddresses
+Calculate llTemp as ilTaskStats
+Do llTemp.$cols.STS_IP4.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilTaskStats.$search($ref.STS_IP4=llTemp.STS_IP4,1,0,1,0)
+	
+	Do ilFilters.$add('IP4',llTemp.STS_IP4,totc(ilTaskStats,#LSEL))
+	Do ilTaskStats.$search(0)
+End While
+
+# count distinct TYPE
+Calculate llTemp as ilTaskStats
+Do llTemp.$cols.STS_TYPE.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilTaskStats.$search($ref.STS_TYPE=llTemp.STS_TYPE,1,0,1,0)
+	
+	Do ilFilters.$add('TYPE',llTemp.STS_TYPE,totc(ilTaskStats,#LSEL))
+	Do ilTaskStats.$search(0)
+End While
+
+# count distinct durations
+Calculate llTemp as ilTaskStats
+Do llTemp.$cols.elapsedTask.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilTaskStats.$search($ref.elapsedTask=llTemp.elapsedTask,1,0,1,0)
+	
+	Do ilFilters.$add('DURATION',llTemp.elapsedTask,totc(ilTaskStats,#LSEL))
+	Do ilTaskStats.$search(0)
+End While
+
+# count distinct GO_REF
+Calculate llTemp as ilTaskStats
+Do llTemp.$cols.STS_GO_REF.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilTaskStats.$search($ref.STS_GO_REF=llTemp.STS_GO_REF,1,0,1,0)
+	
+	Do ilFilters.$add('WEBSITE',llTemp.STS_GO_REF,totc(ilTaskStats,#LSEL))
+	Do ilTaskStats.$search(0)
+End While
+
+Do ilFilters.$addbefore(1,'','all',#NULL)
+
+Calculate ilTaskStats.$smartlist as kTrue

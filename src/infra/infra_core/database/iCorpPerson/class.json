@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 3,
+	"nextident": 32037,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-27 11:20:26",
+		"createinstancewhensubtype": true,
+		"desc": "WEBSERVICE schema for registration service",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2016-02-03 16:17:54",
+		"servertablename": "",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

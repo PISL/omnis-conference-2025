@@ -1,0 +1,24 @@
+# GROUP ORGANISATIONS - first what they have
+Do ilRolePermissions.$clear()
+Do ilRolePermissions.$fetchRolePermissions(irCurrentRecord.ROL_SEQ)
+
+Calculate $cinst.$objs.ilRolePermissions.$errortext as ''
+Calculate $cinst.$objs.ilRoleUsers.$errortext as ''
+
+# then what they haven't been assigned to
+Calculate ilChoiceOfPermissions as ilPermissions
+Calculate ilRolePermissions.$line as 0
+While $Loop(ilRolePermissions)
+	Do ilChoiceOfPermissions.$search($ref.PER_SEQ=ilRolePermissions.PER_SEQ,1,0,1,0)
+End While
+Do ilChoiceOfPermissions.$remove(kListDeleteSelected)
+Calculate ilChoiceOfPermissions.$line as 0
+Calculate ilChoiceOfPermissions.$smartlist as kTrue ## to filter with icSearchPermission
+Calculate ibPermissionsFilteredOnPrefix as kFalse
+
+If len(icSearchPermission)>inMinSearchPermission
+	Do $cinst.$stringSearchPermission()
+Else
+	Do ilChoiceOfPermissions.$unfilter()
+End If
+Calculate inChoicePerm_linecount as ilChoiceOfPermissions.$linecount

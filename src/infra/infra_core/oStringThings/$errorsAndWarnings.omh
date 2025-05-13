@@ -1,0 +1,26 @@
+If plMessages.$linecount=0
+	Quit method
+End If
+
+If pbDoNotInitialise
+	# continue building errors and warnings
+Else
+	Calculate prefErrors as ''
+	Calculate prefWarnings as ''
+End If
+
+# Errors get displayed first.  Onle when there are no errors do warnings get displayed.
+Do plMessages.$search($ref.severity=0,1,0,1,0) ## errors
+Calculate plMessages.$line as 0
+While $Loop(plMessages,kTrue)
+	Calculate prefErrors as con(prefErrors,pick(prefErrors<>'','',kCr),plMessages.default)
+End While
+
+Do plMessages.$search(0)
+Do plMessages.$search($ref.severity=1,1,0,1,0) ## warnings
+Calculate plMessages.$line as 0
+While $Loop(plMessages,kTrue)
+	Calculate prefWarnings as con(prefWarnings,pick(prefWarnings<>'','',kCr),plMessages.default)
+End While
+
+Do plMessages.$search(0)

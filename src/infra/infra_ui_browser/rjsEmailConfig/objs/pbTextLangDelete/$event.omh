@@ -1,0 +1,17 @@
+On evClick
+	Calculate $cinst.$objs.pbTextLangDelete.$errortext as ''
+	
+	If ilLanguages.ELT_LANG=irCurrentRecord.ELC_DEFAULT_LANG
+		# user cannot delete record if it represents the default language of the email config record
+		Calculate $cinst.$objs.pbTextLangDelete.$errortext as 'Cannot delete default language record.'
+	Else
+		Do toStrings.$StringTableEntry('MSG_WARN_LANG_DEL',lcMessage,'Are you sure you want to delete this email text record?.')
+		Do toStrings.$StringTableEntry('word_Warning',lcTitleText,'Warning')
+		
+		# Open an ok-cancel message box
+		# row(message text,title text,name of public form method called on ok,name of public form method called on cancel (leave empty for no cancel button))
+		Do $cinst.$clientcommand("okcancelmessage",row(lcMessage,lcTitleText,'$langDelConfirmed','$ignore'))
+		
+	End If
+	
+	Quit method

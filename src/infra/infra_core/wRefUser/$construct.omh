@@ -1,0 +1,31 @@
+Do toValues.$initInherited('REF_USER') Returns ilPreferences
+Calculate ilPreferences.$line as 0
+
+Do toValues.$initUser() Returns ilData
+# Do $DefineList(ilData,'infra.tsysReferenceUser')
+Calculate $cinst.$enterable as kTrue
+
+Do ilData.$WhichDatabase() Returns lcDatabase
+Calculate $cinst.$title as con('connected to ',lcDatabase)
+Calculate icPathForSoundFiles as con(sys(215),'SOUNDS')
+
+# 2023-11-20  RSM  added ability for an authorised user to alter preferences for another user
+Do $defineList(ilCurrentUsers,'tuaUsers')
+If sys(2)=17
+	Do ilCurrentUsers.$fetchOurUsers('',kFalse,kTrue)
+	Do ilCurrentUsers.$fetch($ref.USR_NAME=trCurrUser.USR_NAME,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Breakpoint
+	End If
+End If
+
+Do ilDisplay.$cols.$add('desc',kCharacter,kSimplechar,255)
+Do ilDisplay.$cols.$add('code',kCharacter,kSimplechar,100)
+Do method $WindowClasses
+
+Calculate $cinst.$objs.ilCurrentUsers.$visible as ilCurrentUsers.$linecount>0
+
+If pOpenWithThisClass<>''
+	Do ilPreferences.$search($ref.RFU_CLASS=pOpenWithThisClass,1,0,0,0)
+	Do $cinst.$refresh()
+End If

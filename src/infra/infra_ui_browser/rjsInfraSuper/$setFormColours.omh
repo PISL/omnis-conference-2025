@@ -1,0 +1,104 @@
+If $cinst.$objs.$findname('app_navigation_area')
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVAREA)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.app_navigation_area.$[lcProperty] as eval(lrAttributes.[lcProperty]) ## pagedPane covering whole area
+		Calculate $cinst.$objs.app_navigation_area.$objs.app_navigation_img.$[lcProperty] as eval(lrAttributes.[lcProperty]) ## banner image
+	End For
+End If
+
+If $cinst.$objs.$findname('icCurrentGroupOrg')
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVLABELS)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.icCurrentGroupOrg.$[lcProperty] as eval(lrAttributes.[lcProperty]) ## company name
+	End For
+End If
+
+If trFormColours.$cols.$findname('ANAVLIST')
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVLIST)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		If $cinst.$objs.$findname('NavMenu')
+			Calculate $cinst.$objs.NavMenu.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+		If $cinst.$objs.$findname('NavMenuCascade')
+			Calculate $cinst.$objs.NavMenuCascade.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+		If $cinst.$objs.$findname('UserMenu')
+			Calculate $cinst.$objs.UserMenu.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+		If $cinst.$objs.$findname('ToolsMenu')
+			Calculate $cinst.$objs.ToolsMenu.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+		If $cinst.$objs.$findname('OrgMenu')
+			Calculate $cinst.$objs.OrgMenu.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+	End For
+End If
+
+If $cinst.$objs.$findname('greyBackground')
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.WORKAREA)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.greyBackground.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	End For
+End If
+
+If trFormColours.$cols.$findname('WORKHEADING')
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.WORKHEADING)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		If $cinst.$objs.$findname('icFormHeading')
+			Calculate $cinst.$objs.icFormHeading.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+		If $cinst.$objs.$findname('icFormIntro')
+			Calculate $cinst.$objs.icFormIntro.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		End If
+	End For
+End If
+
+If $cinst.$objs.$findname('icDisplayMessage')
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.WORKMESSAGE)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.icDisplayMessage.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	End For
+End If
+
+If $cinst.$objs.$findname('ppRecordNavigation')
+	# the following fails for subclasses of infra.rjsFinInvOut
+	# If pos('rjsInfraRecords',$cinst.$class().$superclass)|pos('rjsInfraDetail',$cinst.$class().$superclass)
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.RNAVAREA)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.ppRecordNavigation.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	End For
+	
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.RNAVLABELS)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.label_ilSearch1.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		Calculate $cinst.$objs.label_ilSearch2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		# the next two lines were added by Das on Jan 24 2023 to effect two new labels he added to the super class rjsInfraRecords
+		Calculate $cinst.$objs.label_icSearch.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		Calculate $cinst.$objs.label_inSearchCount.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		
+		Calculate $cinst.$objs.label_ilDisplayRecords.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	End For
+	
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.RNAVLIST)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.ilDisplayRecords.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	End For
+	
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.RNAVOBJECTS)
+	For lnCount from 1 to lrAttributes.$colcount step 1
+		Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+		Calculate $cinst.$objs.icSearch.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		Calculate $cinst.$objs.ilSearch1.$[lcProperty] as eval(lrAttributes.[lcProperty])
+		Calculate $cinst.$objs.ilSearch2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	End For
+	
+End If

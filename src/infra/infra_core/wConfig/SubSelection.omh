@@ -1,0 +1,23 @@
+Calculate ilSubSelect as ''
+
+If ilOptionList.code='LIB_INIT'
+	# there is no subSelect list
+	
+Else If ilOptionList.code='DB_CONNECT'
+	Calculate ilSubSelect as [ilOptionList.listVar]
+	Do ilSubSelect.$cols.$add('DisplayName',kCharacter,kSimplechar,30) Returns liColRef
+	Calculate $cinst.$objs.ilSubSelect.$currentcolumn as 1
+	Calculate $cinst.$objs.ilSubSelect.$columndatacol as liColRef.$ident
+	
+	# We are relying on the first name/value pair for each DB_NOis the Name of the entry (DB_NAME = Name)
+	Do ilSubSelect.$cols.DB_NO.$removeduplicates()
+	Calculate ilSubSelect.$line as 0
+	While $Loop(ilSubSelect)
+		Calculate ilSubSelect.DisplayName as con(ilSubSelect.DB_NO,': ',ilSubSelect.DB_VALUE)
+	End While
+	Do ilSubSelect.$addbefore(1) ## blank line for ALL
+	
+Else If ilOptionList.code='SITE_CONFIG'
+	# there is no subSelect list
+	
+End If

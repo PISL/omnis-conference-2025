@@ -1,0 +1,15 @@
+# Count the number of times pcSearchFor occurs in pcSearchIn
+
+Calculate lnLength as len(pcSearchFor)
+Calculate lnPos as pos(pcSearchFor,pcSearchIn)
+While lnPos
+	# save position
+	Calculate lcPositions as con(lcPositions,pick(lcPositions<>'','',','),lnAccumulativeLength+lnPos)
+	
+	Calculate lnAccumulativeLength as lnAccumulativeLength+lnPos+lnLength
+	
+	Calculate pcSearchIn as mid(pcSearchIn,lnPos+lnLength,kFetchAll)
+	Calculate lnPos as pos(pcSearchFor,pcSearchIn)
+End While
+
+Quit method lcPositions

@@ -1,0 +1,55 @@
+Do method clearExtraSearch
+
+Calculate ilSysGlobal.$line as 0
+While $Loop(ilSysGlobal)
+	Calculate icSummaryGlobal as con(icSummaryGlobal,pick(icSummaryGlobal<>'','','; '),ilSysGlobal.RFG_CLASS,' / ',ilSysGlobal.RFG_VALUE)
+End While
+
+Calculate ilSysLocal.$line as 0
+While $Loop(ilSysLocal)
+	Calculate icSummaryLocal as con(icSummaryLocal,pick(icSummaryLocal<>'','','; '),ilSysLocal.RFL_CLASS,' / ',ilSysLocal.RFL_VALUE)
+End While
+
+Calculate ilSysOrg.$line as 0
+While $Loop(ilSysOrg)
+	Calculate icSummaryOrg as con(icSummaryOrg,pick(icSummaryOrg<>'','','; '),ilSysOrg.RFO_CLASS,' / ',ilSysOrg.RFO_VALUE,' (',ilSysOrg.RFO_GO_REF,')')
+End While
+
+Calculate ilSysUser.$line as 0
+While $Loop(ilSysUser)
+	Calculate icSummaryUser as con(icSummaryUser,pick(icSummaryUser<>'','','; '),ilSysUser.RFU_CLASS,' / ',ilSysUser.RFU_VALUE)
+End While
+
+If ilData.$linecount
+	Calculate icSummaryAll as con(icSummaryAll,pick(icSummaryAll<>'','',kCr),icColPrefix,'=',ilData.$linecount)
+End If
+If ilSysGlobal.$linecount
+	Calculate icSummaryAll as con(icSummaryAll,pick(icSummaryAll<>'','',kCr),'RFG_=',ilSysGlobal.$linecount)
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 1
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 1659
+	Do $cinst.$objs.TabPaneOtherRefTables.$showpane(1,kTrue)
+	Calculate lbOtherRefPaneVisible as kTrue
+End If
+If ilSysLocal.$linecount
+	Calculate icSummaryAll as con(icSummaryAll,pick(icSummaryAll<>'','',kCr),'RFL_=',ilSysLocal.$linecount)
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 2
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 1659
+	Do $cinst.$objs.TabPaneOtherRefTables.$showpane(2,kTrue)
+	Calculate lbOtherRefPaneVisible as kTrue
+End If
+If ilSysOrg.$linecount
+	Calculate icSummaryAll as con(icSummaryAll,pick(icSummaryAll<>'','',kCr),'RFO_=',ilSysOrg.$linecount)
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 3
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 1659
+	Do $cinst.$objs.TabPaneOtherRefTables.$showpane(3,kTrue)
+	Calculate lbOtherRefPaneVisible as kTrue
+End If
+If ilSysUser.$linecount
+	Calculate icSummaryAll as con(icSummaryAll,pick(icSummaryAll<>'','',kCr),'RFU_=',ilSysUser.$linecount)
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 4
+	Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 1659
+	Do $cinst.$objs.TabPaneOtherRefTables.$showpane(4,kTrue)
+	Calculate lbOtherRefPaneVisible as kTrue
+End If
+
+Calculate $cinst.$objs.TabPaneOtherRefTables.$visible as lbOtherRefPaneVisible

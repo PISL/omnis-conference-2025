@@ -1,0 +1,29 @@
+# may be called from pbEdit.$event or enterData
+Calculate $cinst.icDisplayMessage as $cell($cinst.clLabels,'objName','REC_UPDATE','label') ## irCurrentRecord
+Calculate $cinst.icMode as 'E' ## edit
+Calculate ibWarningsIssued as kFalse
+
+Do irCurrentRecord.$fetch_pk() Returns lbOK
+
+Do irCurrentRecord.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Do irCurrentRecord.$DisplayName()
+End If
+
+Calculate $cinst.irOriginalRecord as $cinst.irCurrentRecord
+
+If ibEditCheckSemaphore
+	Do $DefineList(lrSemaphore,'tsysSemaphores')
+	Do lrSemaphore.$obtainSemaphore(irCurrentRecord.icPrefix,irCurrentRecord.[irCurrentRecord.icPrimaryKey]) Returns lbOK
+	If not(lbOK)
+		If lrSemaphore.icValidationMessage<>''
+			Calculate icDisplayMessage as lrSemaphore.icValidationMessage
+		Else
+			Calculate icDisplayMessage as lrSemaphore.irErrorSQL.NativeErrorText
+		End If
+		
+		Calculate icMode as ''
+	End If
+End If
+
+Do $cinst.$behaviour()

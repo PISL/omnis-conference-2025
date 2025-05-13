@@ -1,0 +1,132 @@
+Do ilValidation.$clear()
+# columns:  object   issue   default   severity   message
+If $cinst.ELC_GO_REF>0
+	# good
+Else
+	Do ilValidation.$add('ELC_GO_REF_LBL','VAL_MISSING','internal company missing',0)
+End If
+
+If $cinst.ELC_CODE<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_CODE_LBL','VAL_MISSING','identying code missing',0)
+End If
+
+If $cinst.ELC_NAME<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_NAME_LBL','VAL_MISSING','config name missing',0)
+End If
+
+If $cinst.ELC_DESC<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_DESC_LBL','VAL_MISSING','config description missing',0)
+End If
+
+If $cinst.ELC_SERVER<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_SERVER_LBL','VAL_MISSING','server address missing',0)
+End If
+
+If $cinst.ELC_LOGIN_NAME<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_LOGIN_NAME_LBL','VAL_MISSING','login name missing',0)
+End If
+
+If $cinst.ELC_LOGIN_PW<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_LOGIN_PW_LBL','VAL_MISSING','login password missing',0)
+End If
+
+If $cinst.ELC_SENDER_NAME<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_SENDER_NAME_LBL','VAL_MISSING','sender name missing',0)
+End If
+
+If $cinst.ELC_SENDER_ADDR<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_SENDER_ADDR_LBL','VAL_MISSING','sender email address missing',0)
+End If
+
+If $cinst.ELC_SECURE<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_SECURE_LBL','VAL_MISSING','security handling missing',0)
+End If
+
+If $cinst.ELC_AUTHN<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_AUTHN_LBL','VAL_MISSING','authentication method missing',0)
+End If
+
+If isnull($cinst.ELC_VFY_CERT)
+	Do ilValidation.$add('ELC_VFY_CERT_LBL','VAL_MISSING','certificate verify instruction missing',0)
+End If
+
+If $cinst.ELC_PRIORITY<>''
+	# good
+	If pos(con(",",upp($cinst.ELC_PRIORITY),","),",LOWEST,LOW,NORMAL,HIGH,HIGHEST,")
+		# proper content
+	Else If $cinst.ELC_PRIORITY>0&$cinst.ELC_PRIORITY<9
+		# storing integer value
+	Else
+		Do ilValidation.$add('ELC_PRIORITY_LBL','BAD_VALUE','bad value',0)
+	End If
+Else
+	Do ilValidation.$add('ELC_PRIORITY_LBL','VAL_MISSING','message priority missing',0)
+End If
+
+# JSON columns:  ELC_TO   ELC_CC   ELC_BCC   ELC_OW3_OPTIONS   ELC_HEADERS   ELC_JSON
+
+If $cinst.ELC_TO<>''
+	Do OJSON.$formatjson($cinst.ELC_TO) Returns lcTextReturned
+	If pos(' error:',lcTextReturned)
+		Do ilValidation.$add('ELC_TO_LBL','ERR_FORMAT',con('bad json format ',kCr,lcTextReturned),0)
+	End If
+End If
+If $cinst.ELC_CC<>''
+	Do OJSON.$formatjson($cinst.ELC_CC) Returns lcTextReturned
+	If pos(' error:',lcTextReturned)
+		Do ilValidation.$add('ELC_CC_LBL','ERR_FORMAT',con('bad json format ',kCr,lcTextReturned),0)
+	End If
+End If
+If $cinst.ELC_BCC<>''
+	Do OJSON.$formatjson($cinst.ELC_BCC) Returns lcTextReturned
+	If pos(' error:',lcTextReturned)
+		Do ilValidation.$add('ELC_BCC_LBL','ERR_FORMAT',con('bad json format ',kCr,lcTextReturned),0)
+	End If
+End If
+If $cinst.ELC_OW3_OPTIONS<>''
+	Do OJSON.$formatjson($cinst.ELC_OW3_OPTIONS) Returns lcTextReturned
+	If pos(' error:',lcTextReturned)
+		Do ilValidation.$add('ELC_OW3_OPTIONS_LBL','ERR_FORMAT',con('bad json format ',kCr,lcTextReturned),0)
+	End If
+End If
+If $cinst.ELC_HEADERS<>''
+	Do OJSON.$formatjson($cinst.ELC_HEADERS) Returns lcTextReturned
+	If pos(' error:',lcTextReturned)
+		Do ilValidation.$add('ELC_HEADERS_LBL','ERR_FORMAT',con('bad json format ',kCr,lcTextReturned),0)
+	End If
+End If
+If $cinst.ELC_JSON<>''
+	Do OJSON.$formatjson($cinst.ELC_JSON) Returns lcTextReturned
+	If pos(' error:',lcTextReturned)
+		Do ilValidation.$add('ELC_JSON_LBL','ERR_FORMAT',con('bad json format ',kCr,lcTextReturned),0)
+	End If
+End If
+
+If $cinst.ELC_DEFAULT_LANG<>''
+	# good.  It should be a valid language code and this is not being checked (yet)
+	Do toValues.$ReturnLanguages($cinst.ELC_DEFAULT_LANG) Returns lrLang
+Else
+	Do ilValidation.$add('ELC_DEFAULT_LANG_LBL','VAL_MISSING',con('default language missing'),0)
+End If
+
+Quit method ilValidation.$linecount=0

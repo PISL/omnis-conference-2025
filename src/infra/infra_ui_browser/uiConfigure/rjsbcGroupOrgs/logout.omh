@@ -1,0 +1,2 @@
+# logout by refreshing the browser window
+JavaScript:location.reload(true);

@@ -1,0 +1,11 @@
+# Enter your initialization code here
+# Breakpoint
+Set reference irefParent to $cinst.$container
+
+Do $DefineList(irDocReference,'infra.tDocReference')
+If prParams.C1.$colcount>0
+	# a row has been passed in.  Assume it row to be displayed.
+	Do irDocReference.$assignrow(prParams.C1)
+	# Else If prParams.C1<>''
+	# Do irDocReference.$fetch_ck(prParams.C1,prParams.C2)
+End If

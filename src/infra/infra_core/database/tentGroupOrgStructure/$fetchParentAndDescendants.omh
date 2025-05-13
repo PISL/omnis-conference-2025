@@ -1,0 +1,44 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pnParentKey),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Do $defineList(llRoot,'sentGroupOrgStructure',pcColumns)
+
+Begin statement (Linefeed,Carriage return)
+Sta: with recursive pt as 
+Sta: (select gs_seq, gs_superior_gs_ref, gs_desc_short, gs_desc_full, gs_type
+Sta:  from infra.entgrouporgstructure
+Sta:  where gs_seq = @[pnParentKey]
+Sta:  union all
+Sta:  select ch.gs_seq, ch.gs_superior_gs_ref, ch.gs_desc_short, ch.gs_desc_full, ch.gs_type
+Sta:  from infra.entgrouporgstructure ch
+Sta:  join pt on ch.gs_superior_gs_ref = pt.gs_seq)
+Sta: select [pcColumns] from pt
+Sta: order by [pcColumns]
+
+End statement
+
+Do $cinst.$executesqlandfetch(llRoot) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llRoot

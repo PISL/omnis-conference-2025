@@ -1,0 +1,130 @@
+# this method is to be used for translating snippets of text, eg. string table entires
+# expects a three column list, col1 = unique id, col2 =  source text, col3 is empty to receive translations
+# if col1 is already URL encoded, pass pbPreEncoded as kTrue
+
+Calculate lnModulusProgress as 10
+Do llSubStrings.$cols.$add('text',kCharacter,kSimplechar,2000)
+Calculate lbNewCall as kTrue
+Do llTranslations.$cols.$add(icTargetLang,kCharacter,kSimplechar,2000)
+
+For plOriginalTexts.$line from 1 to plOriginalTexts.$linecount step 1
+	Calculate lnProgressCount as lnProgressCount+1
+	If prefVisualObject
+		If mod(lnProgressCount,lnModulusProgress)=0
+			If prefVisualObject.$progressTranslate.$cando()
+				Do prefVisualObject.$progressTranslate(lnProgressCount,plOriginalTexts.$linecount,lnModulusProgress)
+			End If
+		End If
+	End If
+	
+	If lbNewCall
+		Calculate lcURI as icURL
+		Calculate lbNewCall as kFalse
+	End If
+	
+	# make sure there is a string to translate.  Every character costs money with google.
+	If len(plOriginalTexts.C2)>0
+		If pbPreEncoded
+			Calculate lcOriginal as plOriginalTexts.C2
+		Else
+			Calculate lcOriginal as OW3.$escapeuritext(plOriginalTexts.C2)
+			Calculate lcBefore as OW3.$unescapeuritext(lcOriginal) ## debug
+			If lcBefore<>plOriginalTexts.C2 ## debug
+				Breakpoint ## debug
+			End If ## debug
+		End If
+		If len(con(lcURI,'&q=',lcOriginal))>2000
+			# translate what we have before continuing
+			Calculate lbTranslateNow as kTrue
+		Else
+			Calculate lcURI as con(lcURI,'&q=',lcOriginal)
+		End If
+		
+		If plOriginalTexts.$line=plOriginalTexts.$linecount
+			Calculate lbTranslateNow as kTrue
+		End If
+		
+		If lbTranslateNow
+			Calculate lbTranslateNow as kFalse ## reset
+			Calculate lbNewCall as kTrue ## reset
+			
+			If plOriginalTexts.$line<plOriginalTexts.$linecount
+				Calculate plOriginalTexts.$line as plOriginalTexts.$line-1 ## get the current line again when we loop
+			End If
+			
+			If len(lcURI)>2000 ## Google imposes a limit of 2k on the full URL
+				Calculate pcError as con('URL too long.  Please reduce the request by ',len(lcURI)-2000,' characters.')
+				Quit method kFalse
+			End If
+			
+			Do iorefRest.$init(lcURI,kOW3httpMethodGet,ilHeaders,'') Returns lbOK
+			
+			Do iorefRest.$run() Returns lbOK
+			If not(lbOK)
+				Calculate pcError as 'call to Google failed.'
+				Quit method kFalse
+			End If
+			
+			Do iorefRest.$returnVal(irResponseHeaders,irResponse,irJSON) Returns icJSON
+			
+			If irResponse.httpStatusCode<>200
+				Calculate pcError as irResponse.ResponseContent
+				Calculate lbOK as kFalse
+			Else
+				Calculate lrResult as OJSON.$jsontolistorrow(icJSON)
+				# result is embedded (list within row) so next 2 lines are not a mistake
+				Calculate lrResult as lrResult.C1
+				Calculate lrResult as lrResult.C1
+				# we may have sent multiple q parameters so loop over the columns
+				For lnCount from 1 to lrResult.$colcount step 1
+					Do llSubStrings.$clear() ## reset
+					
+					Calculate lrTranslation as lrResult.C[lnCount]
+					While pos('&',lrTranslation.translatedText)
+						# We have a problem with multiple escaped semi colons in the text.
+						# here is an example of how the next command does not work:
+						#   Numéro de bon de commande (PO) du client ; aide le client à référencer la commande qu&#39;il a passée dans son système
+						#    There is a ; before the &#39;  and this came about because the first ; had been escaped first iteration and is not the only ; in the text second iteration.
+						Repeat
+							Calculate lnPosSemiColon as pos(';',lrTranslation.translatedText)
+							Calculate lnPosAmpersand as pos('&',lrTranslation.translatedText)
+							If lnPosSemiColon>0&lnPosSemiColon<lnPosAmpersand
+								# the simple check for escape character does not work
+								# Breakpoint
+								# save the string up to the offending ; and remove from original so subsequent escape decode works
+								Do llSubStrings.$add(strtok(nam(lrTranslation.translatedText),';'))
+							Else
+								# no need to manipulate
+							End If
+							Calculate lcEscapeSeq as mid(lrTranslation.translatedText,pos('&',lrTranslation.translatedText),pos(';',lrTranslation.translatedText)+1-pos('&',lrTranslation.translatedText))
+							Do method decodeEscapedChar (lcEscapeSeq) Returns lcUnescapedChar
+							Calculate lrTranslation.translatedText as replaceall(lrTranslation.translatedText,lcEscapeSeq,lcUnescapedChar)
+						Until lnPosSemiColon>=lnPosAmpersand
+						If llSubStrings.$linecount>0
+							# restore the full string
+							Calculate lcRebuildString as ''
+							While $Loop(llSubStrings)
+								Calculate lcRebuildString as con(lcRebuildString,pick(lcRebuildString<>'','',';'),llSubStrings.text)
+							End While
+							Calculate lrTranslation.translatedText as con(lcRebuildString,';',lrTranslation.translatedText)
+						End If
+						
+					End While
+					Do llTranslations.$add(lrTranslation.translatedText)
+				End For
+				
+			End If
+			If not(lbOK)
+				Break to end of loop
+			End If
+		End If ## lbTranslateNow
+	End If
+End For
+
+If lbOK
+	For plOriginalTexts.$line from 1 to plOriginalTexts.$linecount step 1
+		Calculate plOriginalTexts.C3 as llTranslations.[plOriginalTexts.$line].[icTargetLang]
+	End For
+End If
+
+Quit method lbOK

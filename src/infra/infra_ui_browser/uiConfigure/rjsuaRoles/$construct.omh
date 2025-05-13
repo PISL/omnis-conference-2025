@@ -1,0 +1,75 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference $cinst.irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+Do $DefineList(ilDisplayRecords,'infra.tuaRoles')
+Do ilDisplayRecords.$addDisplayName()
+Calculate irCurrentRecord as ilDisplayRecords
+Calculate irPreviousRecord as irCurrentRecord
+
+Do ilDisplayRecords.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.ilDisplayRecords.$listcolumn as liColRef.$ident
+Calculate lnDisplayListCol as liColRef.$ident
+
+Do $DefineList(ilRolePermissions,'infra.tuaRolePermissions')
+Do ilRolePermissions.$addSchemaColumns('infra.suaPermissions')
+Do ilRolePermissions.$cols.$findname('PER_DESC_EN') Returns liColRef
+Calculate $cinst.$objs.ilRolePermissions.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilRoleUsers,'infra.tuaUserRoles')
+Do ilRoleUsers.$addSchemaColumns('infra.suaUsers')
+Do ilRoleUsers.$cols.$findname('USR_NAME') Returns liColRef
+Calculate $cinst.$objs.ilRoleUsers.$listcolumn as liColRef.$ident
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','ROLES_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','ROLES_Intro','label')
+
+Do method UserPermissions
+
+Do $DefineList(ilPermissions,'infra.tuaPermissions')
+Do ilPermissions.$addDisplayName()
+Do ilPermissions.$fetch_all()
+While $Loop(ilPermissions)
+	Do ilPermissions.$displayName('F')
+End While
+Do ilPermissions.$sort($ref.PER_LABEL,0)
+Do ilPermissions.$reportPrefix() Returns ilPermissionPrefixes
+
+Do ilPermissions.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.ilChoiceOfPermissions.$listcolumn as liColRef.$ident
+End If
+
+Do ilPermissionPrefixes.$cols.$add('DisplayName',kCharacter,kSimplechar,20)
+Calculate ilPermissionPrefixes.$line as 0
+While $Loop(ilPermissionPrefixes)
+	Calculate ilPermissionPrefixes.DisplayName as con(ilPermissionPrefixes.PER_PREFIX,' (',ilPermissionPrefixes.count,')')
+End While
+Do ilPermissionPrefixes.$addbefore(1)
+
+Do $DefineList(ilUsers,'infra.tuaUsers')
+Do ilUsers.$addDisplayName()
+Do ilUsers.$fetchOurUsers()
+While $Loop(ilUsers)
+	Do ilUsers.$displayName('F')
+End While
+Do ilUsers.$sort($ref.USR_NAME,0)
+
+Do ilUsers.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.ilChoiceOfUsers.$listcolumn as liColRef.$ident
+End If
+
+Do method FetchRecords
+
+Do $getVar(nam(irKeyPress)) Returns irKeyPress ## get key press values for insert/edit/delete
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_roles','label'),'DisplayName')
+Do $cinst.$superText($cell(kTrue,clLabels,'objName','text_search','label'))
+
+Do $cinst.$container().$initToolsMenu() Returns ilMenuCommands
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Do $cinst.$behaviour()

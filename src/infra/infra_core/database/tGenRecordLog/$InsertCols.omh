@@ -1,0 +1,2 @@
+Calculate $cinst.GRL_CWHEN as $AboutNow()
+Calculate $cinst.GRL_CBY as trCurrUser.USR_NAME

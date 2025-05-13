@@ -1,0 +1,67 @@
+# prExternalData is a row with columns of rows that contain data from the database or other values in memory.
+Calculate icErrors as ''
+
+# we need to be careful here
+# If the expression within [[...]] refers to values from another column within prExternalData
+# we have a problem parsing multiple times for each column.
+
+# build a list of column names from each row passed in within prExternalData
+Do llColumns.$cols.$add('columnNumber',kInteger,k32bitint)
+Do llColumns.$cols.$add('columnName',kCharacter,kSimplechar,255)
+
+For lnColNoExternalData from 1 to prExternalData.$colcount step 1
+	Calculate lRow as prExternalData.C[lnColNoExternalData]
+	For lnColNoRow from 1 to lRow.$colcount step 1
+		Do llColumns.$add(lnColNoExternalData,lRow.$cols.[lnColNoRow].$name)
+	End For
+End For
+
+# parse the message text and resolve all [[...]] content
+Calculate lcTextToParse as irReference.RFO_CHAR
+If pos('pRow.',lcTextToParse)<>''
+	Calculate lcTextToParse as replaceall(lcTextToParse,'pRow.','lRow.')
+End If
+
+While lcTextToParse<>''
+	Calculate lcChunk as ''
+	Calculate lcExpression as ''
+	
+	# locate [[...]] references
+	If pos('[[',lcTextToParse)
+		# extract the expression keeping before and after text in tact
+		Calculate lcChunk as mid(lcTextToParse,1,pos('[[',lcTextToParse)-1)
+		Calculate lcTextToParse as mid(lcTextToParse,pos('[[',lcTextToParse),kFetchAll)
+		Calculate lcExpression as mid(lcTextToParse,3,pos(']]',lcTextToParse)-1-2)
+		Calculate lcTextToParse as mid(lcTextToParse,pos(']]',lcTextToParse)+2,kFetchAll)
+	Else
+		# no expressions left to resolve
+		Calculate lcChunk as lcTextToParse
+		Calculate lcTextToParse as ''
+	End If
+	
+	If lcExpression<>''
+		# lcExpression may be a function so don't look for an exact match
+		Do llColumns.$search(pos($ref.columnName,lcExpression),1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate lRow as prExternalData.C[llColumns.columnNumber]
+			
+			Test for valid calculation [lcExpression]
+			If flag true
+				Calculate lcMessage as con(lcMessage,lcChunk,eval(lcExpression))
+			Else
+				Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('expression ',kDq,lcExpression,kDq,' could not be evaluated.'))
+			End If
+		Else
+			Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('expression ',kDq,lcExpression,kDq,' could not be resolved.'))
+			Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+		End If
+	Else
+		Calculate lcMessage as con(lcMessage,lcChunk)
+	End If
+End While
+
+# store the resolved message back in irReference
+Calculate irReference.RFO_CHAR as lcMessage
+
+Quit method (icErrors='')

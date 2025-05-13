@@ -1,0 +1,35 @@
+On evBefore
+	
+On evAfter
+	
+On evKeyPress
+	If icMode<>''&icMode<>'R' ## the 'R' is a special case in TRACKER
+		Quit event handler (Discard event) ## 2019-05-24 added this because the keypress is still active even when the field is not enabled
+	End If
+	# shift-tab
+	# If pKeyList.[pKeyList.$linecount].systemKey=27&pKeyList.[pKeyList.$linecount].modifiers=kJSModShift
+	# Calculate $cinst.$objs.TabControl_PRD.$currenttab as 1
+	# Calculate $cinst.$objs.PagedPane.$currentpage as 1
+	# End If
+	# If pKeyList.$linecount>=3
+	Calculate lnPosSearchDelimiter as pos(':',icSearch)
+	If lnPosSearchDelimiter=2
+		Calculate lcPrefix as mid(icSearch,1,pos(':',icSearch)-1)
+		Calculate lcSearch as mid(icSearch,pos(':',icSearch)-1,99)
+		If len(lcSearch)>inMinSearchString
+			Do $cinst.$stringSearch()
+		End If
+	Else
+		If len(icSearch)>inMinSearchString
+			Do $cinst.$stringSearch()
+		Else If len(icSearch)=0
+			# 2018-09-21 GRS put this fix in for CONFERENCE.rjsMember which does not display the search drop lists
+			If ilSearch1.$linecount ## the lists will be visible if they contain any data
+				Do $cinst.$Search1ListClick()
+			Else If ilSearch2.$linecount
+				Do $cinst.$Search2ListClick()
+			Else
+				Do $cinst.$stringSearch() ## each form would have to have code to deal with the zero length string
+			End If
+		End If
+	End If

@@ -1,0 +1,2 @@
+Do irCurrentRecord.$WhichDatabase() Returns icDbConnection
+Calculate icOmnisAndLibrary as con('Omnis ',sys(1),' platform ',sys(8),' library ',$clib().$name,' / ',tcCurrentLibrary)

@@ -1,0 +1,23 @@
+On evLayoutChanged
+	Do inherited ## set inBreakpoint
+	Switch inBreakpoint
+		Case 667,768,1024,1280
+			Calculate $cinst.$objs.Warning.$visible as kFalse
+			
+		Default
+			Switch inBreakpoint
+				Case 320
+					Calculate $cinst.$objs.Warning.$height as 406
+					Calculate $cinst.$objs.Warning.$width as 310
+				Case 375
+					Calculate $cinst.$objs.Warning.$height as 593
+					Calculate $cinst.$objs.Warning.$width as 365
+				Default ## 480
+					Calculate $cinst.$objs.Warning.$height as 246
+					Calculate $cinst.$objs.Warning.$width as 470
+			End Switch
+			Calculate $cinst.$objs.Warning.$top as 5
+			Calculate $cinst.$objs.Warning.$left as 5
+			Calculate $cinst.$objs.Warning.$visible as kTrue
+			
+	End Switch

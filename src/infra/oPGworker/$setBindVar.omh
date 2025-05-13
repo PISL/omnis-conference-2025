@@ -1,0 +1,13 @@
+# prefRow as name suggests is a row var, but it could be a list as well
+Do prefRow.$cols.$findname(pcColName) Returns liColRef
+If liColRef
+	# do not add another column
+Else
+	# I tried to add the column using the $coltype
+	Do prefRow.$cols.$add(pcColName,prefColValue.$type,prefColValue.$subtype,prefColValue.$sublen)
+End If
+If prefRow.$type=kList&prefRow.$linecount=0
+	Do prefRow.$add()
+	Calculate prefRow.$line as prefRow.$linecount
+End If
+Calculate prefRow.[pcColName] as prefColValue

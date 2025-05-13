@@ -1,0 +1,33 @@
+# called from the JS Yes/No message
+Calculate llSemaphoresToDelete as ilDisplayRecords
+Calculate lrSemaphore as ilDisplayRecords
+
+If totc(llSemaphoresToDelete,#LSEL)=0
+	# This code was copied from rjsAsyncEmails where multiple lines can be deleted.
+	# Semaphores can only be deleted one at a time.
+	Calculate llSemaphoresToDelete.[llSemaphoresToDelete.$line].$selected as kTrue
+End If
+
+Do llSemaphoresToDelete.$remove(kListKeepSelected)
+Do lrSemaphore.$beginTransaction(,loSessionObj,loStatementObj) Returns lbRunningAsTransaction
+If lbRunningAsTransaction
+	For llSemaphoresToDelete.$line from 1 to llSemaphoresToDelete.$linecount step 1
+		Do lrSemaphore.$assignrow(llSemaphoresToDelete.[llSemaphoresToDelete.$line])
+		Do lrSemaphore.$delete_pk() Returns lbOK
+		If not(lbOK)
+			Calculate icDisplayMessage as lrSemaphore.irErrorSQL.NativeErrorText
+			Break to end of loop
+		End If
+	End For
+	
+	If lbOK
+		Do lrSemaphore.$commitTransaction(,loSessionObj,loStatementObj)
+		Do method FetchRecords
+	Else
+		Calculate icDisplayMessage as 'Error'
+	End If
+Else
+	Calculate icDisplayMessage as 'Error'
+End If
+
+Do $cinst.$behaviour()

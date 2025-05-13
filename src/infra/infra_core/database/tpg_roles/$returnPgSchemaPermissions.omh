@@ -1,0 +1,53 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callInsert(llResult,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcUsername),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Calculate pcUsername as low(pcUsername)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+If $cinst.$sessionobject.$damname='PGSQLDAM'
+	# code copied from   https://stackoverflow.com/questions/40759177/postgresql-show-all-the-privileges-for-a-concrete-user
+	
+	Begin statement
+	Sta:  SELECT r.usename AS grantor,
+	Sta: e.usename AS grantee,
+	Sta: nspname,
+	Sta: privilege_type,
+	Sta: is_grantable
+	Sta: FROM pg_namespace
+	Sta: JOIN LATERAL (SELECT *
+	Sta:                           FROM aclexplode(nspacl) AS x) a 
+	Sta: ON true
+	Sta:  JOIN pg_user e ON a.grantee = e.usesysid
+	Sta:  JOIN pg_user r  ON a.grantor = r.usesysid
+	Sta:
+	Sta:  WHERE e.usename = @[pcUsername]
+	End statement
+	Do $cinst.$executesqlandfetch(llResult) Returns lbOK
+	
+Else
+	Breakpoint
+End If
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llResult

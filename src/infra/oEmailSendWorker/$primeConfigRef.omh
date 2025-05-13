@@ -1,0 +1,187 @@
+Do toValues.$initOrg('EM_SRVR_FROM',pcConfigValue) Returns irReference
+If isclear(irReference.RFO_SEQ)
+	Do irReference.$fetchClass('EM_SRVR_FROM',pcConfigValue)
+End If
+If irReference.RFO_SEQ>0
+	If irReference.RFO_JSON<>''
+		Do OJSON.$jsontolistorrow(irReference.RFO_JSON,icErrors,kTrue) Returns irConfig
+		
+		If irConfig.$colcount>0
+			Do method $clearConfig
+			
+			# = = = = = = = = = = =        server attributes      = = = = = = = = = = =
+			#      irConfig.server,irConfig.loginName,irConfig.loginPassword
+			
+			Do irConfig.$cols.$findname('server') Returns liColRef
+			If liColRef
+				If irConfig.server<>''
+					# we have a server entry
+				Else
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Server is not specified.')
+				End If
+			Else
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Config entry does not include "server" entry.')
+			End If
+			
+			Do irConfig.$cols.$findname('loginName') Returns liColRef
+			If liColRef
+				If irConfig.loginName<>''
+					# we have a login name
+				Else
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'loginName is not specified.')
+				End If
+			Else
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Config entry does not include "loginName" entry.')
+			End If
+			
+			Do irConfig.$cols.$findname('loginPassword') Returns liColRef
+			If liColRef
+				If irConfig.loginPassword<>''
+					# we have a password
+				Else
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'loginPassword is not specified.')
+				End If
+			Else
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Config entry does not include "loginPassword" entry.')
+			End If
+			
+			# = = = = = = = = = = =        mandatory attributes      = = = = = = = = = = =
+			
+			# addressee
+			
+			Do irConfig.$cols.$findname('emailTO') Returns liColRef
+			If liColRef
+				# addressee(s) has been configured
+				Do ilTo.$merge(irConfig.emailTO)
+			End If
+			
+			If prefTo.$type=kCharacter
+				# addressee is set from business logic/data
+				If prefTo<>''
+					Do ilTo.$add()
+					Calculate ilTo.$line as ilTo.$linecount
+					Calculate ilTo.address as prefTo
+				End If
+				
+			Else If prefTo.$type=kList
+				# addressee(s) set from business logic/data
+				Do ilTo.$merge(prefTo)
+			Else
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Addressee is of incorrect format.')
+			End If
+			
+			If ilTo.$linecount=0
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'There are no addressees.')
+			End If
+			
+			#    sender
+			
+			Do irConfig.$cols.$findname('senderAddress') Returns liColRef
+			If liColRef
+				If irConfig.senderAddress<>''
+					# all good
+				Else
+					# mandatory config item does not exist
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'There is no sender address.')
+				End If
+			End If
+			Do irConfig.$cols.$findname('senderName') Returns liColRef ## senderAddress is mandatory, senderName is optional
+			If liColRef
+				If irConfig.senderName<>''
+					Calculate ibCombinedSenderAddressAndName as kTrue
+				Else
+					# surprising but not an error - we will ignore it
+				End If
+			End If
+			
+			# message must exist
+			# Remember that there is a good chance that the message has [[...]] entries, to be substtuted with data outside of this object.
+			# method $messageSubstitute will handle this situation and put result back in RFO_CHAR
+			If isclear(prefMessage)
+				Calculate prefMessage as irReference.RFO_CHAR
+				If isclear(prefMessage)
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'There is no message to send.')
+				End If
+			Else
+				Calculate irReference.RFO_CHAR as prefMessage
+			End If
+			
+			# subject is not technically mandatory but we will treat it as mandatory
+			Do irConfig.$cols.$findname('subject') Returns liColRef ## senderAddress is mandatory, senderName is optional
+			If liColRef
+				If irConfig.subject<>''
+					# good to go
+				Else
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'The subject is empty.')
+				End If
+			Else
+				Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'There is no subject configured.')
+			End If
+			
+			# = = = = = = = = = = =        optional attributes start      = = = = = = = = = = =
+			
+			Do irConfig.$cols.$findname('emailCC') Returns liColRef
+			If liColRef
+				Do ilCC.$merge(irConfig.emailCC)
+			End If
+			
+			Do irConfig.$cols.$findname('emailBCC') Returns liColRef
+			If liColRef
+				Do ilBCC.$merge(irConfig.emailBCC)
+			End If
+			
+			Do irConfig.$cols.$findname('headers') Returns liColRef
+			If liColRef
+				Do ilHeaders.$merge(irConfig.headers)
+			End If
+			
+			Do irConfig.$cols.$findname('priority') Returns liColRef
+			If liColRef
+				If isnumber(irConfig.priority)
+					Calculate inPriority as irConfig.priority
+				Else If pos('kOW3msgPriority',irConfig.priority)
+					# its a proper Omnis constant
+					Calculate inPriority as eval(irConfig.priority)
+				Else If pos(irConfig.priority,'low,normal,high')>0
+					Calculate inPriority as con('kOW3msgPriority',cap(irConfig.priority))
+				Else
+					Breakpoint
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Unrecognised priority value.')
+				End If
+			Else
+				Calculate inPriority as kOW3msgPriorityNormal
+			End If
+			
+			Do irConfig.$cols.$findname('headers') Returns liColRef
+			If liColRef
+				# Omnis converts JSON arrays into rows and the method is a bit cack handed
+				Calculate lrHeadersAsRow as irConfig.headers
+				For lnColNo from 1 to lrHeadersAsRow.$colcount step 1
+					Do ilHeaders.$add()
+					Calculate ilHeaders.$line as ilHeaders.$linecount
+					
+					# each column in lrHeadersAsRow has a list, each line of which is a column in a row
+					Calculate llHeaderRow as lrHeadersAsRow.C[lnColNo]
+					
+					Calculate ilHeaders.name as llHeaderRow.1.C1
+					Calculate ilHeaders.value as llHeaderRow.2.C1
+				End For
+			End If
+			
+			# = = = = = = = = = = =        optional attributes end      = = = = = = = = = = =
+			
+			# next step is $initialise
+			
+		Else
+			# error: badly formed or non existent JSON
+			Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Email config record is badly formed.')
+			
+		End If
+	Else
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Email config record has no data in JSON format.')
+	End If
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Email config record does not exist.')
+End If
+
+Quit method (icErrors='')

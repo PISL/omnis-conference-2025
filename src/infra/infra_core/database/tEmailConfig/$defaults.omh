@@ -1,0 +1,10 @@
+Calculate $cinst.ELC_GO_REF as trGroupOrg.GO_SEQ
+Calculate $cinst.ELC_SECURE as kFalse
+Calculate $cinst.ELC_ACTIVE as kTrue
+Calculate $cinst.ELC_AUTHN as 'LOGIN'
+Calculate $cinst.ELC_VFY_CERT as kTrue
+Calculate $cinst.ELC_ALWAYS_FINISH as kTrue
+Calculate $cinst.ELC_DEBUGLOG as kOW3logBasic
+Calculate $cinst.ELC_PRIORITY as 'normal'
+Calculate $cinst.ELC_OW3_OPTIONS as '{"verifyPeer": 0,"requireSecure": 1}'
+Calculate $cinst.ELC_DEFAULT_LANG as 'en'

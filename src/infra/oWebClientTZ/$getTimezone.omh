@@ -1,0 +1,74 @@
+# http://api.timezonedb.com/v2.1/get-time-zone
+
+# Parameter  Description
+# key        REQUIRED   Your unique API key you get after register your account.
+# format     OPTIONAL   The response format from API. It can be either xml or json.
+#            DEFAULT: xml
+
+# callback   OPTIONAL   Use for JavaScript JSON callback.
+# fields     OPTIONAL   Customize the field to display in response. Use commas ("," without spaces) to separate the field names.
+
+#            FIELDS: countryCode, countryName, regionName, cityName, zoneName, abbreviation, gmtOffset, dst, zoneStart, zoneEnd, nextAbbreviation, timestamp, formatted
+#            DEFAULT: all
+
+# by         REQUIRED       The method of lookup.
+#            zone - Lookup local time by using a time zone name.
+#            position - Lookup local time by using latitude & longitude of a city.
+# PREMIUM
+#            city - Lookup time zone by searching city name.
+# PREMIUM
+#            ip - Lookup time zone based on visitor IP address.
+
+# zone       REQUIRED     A time zone abbreviation or time zone name. Required if lookup by zone method.
+# lat        REQUIRED     Latitude of a city. Required if lookup by position method.
+# lng        REQUIRED     Longitude of a city. Required if lookup by position method.
+# country    REQUIRED     A valid ISO 3166 country code. Required if lookup by city method.
+# region     OPTIONAL     A valid region code of United States. Optional when lookup by city method to limit the search result.
+# city       REQUIRED     The name of a city. Use asterisk (*) for wildcard search. Required if lookup by city method.
+# page       OPTIONAL     Navigate to other page when result is more than 25 records.
+# time       OPTIONAL     Unix time in UTC.
+#                         DEFAULT: Current UTC time.
+
+If pcMethod='zone'|pcMethod='position'|pcMethod='city'
+	# proceed
+Else If pcMethod='ip'
+	Quit method kFalse ## we are not supporting this because Omnis libs reside at a single ip address
+Else
+	Quit method kFalse
+End If
+
+Calculate lcURI as con(ccURLrecords,"/get-time-zone",ccURLkey,ccURLformat)
+
+# Calculate lcRecordIDs as OJSON.$listorrowtojson(plIDs,kUniTypeCharacter,lcError)
+Calculate icContent as con(icContent,pick(icContent<>'','','&'),'by=',pcMethod)
+
+If pcMethod='zone'
+	Calculate icContent as con(icContent,pick(icContent<>'','','&'),'zone=',pcCity)
+	
+Else If pcMethod='position'
+	Calculate icContent as con(icContent,pick(icContent<>'','','&'),'lat=',pcCity)
+	Calculate icContent as con(icContent,pick(icContent<>'','','&'),'lng=',pcCountry)
+	
+Else If pcMethod='city'
+	Calculate icContent as con(icContent,pick(icContent<>'','','&'),'city=',pcCity)
+	Calculate icContent as con(icContent,pick(icContent<>'','','&'),'country=',pcCountry)
+	If pcRegion<>''
+		Calculate icContent as con(icContent,pick(icContent<>'','','&'),'region=',pcRegion)
+	End If
+	
+Else If pcMethod='ip'
+	# not supported
+End If
+
+Calculate lcURI as con(lcURI,'&',icContent)
+Calculate icContent as ''
+Do ioRest.$init(lcURI,kOW3httpMethodPost,ilHeaders,icContent) Returns lbStatus
+
+If ibRunAsynchronously
+	Do ioRest.$start()
+	Quit method kTrue
+Else
+	Do ioRest.$run() Returns lbStatus
+	Do method $returnAsyncTimezone Returns llResult
+	Quit method llResult
+End If

@@ -1,0 +1,10 @@
+Calculate icMode as ''
+Do $cinst.$displayListClick
+Calculate icDisplayMessage as $cell($cinst.clLabels,'objName','REC_CANC','label')
+Calculate $cinst.$objs.pbSave.$errortext as ''
+Do $cinst.$behaviour()
+
+Set reference lrefList to $cinst.$objs.greyBackground
+If lrefList
+	Do $cinst.$setcurfield(lrefList)
+End If

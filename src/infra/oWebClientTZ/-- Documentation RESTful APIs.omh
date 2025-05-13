@@ -1,0 +1,113 @@
+# copied from https://developer.rsc.org/compounds-v1/apis
+
+# Interrogate and access chemical data, powered by the Royal Society of Chemistry's ChemSpider database.
+
+# FILTERING
+
+# filter-element-post
+# https://api.rsc.org/compounds/v1/filter/element
+# Submit an array called 'includeElements' of up to 15 elements and an array called 'excludeElements' of up to 100 elements via POST. This endpoint will...
+
+# filter-formula-batch-post
+# https://api.rsc.org/compounds/v1/filter/formula/batch
+# Submit an array of up to 100 formulas via POST. You can optionally supply dataSources as a JSON-formatted array of up to 20 strings, representing the...
+
+# filter-formula-batch-queryId-results-get
+# https://api.rsc.org/compounds/v1/filter/formula/batch/{queryId}/results
+# Call this endpoint with a queryId returned from the /filter/formula/batch filter query. The queryId supplied must return 'Complete' when submitted to ...
+
+# filter-formula-batch-queryId-status-get
+# https://api.rsc.org/compounds/v1/filter/formula/batch/{queryId}/status
+# Call this endpoint with a queryId returned from the /filter/formula/batch filter query. If successful, returns a JSON object. This object contains 's...
+
+# filter-formula-post
+# https://api.rsc.org/compounds/v1/filter/formula
+# Submit formula as a string via POST. You can optionally supply dataSources as a JSON-formatted array of up to 20 strings, representing the data sourc...
+
+# filter-inchi-post
+# https://api.rsc.org/compounds/v1/filter/inchi
+# Submit an InChI as a string via POST. If successful, returns a Query ID representing the search. If not successful, returns an HTTP status other tha...
+
+# filter-inchikey-post
+# https://api.rsc.org/compounds/v1/filter/inchikey
+# Submit an InChIKey as a string via POST. If successful, returns a Query ID representing the search. If not successful, returns an HTTP status other ...
+
+# filter-intrinsicproperty-post
+# https://api.rsc.org/compounds/v1/filter/intrinsicproperty
+# Submit a formula as a string or a weight via POST. At least one of formula, molecularWeight, nominalMass, averageMass, monoisotopicMass must be speci...
+
+# filter-mass-batch-post
+# https://api.rsc.org/compounds/v1/filter/mass/batch
+# You can use this endpoint when you have multiple masses to search as a batch. Submit an array of up to 20 monoisotopic masses via POST. Each item in ...
+
+# filter-mass-batch-queryId-results-get
+# https://api.rsc.org/compounds/v1/filter/mass/batch/{queryId}/results
+# Call this endpoint with a queryId returned from the /filter/mass/batch filter query. The queryId supplied must return 'Complete' when submitted to /fi...
+
+# filter-mass-batch-queryId-status-get
+# https://api.rsc.org/compounds/v1/filter/mass/batch/{queryId}/status
+# Call this endpoint with a queryId returned from the /filter/mass/batch filter query. If successful, returns a JSON object. This object contains 'stat...
+
+# filter-mass-post
+# https://api.rsc.org/compounds/v1/filter/mass
+# Submit mass as a double between 1 and 11000 Atomic Mass Units, and a range between 0.0001 and 100 via POST. For example, if you specify a mass of 40 a...
+
+# filter-name-post
+# https://api.rsc.org/compounds/v1/filter/name
+# Submit a compound name as a string via POST. Optionally, you can also submit orderBy and orderDirection to specify the sort order for the results. If...
+
+# filter-queryId-results-get
+# https://api.rsc.org/compounds/v1/filter/{queryId}/results
+# Call this endpoint with a queryId returned from another filter query. The queryId supplied must return 'Complete' when submitted to /filter/{queryId}/...
+
+# filter-queryId-results-sdf-get
+# https://api.rsc.org/compounds/v1/filter/{queryId}/results/sdf
+# Call this endpoint with a queryId returned from another filter query. The queryId supplied must return 'Complete' when submitted to /filter/{queryId}/...
+
+# filter-queryId-status-get
+# https://api.rsc.org/compounds/v1/filter/{queryId}/status
+# Call this endpoint with a queryId returned from another filter query. If successful, returns a JSON object. This object contains 'status', which is t...
+
+# filter-smiles-post
+# https://api.rsc.org/compounds/v1/filter/smiles
+# Submit a SMILES as a string via POST. If successful, returns a Query ID representing the search. If not successful, returns an HTTP status other tha...
+
+# LOOKUPS
+
+# lookups-datasources-get
+# https://api.rsc.org/compounds/v1/lookups/datasources
+# Many other endpoints let you restrict which sources are used to lookup the requested query. Restricting the sources makes queries faster. To determin...
+
+# RECORDS
+
+# records-batch-post
+# https://api.rsc.org/compounds/v1/records/batch
+# Call this POST endpoint with an array of up to 100 Record IDs as integers. The Record ID might have been from one of the /results endpoints. You must...
+
+# records-recordId-details-get
+# https://api.rsc.org/compounds/v1/records/{recordId}/details
+# Call this endpoint with a Record ID as an integer. The Record ID might have been from one of the /results endpoints. You must have a parameter called...
+
+# records-recordId-externalreferences-get
+# https://api.rsc.org/compounds/v1/records/{recordId}/externalreferences
+# Submit a recordId. The recordId is a Record ID returned from a /results endpoint. You can optionally supply dataSources as query parameters, represen...
+
+# records-recordId-image-get
+# https://api.rsc.org/compounds/v1/records/{recordId}/image
+# Submit a recordId via GET. The recordId is a Record ID returned from a /results endpoint. If successful, returns a base64-encoded string containing a...
+
+# records-recordId-mol-get
+# https://api.rsc.org/compounds/v1/records/{recordId}/mol
+# Submit a recordId. The recordId is a Record ID returned from a /results endpoint. If successful, returns a SDF file containing the single record for ...
+
+# TOOLS
+
+# tools-convert-post
+# https://api.rsc.org/compounds/v1/tools/convert
+# Submit an identifier (SMILES, InChI, InChIKey or Mol) as a string called 'input' via POST and return an identifier in another format (SMILES, InChI, I...
+
+# tools-validate-inchikey-post
+# https://api.rsc.org/compounds/v1/tools/validate/inchikey
+# Submit an InChIKey as a string called 'inchikey' via POST. If successful, returns a boolean value indicating whether the InChIKey is valid. ...
+
+#

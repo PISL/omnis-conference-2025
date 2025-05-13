@@ -1,0 +1,6 @@
+On evClick
+	Do $cinst.$behaviour()
+	
+	
+On evCellChanged
+	Do $cinst.$behaviour()

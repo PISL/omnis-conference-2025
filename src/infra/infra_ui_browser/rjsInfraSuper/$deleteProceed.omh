@@ -1,0 +1,13 @@
+Calculate lcDisplayName as irCurrentRecord.DisplayName
+
+Do irCurrentRecord.$delete() Returns lbOK
+If lbOK
+	Do irCurrentRecord.$clear()
+	Calculate icDisplayMessage as con($cell($cinst.clLabels,'objName','REC_DELETED','label'),': ',lcDisplayName) ## record updated
+	
+	Calculate irOriginalRecord as irCurrentRecord
+	Calculate icMode as ''
+	
+Else
+	Calculate $cinst.icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+End If

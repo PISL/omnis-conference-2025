@@ -1,0 +1,18 @@
+# code copied from Doug Easterbrook email to list 26-OCT-22
+Breakpoint NOT TESTED
+
+# RegEx meaning:
+#
+#   <             # Left angle bracket
+#   \/?           # Forward slash (escaped - optional)
+#  \s*            # Spaces (optional)
+#  ([\w\d]+)  # Any letter or digit (many - grouped)
+#  \s*            # Spaces (optional)
+#  [^>]*        # Any character that isn't a right angle bracket (many - optional)
+#  >              # Right angle bracket
+#
+Calculate patterns as TMObjs.$makeparamrow('tag','<\/?\s*([\w\d]+)\s*[^>]*>')
+
+# matches.$define(Order, Name, Content, Start, End)  -- "Name" will always be "tag", due to patterns above
+Calculate matches as tStringFields.$findpatterns(patterns,pText)
+Quit method matches

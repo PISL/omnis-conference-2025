@@ -1,0 +1,23 @@
+For lnColNo from 1 to prHeadersAsRow.$colcount step 1
+	# Calculate lrSubConfig as lrHeadersAsRow.C[lnColNo]
+	If prHeadersAsRow.C[lnColNo].$type=kCharacter
+		Do prefList.$add()
+		Calculate prefList.$line as prefList.$linecount
+		Calculate prefList.C1 as prHeadersAsRow.C[lnColNo]
+		
+	Else If prHeadersAsRow.C[lnColNo].$type=kList
+		Calculate llTemp as prHeadersAsRow.C[lnColNo]
+		If pos('@',llTemp.1.C1)>0&pos('@',llTemp.2.C1)=0
+			# list appears to be in name/value pairs
+			For llTemp.$line from 1 to llTemp.$linecount step 2
+				Do prefList.$add(llTemp.[llTemp.$line].C1,llTemp.[llTemp.$line+1].C1)
+			End For
+		Else
+			Do prefList.$merge(llTemp)
+		End If
+		
+	Else If prHeadersAsRow.C[lnColNo].$type=kRow
+		Breakpoint
+		
+	End If
+End For

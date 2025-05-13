@@ -1,0 +1,88 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+# Enter your initialization code here
+Do $DefineList(ilDisplayRecords,'infra.tEmailConfig')
+Do ilDisplayRecords.$addDisplayName()
+Calculate irCurrentRecord as ilDisplayRecords
+
+
+Do ilDisplayRecords.$fetchOurConfigs() ## we want to load only those products belonging to the current Group Org
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+End If
+Do ilDisplayRecords.$sort($ref.DisplayName,0)
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','ELC_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','ELC_Intro','label')
+
+Do method UserPermissions
+
+Do ilPriority.$cols.$add('code',kInteger,kShortint)
+Do ilPriority.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilPriority.$add(kOW3msgPriorityLowest,'lowest')
+Do ilPriority.$add(kOW3msgPriorityLow,'low')
+Do ilPriority.$add(kOW3msgPriorityNormal,'normal')
+Do ilPriority.$add(kOW3msgPriorityHigh,'high')
+Do ilPriority.$add(kOW3msgPriorityHighest,'highest')
+
+# authentication is here from a historical perspective.
+# judging from the ow3SMTPworker demo from Omnis, authentication is not used with OW3
+# Do ilAuthentication.$cols.$add('code',kInteger,kShortint)
+# Do ilAuthentication.$cols.$add('desc',kCharacter,kSimplechar,100)
+# Do ilAuthentication.$add('LOGIN','login')
+
+# Do ilDebugLog.$define(iLogTypeChar,iLogType,iUsesHTML)
+Do ilDebugLog.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilDebugLog.$cols.$add('value',kInteger,k32bitint)
+Do ilDebugLog.$cols.$add('usesHTML',kBoolean)
+
+Do ilDebugLog.$add("No logging",kOW3logNone,kFalse)
+Do ilDebugLog.$add("Basic logging (HTML)",kOW3logBasic+kOW3logHTML,kTrue)
+Do ilDebugLog.$add("Basic and data logging (HTML)",kOW3logBasic+kOW3logData+kOW3logHTML,kTrue)
+Do ilDebugLog.$add("Full logging (HTML)",kOW3logBasic+kOW3logData+kOW3logSecureData+kOW3logHTML,kTrue)
+Do ilDebugLog.$add("Basic logging",kOW3logBasic,kFalse)
+Do ilDebugLog.$add("Basic and data logging",kOW3logBasic+kOW3logData,kFalse)
+Do ilDebugLog.$add("Full logging",kOW3logBasic+kOW3logData+kOW3logSecureData,kFalse)
+Calculate ilDebugLog.$line as 2
+
+Do ilTestCriteriaExists.$cols.$add('fieldname',kCharacter,kSimplechar,255)
+Do ilTestCriteriaExists.$cols.$add('value',kCharacter,kSimplechar,255)
+Calculate ilTestCriteriaToBeProvided as ilTestCriteriaExists
+
+Do irEmailError.$cols.$add('errorCode',kInteger,k32bitint)
+Do irEmailError.$cols.$add('errorinfo',kCharacter,kSimplechar,255)
+Do irEmailError.$cols.$add('failedRecipients',kList)
+Do irEmailError.$cols.$add('log',kCharacter,kSimplechar,10000)
+Do irEmailError.$cols.$add('timestamp',kDate,kDatetime)
+
+Do $defineList(ilAsyncEmailQueue,'tsysAsyncEmails')
+
+Do ilDisplayRecords.$cols.$findname('DisplayName') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+
+# Do $cinst.$superObjects($cell(clLabels,'objName','disp_prods','label'),lnDisplayListCol,'',$cell(clLabels,'objName','sel_supplier','label'),,kTrue)
+Do $cinst.$superFoundList('configurations','DisplayName')
+Do $cinst.$superText(kTrue,'search text')
+# Do $cinst.$superSearchList1()
+
+Calculate $cinst.$objs.TabControl_ELC.$currenttab as 1
+
+Calculate $cinst.$objs.PagedPane.$bordercolor as rgb(255,0,0)
+Calculate $cinst.$objs.PagedPane.$linestyle as kLineSolidWidth2
+
+Do $cinst.$container().$initToolsMenu() Returns ilMenuCommands ## use defaults
+Do ilMenuCommands.$add('FACT_DUP',1201)
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Do toValues.$ReturnLanguages('en,de,fr,it,es,fi,sv,nb,nn,da,nl,pl,pt,ro,tr,hu,el,cs,hr,ca') Returns ilSelectLangMaster
+Do ilSelectLangMaster.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.ilSelectLangChoose.$listcolumn as liColRef.$ident
+End If
+
+Do $cinst.$behaviour()

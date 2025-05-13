@@ -1,0 +1,14 @@
+Calculate icEventSpec as ''
+Calculate icVcardSpec as ''
+Calculate icErrors as ''
+
+Do $defineList(lrEmail,'infra.tEmailText')
+Do lrEmail.$fetchEmailRecord(pcConfigValue,pcLanguage) Returns irConfigEmail
+
+If irConfigEmail.ELC_SEQ>0
+	Do method $setConfig (irConfigEmail,prefTo,prefMessage)
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',', and '),con('no active config record for ',pcConfigValue,': ',pcLanguage,' found'))
+End If
+
+Quit method (icErrors='')

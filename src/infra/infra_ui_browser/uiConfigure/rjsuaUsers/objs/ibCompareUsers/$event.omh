@@ -1,0 +1,13 @@
+On evClick
+	If not(ibCompareUsers)
+		Do method ClearPrevious
+	End If
+	Do method RolesCompare
+	
+	If ibCompareUsers
+		# attempt to automatically display comparison results does not work!
+		# Do $cinst.$objs.TabControl_USERS.$currenttab.$assign(3)
+		Do $cinst.$objs.PagedPane.$currentpage.$assign(3)
+	End If
+	
+	Do $cinst.$behaviour()

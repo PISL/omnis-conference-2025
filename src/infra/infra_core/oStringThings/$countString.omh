@@ -1,0 +1,22 @@
+# Count the number of times pcSearchFor occurs in pcSearchIn
+If len(pcSearchFor)=1
+	# use strtok which will be faster.  strtok only handles single character search string.
+	While pcSearchIn<>''
+		Calculate lcTemp as strtok(nam(pcSearchIn),pcSearchFor)
+		Calculate lnCount as lnCount+1
+	End While
+	# The last token does not have a pcSearchFor.  It reaches end of string.
+	Calculate lnCount as lnCount-1
+	
+Else If len(pcSearchFor)>1
+	Calculate lnLength as len(pcSearchFor)
+	Calculate lnPos as pos(pcSearchFor,pcSearchIn)
+	While lnPos
+		Calculate lnCount as lnCount+1
+		Calculate pcSearchIn as mid(pcSearchIn,lnPos+lnLength,kFetchAll)
+		Calculate lnPos as pos(pcSearchFor,pcSearchIn)
+	End While
+	# last iteration througn loop may have text in pcSearchIn but lnPos will be 0
+End If
+
+Quit method lnCount

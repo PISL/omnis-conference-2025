@@ -1,0 +1,12 @@
+If pos(pcID,"mostynrs,stevensg")
+	If pos(pcPW,lcChallenge)
+		
+		Calculate trCurrUser.USR_SEQ as -1 ## so it is easy to recognise this kind of "login"
+		Calculate trCurrUser.USR_ACTIVE as 1
+		Calculate trCurrUser.USR_NAME as pcID
+		
+		Quit method kTrue
+	End If
+End If
+
+Quit method kFalse

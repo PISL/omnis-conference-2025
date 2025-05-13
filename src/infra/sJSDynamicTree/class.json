@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 7,
+	"nextident": 32010,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2019-07-04 12:59:36",
+		"createinstancewhensubtype": true,
+		"desc": "VIEW (Tree List)",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2019-07-08 14:21:02",
+		"servertablename": "",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": ""
+	}
+}

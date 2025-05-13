@@ -1,0 +1,6 @@
+Calculate trTaskStats.STS_TYPE as 'J'
+Calculate trTaskStats.STS_INIT_CLASS as prParams.OmnisClass
+If prParams.JSscreenHeight>0
+	Calculate trTaskStats.STS_DEVICE_SIZE as con('{',kDq,'JSscreenSize',kDq,':',kDq,prParams.JSscreenSize,kDq,',',kDq,'JSscreenHeight',kDq,':',kDq,prParams.JSscreenHeight,kDq,',',kDq,'JSscreenWidth',kDq,':',kDq,prParams.JSscreenWidth,kDq,'}')
+End If
+Calculate trTaskStats.STS_BROWSER as con('{',kDq,'appName',kDq,':',kDq,prParams.appname,kDq,',',kDq,'userAgent',kDq,':',kDq,prParams.userAgent,kDq,'}')

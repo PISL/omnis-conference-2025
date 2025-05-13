@@ -1,0 +1,187 @@
+Calculate icEventSpec as ''
+Do irEventConfig.$assignrow(prModifiedEvent)
+
+# protocol errors
+If irEventConfig.Title<>''
+	# good
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('Title is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+
+Calculate lcNow as replaceall(replaceall(replaceall(omnistoiso8601(#D,kTrue),'-',''),':',''),'.','')
+If len(lcNow)>16
+	# should be format yyyymmddThhnnssZ
+	# but we are getting  yyyymmddThhnnss?Z  where ? is a digit
+	Calculate lcNow as con(left(lcNow,15),'Z')
+End If
+
+Calculate lcStart as omnistoiso8601(irEventConfig.Start,kTrue)
+If irEventConfig.Start>dat('1 JAN 2010')
+	# valid start date
+	If irEventConfig.End>dat('1 JAN 2010')
+		If irEventConfig.Start<irEventConfig.End
+			# we have a range of time, explicitly stated
+			If tim(irEventConfig.Start)>'00:00'
+				# there is a start time as well
+				Calculate lcStart as replaceall(replaceall(replaceall(omnistoiso8601(irEventConfig.Start,kTrue),'-',''),':',''),'.','')
+				Calculate lcEnd as replaceall(replaceall(replaceall(omnistoiso8601(irEventConfig.End,kTrue),'-',''),':',''),'.','')
+			Else
+				# date only
+				Calculate lcStart as replaceall(replaceall(replaceall(omnistoiso8601(irEventConfig.Start,kFalse),'-',''),':',''),'.','')
+				Calculate lcEnd as replaceall(replaceall(replaceall(omnistoiso8601(irEventConfig.End,kFalse),'-',''),':',''),'.','')
+			End If
+		Else
+			Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('event start (',irEventConfig.Start,') must be before event end (',irEventConfig.End,')'))
+			Calculate lbErrorDetected as kTrue
+		End If
+		
+	Else If irEventConfig.DurationMinutes>0
+		# if minutes are involved, assume Start is datetime
+		Calculate lcStart as replaceall(replaceall(replaceall(omnistoiso8601(irEventConfig.Start,kTrue),'-',''),':',''),'.','')
+		Calculate irEventConfig.End as dadd(kMinute,irEventConfig.DurationMinutes,irEventConfig.Start) ## put this here as using dadd() in the following line added an extra 0 to the time
+		Calculate lcEnd as replaceall(replaceall(replaceall(omnistoiso8601(irEventConfig.End,kTrue),'-',''),':',''),'.','')
+		
+	Else
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('there must be a start date and end date expressed as a date or duration in munutes'))
+		Calculate lbErrorDetected as kTrue
+		
+	End If
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('there must be a start date and end date expressed as a date or duration in munutes'))
+	Calculate lbErrorDetected as kTrue
+End If
+
+If lbErrorDetected
+	Quit method kFalse
+End If
+
+# we must convert reserved cheracters to escaped characters
+# Calculate irEventConfig.Location as OW3.$escapeuritext(irEventConfig.Location)
+Calculate irEventConfig.Location as replaceall(irEventConfig.Location,kCr,'\n')
+Calculate irEventConfig.Location as replaceall(irEventConfig.Location,lcComma,'\,')
+# Calculate irEventConfig.Description as OW3.$escapeuritext(irEventConfig.Description)
+Calculate irEventConfig.Description as replaceall(irEventConfig.Description,kCr,'\n')
+# Calculate irEventConfig.Description as replaceall(irEventConfig.Description,lcComma,'\,')
+# Calculate irEventConfig.URL as OW3.$escapeuritext(irEventConfig.URL)
+Calculate irEventConfig.URL as replaceall(irEventConfig.URL,kCr,'\n')
+Calculate irEventConfig.URL as replaceall(irEventConfig.URL,lcComma,'\,')
+
+# useful document:     https://www.rfc-editor.org/rfc/rfc5545
+
+#   = = = = = = = = = = = =      prepare the content     = = = = = = = = = = = = = =
+
+# LINES SHULD NOT BE LONGER THAN 75 CHARACTERS
+
+# Build the iCalendar event
+Begin text block
+Text:BEGIN[lcDelimiterSingle]VCALENDAR(Carriage return,Linefeed)
+
+# Text:PRODID:-//<company name>/<product name>//EN(Carriage return,Linefeed)
+Text:VERSION[lcDelimiterSingle]2.0(Carriage return,Linefeed)
+# Text:METHOD[lcDelimiterSingle]REQUEST(Carriage return,Linefeed)
+Text:PRODID[lcDelimiterSingle]Omnis/[tcCurrentLibrary](Carriage return,Linefeed)
+
+Text:BEGIN[lcDelimiterSingle]VEVENT(Carriage return,Linefeed)
+
+# essential values for event
+Text:UID[lcDelimiterSingle][irEventConfig.UUID]@[replaceall(cap(trGroupOrg.GO_NAME),' ','')](Carriage return,Linefeed)
+Text:DTSTAMP[lcDelimiterSingle][lcNow](Carriage return,Linefeed)
+# Text:ORGANIZER;CN=<sender name>:MAILTO:<reply to address>(Carriage return,Linefeed)
+# ORGANIZER;CN=Test User:MAILTO:test@email.com
+Text:ORGANIZER[lcDelimiterMulti]CN=[trGroupOrg.GON_NAME_FULL]:MAILTO:[irConfigEmail.ELC_SENDER_ADDR](Carriage return,Linefeed)
+Text:DTSTART[lcDelimiterSingle][lcStart](Carriage return,Linefeed)
+Text:DTEND[lcDelimiterSingle][lcEnd](Carriage return,Linefeed)
+Text:SUMMARY[lcDelimiterSingle][irEventConfig.Title](Carriage return,Linefeed)
+
+# optional values for event
+Text:CREATED[lcDelimiterSingle][lcNow](Carriage return,Linefeed)
+Text:LAST-MODIFIED[lcDelimiterSingle][lcNow](Carriage return,Linefeed)
+
+# = = = = = = = = = =   BEGIN   lines are not supposed to be more than 75 characters long
+If irEventConfig.Description<>''
+	Do method chunk75 (con('DESCRIPTION',lcDelimiterSingle),irEventConfig.Description)
+End If
+If irEventConfig.URL<>''
+	If pos('.doc',irEventConfig.URL)
+		Breakpoint untested
+		#    ATTACH;FMTTYPE=application/msword:http://example.com/templates/agenda.doc
+		Do method chunk75 (con('ATTACH',lcDelimiterMulti,'FMTYPE=application/msword:'),irEventConfig.URL)
+		
+	Else If pos('zoom',irEventConfig.URL)
+		Do method chunk75 (con('LOCATION',lcDelimiterSingle,),irEventConfig.URL)
+	Else If pos('teams.microsoft',irEventConfig.URL)
+		Do method chunk75 (con('LOCATION',lcDelimiterSingle,),irEventConfig.URL)
+	Else
+		Breakpoint This isn't right.  Something needs to be fixed
+	End If
+Else
+	# URL is empty
+	If irEventConfig.Location<>''
+		Do method chunk75 (con('LOCATION',lcDelimiterSingle,),irEventConfig.Location)
+	End If
+End If
+
+# Calculate 'X-ZOOMLINK;VALUE=URI;http://www.example.'
+
+If 1=0
+	# unfortunately including a URL, while apparent when using Calendar, is not an attribute in the ICS stardard
+	# there is some X-property available but I havent done the research for this.
+	# So fudging it in the DESCRIPTION for now.
+	
+	# If not(isclear(irEventConfig.Description))&not(isclear(irEventConfig.URL))
+	# the spaces are there to do the "folding"
+	# Calculate lcDescription as con(irEventConfig.Description,kCr,kSp,'  Link to event: ',irEventConfig.URL)
+	# Else If not(isclear(irEventConfig.Description))
+	Calculate lcDescription as con(irEventConfig.Description)
+	# Else If not(isclear(irEventConfig.URL))
+	# Calculate lcDescription as con('link to event: ',irEventConfig.URL)
+	# Else
+	# there is nothing in description
+	# End If
+	
+	# This description could easily be more than 75 characters.
+	If len(lcDescription)>62 ## 75-len(DESCRIPTION:)
+		# this phenomenon was detected using the validator referenced below.
+		# we need to fold the line by starting next line with a space
+		Calculate lcChunk as mid(lcDescription,1,62)
+		Calculate lcDescription as mid(lcDescription,63,99999)
+		
+		Text:DESCRIPTION[lcDelimiterSingle][lcChunk](Carriage return,Linefeed)
+		
+		While lcDescription<>''
+			Calculate lcChunk as mid(lcDescription,1,62)
+			Calculate lcDescription as mid(lcDescription,63,99999)
+			# subsequent lines muct start with a space
+			Text: [lcChunk](Carriage return,Linefeed)
+		End While
+	Else
+		Text:DESCRIPTION[lcDelimiterSingle][lcDescription](Carriage return,Linefeed)
+	End If
+End If
+# = = = = = = = = = =   END   lines are not supposed to be more than 75 characters long
+
+If irEventConfig.AlarmMinutes>0
+	Text:BEGIN[lcDelimiterSingle]VALARM(Carriage return,Linefeed)
+	
+	# Setting an alarm will be in addition to any default alarm the user has.
+	# The period start at 18:00:00 on January 1, 1997 and lasting 5 hours and 30 minutes would be:
+	# 19970101T180000Z/PT5H30M
+	Text:TRIGGER[lcDelimiterSingle]-PT[irEventConfig.AlarmMinutes]M(Carriage return,Linefeed)
+	# A duration of 15 days, 5 hours, and 20 seconds would be:   P15DT5H0M20S
+	# A duration of 7 weeks would be:   P7W
+	
+	Text:ACTION[lcDelimiterSingle]DISPLAY(Carriage return,Linefeed)
+	Text:DESCRIPTION[lcDelimiterSingle][con(irEventConfig.Title,' @ ',tim(irEventConfig.Start))](Carriage return,Linefeed)
+	Text:END[lcDelimiterSingle]VALARM(Carriage return,Linefeed)
+End If
+
+Text:END[lcDelimiterSingle]VEVENT(Carriage return,Linefeed)
+
+Text:END[lcDelimiterSingle]VCALENDAR(Carriage return,Linefeed)
+End text block
+Get text block icEventSpec
+# Breakpoint
+# you validate your content using     https://icalendar.org/validator.html
+
+Quit method kTrue

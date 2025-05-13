@@ -1,0 +1,4 @@
+Do ilDisplayRecords.$fetch_all()
+Do ilDisplayRecords.$sort(low($ref.UOM_CODE),kFalse)
+Calculate ilDisplayRecords.$line as 0
+Calculate ilUnits as ilDisplayRecords ## store all the UOMs for filtering in $search1ListClick

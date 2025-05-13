@@ -1,0 +1,6 @@
+On evClick
+	If not(ibComparePermissions)
+		Do method ClearPrevious
+	End If
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

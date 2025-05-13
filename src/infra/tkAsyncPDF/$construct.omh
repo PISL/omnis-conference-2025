@@ -1,0 +1,27 @@
+# Enter your initialization code here
+# caller should check ibWorkerOK before proceeding
+# if the email worker doesn't close this instance, the timer will in 5 minutes
+If isclear(pcCurrentLibrary)
+	# Breakpoint {this object is in infra so it must be given the active application library}
+End If
+
+Calculate tcCurrentLibrary as pcCurrentLibrary
+Set reference lrefTask to $itasks.[tcCurrentLibrary].$ref
+Do lrefTask.$GetVar(nam(tConstants)) Returns tConstants
+Do lrefTask.$GetVar(nam(tlDatabases)) Returns tlDatabases
+Do lrefTask.$GetVar(nam(irConfigFile)) Returns irConfigFile
+Do lrefTask.$GetVar(nam(trGroupOrg)) Returns trGroupOrg
+Do lrefTask.$GetVar(nam(trCurrUser)) Returns trCurrUser
+Do lrefTask.$GetVar(nam(tFormSession)) Returns tFormSession
+Do lrefTask.$GetVar(nam(tFormStatement)) Returns tFormStatement
+# get a session and statement for DB access
+
+Do irJobAttributes.$cols.$add('instruction',kCharacter,kSimplechar,40)
+Do irJobAttributes.$cols.$add('author',kCharacter,kSimplechar,255)
+Do irJobAttributes.$cols.$add('title',kCharacter,kSimplechar,255)
+Do irJobAttributes.$cols.$add('subject',kCharacter,kSimplechar,255)
+Do irJobAttributes.$cols.$add('timeout',kInteger,k32bitint)
+Do irJobAttributes.$cols.$add('reportClass',kCharacter,kSimplechar,80)
+Do irJobAttributes.$cols.$add('reportData',kRow)
+Do irJobAttributes.$cols.$add('jobIdentification',kRow)
+Do irJobAttributes.$cols.$add('saveOnError',kBoolean)

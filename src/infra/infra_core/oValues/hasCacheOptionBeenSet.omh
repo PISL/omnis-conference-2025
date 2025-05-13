@@ -1,0 +1,25 @@
+# 2022-10-18  RSM  added optional entry to tlDatabases to extend caching of Reference fetches when using WebService
+#                       to using fat client over WAN.  Optional colun is called useReferenceCache
+# First time this is called is on instantiating oValuesApp when contact with DBhas NOTbeen established
+If isnull(ibUseReferenceCache)
+	If $ctask.tlDatabases.$linecount
+		# assumption here is that $line has been set
+		If $ctask.tlDatabases.DAM='WebService'
+			# always use cache for webservice
+			Calculate ibUseReferenceCache as kTrue
+		Else
+			Do $ctask.tlDatabases.$cols.$findname('useReferenceCache') Returns liColRef
+			If liColRef
+				If isnumber($ctask.tlDatabases.useReferenceCache)
+					Calculate ibUseReferenceCache as $ctask.tlDatabases.useReferenceCache
+				Else If upp($ctask.tlDatabases.useReferenceCache)='YES'|$ctask.tlDatabases.useReferenceCache='Y'
+					Calculate ibUseReferenceCache as kTrue
+				Else If upp($ctask.tlDatabases.useReferenceCache)='NO'|upp($ctask.tlDatabases.useReferenceCache)='N'
+					Calculate ibUseReferenceCache as kFalse
+				Else
+					Calculate ibUseReferenceCache as kFalse
+				End If
+			End If
+		End If
+	End If
+End If

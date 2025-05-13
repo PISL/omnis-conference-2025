@@ -1,0 +1,14 @@
+On evAfter
+	Calculate $cobj.$errortext as ''
+	If irCurrentRecord.ELC_CC>''
+		Do OJSON.$formatjson(irCurrentRecord.ELC_CC) Returns lcFormattedJSON
+		If pos(' error:',lcFormattedJSON)
+			Calculate $cobj.$errortext as lcFormattedJSON
+		Else
+			Calculate irCurrentRecord.ELC_CC as lcFormattedJSON
+		End If
+	Else
+		Calculate irCurrentRecord.ELC_CC as #NULL ## empty string does not pass postgres validation
+	End If
+	
+	Do method jsonToLists

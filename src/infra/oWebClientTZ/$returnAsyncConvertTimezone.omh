@@ -1,0 +1,30 @@
+Calculate pErrorField as ''
+Do ioRest.$returnVal(irResponseHeaders,irResponse,pResultList) Returns icXML
+
+If irResponse.httpStatusCode<>200
+	# do some error reporting here
+	Calculate pErrorField as con(irResponse.httpStatusCode,'  ',irResponse.httpStatusText,': ',icXML)
+	Quit method ''
+Else
+	# irResponse.responseContent is a binary field that must be converted to text
+	
+	Calculate lcJSON as utf8tochar(irResponse.responseContent)
+	Do OJSON.$jsontolistorrow(lcJSON) Returns lrResult
+	If lrResult.status='FAILED'
+		#    lrResult.message is an error message if applicable
+		Quit method kFalse
+	Else
+		# continue
+		# lrResult.status is either OK or FAILED
+		# lrResult.message is an error message if applicable
+		# lrResult.fromZoneName has
+		# lrResult.fromAbbreviation is
+		# lrResult.fromTimestamp is
+		# lrResult.toZoneName
+		# lrResult.toAbbreviation
+		# lrResult.toTimestamp
+		# lrResult.offset  is difference between timezone in minutes
+		
+		Quit method lrResult
+	End If
+End If

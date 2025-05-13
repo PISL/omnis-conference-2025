@@ -1,0 +1,27 @@
+Do ioSMTPworker.$setConfig(irCurrentRecord,#NULL,#NULL,ilLanguages)
+
+Calculate icEmTo as ''
+Calculate icEmCC as ''
+Calculate icEmBCC as ''
+Calculate icEmHeaders as ''
+
+Calculate ilTo as ioSMTPworker.ilTo
+Calculate ilCC as ioSMTPworker.ilCC
+Calculate ilBCC as ioSMTPworker.ilBCC
+Calculate ilHeaders as ioSMTPworker.ilHeaders
+
+While $Loop(ilTo)
+	Calculate icEmTo as con(icEmTo,pick(icEmTo<>'','',kCr),ilTo.name,' <',ilTo.address,'>')
+End While
+
+While $Loop(ilCC)
+	Calculate icEmCC as con(icEmCC,pick(icEmCC<>'','',kCr),ilCC.name,' <',ilCC.address,'>')
+End While
+
+While $Loop(ilBCC)
+	Calculate icEmBCC as con(icEmBCC,pick(icEmBCC<>'','',kCr),ilBCC.name,' <',ilBCC.address,'>')
+End While
+
+While $Loop(ilHeaders)
+	Calculate icEmHeaders as con(icEmHeaders,pick(icEmHeaders<>'','',kCr),kDq,ilHeaders.name,kDq,' = ',kDq,ilHeaders.value,kDq)
+End While

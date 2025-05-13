@@ -1,0 +1,3 @@
+On evClick
+	Calculate irCurrentRecord.ELC_DEBUGLOG as ilDebugLog.value
+	Do $cinst.$behaviour()

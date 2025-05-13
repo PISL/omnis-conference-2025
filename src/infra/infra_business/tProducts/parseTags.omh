@@ -1,0 +1,34 @@
+# should be called only when there is a # in the search string
+# parse pcSearchString for tags delimited by #
+# put each one into plTags and remove from pcSearchString
+
+If not(plTags.$colcount)
+	Do plTags.$cols.$add('tag',kCharacter,kSimplechar,15)
+End If
+
+If pos(kHash,pcSearchString)=1
+	Calculate lbTagsFirst as kTrue
+	Calculate lcString as pcSearchString
+Else
+	Calculate lbTagsFirst as kFalse
+	# tags must follow the search string
+	Calculate lcString as mid(pcSearchString,pos(kHash,pcSearchString))
+	Calculate pcSearchString as replaceall(left(pcSearchString,pos(kHash,pcSearchString)-1),kSp,'')
+End If
+
+# parse the tags
+While pos(kHash,lcString)
+	Calculate lcString as mid(lcString,2)
+	If pos(kSp,lcString)
+		Do plTags.$add(left(lcString,pos(kSp,lcString)-1))
+		Calculate lcString as mid(lcString,pos(kSp,lcString)+1)
+	Else
+		Do plTags.$add(lcString)
+		Calculate lcString as ''
+	End If
+End While
+
+
+If lbTagsFirst
+	Calculate pcSearchString as trim(lcString)
+End If

@@ -1,0 +1,6 @@
+
+Do ilHeaders.$define(lcHeaderName,lcHeaderValue)
+Do ilHeaders.$add("content-type","application/json")
+
+Do $libs.infra.$objects.oRest.$newref() Returns iorefRest
+

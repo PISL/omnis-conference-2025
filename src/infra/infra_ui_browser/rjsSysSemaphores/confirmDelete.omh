@@ -1,0 +1,6 @@
+
+If ilDisplayRecords.$line>0
+	Do $cinst.$clientOkCancelMsg(con('Delete the record ',irCurrentRecord.DisplayName,'?'),'Please confirm','$deleteSemaphore','$deleteCancelled') ## !!! STB
+Else
+	Calculate icDisplayMessage as 'No records selected for deletion' ## !!! STB
+End If

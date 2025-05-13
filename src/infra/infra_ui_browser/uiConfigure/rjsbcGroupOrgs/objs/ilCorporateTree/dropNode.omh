@@ -1,0 +1,58 @@
+
+# test that the node can be legitimately moved
+# discard when
+# -- dropped on self
+# -- dropped on current parent
+# -- dropped on a descendant
+# then check that it has been dropped on a valid parent
+
+If pDropId=pDragValue.ident
+	# dropped on itself
+	Quit event handler
+End If
+
+Do irCurrentStructure.$treeFetchParent(pDragValue.ident) Returns lrParent
+If lrParent.nodeID=pDropId
+	# dropped on its current parent
+	Quit event handler (Discard event)
+End If
+
+Calculate irmvOrgtree.GS_SEQ as pDropId
+Do irmvOrgtree.$fetch_pk()
+If pos(con('{',pDragValue.ident,'}'),irmvOrgtree.BRANCH)>0
+	# dropped on a descendant
+	Quit event handler (Discard event)
+End If
+
+Calculate irCurrentStructure.GS_SEQ as pDragValue.ident
+Do irCurrentStructure.$fetch_pk()
+Calculate llStructure as ilStructureType
+Do llStructure.$search($ref.RFO_VALUE=irCurrentStructure.GS_TYPE,1,0,0,0)
+If pos(irmvOrgtree.GS_TYPE,llStructure.allowedParents)>0
+	# good to go
+	# !!! should we ask the user to confirm the move?
+	Calculate irOrigStructure as irCurrentStructure
+	Calculate irCurrentStructure.GS_SUPERIOR_GS_REF as pDropId
+	Calculate icMode as 'E'
+	Do $cinst.$saveData() Returns lbOK
+	If lbOK
+		Do irCurrentStructure.$treeFetchNode(irCurrentStructure.GS_SEQ) Returns llChildren
+		# delete the dragged node
+		Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionDelete,pDragValue.ident)
+		# expand the dropped on node
+		Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionExpand,pDropId)
+		# add the dropped node
+		Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionAdd,pDropId,0,llChildren)
+		# set the current node to the dropped one
+		Calculate $cinst.$objs.ilCorporateTree.$currentnodeident as pDropId
+	Else
+		Calculate icMode as '' ## $saveData won't have cleared it
+	End If
+Else
+	Calculate icDisplayMessage as con('Cannot connect a ',kDq,llStructure.RFO_DESC,kDq,' to a ',kDq)
+	Do llStructure.$search($ref.RFO_VALUE=irmvOrgtree.GS_TYPE,1,0,0,0)
+	Calculate icDisplayMessage as con(icDisplayMessage,llStructure.RFO_DESC,kDq)
+	Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+End If
+
+Do $cinst.$behaviour()

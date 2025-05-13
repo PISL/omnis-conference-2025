@@ -1,0 +1,7 @@
+Calculate icPrefix as 'TAG_'
+Calculate icPrimarykey as 'TAG_SEQ'
+# this is a child table with many pssible parents
+Calculate icForeignKey as ''
+
+
+Do inherited

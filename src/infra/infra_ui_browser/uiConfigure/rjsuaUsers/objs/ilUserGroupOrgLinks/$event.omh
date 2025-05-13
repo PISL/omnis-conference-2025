@@ -1,0 +1,20 @@
+On evClick
+	Calculate ilUserGroupOrgLinks.$line as pLineNumber
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.pbSave.$errortext as ''
+	Calculate $cinst.$objs.ilUserGroupOrgLinks.$errortext as ''
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()
+	
+On evDrop
+	If pDragField=nam(ilChoiceOfGroupOrgs)
+		# user is ADDING this group org to users profile
+		# Breakpoint
+		Do method AddGroupOrgToUser Returns lbOK
+		
+		Do $cinst.$behaviour()
+		Do $cinst.$redraw()
+	Else
+		Calculate icDisplayMessage as 'Invalid drop object'
+	End If

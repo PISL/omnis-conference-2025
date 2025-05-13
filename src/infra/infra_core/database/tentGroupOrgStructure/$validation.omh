@@ -1,0 +1,44 @@
+Calculate icValidationMessage as ''
+Do ilValidation.$clear()
+
+If $cinst.GS_GO_REF>0
+	# good
+Else
+	Do toStrings.$StringTableMessage('GS_GO_REF_LBL',lcMessage,lcCodes,lcDelimMessage,lcDelimCode,'GS_GO_REF missing') Returns lbStringTableEntryFound
+	Do ilValidation.$add('GS_GO_REF_LBL','VAL_MISSING','GS_GO_REF missing',0)
+End If
+#
+If $cinst.GS_TYPE<>''
+	# good
+Else
+	Do toStrings.$StringTableMessage('GS_TYPE_LBL',lcMessage,lcCodes,lcDelimMessage,lcDelimCode,'GS_TYPE missing') Returns lbStringTableEntryFound
+	Do ilValidation.$add('GS_TYPE_LBL','VAL_MISSING','GS_TYPE missing',0)
+End If
+
+If $cinst.GS_DESC_SHORT<>''
+	# good
+Else
+	Do toStrings.$StringTableMessage('GS_DESC_SHORT_LBL',lcMessage,lcCodes,lcDelimMessage,lcDelimCode,'GS_DESC_SHORT missing') Returns lbStringTableEntryFound
+	Do ilValidation.$add('GS_DESC_SHORT_LBL','VAL_MISSING','GS_DESC_SHORT missing',0)
+End If
+
+If $cinst.GS_DESC_FULL<>''
+	# good
+Else
+	Do toStrings.$StringTableMessage('GS_DESC_FULL_LBL',lcMessage,lcCodes,lcDelimMessage,lcDelimCode,'GS_DESC_FULL missing') Returns lbStringTableEntryFound
+	Do ilValidation.$add('GS_DESC_FULL_LBL','VAL_MISSING','GS_DESC_FULL missing',0)
+End If
+
+If $cinst.GS_ORDER>0
+	# good
+Else
+	Do toStrings.$StringTableMessage('GS_ORDER_LBL',lcMessage,lcCodes,lcDelimMessage,lcDelimCode,'GS_ORDER missing') Returns lbStringTableEntryFound
+	Do ilValidation.$add('GS_ORDER_LBL','VAL_MISSING','GS_ORDER missing',0)
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

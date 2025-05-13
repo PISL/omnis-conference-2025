@@ -1,0 +1,13 @@
+# Calculate llData as pResultsRow.Results.1.1 ## extract the first result set
+# Calculate llErrors as pResultsRow.Errors ## extract list containing error info
+# Calculate inThreadCount as $cinst.$threadCount ## shows how many threads are running
+# Breakpoint
+# If llErrors.$linecount()>0
+# Do irefCallingObject.[icCallbackError](llErrors,icCode1)
+# Else
+# Do irefCallingObject.[icCallbackSuccess](llData,icCode1,icCode2,icCode3,inInstanceCount)
+# End If
+
+Do irefCallingObject.[icCallbackSuccess](pResultsRow,icCode1,icCode2,icCode3,inInstanceCount)
+
+Calculate inUsageCount as inUsageCount+1

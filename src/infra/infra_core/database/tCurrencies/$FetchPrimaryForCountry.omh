@@ -1,0 +1,26 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from [lrCountry.$servertablenames]
+Sta:join [lrCountryCurrencyLink.$servertablenames] on CCL_CO_REF = CO_SEQ and CCL_PRIMARY = 1
+Sta:join [$cinst.$servertablenames] on CU_SEQ = CCL_CU_REF
+If pnSeq>0
+	Sta:where CO_SEQ = @[pnSeq]
+Else If len(pcISO)=3
+	Sta:where CO_ISO3 = @[pcISO]
+Else
+	Sta:where CO_ISO2 = @[pcISO]
+End If
+End statement
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

@@ -1,0 +1,22 @@
+
+# Do ilSynonyms.$search(kFalse) ## deselect all lines
+
+If ilSearch1.RFG_VALUE<>''
+	# Do ilDisplayRecords.$fetch_(con("where UOM_GROUP = '",ilSearch1.RFG_VALUE,"'"))
+	Do ilUnits.$search($ref.UOM_GROUP=ilSearch1.RFG_VALUE,1,0,1,1)
+Else
+	# Do ilDisplayRecords.$fetch_all()
+	Do ilUnits.$search(kTrue) ## select all lines
+End If
+Do ilDisplayRecords.$merge(ilUnits,kTrue,kTrue,kTrue)
+Do ilDisplayRecords.$sort(low($ref.UOM_CODE),0)
+
+If irCurrentRecord.UOM_SEQ<>0
+	Do ilDisplayRecords.$search($ref.UOM_SEQ=irCurrentRecord.UOM_SEQ,1,0,0,0)
+	If ilDisplayRecords.$line=0
+		Calculate ilDisplayRecords.$line as 1
+	End If
+	Do $cinst.$displayListClick()
+End If
+
+Do $cinst.$behaviour()

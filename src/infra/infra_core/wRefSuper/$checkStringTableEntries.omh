@@ -1,0 +1,45 @@
+Calculate ibStringTableEntriesApply as kFalse
+Calculate llTemp as ilData
+
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Calculate lcSTBcode as con(llTemp.[icColPrefix]CLASS,'_',llTemp.[icColPrefix]VALUE)
+	Do $ctask.toStrings.$StringTableEntry(lcSTBcode,lcResponse) Returns lbFound
+	Calculate lnCountExists as lnCountExists+lbFound
+	If not(lbFound)
+		If llTemp.[icColPrefix]ACTIVE
+			Calculate lcMissing as con(lcMissing,pick(lcMissing<>'','',', '),lcSTBcode)
+		Else
+			# an inactive record without an STBentry will not break anything
+			# but we will warn user if they ask for it
+			Calculate lcWarning as con(lcWarning,pick(lcWarning<>'','',', '),lcSTBcode)
+		End If
+	End If
+End While
+
+If lnCountExists>0
+	# this is is a class that has STB entries
+	# and all entries in ilData should have a matching STB entry
+	Calculate ibStringTableEntriesApply as kTrue
+	
+	If lnCountExists=llTemp.$linecount
+		# everything is ok
+		If pbDisplayResult
+			OK message CONFIRMATION {All [lnCountExists] entries have a string table entry.}
+		End If
+	Else
+		If lcMissing<>''
+			# whether user has just selected a CLASS or specifically asked for a check
+			# they get informed of STB inconsistencies.
+			OK message APPLICATION ERROR (Sound bell) {The following string table entries are missing:[kCr][lcMissing]}
+		End If
+		If pbDisplayResult
+			If lcWarning<>''
+				OK message WARNING (Sound bell) {The following INACTIVE string table entries are missing:[kCr][lcWarning]}
+			End If
+		End If
+	End If
+Else
+	# no entries have an STB entry therefore STBdoes not apply.
+	# This will be true for most Classes in the reference table.
+End If

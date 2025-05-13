@@ -1,0 +1,4 @@
+On evClick
+	Calculate $cinst.$objs.pbSave.$errortext as ''
+	
+	Do $cinst.$cancelClick()

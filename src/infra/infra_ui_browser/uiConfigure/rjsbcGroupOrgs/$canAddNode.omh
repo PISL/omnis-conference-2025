@@ -1,0 +1,11 @@
+If isclear(irCurrentStructure.GS_SEQ)
+	# we must be at the root, so nothing more to do
+	Quit method kTrue
+End If
+
+Calculate llStructureTypes as ilStructureType
+Do llStructureTypes.$smartlist.$assign(kTrue)
+# if RFO_JSON exists we will have allowed parents and RFO_DESC may have been cleared
+Do llStructureTypes.$filter((pos(irCurrentStructure.GS_TYPE,$ref.allowedParents)>0|isclear($ref.allowedParents))&len($ref.RFO_DESC)>0)
+
+Quit method llStructureTypes.$linecount>0

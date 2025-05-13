@@ -1,0 +1,7 @@
+Set reference irefCallingObject to pCallingObject
+If pcMethodSuccess<>''
+	Calculate icCallbackSuccess as pcMethodSuccess
+End If
+If pcMethodError<>''
+	Calculate icCallbackError as pcMethodError
+End If

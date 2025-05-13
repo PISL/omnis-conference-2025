@@ -1,0 +1,32 @@
+Do method $getGlobalErrorHandler Returns lvInstance
+
+If isclear(lvInstance)
+	Quit method kFalse
+End If
+
+Do method $getExceptionHandler Returns lvExceptions
+
+If not(isclear(lvExceptions))
+	# if the error is to be ignored, $ignore will return kTrue
+	Do lvExceptions.$ignore(pErrorCode,pErrorText) Returns lvIsHandled
+End If
+
+If not(lvIsHandled)
+	Switch pErrorCode
+		Case 999000
+			# SQL error !!! need to come up with a fingerprint
+		Default
+			# notation errors can generate multiple Sentry issues if the stack trace differs
+			# so let's set a fingerprint based on the method line the error occurs on
+			Do method notationFingerprint Returns llFingerprint
+	End Switch
+	
+	Do lvInstance.$catchError(pErrorCode,pErrorText,1,,llExtraData,llFingerprint) Returns lvIsHandled
+End If
+
+If lvIsHandled
+	Calculate #F as 0
+	SEA continue execution
+End If
+
+Quit method lvIsHandled

@@ -1,0 +1,17 @@
+If ilTaskStats.irGeoLookup.GL_SEQ>0
+	Calculate irGeoLookup as ilTaskStats.irGeoLookup
+Else
+	Do method getGeoLocation (ilTaskStats.STS_IP4)
+	If irGeoLookup.GL_SEQ>0
+		Calculate ilTaskStats.irGeoLookup as irGeoLookup
+	End If
+End If
+
+If ilTaskStats.iruaLogin.ULA_SEQ>0
+	Calculate iruaLogin as ilTaskStats.iruaLogin
+Else
+	Do iruaLogin.$fetch_pk(ilTaskStats.STS_ULA_REF)
+	If iruaLogin.ULA_SEQ>0
+		Calculate ilTaskStats.iruaLogin as iruaLogin
+	End If
+End If

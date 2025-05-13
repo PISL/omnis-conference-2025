@@ -1,0 +1,6 @@
+Do irPreviousRecord.$clear()
+
+Do ilPreviousUserRoles.$clear()
+Calculate icCommonRoles as ''
+Calculate icDistinctRolesCurrent as ''
+Calculate icDistinctRolesPrevious as ''

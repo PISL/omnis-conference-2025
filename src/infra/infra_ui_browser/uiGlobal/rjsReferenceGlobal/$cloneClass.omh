@@ -1,0 +1,29 @@
+# insert all records for the currently selected class to one of the sub reference tables
+
+If (pcToPrefix='RFL'&irUserRights.canInsertLocal)|(pcToPrefix='RFO'&irUserRights.canInsertOrg)
+	If ilSearch1.$line>0
+		If pcToPrefix='RFL'
+			Do $defineList(lrSubRef,'tsysReferenceLocal')
+		Else ## RFO
+			Do $defineList(lrSubRef,'tsysReferenceOrg')
+		End If
+		
+		Do lrSubRef.$cloneClassFromGlobal(ilSearch1.RFG_CLASS) Returns llCLoned
+		If llCLoned.$linecount
+			Calculate icDisplayMessage as con('Values copied: ',toStrings.$ListToString(llCLoned,'C1',', '))
+			Do $cinst.$container().$refreshSubForm(pcToPrefix,ilSearch1.RFG_CLASS)
+			
+		Else If len(lrSubRef.irErrorSQL.NativeErrorText)>0
+			Calculate icDisplayMessage as lrSubRef.irErrorSQL.NativeErrorText
+		Else
+			Calculate icDisplayMessage as 'No missing values to copy'
+		End If
+	Else
+		Calculate icDisplayMessage as 'No class selected'
+	End If
+	
+Else
+	Calculate icDisplayMessage as 'Permission denied'
+End If
+
+Do $cinst.$behaviour()

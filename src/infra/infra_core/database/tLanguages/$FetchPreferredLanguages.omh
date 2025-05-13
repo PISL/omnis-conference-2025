@@ -1,0 +1,58 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select distinct [$cinst.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+Sta:join [lrLangCountry.$servertablenames] on LC_LG_REF = LG_SEQ
+Sta:join [lrCountries.$servertablenames] on LC_CO_REF_ISO3 = CO_ISO3
+
+If upp(pcSysRefPrefix)='RFG'
+	Sta:join [lrSysRefGlobal.$servertablenames] on RFG_CLASS='LANGS' and upper(RFG_VALUE) = upper(LG_ISO2)
+Else If upp(pcSysRefPrefix)='RFL'
+	Sta:join [lrSysRefLocal.$servertablenames] on RFG_CLASS='LANGS' and upper(RFG_VALUE) = upper(LG_ISO2)
+Else If upp(pcSysRefPrefix)='RFO'
+	Sta:join [lrSysRefOrg.$servertablenames] on RFG_CLASS='LANGS' and upper(RFG_VALUE) = upper(LG_ISO2)
+Else
+	# no join to sysRef tables
+End If
+
+# main languages only - those with an older iso2 code
+Sta:where     LG_ISO2 is not null  and  LG_ISO2 <> ''
+If upp(pcSysRefPrefix)='RFG'
+	Sta:and         RFG_ACTIVE = 1
+	Sta:and        ( RFG_EFFECTIVE is null or RFG_EFFECTIVE <= @[ldToday] )
+Else If upp(pcSysRefPrefix)='RFL'
+	Sta:and         RFL_ACTIVE = 1
+	Sta:and        ( RFL_EFFECTIVE is null or RFL_EFFECTIVE <= @[ldToday] )  
+Else If upp(pcSysRefPrefix)='RFO'
+	Sta:and         RFO_ACTIVE = 1
+	Sta:and        ( RFO_EFFECTIVE is null or RFO_EFFECTIVE <= @[ldToday] )
+Else
+	# no join to sysRef tables
+End If
+
+End statement
+Do $cinst.$executesqlandfetch()
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If

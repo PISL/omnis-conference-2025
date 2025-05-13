@@ -1,0 +1,26 @@
+# Enter your initialization code here
+Do inherited
+Calculate $cinst.$objs.ilAuthorisedForms.$::listheight as min(20,ilAuthorisedForms.$linecount)
+Calculate icCurrentGroupOrg as trGroupOrg.GO_NAME_SHORT
+
+Calculate ipictBanner as tConstants.topBanner
+
+Calculate ipictTopLeft as tConstants.topLeft
+Calculate ipictTopRight as tConstants.topRight
+Calculate $cinst.$objs.ipictTopLeft.$visible as binlength(ipictTopLeft)>0
+Calculate $cinst.$objs.ipictTopRight.$visible as binlength(ipictTopRight)>0
+
+# get the URLs for the navigation bar buttons
+Calculate lcClass as 'URL'
+Calculate lcValue as 'SUPPORT_TOOLS'
+Do toValues.$initGlobal(lcClass,lcValue) Returns llRef
+If llRef.1.RFG_CHAR<>''
+	Calculate icURLsupportTools as llRef.1.RFG_CHAR
+End If
+Calculate $cinst.$objs.pbSupportTools.$visible as len(icURLsupportTools)>0
+
+Calculate lcValue as 'EXIT'
+Do toValues.$initInherited(lcClass,lcValue) Returns llRef
+If llRef.1.RFO_CHAR<>''
+	Calculate icURLexit as llRef.1.RFO_CHAR
+End If

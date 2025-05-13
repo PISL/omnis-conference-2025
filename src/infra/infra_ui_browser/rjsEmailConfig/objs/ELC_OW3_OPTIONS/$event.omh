@@ -1,0 +1,11 @@
+On evAfter
+	Calculate $cobj.$errortext as ''
+	
+	If irCurrentRecord.ELC_OW3_OPTIONS<>''
+		Do OJSON.$formatjson(irCurrentRecord.ELC_OW3_OPTIONS) Returns lcFormattedJSON
+		If pos(' error:',lcFormattedJSON)
+			Calculate $cobj.$errortext as lcFormattedJSON
+		Else
+			Calculate irCurrentRecord.ELC_OW3_OPTIONS as lcFormattedJSON
+		End If
+	End If

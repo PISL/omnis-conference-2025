@@ -1,0 +1,12 @@
+# !!! STB the error code needs to be converted to string table entries
+Calculate plValidation.$line as 0
+While $Loop(plValidation)
+	If plValidation.severity=1
+		Calculate lcWarnings as con(lcWarnings,pick(lcWarnings<>'','','; '),plValidation.default)
+	Else
+		Calculate lcErrors as con(lcErrors,pick(lcErrors<>'','','; '),plValidation.default)
+	End If
+End While
+
+Calculate pretErrors as lcErrors
+Calculate pretWarnings as lcWarnings

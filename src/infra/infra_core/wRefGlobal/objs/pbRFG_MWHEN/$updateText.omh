@@ -1,0 +1,11 @@
+Calculate icSortColObjectName as $crecipient().$name
+If left(icSortColObjectName,2)='pb'
+	Calculate icSortColObjectName as mid(icSortColObjectName,3,99)
+End If
+
+Do $cinst.$adjustColumnTitle(lnWhichCol) Returns lbFound
+If lbFound
+	Calculate $crecipient.$text as con($crecipient.$userinfo,' ',pick(ilSortColumns.SortDesc[lnWhichCol],'^','v'),lnWhichCol)
+Else
+	Calculate $crecipient.$text as $crecipient.$userinfo
+End If

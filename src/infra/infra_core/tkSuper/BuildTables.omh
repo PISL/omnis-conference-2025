@@ -1,0 +1,44 @@
+
+Calculate ilTables as #NULL
+Do ilTables.$cols.$add('LIB',kCharacter,kSimplechar,100)
+Do ilTables.$cols.$add('TABLE',kCharacter,kSimplechar,100)
+Do ilTables.$cols.$add('DESC',kCharacter,kSimplechar,100)
+# 2024-10-24 added DBTABLE because schema classes for non-db related functioins was messing up $Links
+Do ilTables.$cols.$add('DBTABLE',kCharacter,kSimplechar,100)
+Calculate llLibTables as ilTables
+
+# get the required libraries' table classes
+Do $cinst.$GetVar('ccCommonLibs') Returns lcDependencies
+Do $cinst.$GetVar('tlTableClasses') Returns lrLibTables
+# add current lib name to lcDependencies to include it in the loop
+Calculate lcDependencies as con(lcDependencies,pick(len(lcDependencies)>0,'',','),tcCurrentLibrary)
+
+While len(lcDependencies)
+	Do llLibTables.$clear()
+	Calculate lcLib as strtok(nam(lcDependencies),',')
+	# get the library tables
+	# 2024-10-24 added $sqlclassname for DBTABLE
+	Do $libs.[lcLib].$tables.$sendall(llLibTables.$add(lcLib,mid($ref.$name,2,99),$ref.$desc,$ref.$sqlclassname))
+	# add the tables to ilTables
+	Do ilTables.$merge(llLibTables,kTrue)
+	
+	# and this section populates tlTableClasses
+	# replace the "t" in the table class names
+	Do llLibTables.$sendall($sendallref.TABLE.$assign(con('t',$sendallref.TABLE)))
+	# now get the schemas ## we may use $DefineList with a schema class
+	Do $libs.[lcLib].$schemas.$sendall(llLibTables.$add(lcLib,$ref.$name,$ref.$desc))
+	# add the tables/schemas to tlTableClasses
+	If llLibTables.$linecount
+		Do lrLibTables.$assigncols(lcLib,con(',',toStrings.$ListToString(llLibTables,'TABLE',','),','))
+		Do $cinst.$addLibraryTables(lrLibTables)
+	End If
+	
+End While
+
+# 2024-10-24 remove the lines that have no DBTABLE
+Do ilTables.$search($ref.DBTABLE='',1,0,1,0)
+Do ilTables.$remove(kListDeleteSelected)
+
+Do ilTables.$sort(low($ref.TABLE))
+
+Quit method ilTables

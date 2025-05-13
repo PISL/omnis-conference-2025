@@ -1,0 +1,3 @@
+Calculate $cinst.$objs.pbLogin.$enabled as icLoginID<>''&icLoginPW<>''
+
+Calculate $cinst.$objs.PagedPane.$objs.pbTimezoneSet.$enabled as ilTimezones.$line>0

@@ -1,0 +1,15 @@
+# 2019-08-15 changed to a public method to allow overloading in subclasses
+
+# populate the invoice details list
+Calculate icDisplayMessage as ''
+
+Do ilDetails.$fetchInvDetails(irCurrentRecord.FOH_SEQ)
+# Do ilDetails.$sendall($ref.ItemTotal.$assign(ilDetails.FOD_QTY*(ilDetails.FOD_UNIT_PRICE+ilDetails.FOD_UNIT_TAX)))
+Calculate ilDetails.$line as 0
+While $loop(ilDetails)
+	Do ilDetails.$calculatedValues()
+End While
+Calculate ilOriginalDetails as ilDetails
+
+
+Do method calculateTotals

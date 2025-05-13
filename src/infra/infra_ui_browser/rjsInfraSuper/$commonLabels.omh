@@ -1,0 +1,9 @@
+If plrefLabels.$colcount=0
+	Do plrefLabels.$cols.$add('objName',kCharacter,kSimplechar,50)
+End If
+
+Do plrefLabels.$add('REC_INSERT')
+Do plrefLabels.$add('REC_UPDATE')
+Do plrefLabels.$add('REC_DELETED')
+Do plrefLabels.$add('REC_INSERT')
+Do plrefLabels.$add('searchCriteria')

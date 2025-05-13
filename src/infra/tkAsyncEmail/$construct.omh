@@ -1,0 +1,48 @@
+# Enter your initialization code here
+# caller should check ibWorkerOK before proceeding
+# if the email worker doesn't close this instance, the timer will in 5 minutes
+If isclear(pcCurrentLibrary)
+	# Breakpoint {this object is in infra so it must be given the active application library}
+End If
+
+Calculate tcCurrentLibrary as pcCurrentLibrary
+Do prefTask.$GetVar(nam(tConstants)) Returns tConstants
+Do prefTask.$GetVar(nam(tlDatabases)) Returns tlDatabases
+Do prefTask.$GetVar(nam(irConfigFile)) Returns irConfigFile
+Do prefTask.$GetVar(nam(trGroupOrg)) Returns trGroupOrg
+Do prefTask.$GetVar(nam(trCurrUser)) Returns trCurrUser
+Do prefTask.$GetVar(nam(tFormSession)) Returns tFormSession
+Do prefTask.$GetVar(nam(tFormStatement)) Returns tFormStatement
+# get a session and statement for DB access
+
+If tFormSession.$state=kSessionStateLoggedOn
+	# continue
+Else If tlDatabases.DAM='WebService'
+	# what do we do now?  if anything?
+	Breakpoint
+Else
+	Do prefTask.$DynamicSession(loSession,loStatement)
+	If loSession.$state=kSessionStateLoggedOn
+		Do $cinst.$ConnectToDb(loSession.$hostname,loSession.$username,loSession.$password,$cinst().$name,loSession.$damname,loSession.$database,loSession.$port,tFormSession,tFormStatement,0)
+	Else
+		Breakpoint
+	End If
+	# should we check tbDbConnectionOK?
+	Calculate loSession as #NULL
+End If
+
+# we may not need the application's Startup_Task to handle error logging ## now we have a session/statement
+Set reference irefStartTask to $itasks.[pcCurrentLibrary].$ref
+
+# call self-destruct every 5 minutes, $timeToClose will restart the timer if the worker is still running
+Do $objects.oTimerWorker.$newref($cinst,'$timeToClose',5) Returns iorTimeout ## tes
+Do iorTimeout.$starttimer()
+
+# instantiate the async email worker
+Do $libs.infra.$objects.oEmailSendWorker.$newref($cinst,prefTask) Returns ioSmtpWorker
+If not(isnull(ioSmtpWorker))
+	# good to go
+	Calculate ibWorkerOK as kTrue
+Else
+	Calculate ibWorkerOK as kFalse
+End If

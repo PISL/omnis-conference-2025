@@ -1,0 +1,4 @@
+Calculate $cinst.icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do $cinst.$behaviour()

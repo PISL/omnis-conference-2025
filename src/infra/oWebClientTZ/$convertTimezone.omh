@@ -1,0 +1,41 @@
+# http://api.timezonedb.com/v2.1/convert-time-zone
+
+# Parameter  Description
+# key        REQUIRED          Your unique API key you get after register your account.
+
+# format     OPTIONAL          The response format from API. It can be either xml or json.
+#                              DEFAULT: xml
+
+# callback   OPTIONAL          Use for JavaScript JSON callback.
+
+# fields     OPTIONAL          Customize the field to display in response. Use commas ("," without spaces) to separate the field names.
+#                              FIELDS: fromZoneName, fromAbbreviation, fromTimestamp, toZoneName, toAbbreviation, toTimestamp, toFormatted, offset
+#                              DEFAULT: all
+
+# from       REQUIRED          A valid abbreviation or name of time zone to convert from.
+# to         REQUIRED          A valid abbreviation or name of time zone to convert to.
+# time       OPTIONAL          Local Unix time of the from time zone.
+
+# DEFAULT: Current UTC time.
+
+# e.g. https://vip.timezonedb.com/v2.1/convert-time-zone?key=DNWER8BT9LQF&format=json&from=America/Los_Angeles&to=Australia/Sydney
+
+Calculate lcURI as con(ccURLrecords,"/convert-time-zone",ccURLkey,ccURLformat)
+
+# Calculate lcRecordIDs as OJSON.$listorrowtojson(plIDs,kUniTypeCharacter,lcError)
+Calculate icContent as con(icContent,pick(icContent<>'','','&'),'from=',pcTimezone1)
+Calculate icContent as con(icContent,pick(icContent<>'','','&'),'to=',pcTimezone2)
+
+Calculate lcURI as con(lcURI,'&',icContent)
+Calculate icContent as ''
+Do ioRest.$init(lcURI,kOW3httpMethodPost,ilHeaders,icContent) Returns lbStatus
+
+If ibRunAsynchronously
+	Do ioRest.$start()
+	Quit method kTrue
+Else
+	Do ioRest.$run() Returns lbStatus
+	Do method $returnAsyncConvertTimezone Returns lrResult
+	Do toStrings.$TimeLapse(kSecond,lrResult.offset) Returns lcDifference
+	Quit method lrResult
+End If

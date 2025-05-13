@@ -1,0 +1,103 @@
+
+Do $cinst.$cols.$findname('OML_NAMES') Returns liColRefLibName
+
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(plClass,plLibrary),$cinst.$type,0,$cinst.ilRESTextensions))
+	Calculate lrWebResponse as toWeb.irResponse
+	If lrWebResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do lrGroup.$definefromsqlclass('somGroup')
+Do lrLibrary.$definefromsqlclass('somLibrary')
+Do lrLinks.$definefromsqlclass('somLibGroupLinks')
+
+Calculate lcPredicate as 'where '
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# Breakpoint
+Do toStrings.$ListToString(plClass,'OMG_CLASS',',',"'",kTrue) Returns lcClasses
+Do toStrings.$ListToString(plLibrary,'OML_NAME',',',"'",kTrue) Returns lcLibraries
+Do toStrings.$ListToString(plLanguages,'lang',',','',kTrue) Returns lcOtherLanguagesVisible
+
+Begin statement (Carriage return)
+Sta:select distinct [$cinst.$selectnames()]
+If liColRefLibName
+	# Sta:, STRING_AGG ( OML_NAME,','
+	# Sta: ORDER BY
+	# Sta: OML_NAME
+	# Sta: ) OML_NAMES
+	
+	Sta:, ( select STRING_AGG(OML_NAME,',' order by OML_NAME) from translate.omlibgrouplinks join translate.omlibrary on OML_SEQ = OLG_OML_REF where OLG_OMG_REF = OMG_SEQ )
+	
+End If
+
+
+Sta:from  [$cinst.$servertablenames()]
+If liColRefLibName
+	If lcLibraries="'no libraries'"
+		Sta:left outer join [lrGroup.$servertablenames] on OMG_SEQ = OMS_OMG_REF
+		Sta:left outer join [lrLinks.$servertablenames] on OLG_OMG_REF = OMG_SEQ
+		Sta:left outer join [lrLibrary.$servertablenames] on OML_SEQ = OLG_OML_REF
+	Else
+		Sta:join [lrGroup.$servertablenames] on OMG_SEQ = OMS_OMG_REF
+		Sta:join [lrLinks.$servertablenames] on OLG_OMG_REF = OMG_SEQ
+		Sta:join [lrLibrary.$servertablenames] on OML_SEQ = OLG_OML_REF
+	End If
+End If
+
+If lcLibraries<>''
+	If lcLibraries="'no libraries'"
+		# then we are looking for strings not attached to any library.  In theory this is not allowed
+		# but it could happen if someone entered a string threough the DB directly.
+		Sta:[lcPredicate]   OML_NAME is null
+	Else
+		# Sta:[lcPredicate]   OMG_FUNCTION = ANY (array[[[lcLibraries]])
+		Sta:[lcPredicate]   OML_NAME = ANY (array[[[lcLibraries]])
+	End If
+	Calculate lcPredicate as ' and '
+End If
+If lcClasses<>''
+	# convert the lcClasses string to an array but it does not work when using a bind variable :-(
+	Sta:[lcPredicate]   OMG_CLASS = ANY (array[[[lcClasses]])
+	Calculate lcPredicate as ' and '
+End If
+If pcSearchString<>''
+	Calculate pcSearchString as con(pcSearchString,'%')
+	
+	Sta:[lcPredicate]   (
+	Sta:STRINGID ilike @[pcSearchString]
+	Sta:or en ilike @[pcSearchString]
+	While lcOtherLanguagesVisible<>''
+		Sta:or [strtok(nam(lcOtherLanguagesVisible),',')] ilike @[pcSearchString]
+	End While
+	Sta:)
+	Calculate lcPredicate as ' and '
+End If
+If liColRefLibName
+	# Sta:group by [$cinst.$selectnames()]
+End If
+Sta:order by STRINGID
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

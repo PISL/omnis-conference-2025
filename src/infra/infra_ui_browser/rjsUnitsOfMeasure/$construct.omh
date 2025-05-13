@@ -1,0 +1,61 @@
+Set reference irefContainer to $cinst.$container
+Do inherited
+
+# Enter your initialization code here
+Calculate $cinst.$objs.icFormIntro.$visible as kFalse
+
+Do $DefineList($cinst.ilDisplayRecords,'infra.tsysUnitOfMeasure')
+Calculate irCurrentRecord as ilDisplayRecords
+Do $cinst.$fetchDisplayList()
+
+Do $DefineList(ilSynonyms,'infra.tsysUnitSynonyms')
+Do ilSynonyms.$AddLinkedCols('UOM_CODE')
+Do ilSynonyms.$cols.$add('display',kCharacter,kSimplechar,50)
+Calculate irCurrentSynonym as ilSynonyms
+# Do $cinst.$getSynonyms()
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+# set the Warning text and properties for smaller screens
+Calculate icWarning as $cell(clLabels,'objName','MSG_WARN_SMALLSCREEN','label')
+Calculate $cinst.$objs.Warning.$text as icWarning
+Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVAREA)
+Calculate $cinst.$objs.Warning.$backcolor as eval(lrAttributes.backcolor)
+Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVLABELS)
+Calculate $cinst.$objs.Warning.$textcolor as eval(lrAttributes.textcolor)
+
+Calculate icFormHeading as $cell(clLabels,'objName','UOM_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','UOM_Intro','label')
+
+Do method UserPermissions
+
+Do toValues.$initGlobal('UOM_GROUP') Returns ilSearch1
+Do ilSearch1.$cols.$findname('RFG_DESC') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+Calculate $cinst.$objs.ilSearch1.$listcolumn as lnDisplayListCol
+Calculate ilUOM_GROUP as ilSearch1
+Do ilSearch1.$addbefore(1)
+
+Do ilUOM_GROUP.$cols.$findname('RFG_DESC') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.UOM_GROUP.$listcolumn as lnDisplayListCol
+
+Do ilSynonyms.$cols.$findname('display') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+Calculate $cinst.$objs.ilSynonyms.$listcolumn as lnDisplayListCol
+
+# find correct column number to display in list
+Do ilDisplayRecords.$cols.$findname('UOM_CODE') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+
+
+Do $cinst.$superObjects($cell(clLabels,'objName','disp_units','label'),lnDisplayListCol,$cell(clLabels,'objName','sel_group','label'),'')
+
+# we need to put this here so that we do not display the menu from the previous form when switching
+Do $cinst.$container().$initToolsMenu('IE') Returns llMenuCommands ## pass empty string because we do not need the default IED values
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Calculate $cinst.$objs.PagedPane.$currentpage as 1
+
+Calculate ilDisplayRecords.$line as 1
+Do $cinst.$displayListClick()

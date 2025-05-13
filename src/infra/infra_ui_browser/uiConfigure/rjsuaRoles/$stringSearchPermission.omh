@@ -1,0 +1,2 @@
+Do ilChoiceOfPermissions.$unfilter()
+Do ilChoiceOfPermissions.$filter(pos(low(icSearchPermission),low($ref.PER_LABEL))|pos(low(icSearchPermission),low($ref.PER_DESC_EN)))

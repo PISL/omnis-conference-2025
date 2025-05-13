@@ -1,0 +1,7 @@
+On evClick
+	Do method testForTimezone Returns lbProceed
+	If lbProceed
+		Do method $completeLogin
+	End If
+	
+	Do $cinst.$behaviour()

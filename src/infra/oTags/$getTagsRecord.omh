@@ -1,0 +1,18 @@
+Calculate irParent as prParent
+Do irSpecialTag.$clear()
+
+Do ilParentTagsOrig.$clear()
+Do ilParentTagsOrig.$fetch_fk(irParent.[irParent.icPrimaryKey],irParent.icPrefix) Returns lbOK
+Do ilTagsAll.$search(0) ## clear selected
+Calculate llTemp as ilTagsAll
+
+While $Loop(ilParentTagsOrig)
+	Do llTemp.$search($ref.RFO_VALUE=ilParentTagsOrig.TAG_VALUE,1,0,1,0) ## leave lines selected
+End While
+
+Do llTemp.$sort($ref.$selected,1,$ref.RFO_VALUE,0)
+Calculate llTemp.$line as 0
+
+Calculate ilTagsAll as llTemp ## reference copy used in $saveTags
+# return keywordsMaster with relevant rows selected
+Quit method llTemp

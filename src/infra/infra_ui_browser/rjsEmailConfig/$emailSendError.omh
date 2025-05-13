@@ -1,0 +1,21 @@
+# Breakpoint
+#  pResult.errorCode - integer
+#  pResult.errorinfo - character
+#  pResult.failedRecipients - list
+#  pResult.log - character
+
+#  pFingerprint is typically the irCurrentRecord associated with the email instruction
+
+Do irEmailError.$assignrow(pResult)
+# we cannot add columns to this row - an Omnis imposition if defined from a schema class
+Calculate irEmailError.timestamp as #D
+
+# show the error fields and hide others
+Calculate $cinst.$objs.irEmailError_ErrorCode.$visible as kTrue
+Calculate $cinst.$objs.irEmailError_errorinfo.$visible as kTrue
+Calculate $cinst.$objs.irEmailError_log.$visible as kTrue
+Calculate $cinst.$objs.irEmailError_timestamp.$visible as kTrue
+
+Calculate $cinst.$objs.ilAsyncEmailQueue.$visible as kFalse
+
+Do $cinst.$behaviour()

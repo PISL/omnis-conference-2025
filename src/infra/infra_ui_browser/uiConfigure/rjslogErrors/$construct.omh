@@ -1,0 +1,28 @@
+Set reference $cinst.irefContainer to $cinst.$container
+Do inherited
+
+Do $DefineList(ilDisplayRecords,'infra.tsysLogErrors')
+Do ilDisplayRecords.$addDisplayName()
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do method fetchSearch1List
+Do method fetchSearch2List
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','SLE_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','SLE_Intro','label')
+
+Do method UserPermissions
+
+Do method FetchRecords
+
+Do $cinst.$superText(kTrue,$cell(clLabels,'objName','text_search','label'))
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_errorcode','label'),"SLE_CODE") ## ilSearch1
+Do $cinst.$superSearchList2($cell(clLabels,'objName','sel_daterange','label'),'desc') ## ilSearch2
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_errors','label'),'DisplayName') ## ilDisplayList
+
+Do irefContainer.$initToolsMenu("") Returns ilMenuCommands ## this is a view only form, no need for the Tools menu
+Do irefContainer.$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands) ## but we need to call this to clear any previous menu
+
+Do $cinst.$behaviour()

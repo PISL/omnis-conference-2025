@@ -1,0 +1,24 @@
+If ilOrgStructures.RFO_VALUE='ORGANISATION'
+	Do toValues.$initInherited('STRUCTURE_ORG',,,irCurrentRecord.GO_SEQ) Returns llStructureTypes
+Else If ilOrgStructures.RFO_VALUE='PRODUCTS'
+	Do toValues.$initInherited('STRUCTURE_PRD',,,irCurrentRecord.GO_SEQ) Returns llStructureTypes
+End If
+
+Do ilStructureType.$merge(llStructureTypes,kTrue,kFalse,kTrue)
+For ilStructureType.$line from 1 to ilStructureType.$linecount step 1
+	If len(ilStructureType.RFO_JSON)
+		Do OJSON.$jsontolistorrow(ilStructureType.RFO_JSON) Returns ilStructureType.json
+		Calculate ilStructureType.allowedParents as toStrings.$ListToString(ilStructureType.json.parent_node_type,'C1')
+	End If
+End For
+Calculate ilStructureType.$smartlist as kTrue
+
+Do irCurrentStructure.$treeFetchRoot(icCurrentStructure,irCurrentRecord.GO_SEQ) Returns ilCorporateTree
+If ilCorporateTree.$linecount=1
+	Calculate ilCorporateTree.$line as 1
+	If isnull(ilCorporateTree.nodeID)
+		# this company record has no structure
+		# and we cannot allow a nodeIDof null or else we get error messages in js client
+		Calculate ilCorporateTree.nodeID as 1
+	End If
+End If

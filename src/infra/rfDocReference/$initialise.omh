@@ -1,0 +1,9 @@
+If prParams.$colcount>0
+	# Breakpoint
+	If prParams.C1=nam(icMode)
+		Calculate icMode as prParams.C2
+		Do $cinst.$behaviour()
+	Else If prParams.C1=nam(irDocReference)
+		Do irDocReference.$assignrow(prParams.C2)
+	End If
+End If

@@ -1,0 +1,1 @@
+Calculate $cinst.DisplayName as con($cinst.ELT_LANG,": ",$cinst.ELT_SUBJECT)

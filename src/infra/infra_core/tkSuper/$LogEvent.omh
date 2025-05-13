@@ -1,0 +1,18 @@
+Do $DefineList(lrLog,'infra.tsysLogEvents')
+
+Calculate lrLog.SLV_CWHEN as #D
+Calculate lrLog.SLV_CODE as pCode
+Calculate lrLog.SLV_SUBCODE as pSubCode
+Calculate lrLog.SLV_MESSAGE as pMessage
+If isnull($cinst.$tvars.$findname('trVirtualHost')) ## only valid for HTMLp and associated apps
+	Calculate lrLog.SLV_VHOST_REF as 1
+Else
+	Calculate lrLog.SLV_VHOST_REF as pick($ctask.trVirtualHost.PGS_SEQ>0,1,$ctask.trVirtualHost.PGS_SEQ) ## 1 is for console
+End If
+If tDefaultData.$colcount ## HTMLp and associated apps
+	Calculate lrLog.SLV_SERVER_IP as tDefaultData.D_WEB_INTERNAL_ROUTER_IP_ADDR
+End If
+Calculate lrLog.SLV_SERVER_PORT as $root.$prefs.$serverport
+
+Do lrLog.$insert__() Returns lbOK
+Quit method lbOK

@@ -1,0 +1,17 @@
+If irSpecialTag.TAG_SEQ>0
+	Do irSpecialTag.$delete() Returns lbOK
+	If lbOK
+		Do irSpecialTag.$clear()
+	End If
+Else
+	Calculate irSpecialTag.TAG_TABLE_PREFIX as irParent.icPrefix
+	Calculate irSpecialTag.TAG_PK as irParent.[irParent.icPrimaryKey]
+	Calculate irSpecialTag.TAG_VALUE as pcTag
+	Do irSpecialTag.$insert() Returns lbOK
+End If
+
+If lbOK
+	Quit method pick(isclear(irSpecialTag.TAG_SEQ),1,0)
+Else
+	Quit method lbOK
+End If

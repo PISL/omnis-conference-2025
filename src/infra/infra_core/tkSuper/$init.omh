@@ -1,0 +1,126 @@
+# 2022-10-10 GRS moved this out of the Sentry section so we can always see the AppVersion on the tracelog
+Do loJsonReader.$parse($libs.[tcCurrentLibrary].$userinfo,loJsonValue,kFalse)
+Calculate lcAppVersion as con(loJsonValue.$get('major').$contents,".",loJsonValue.$get("minor").$contents,":",loJsonValue.$get("rev").$contents)
+
+# initialise Omniscient error logging
+If not($columnExists(tConstants,'SentryEnabled'))
+	Do tConstants.$cols.$add('SentryEnabled',kBoolean)
+	Do tConstants.$cols.$add('SentryAppIdent',kCharacter)
+End If
+Do eval(toConfig.$GetVarFromSection(tcCurrentLibrary,'SentryEnabled')) Returns tConstants.SentryEnabled
+Do toConfig.$GetVarFromSection(tcCurrentLibrary,'SentryAppIdent') Returns tConstants.SentryAppIdent
+If tConstants.SentryEnabled
+	Do $objects.oDiskErrorProcessor.$newref() Returns lvDiskErrorProcessor
+	# get the Omniscient DB parameters
+	Do toConfig.$GetDatabases() Returns llDBList
+	Do llDBList.$search($ref.Name='Omniscient',1,0,0,0) Returns lnLine
+	
+	Do $objects.oBufferedDatabaseErrorProcessor.$newref(llDBList.Host,llDBList.DB,llDBList.UserName,utf8tochar(binfromhex(llDBList.password)),llDBList.port) Returns lvBuffDBProcessor
+	Do $objects.oOmniscient.$newref(lvDiskErrorProcessor,lvBuffDBProcessor) Returns corOmniscient
+	Do corOmniscient.$setUserInfo(999,"console","") ## these will be overridden if we populate trCurrUser
+	Do corOmniscient.$setApplicationInfo(tcCurrentLibrary,lcAppVersion,tConstants.SentryAppIdent)
+	
+	Do code method oOmniscient/$setGlobalErrorHandler (corOmniscient)
+	Load error handler (All libraries) oOmniscient/$catchGlobalError
+	
+Else
+	Load error handler (All libraries) $RunTimeError
+	
+End If
+# MDM.Startup_Task.$construct
+
+
+# 2024-01-26 RSM  This is a new variable in order to trap multiple DB errors within a ultra thin page request
+# that can be subsequently used to send details to developers.  It is defined here so there is no possibility of referring to a list with no column defined.
+Do tlDbErrors.$cols.$add('errorDetails',kRow)
+Do tlDbErrors.$cols.$add('methodName',kCharacter,kSimplechar,100)
+
+Calculate ibStartingUp as kTrue
+Calculate lcHostDB as $getLibPath()
+For lnPos from len(lcHostDB) to 1 step -1
+	If mid(lcHostDB,lnPos,1)=sys(9)
+		Break to end of loop
+	End If
+End For
+Do tConstants.$cols.$add('HostDirectory',kCharacter,kSimplechar,200)
+Do tConstants.$cols.$add('HostDB',kCharacter,kSimplechar,100)
+Calculate tConstants.HostDirectory as mid(lcHostDB,1,lnPos)
+# Calculate tConstants.HostDB as con(tConstants.HostDirectory,'MDM_PAGES.df1')
+If $columnExists(irConfigFile,'dbhost')
+	Calculate tConstants.HostDB as irConfigFile.dbhost
+End If
+
+Do $classes.$findname('wMessage_e') Returns irefMessageWinExists
+
+# open a fresh progress log window
+If irefProgressLog
+	Do irefProgressLog.$close()
+End If
+# Do $windows.wProgressLog.$openonce() Returns irefProgressLog
+# Do irefProgressLog.$AddEntry(con('begin ',$cclass().$name,' ',$clib().$name),'push')
+Send to trace log (Always log) [con('begin startup: ',$cclass().$name,' ',tcCurrentLibrary,' v',lcAppVersion)]
+
+Do $setServerPort(lnServerPort) Returns lbOK ## set the port here in tkSuper, as each copy of Omnis must have its own port to avoid conflicts, even if it doesn't use it
+If lbOK
+	# Do irefProgressLog.$AddEntry(con('Server port set to ',$prefs.$serverport))
+	Send to trace log (Always log) [con('Server port set to ',$prefs.$serverport)]
+Else
+	# Do irefProgressLog.$AddEntry(con('FAILED to set server port to ',lnServerPort,' , check other copies of Omnis'))
+	Send to trace log (Always log) [con('FAILED to set server port to ',lnServerPort,' , check other copies of Omnis')]
+End If
+
+# NO FETCHING DATA FROM DB - we are not connected to any db
+
+Do tConstants.$cols.$add('Started',kDate,kDatetime)
+Calculate tConstants.Started as #D
+
+Do tConstants.$cols.$add('DefaultLanguageCode',kCharacter,kSimplechar,3)
+Calculate tConstants.DefaultLanguageCode as 'en'
+Do tConstants.$cols.$add('DefaultLanguage',kCharacter,kSimplechar,3)
+Calculate tConstants.DefaultLanguage as 'English'
+
+Do tConstants.$cols.$add('debugMode',kBoolean)
+Calculate tConstants.debugMode as kFalse
+
+# 2015-08-25 GRS added as part of the updater project
+Do tConstants.$cols.$add('Version',kCharacter,kSimplechar,12)
+Do code method cVersion/$getVersion Returns tConstants.Version
+
+Do tConstants.$cols.$add('LogTaskStats',kBoolean)
+Do $cinst.$GetPref('LogTaskStats') Returns lcPref
+Calculate tConstants.LogTaskStats as eval(lcPref)
+
+# does the app allow users to open multiple browser windows
+Do tConstants.$cols.$add('allowMultipleForms',kBoolean)
+Do $cinst.$GetPref('allowMultipleForms') Returns lcPref
+Calculate tConstants.allowMultipleForms as eval(lcPref)
+If tConstants.allowMultipleForms
+	Do tConstants.$cols.$add('userPoolName',kCharacter,kSimplechar,100) ## holds the name of the logged in user's personal session pool
+End If
+
+Do tConstants.$cols.$add('TraceLogDirectory',kCharacter,kSimplechar,200)
+Do $cinst.$GetPref('TraceLogDirectory') Returns lcPref
+If len(lcPref)&right(lcPref,1)<>sys(9)
+	Calculate lcPref as con(lcPref,sys(9)) ## append the OS pathname separator
+End If
+Calculate tConstants.TraceLogDirectory as lcPref
+
+Do $BuildLinks Returns tlLinks ## Retrieves all the relational links from table classes $Links methods into the task list variable tlLinks
+Send to trace log (Always log) (Diagnostic message) building $links returned [tlLinks.$linecount] lines
+
+Do ilConnectionAttempts.$cols.$add('name',kCharacter,kSimplechar,50)
+Do ilConnectionAttempts.$cols.$add('when',kDate,kDatetime)
+
+Do tConstants.$cols.$add('companyLogo',kBinary) ## to be populated in a sub class if applicable
+
+Calculate $prefs.$usecms as kTrue
+
+Calculate #FD as 'D m y' ## 2022-07-07 added here for all apps
+
+# The row trPageTrace has existed for many years only within HTMLp.  And it is still only applicable to HTMLp.
+# But the scope was changed from HTMLp.rtWebSales to infra.rtSuper 2024-12-11 in order to cope with generating page content from HTMLp.wPageContent.
+# It has been copied to tkSuper ini the interests of keeping rtSuper and tkSuper consistent.
+If tcCurrentLibrary='HTMLp'
+	Do $DefineList(trPageTrace,'tPageTrace')
+End If
+# The row variable trPageHeader has also been copied here.  It has no proper place in tkSuper.  It is only for consistency.

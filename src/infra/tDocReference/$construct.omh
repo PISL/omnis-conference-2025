@@ -1,0 +1,7 @@
+Calculate icPrefix as 'DRF_'
+Calculate icPrimarykey as 'DRF_SEQ'
+
+# DRF_PKEY is only part of a compound key.  It may be best left unset.
+Calculate icForeignKey as 'DRF_PKEY'
+
+Do inherited

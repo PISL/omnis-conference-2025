@@ -1,0 +1,25 @@
+Calculate lcDevice as $cdevice.$ident ## store current print destination
+Do $cdevice.$assign(kDevOmnisPDF)
+
+Do Omnis PDF Device.$setdocinfo(irJobAttributes.author,irJobAttributes.title,irJobAttributes.subject) Returns lbOK
+Do Omnis PDF Device.$settemp(kTrue,irJobAttributes.timeout) Returns icPDFid
+
+If irJobAttributes.reportclass<>''
+	If pos('.',irJobAttributes.reportClass)
+		# there is an explicit library reference
+		Do [irJobAttributes.reportclass].$open('*',irReportData) Returns irefReportInst
+	Else
+		Do $reports.[irJobAttributes.reportclass].$open('*',irReportData) Returns irefReportInst
+	End If
+	
+Else If irefReportClass
+	Do irefReportClass.$open('*',irReportData) Returns irefReportInst
+Else
+	Breakpoint
+End If
+
+# the report class should be handling its own $printrecord according to its own requirements
+Do irefReportInst.$printrecord()
+Do irefReportInst.$endprint()
+
+Do $cdevice.$assign(lcDevice)

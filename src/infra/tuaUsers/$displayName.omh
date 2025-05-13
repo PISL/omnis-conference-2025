@@ -1,0 +1,33 @@
+Calculate $cinst.DisplayName as $cinst.USR_NAME
+If $cinst.USR_SU
+	Calculate lcSuperUser as ' su '
+	Calculate lbAppend as kTrue
+End If
+If $cinst.USR_ACTIVE
+	# leave empty
+Else
+	Calculate lcInactive as ' inactive '
+	Calculate lbAppend as kTrue
+End If
+If $cinst.USR_TZ<>''
+	Calculate lcTimezone as con(' ',$cinst.USR_TZ,' ')
+	Calculate lbAppend as kTrue
+End If
+
+If pcHowMuch='F' ## full description
+	If lbAppend
+		Calculate $cinst.DisplayName as con($cinst.USR_NAME,' (',lcSuperUser,lcInactive,lcTimezone,')')
+	Else
+		Calculate $cinst.DisplayName as con($cinst.USR_NAME)
+	End If
+	
+Else If pcHowMuch='E' ## enhanced description
+	If lbAppend
+		Calculate $cinst.DisplayName as con($cinst.USR_NAME,' (',lcSuperUser,lcInactive,')')
+	Else
+		Calculate $cinst.DisplayName as con($cinst.USR_NAME)
+	End If
+	
+Else
+	Calculate $cinst.DisplayName as con($cinst.USR_NAME)
+End If

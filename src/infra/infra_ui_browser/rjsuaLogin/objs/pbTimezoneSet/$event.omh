@@ -1,0 +1,13 @@
+On evClick
+	If icSearchTZ<>''
+		Calculate trCurrUser.USR_TZ as icSearchTZ ## this should be the name of a city
+	Else
+		Calculate trCurrUser.USR_TZ as mid(ilTimezones.TIMEZONE,pos('/',ilTimezones.TIMEZONE)+1,99) ## just the city portion
+	End If
+	# save this change for next login
+	If icOriginal_USR_TZ<>trCurrUser.USR_TZ
+		Do trCurrUser.$update() Returns lbOK
+	End If
+	Do $ctask.$setTimezone()
+	
+	Do method $completeLogin

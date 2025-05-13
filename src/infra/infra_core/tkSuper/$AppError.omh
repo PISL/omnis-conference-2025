@@ -1,0 +1,28 @@
+
+If tConstants.SentryEnabled
+	Signal error pnErrorCode,pMessage
+	
+Else
+	If trCurrUser.$colcount>0
+		Calculate lcUserName as con(' - ',trCurrUser.USR_NAME)
+	Else
+		Calculate lcUserName as con(' - console')
+	End If
+	Do $cinst.$ProcedureStack() Returns lcDiagnosticInfo
+	
+	If $ctask.$type=kRemoteTask
+		# If its a remote task then we want to know the contents of the pParams
+		# that was provided.  These copied to tWebParameters.
+		# Do $ctask.$findname('tWebParameters') Returns lrSourceParams
+		Do $ctask.$GetVar('tWebParameters') Returns lrSourceParams
+		If lrSourceParams.$colcount>0
+			Calculate lcParamData as OJSON.$listorrowtojson(lrSourceParams,kUniTypeCharacter)
+			Calculate lcDiagnosticInfo as con(lcDiagnosticInfo,kCr,kCr,'tWebParameters',kCr,lcParamData)
+		End If
+	End If
+	
+	If pLogThis
+		Do method $LogError ('APP_ERROR',pSubjectSuffix,pMessage)
+	End If
+	Do $SendEmail(tConstants.EmailAddressWebmaster,con(tcCurrentLibrary,' Web App Error',pick(pSubjectSuffix<>'','',': '),pSubjectSuffix,lcUserName),con(pMessage,kCr,kCr,lcDiagnosticInfo),#NULL,#NULL,#NULL,#NULL)
+End If

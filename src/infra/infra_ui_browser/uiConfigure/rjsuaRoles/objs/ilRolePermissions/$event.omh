@@ -1,0 +1,30 @@
+On evClick
+	Calculate ilRolePermissions.$line as pLineNumber
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.ilRolePermissions.$errortext as icDisplayMessage
+	Calculate $cinst.$objs.ilRoleUsers.$errortext as icDisplayMessage
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()
+	
+On evDrop
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.ilRolePermissions.$errortext as icDisplayMessage
+	Calculate $cinst.$objs.ilRoleUsers.$errortext as icDisplayMessage
+	
+	If pDragField=nam(ilChoiceOfPermissions)
+		# user is ADDING this permission to role
+		# Breakpoint
+		Do method AddPermissionToRole Returns lbOK
+		Do method PermissionsCompare
+		
+		Calculate ilPermissionPrefixes.$line as 0
+		Calculate ibPermissionsFilteredOnPrefix as kFalse
+		
+		Do $cinst.$behaviour()
+		Do $cinst.$redraw()
+	Else
+		Calculate icDisplayMessage as 'Invalid object to drop.'
+	End If
+	
+	Calculate $cinst.$objs.ilRolePermissions.$errortext as icDisplayMessage

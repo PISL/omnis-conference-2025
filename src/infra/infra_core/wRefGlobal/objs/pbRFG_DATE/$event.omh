@@ -1,0 +1,6 @@
+On evClick
+	Do $cinst.$SortList($cobj().$name,nam(ilData)) Returns lcExecute
+	Do [lcExecute]
+	
+	Do $cinst.$objs.ilData.$objs.$sendall($ref.$updateText())
+	Do $cinst.$redraw()

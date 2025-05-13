@@ -1,0 +1,21 @@
+On evClick
+	Calculate ilUserRoles.$line as pLineNumber
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.pbSave.$errortext as ''
+	Calculate $cinst.$objs.ilUserRoles.$errortext as ''
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()
+	
+On evDrop
+	If pDragField=nam(ilChoiceOfRoles)
+		# user is ADDING this role to users profile
+		# Breakpoint
+		Do method AddRoleToUser Returns lbOK
+		Do method RolesCompare
+		
+		Do $cinst.$behaviour()
+		Do $cinst.$redraw()
+	Else
+		Calculate icDisplayMessage as 'Invalid drop object'
+	End If

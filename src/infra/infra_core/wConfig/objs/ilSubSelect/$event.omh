@@ -1,0 +1,30 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	# reduce the display contents of grid_ini   ( ilEditdata ) to group specified in this lists current line
+	Calculate ilSubSelect.$line as pLineNumber
+	
+	If ilSubSelect.DisplayName<>''
+		If ilOptionList.code='LIB_INIT'
+			# there is no subSelect list
+			
+		Else If ilOptionList.code='DB_CONNECT'
+			Calculate ilEditdata.$smartlist as kTrue
+			Do ilEditdata.$unfilter(0)
+			If ilSubSelect.DisplayName<>''
+				Calculate ilDBData as ilEditdata ## store unfiltered list
+				Do ilEditdata.$filter($ref.DB_NO=ilSubSelect.DB_NO) ## then filter for display
+			End If
+			
+		Else If ilOptionList.code='SITE_CONFIG'
+			# there is no subSelect list
+			
+		End If
+		If ilOptionList.code=''
+			
+		End If
+	Else
+		Do ilEditdata.$unfilter(0)
+	End If
+	
+	# DO NOT call $behaviour because this resets ilEditData
+	# Do $cinst.$behaviour()
+	Do $cinst.$redraw()

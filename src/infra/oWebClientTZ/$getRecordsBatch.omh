@@ -1,0 +1,12 @@
+Calculate lcURI as con(ccURLrecords,"/batch")
+
+Calculate lcRecordIDs as OJSON.$listorrowtojson(plIDs,kUniTypeCharacter,lcError)
+Calculate icContent as con('{ "recordIds": ',lcRecordIDs,', "fields": ',ccReturnFields,'}')
+
+Do ioRest.$init(lcURI,kOW3httpMethodPost,ilHeaders,icContent) Returns lbStatus
+
+If ibRunAsynchronously
+	Do ioRest.$start()
+Else
+	Do ioRest.$run() Returns lbStatus
+End If

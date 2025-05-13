@@ -1,0 +1,6 @@
+# $getTagRecords sets the variables in this method.
+# This method is typically called when the parent record has just been created during a procedure.
+
+Calculate irParent as prParent
+Do ilParentTagsOrig.$clear()
+Do ilTagsAll.$search(0) ## clear selected

@@ -1,0 +1,47 @@
+If pcOnlyThisPrefix=''
+	Calculate lnTotalColcountBeingCompared as pRow.$colcount
+Else
+	# count as we go through the colcount
+	# make sure prefix has an _
+	If right(pcOnlyThisPrefix,1)='_'
+		# sweet
+	Else
+		Calculate pcOnlyThisPrefix as con(pcOnlyThisPrefix,'_')
+	End If
+End If
+
+If pbOmitAccountingCols
+	Calculate lcOmitTheseColumns as con(lcOmitTheseColumns,kComma,pcOnlyThisPrefix,'SEQ')
+	Calculate lcOmitTheseColumns as con(lcOmitTheseColumns,kComma,pcOnlyThisPrefix,'CWHEN')
+	Calculate lcOmitTheseColumns as con(lcOmitTheseColumns,kComma,pcOnlyThisPrefix,'CBY')
+	Calculate lcOmitTheseColumns as con(lcOmitTheseColumns,kComma,pcOnlyThisPrefix,'MWHEN')
+	Calculate lcOmitTheseColumns as con(lcOmitTheseColumns,kComma,pcOnlyThisPrefix,'MBY')
+	Calculate lcOmitTheseColumns as con(lcOmitTheseColumns,kComma,pcOnlyThisPrefix,'MCOUNT',kComma)
+End If
+
+# If pcOnlyThisPrefix is not empty then we will check only the columns with the same prefix as the first column
+For lnColNo from 1 to pRow.$colcount step 1
+	If pcOnlyThisPrefix<>''
+		Calculate lcColName as pRow.$cols.[lnColNo].$name
+		# does the column name match the prefix?
+		If left(lcColName,len(pcOnlyThisPrefix))=pcOnlyThisPrefix
+			# yes it does, so check
+			If pos(con(kComma,lcColName,kComma),lcOmitTheseColumns)>0
+				# exclude from comparison
+			Else
+				Calculate lnTotalColcountBeingCompared as lnTotalColcountBeingCompared+1
+				If isclear(pRow.C[lnColNo])
+					Calculate lnCountEmpty as lnCountEmpty+1
+				End If
+			End If
+		End If ## colname matches prefix
+	Else
+		# all columns being checked
+		If isclear(pRow.C[lnColNo])
+			Calculate lnCountEmpty as lnCountEmpty+1
+		End If
+	End If
+End For
+
+# return kTrue if all columns tested match the number of empty columns  i.e. the row is empty
+Quit method (lnCountEmpty=lnTotalColcountBeingCompared)

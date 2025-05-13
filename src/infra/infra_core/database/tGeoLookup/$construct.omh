@@ -1,0 +1,5 @@
+Calculate icPrefix as 'GL_'
+Calculate icPrimarykey as 'GL_SEQ'
+Calculate icForeignKey as 'GL_IP'
+Calculate ibHasSequence as kTrue
+Do inherited

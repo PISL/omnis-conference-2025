@@ -1,0 +1,61 @@
+
+Do $itasks.[tcCurrentLibrary].$GetVar(nam(tConstants)) Returns tConstants
+Do $itasks.[tcCurrentLibrary].$GetVar(nam(tlDatabases)) Returns tlDatabases
+Do $itasks.[tcCurrentLibrary].$GetVar(nam(irConfigFile)) Returns irConfigFile
+Do $itasks.[tcCurrentLibrary].$GetVar(nam(toWeb)) Returns toWeb
+
+# 2024-01-26 RSM  This is a new variable in order to trap multiple DB errors within a ultra thin page request
+# that can be subsequently used to send details to developers.
+Do tlDbErrors.$cols.$add('errorDetails',kRow)
+Do tlDbErrors.$cols.$add('methodName',kCharacter,kSimplechar,100)
+
+If tcCurrentLibrary='HTMLp'
+	Do $DefineList(trPageTrace,'HTMLp.tPageTrace')
+End If
+# 19-AUG-21  RSMand GSdiscussed the merits of including the availability of
+# tFormSession and tFormStatement in rjs... apps.
+# While we could get away with it in ultra thin because of our multiple copies of Omnis running, each single threaded,
+# we considered it too risky in a remote forms environment where many connections (e.g. CONFERENCE) can run concurrently.
+# Conclusion:  do not make tFormSession/Statement available in remote tasks, forcing the use of session pools.
+# Do $itasks.[tcCurrentLibrary].$GetVar(nam(tFormSession)) Returns tFormSession
+# Do $itasks.[tcCurrentLibrary].$GetVar(nam(tFormStatement)) Returns tFormStatement
+
+Do $DefineList(trTaskStats,'infra.tsysTaskStats') ## trTaskStats is used in $ServerTime
+If tConstants.LogTaskStats ## this is now set from the SQLite libini value
+	Do $iremotetasks.$makelist($ref.$name,$ref.$ident) Returns llConnections
+	# to log number of simultaneous connections: ## timestamp start, current no of connections
+	# on $destruct record ## timestamp end, current no of connections & reason(?) such as timeout v. close form
+	Calculate trTaskStats.STS_START as #D
+	Calculate trTaskStats.STS_COUNT_START as llConnections.$linecount
+	Calculate trTaskStats.STS_IP4 as $cinst.$clientaddress()
+	Calculate trTaskStats.STS_DB_REQUESTS as 0
+	Calculate trTaskStats.STS_FETCHES as 0
+	Calculate trTaskStats.STS_INSERTS as 0
+	Calculate trTaskStats.STS_UPDATES as 0
+	Calculate trTaskStats.STS_DELETES as 0
+	
+	If $cinst.$restful
+		Do method initStatsRestful
+	Else If prParams.$cols.$findname('OmnisClass')
+		Do method initStatsJS (prParams)
+	Else
+		Calculate trTaskStats.STS_TYPE as '?'
+	End If
+	
+	Do trTaskStats.$insert() Returns lbOK
+End If
+
+# in MEC, tConstants already has the following columns ## call the new method $addColumn which checks for existence before adding
+Do $cinst.$addColumnToListOrRow(tConstants,'companyLogo',kBinary)
+Do $cinst.$addColumnToListOrRow(tConstants,'pBanner',kBinary)
+Do $cinst.$addColumnToListOrRow(tConstants,'topLeft',kBinary)
+Do $cinst.$addColumnToListOrRow(tConstants,'topRight',kBinary)
+
+
+Do toValues.$initInherited('SERVER','TIMEOUT') Returns lrReference
+If lrReference.RFO_INT>0
+	Do $cinst.$setTimeout(lrReference.RFO_INT)
+End If
+
+# now we have tConstants
+Calculate $cinst.$remotedebug as tConstants.debugMode

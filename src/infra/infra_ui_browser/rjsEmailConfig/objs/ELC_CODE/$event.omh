@@ -1,0 +1,168 @@
+On evAfter
+	If irCurrentRecord.ELC_CODE<>''
+		# if this is a new record, see if the code has been used before
+		
+		# This event only fires if user has modified ELC_CODE
+		Calculate lrTemp as irCurrentRecord
+		Do lrTemp.$clear()
+		Do lrTemp.$fetch_pk(irCurrentRecord.ELC_CODE)
+		If lrTemp.ELC_SEQ=irCurrentRecord.ELC_SEQ
+			# no need to report on onesself
+		Else
+			If lrTemp.ELC_SEQ>0
+				# this code has already been used
+				Do $cinst.$clientOkCancelMsg(con('Code ',irCurrentRecord.ELC_CODE,' has already been used and must be unique'))
+				Do $cinst.$setcurfield('ELC_CODE')
+				Quit event handler
+			End If
+		End If
+		
+		If icMode='I'
+			# if a code has been provided, look it up from earlier config records and place into new
+			Do toValues.$initInherited('EM_SRVR_FROM',irCurrentRecord.ELC_CODE) Returns lrReference
+			If lrReference.RFO_SEQ>0
+				# old config row exists
+				
+				# convert JSONto Omnis values
+				Do OJSON.$jsontolistorrow(lrReference.RFO_JSON,#S1,kFalse) Returns lrReference
+				
+				# SERVER attributes
+				Do lrReference.$cols.$findname('server') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_SERVER as lrReference.server
+				End If
+				
+				Do lrReference.$cols.$findname('loginName') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_LOGIN_NAME as lrReference.loginName
+				End If
+				
+				Do lrReference.$cols.$findname('loginPassword') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_LOGIN_PW as lrReference.loginPassword
+				End If
+				
+				# EMAIL sending attributes
+				Do lrReference.$cols.$findname('subject') Returns liColRef
+				If liColRef
+					Calculate ilLanguages.ELT_SUBJECT as lrReference.subject
+				End If
+				
+				Do lrReference.$cols.$findname('emailTO') Returns liColRef
+				If liColRef
+					If lrReference.emailTO.$linecount>0
+						# Calculate llTemp as irConfig.emailTO
+						Calculate irCurrentRecord.ELC_TO as toStrings.$ListToString(lrReference.emailTO,'C1')
+					Else If lrReference.emailTO<>''
+						Calculate irCurrentRecord.ELC_TO as lrReference.emailTO
+					End If
+				End If
+				
+				Do lrReference.$cols.$findname('emailCC') Returns liColRef
+				If liColRef
+					If lrReference.emailCC.$linecount>0
+						Calculate irCurrentRecord.ELC_CC as toStrings.$ListToString(lrReference.emailCC,'C1')
+					Else If lrReference.emailCC<>''
+						Calculate irCurrentRecord.ELC_CC as lrReference.emailCC
+					End If
+				End If
+				
+				Do lrReference.$cols.$findname('emailBCC') Returns liColRef
+				If liColRef
+					If lrReference.emailBCC.$linecount>0
+						Calculate irCurrentRecord.ELC_BCC as toStrings.$ListToString(lrReference.emailBCC,'C1')
+					Else If lrReference.emailBCC<>''
+						Calculate irCurrentRecord.ELC_BCC as lrReference.emailBCC
+					End If
+				End If
+				
+				Do lrReference.$cols.$findname('messageText') Returns liColRef
+				If liColRef
+					Calculate ilLanguages.ELT_MSG_TEXT as lrReference.messageText
+				End If
+				
+				Do lrReference.$cols.$findname('priority') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_PRIORITY as lrReference.priority
+				End If
+				
+				# SENDER details
+				Do lrReference.$cols.$findname('senderAddress') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_SENDER_ADDR as lrReference.senderAddress
+				End If
+				
+				Do lrReference.$cols.$findname('senderName') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_SENDER_NAME as lrReference.senderName
+				End If
+				
+				
+				# SECURITY attributes
+				Do lrReference.$cols.$findname('secure') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_SECURE as lrReference.secure
+				End If
+				
+				Do lrReference.$cols.$findname('authentication') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_AUTHN as lrReference.authentication
+				End If
+				
+				Do lrReference.$cols.$findname('verifyCert') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_VFY_CERT as lrReference.verifyCert
+				End If
+				
+				# OTHER attributes
+				Do lrReference.$cols.$findname('headers') Returns liColRef
+				If liColRef
+					Calculate lrTemp as lrReference.headers
+					Begin text block
+					Text:{ "headers":[
+					For lnColNo from 1 to lrTemp.$colcount step 1
+						Calculate llTemp as lrTemp.C[lnColNo]
+						Calculate llTemp.$line as 0
+						# open array
+						Text:[
+						While $Loop(llTemp)
+							Text:[kDq][llTemp.C1][kDq]
+							If llTemp.$line<llTemp.$linecount
+								Text::
+							End If
+						End While
+						# close array
+						Text:]
+						
+						If lnColNo<lrTemp.$colcount
+							Text:,
+						End If
+					End For
+					Text:] }
+					End text block
+					
+					Get text block irCurrentRecord.ELC_HEADERS
+					Do OJSON.$formatjson(irCurrentRecord.ELC_HEADERS) Returns lcTemp
+					If pos('parse error',lcTemp)
+						Calculate $cinst.$objs.PagedPane_Message.$objs.ELC_HEADERS.$errortext as lcTemp
+					Else
+						Calculate irCurrentRecord.ELC_HEADERS as lcTemp
+						Calculate $cinst.$objs.PagedPane_Message.$objs.ELC_HEADERS.$errortext as ''
+					End If
+				End If
+				
+				Do lrReference.$cols.$findname('ow3options') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_OW3_OPTIONS as lrReference.ow3options
+				End If
+				
+				Do lrReference.$cols.$findname('debuglog') Returns liColRef
+				If liColRef
+					Calculate irCurrentRecord.ELC_DEBUGLOG as lrReference.debuglog
+				End If
+				
+				Do $cinst.$behaviour()
+				
+			End If ## something found in EM_SRVR_FROM
+		End If ## icMode = 'I'
+	End If ## ELC_CODE is not empty

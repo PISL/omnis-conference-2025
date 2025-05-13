@@ -1,0 +1,43 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Do $cinst.$cols.$findname('CO_CONTINENT') Returns liColRef
+If liColRef
+	# currencies cols already exist
+Else
+	For lnColNo from 1 to lrCountry.$colcount step 1
+		Calculate lcColName as lrCountry.$cols.[lnColNo].$name
+		Set reference liColRef to lrCountry.[lcColName].$ref
+		Do $cinst.$cols.$add(liColRef.$name,liColRef.$type,liColRef.$subtype,liColRef.$sublen) Returns lbOK
+	End For
+	
+	For lnColNo from 1 to lrCurrency.$colcount step 1
+		Calculate lcColName as lrCurrency.$cols.[lnColNo].$name
+		Set reference liColRef to lrCurrency.[lcColName].$ref
+		Do $cinst.$cols.$add(liColRef.$name,liColRef.$type,liColRef.$subtype,liColRef.$sublen) Returns lbOK
+	End For
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, [lrCountry.$selectnames()]
+Sta:, [lrCurrency.$selectnames()]
+
+Sta:from [$cinst.$servertablenames]
+Sta:join [lrCountry.$servertablenames] on CCL_CO_REF = CO_SEQ
+Sta:join [lrCurrency.$servertablenames] on CCL_CU_REF = CU_SEQ
+
+# join
+Sta:where CCL_CO_REF = CO_SEQ
+Sta:and     CU_ISO3 = @[pKey]
+End statement
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

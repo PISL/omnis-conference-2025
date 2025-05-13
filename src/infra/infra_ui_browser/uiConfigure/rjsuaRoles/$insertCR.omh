@@ -1,0 +1,8 @@
+Do ilRolePermissions.$clear()
+Do ilRoleUsers.$clear()
+Do ilUserRoles.$clear()
+
+Calculate $cinst.$objs.ilRolePermissions.$errortext as ''
+Calculate $cinst.$objs.ilRoleUsers.$errortext as ''
+
+Do inherited

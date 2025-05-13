@@ -1,0 +1,4 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Do method $checkStringTableEntries (kTrue)
+	
+	Do $cinst.$redraw()

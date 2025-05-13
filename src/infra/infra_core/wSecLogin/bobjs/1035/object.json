@@ -1,0 +1,36 @@
+{
+	"ident": 1035,
+	"order": 16392,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(238,238,238,255)",
+		"backpattern": 1,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "wpHeadText",
+		"font": 6,
+		"fontsize": 14,
+		"fontstyle": "kBold",
+		"forecolor": "RGBA(192,192,192,255)",
+		"height": 21,
+		"left": 24,
+		"linestyle": 1,
+		"objlink": 0,
+		"text": {
+			"type": 14,
+			"calc": "\u001B\u000200000001#Select database:"
+		},
+		"textcolor": "kColorWindowText",
+		"top": 42,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 128
+	}
+}

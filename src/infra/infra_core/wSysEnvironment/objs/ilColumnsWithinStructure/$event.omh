@@ -1,0 +1,40 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	Calculate ilColumnsWithinStructure.$line as pLineNumber
+	Calculate icStructure as ''
+	
+	Calculate lcVarName as con(ilTaskVarNames.C1,'.',ilColumnsWithinStructure.C1)
+	
+	If lcVarName<>''&ilTaskVarNames.C2<>''
+		# some entries come through with an empty name!
+		
+		If ilColumnsWithinStructure.C2='list'
+			Calculate llCopy as [lcVarName]
+			Do llCopy.$cols.$makelist($ref.$name,$ref.$coltype,$ref.$colsubtype,$ref.$colsublen) Returns ilColumnsWithinStructure
+			Do OJSON.$listorrowtojson([lcVarName],kUniTypeCharacter,lcError) Returns icStructure
+			# make the structure easier to read
+			# Calculate icStructure as replaceall(icStructure,con(']',kCr,'['),con(kCr,kCr))
+			# Calculate icStructure as replaceall(icStructure,',',kCr)
+			
+		Else If ilColumnsWithinStructure.C2='row'
+			Calculate lrCopy as [lcVarName]
+			Do lrCopy.$cols.$makelist($ref.$name,$ref.$coltype,$ref.$colsubtype,$ref.$colsublen) Returns ilColumnsWithinStructure
+			
+			Do OJSON.$listorrowtojson([lcVarName],kUniTypeCharacter,lcError) Returns icStructure
+			Calculate icStructure as replaceall(icStructure,',',kCr)
+			
+		Else If ilColumnsWithinStructure.C2='object'
+			Calculate icStructure as 'not revealed'
+			
+		Else If ilColumnsWithinStructure.C2='objref'
+			Calculate icStructure as 'not revealed'
+			
+		Else
+			Calculate icStructure as eval(lcVarName)
+			
+		End If
+		
+	End If
+	
+	Do $cinst.$redraw()
+	
+On evDoubleClick ## Event Parameters - pRow ( Itemreference )

@@ -1,0 +1,13 @@
+If pbFetchFromDB
+	# 2022-10-18  RSM  while debugging rfPageDisplayTest trTaskStats is not defined
+	#    so here is a swerve to cope with this.
+	If trTaskStats.$colcount
+		Do trTaskStats.$ServerTime() Returns ldtNow
+	Else
+		Breakpoint This should not happen.  It is OKto carry on but something is wrong somewhere.
+		Calculate ldtNow as #D
+	End If
+Else
+	Calculate ldtNow as #D
+End If
+Quit method ldtNow

@@ -1,0 +1,21 @@
+On evClick
+	If inCurrentTab=cnTabStructure
+		# stay on this tab
+		Do method NewRecord
+	Else
+		Calculate $cinst.$objs.TabControl_GO.$currenttab as 1
+		Calculate $cinst.$objs.PagedPane.$currentpage as 1
+		
+		Do irCurrentRecord.$clear()
+		Do irCurrentOrgName.$clear()
+		Do irCurrentRecord.$defaults()
+		Calculate ilDisplayRecords.$line as 0
+	End If
+	
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'I' ## insert
+	
+	Do $cinst.$behaviour()
+	If inCurrentTab=cnTabCompany
+		Do $cinst.$setcurfield('GO_NAME_FULL')
+	End If

@@ -1,0 +1,85 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference $cinst.irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+Do $DefineList(ilDisplayRecords,'infra.tuaUsers')
+Do ilDisplayRecords.$addDisplayName()
+Calculate irCurrentRecord as ilDisplayRecords
+Calculate irPreviousRecord as irCurrentRecord
+
+Do ilDisplayRecords.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.ilDisplayRecords.$listcolumn as liColRef.$ident
+Calculate lnDisplayListCol as liColRef.$ident
+
+# ========  copied from wMaintUsers ===============
+Do toValues.$initInherited('USER_ROLES') Returns ilRefRoles
+Do toValues.$initInherited('USER_TEAMS') Returns ilRefTeams
+Do toValues.$initInherited('USER_LEVELS') Returns ilRefLevels
+Do toValues.$initInherited('USER_STATUS') Returns ilRefStatus
+
+Calculate ilSearch1 as ilRefStatus
+Calculate ilSearch2 as ilRefTeams
+# Calculate ilSearchSubClass2 as ilRefLevels
+# Calculate ilSearchStatus as ilStatus
+Do ilSearch1.$addbefore(1)
+Do ilSearch1.$search($ref.RFO_VALUE='EMPLOYEE',1,0,0,0) ## default search criteria
+Do ilSearch2.$addbefore(1)
+# Do ilSearchStatus.$addbefore(1)
+# ========  copied from wMaintUsers ===============
+Do ilSearch1.$cols.$findname('RFO_DESC') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.ilSearch1.$listcolumn as liColRef.$ident
+	Calculate $cinst.$objs.USR_STATUS.$listcolumn as liColRef.$ident
+End If
+
+Do $DefineList(ilUserRoles,'infra.tuaUserRoles')
+Do ilUserRoles.$addLinkedCols('ROL_NAME,ROL_SEQ,ROL_SU')
+Do ilUserRoles.$cols.$findname('ROL_NAME') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilUserRoles.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilRoles,'infra.tuaRoles')
+Do ilRoles.$addDisplayName()
+Do ilRoles.$fetch_all()
+While $Loop(ilRoles)
+	Do ilRoles.$displayName('F')
+End While
+Do ilRoles.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.ilChoiceOfRoles.$listcolumn as liColRef.$ident
+End If
+
+Do $DefineList(ilUserGroupOrgLinks,'infra.tuaGroupOrgLinks')
+Do ilUserGroupOrgLinks.$addLinkedCols('GO_SEQ,GON_NAME_FULL')
+Do ilUserGroupOrgLinks.$cols.$findname('GON_NAME_FULL') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilUserGroupOrgLinks.$listcolumn as liColRef.$ident
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','USERS_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','USERS_Intro','label')
+
+Do method UserPermissions
+
+Do $DefineList(ilGroupOrganisations,'infra.tentGroupOrganisations') ## GON_NAME_FULL is added in $construct
+If irUserRights.allUsers
+	Do ilGroupOrganisations.$fetchOnShortName('CF')
+	Do ilGroupOrganisations.$fetch_all()
+Else
+	Do ilGroupOrganisations.$fetchMyOrganisations()
+End If
+Do ilGroupOrganisations.$sort($ref.GON_NAME_FULL,0)
+Do ilGroupOrganisations.$cols.$findname('GON_NAME_FULL') Returns liColRef
+Calculate $cinst.$objs.ilChoiceOfGroupOrgs.$listcolumn as liColRef.$ident
+
+Do method FetchRecords
+
+Do $cinst.$superObjects($cell(clLabels,'objName','disp_users','label'),lnDisplayListCol,'','',,kTrue,$cell(clLabels,'objName','text_search','label'))
+
+Do $cinst.$container().$initToolsMenu() Returns ilMenuCommands
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Do $cinst.$environment()
+Calculate $cinst.$objs.icFormIntro.$tooltip as con(icOmnisAndLibrary,kCr,icDbConnection)
+
+Do $cinst.$behaviour()

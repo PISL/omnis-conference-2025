@@ -1,0 +1,73 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcClass,pcValue,prExtraParams),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+If prExtraParams.pnGO_SEQ>0
+	Calculate lnGO_REF as prExtraParams.pnGO_SEQ
+Else If trGroupOrg.$colcount
+	Calculate lnGO_REF as trGroupOrg.GO_SEQ
+End If
+
+If lnGO_REF>0
+	Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+	If lbImmediateSession
+		Do $cinst.$SetSession(loSession,loStatement)
+	Else If not(ibGoodConnectionToDb)
+		Quit method kFalse
+	End If
+	# Breakpoint DEBUGCODE
+	Begin statement
+	Sta:select [$cinst.$selectnames()]
+	Sta:from  [$cinst.$servertablenames()]
+	Sta:where [icPrefix]CLASS = @[pcClass]
+	If pcValue<>''
+		Sta:and [icPrefix]VALUE = @[pcValue]
+	End If
+	If prExtraParams.pbIncludeNonActive
+		# exclude the active items clause
+		# if we are including the inactive then this is a content management window
+		# therefore exclude the EFFECTIVE and EXPIRES date constraints
+	Else
+		Sta:and [icPrefix]ACTIVE = 1
+		
+		If prExtraParams.pdDate>dat('1 JAN 2010')
+			Sta:and (
+			# no time frame on reord
+			Sta:([icPrefix]EFFECTIVE is null and  [icPrefix]EXPIRES is null )
+			# valid effective date with no expiry date ## this is current
+			Sta:or  ([icPrefix]EFFECTIVE >= @[prExtraParams.pdDate] and  [icPrefix]EXPIRES is null )
+			# valid effective and expiry dates
+			Sta:or  ([icPrefix]EFFECTIVE >= @[prExtraParams.pdDate] and  [icPrefix]EXPIRES <= @[prExtraParams.pdDate] )
+			# logically peculiar but technically possible
+			Sta:or  ([icPrefix]EFFECTIVE is null and  [icPrefix]EXPIRES <= @[prExtraParams.pdDate] )
+			Sta:)
+		End If
+	End If
+	Sta:and RFO_GO_REF = @[lnGO_REF]
+	
+	If prExtraParams.pcJSONQuery<>''
+		Sta:and (
+		# this is a JSON query string so DO NOT bind it
+		Sta: [prExtraParams.pcJSONQuery]
+		Sta:)
+	End If
+	End statement
+	Do $cinst.$executesqlandfetch($cinst,prExtraParams.pbAppend)
+	
+	If lbImmediateSession
+		Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+	End If
+	
+	Do $cinst.$sort($ref.[icPrefix]ORDER,0,$ref.[icPrefix]VALUE,0)
+End If

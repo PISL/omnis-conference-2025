@@ -1,0 +1,52 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callInsert($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pClass,pnGO_SEQ),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ExcludeCols('RFL_SEQ,RFL_CWHEN,RFL_MWHEN,RFL_MCOUNT,RFL_INHERIT,RFL_UNIQUE','I')
+Do llInserted.$cols.$add('RFL_VALUE',kCharacter,kSimplechar,15)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:insert into [$cinst.$servertablenames]
+Sta:(RFL_CLASS, RFL_VALUE, RFL_DESC, RFL_ORDER, RFL_ACTIVE
+Sta:, RFL_CHAR, RFL_INT, RFL_NUMBER, RFL_DATE, RFL_BIN
+Sta:, RFL_TIME, RFL_EFFECTIVE, RFL_EXPIRES, RFL_JSON
+Sta:, RFL_CBY, RFL_MBY)
+Sta:select 
+Sta:RFG_CLASS, RFG_VALUE, RFG_DESC, RFG_ORDER, RFG_ACTIVE
+Sta:, RFG_CHAR, RFG_INT, RFG_NUMBER, RFG_DATE, RFG_BIN
+Sta:, RFG_TIME, RFG_EFFECTIVE, RFG_EXPIRES, RFG_JSON
+Sta:, @[trCurrUser.USR_NAME], @[trCurrUser.USR_NAME]
+Sta:from [lrRefGlobal.$servertablenames]
+Sta:where RFG_CLASS = @[pClass]
+Sta:and not exists (
+Sta:   select 1 from [$cinst.$servertablenames]
+Sta:   where RFL_CLASS = RFG_CLASS and RFL_VALUE = RFG_VALUE)
+Sta:returning RFL_VALUE
+End statement
+Do $cinst.$executesqlandfetch(llInserted) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llInserted.$sort($ref.C1,0)
+
+Quit method llInserted

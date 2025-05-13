@@ -1,0 +1,165 @@
+Do ilSysValues.$cols.$add('number',kInteger,k32bitint)
+Do ilSysValues.$cols.$add('meaning',kCharacter,kSimplechar,255)
+Do ilSysValues.$cols.$add('returnType',kCharacter,kSimplechar,15)
+Do ilSysValues.$cols.$add('value',kCharacter,kSimplechar,255)
+Do ilSysValues.$cols.$add('list',kList)
+Do ilSysValues.$cols.$add('row',kRow)
+Do ilSysValues.$cols.$add('itemref',kItemref)
+
+Do ilSysValues.$add(1,'omnis version')
+Do ilSysValues.$add(2,'omnis program type byte')
+Do ilSysValues.$add(3,'company name')
+Do ilSysValues.$add(4,'name')
+Do ilSysValues.$add(5,'serial number')
+Do ilSysValues.$add(6,'platform code')
+Do ilSysValues.$add(7,'OS version no')
+Do ilSysValues.$add(8,'omnis platform type')
+Do ilSysValues.$add(9,'pathname separator')
+Do ilSysValues.$add(10,'path of library')
+Do ilSysValues.$add(11,'pathname of data segment(s)')
+Do ilSysValues.$add(21,'path of print file')
+Do ilSysValues.$add(22,'path of import file')
+Do ilSysValues.$add(23,'current port name')
+Do ilSysValues.$add(24,'current report device')
+Do ilSysValues.$add(30,'installed menu(s)')
+
+Do ilSysValues.$add(50,'top window')
+Do ilSysValues.$add(51,'2nd top window')
+Do ilSysValues.$add(52,'3rd top window')
+Do ilSysValues.$add(53,'4th top window')
+
+Do ilSysValues.$add(80,'current report name')
+Do ilSysValues.$add(81,'current search')
+Do ilSysValues.$add(82,'current main file')
+Do ilSysValues.$add(83,'no of records in main file')
+Do ilSysValues.$add(85,'currently executing method')
+Do ilSysValues.$add(86,'list of event parameters')
+Do ilSysValues.$add(87,'horizontal screen res')
+Do ilSysValues.$add(88,'vertical screen res')
+Do ilSysValues.$add(89,'text for current search')
+
+Do ilSysValues.$add(90,'no of methods on method stack')
+Do ilSysValues.$add(91,'decimal separator')
+Do ilSysValues.$add(92,'thousand separator')
+Do ilSysValues.$add(93,'parameter separator for calculations')
+Do ilSysValues.$add(94,'file class field name separator')
+
+Do ilSysValues.$add(101,'current printer name')
+Do ilSysValues.$add(104,'screen width in pixels')
+Do ilSysValues.$add(105,'screen height in pixels')
+Do ilSysValues.$add(106,'n/a')
+Do ilSysValues.$add(107,'n/a')
+Do ilSysValues.$add(108,'n/a')
+Do ilSysValues.$add(109,'available bytes in paging file')
+Do ilSysValues.$add(110,'CPU type')
+# Do ilSysValues.$add(111,'Apple ROM version')
+# Do ilSysValues.$add(112,'balloon help available')
+# Do ilSysValues.$add(113,'publish and subscribe available')
+# Do ilSysValues.$add(114,'Apple events available')
+Do ilSysValues.$add(115,'path of Omnis executable')
+Do ilSysValues.$add(116,'force all file names to lower case')
+
+Do ilSysValues.$add(118,'OS info - windows only')
+Do ilSysValues.$add(120,'windows only')
+Do ilSysValues.$add(121,'windows only')
+
+Do ilSysValues.$add(122,'web client listener started')
+Do ilSysValues.$add(123,'build number of Omnis executable')
+
+# Do ilSysMeanings.$add(139,'result of ODBC access mask')
+Do ilSysValues.$add(185,'current executing method in oo format')
+Do ilSysValues.$add(190,'no of times class loaded from disk into cache')
+Do ilSysValues.$add(191,'no of times class deleted from cache')
+Do ilSysValues.$add(192,'list with method stack',nam(kList))
+Do ilSysValues.$add(193,'list with trace log',nam(kList))
+Do ilSysValues.$add(194,'list with open windows in IDE',nam(kList))
+Do ilSysValues.$add(195,'list of selected objects',nam(kList))
+Do ilSysValues.$add(196,'list of open libraries with VCS properties',nam(kList))
+
+# Do ilSysMeanings.$add(197,'running Windows XP with themes')
+Do ilSysValues.$add(198,'status of binding web client port no to socket - 0 is OK')
+# Do ilSysValues.$add(199,'list with method commands',nam(kList))
+Do ilSysValues.$add(202,'command line parameters passed to Omnis')
+Do ilSysValues.$add(203,'Win 32 only - omnis running as service')
+# Do ilSysValues.$add(204,'list of functions',nam(kList))
+Do ilSysValues.$add(205,'byte ordering - 1=big-endian, 0=little-endian')
+Do ilSysValues.$add(209,'pathname containing Omnis .app bundle')
+Do ilSysValues.$add(210,'number of processors for current machine')
+Do ilSysValues.$add(212,'list of sort fields for executing method stack',nam(kList))
+
+Do ilSysValues.$add(215,'path to folder containing Omnis executable')
+Do ilSysValues.$add(216,'pathname of currently executing Omnis program')
+# these are modifying calls so leave out of display
+If 1=0
+	Do ilSysValues.$add(218,'modifies OEM character conversion table to leave CR and LF unchanged')
+	Do ilSysValues.$add(219,'restores OEM character conversion table to original mappings  for CR and LF')
+	Do ilSysValues.$add(228,'modifies OEM character conversion table to leave TAB unchanged')
+	Do ilSysValues.$add(229,'restores OEM character conversion table to leave TAB unchanged')
+End If
+
+If sys(10)<>'X'
+	Do ilSysValues.$add(232,'window only: returns 1 (true) if Omnis is running as an elevated user or administrator')
+	Do ilSysValues.$add(233,'windows and Linux only: returns title of the main Omnis window')
+End If
+Do ilSysValues.$add(234,'returns row with statistics about RESTful requests to Omnis.  3 columns (count of successful calls, count of calls returning error, count of internally re-queued because there was no free user',nam(kRow))
+Do ilSysValues.$add(235,'value of server configuration item timeOffsetMinutes')
+Do ilSysValues.$add(237,'if method editor is top window and a single method is selected, returns an item reference to method',nam(kItemref))
+Do ilSysValues.$add(238,'returns 1 if remote debug server is running')
+Do ilSysValues.$add(239,'returns 1 if Omnis Startup has finished')
+
+Do ilSysValues.$add(240,'returns string of current monitor configuration')
+Do ilSysValues.$add(241,'returns list with a copy of find and replace log',nam(kList))
+Do ilSysValues.$add(242,'returns string which uniquely identifies the current child process when running in the Multi Process Server')
+Do ilSysValues.$add(243,'returns 1 if Omnis is running as a Multi Process Server')
+
+Do ilSysValues.$add(250,'list of files which were used to open Omnis',nam(kList))
+Do ilSysValues.$add(253,'Omnis is in dark mode')
+Do ilSysValues.$add(254,'pathname of folder where Omnis writes scripts and other files used to generate PDF documents')
+Do ilSysValues.$add(255,'pathname of folder where Omnis writes temporary PDF files')
+Do ilSysValues.$add(290,'number of methods on method stack (does not work on multi threaded worker)')
+Do ilSysValues.$add(292,'returns empty or single line list containing the same columns as sys(192) where the list line represents the calling method',nam(kList))
+
+# these are modifying calls so leave out of display
+If 1=0
+	Do ilSysValues.$add(3000,'turn on logging of method command execution')
+	Do ilSysValues.$add(3001,'turn off logging of method command execution')
+	Do ilSysValues.$add(3003,'include method commands executed by IDE when using sys(3000)')
+	Do ilSysValues.$add(3004,'exclude method commands executed by IDE when using sys(3000)')
+End If
+
+Calculate ilSysValues.$line as 0
+While $Loop(ilSysValues)
+	If ilSysValues.returnType=nam(kList)
+		Calculate ilSysValues.list as sys(ilSysValues.number)
+		Calculate ilSysValues.value as con('list with ',ilSysValues.list.$linecount,' rows')
+		
+	Else If ilSysValues.returnType=nam(kRow)
+		Calculate ilSysValues.row as sys(ilSysValues.number)
+		Calculate ilSysValues.value as con('row with ',ilSysValues.row.$colcount,' columns')
+		
+	Else If ilSysValues.returnType=nam(kItemref)
+		Calculate ilSysValues.itemref as sys(ilSysValues.number)
+		If ilSysValues.itemref
+			Calculate ilSysValues.value as con('item ref ',ilSysValues.itemref.$name)
+		Else
+			Calculate ilSysValues.value as con('empty item ref')
+		End If
+		
+	Else
+		Calculate ilSysValues.value as sys(ilSysValues.number)
+	End If
+	
+End While
+
+# now for system environment variables
+# Calculate trEnvironment.UserHomeDirectory as getenv('LOCALAPPDATA')
+Calculate llTemp as listenv()
+While $Loop(llTemp)
+	If llTemp.$line=1
+		Do ilSysValues.$add(#NULL,#NULL,#NULL,#NULL,#NULL) ## blank line
+		Do ilSysValues.$add(#NULL,'ENVIRONMENT VARIABLES') ## heading
+		Do ilSysValues.$add(#NULL,'name',#NULL,'value')
+		Do ilSysValues.$add(#NULL,#NULL,#NULL,#NULL,#NULL) ## blank line
+	End If
+	Do ilSysValues.$add(#NULL,llTemp.name,#NULL,llTemp.value)
+End While

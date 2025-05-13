@@ -1,0 +1,26 @@
+On evClick
+	Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+	
+	Do $DefineList(lrFunction,'t_FunctionsApp') Returns lbOK
+	If lbOK
+		Do lrFunction.$killOrgData(lbSuccess) Returns lbOK
+		If lbOK
+			If lbSuccess
+				# the sysTaskStats records will have been deleted so clear the PK value to avoid the update attempt on rtSuper.$destruct
+				Calculate trTaskStats.STS_SEQ as #NULL
+				Do $cinst.$clientOkCancelMsg(con('Deletion successful.  All data for organisation ',trGroupOrg.GON_NAME_FULL,' has been removed.'),'Success','logout')
+				Quit method
+			Else
+				Calculate icDisplayMessage as lrFunction.irErrorSQL.NativeErrorText
+				Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+			End If
+		Else
+			Calculate icDisplayMessage as lrFunction.irErrorSQL.NativeErrorText
+			Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+		End If
+	Else
+		Calculate icDisplayMessage as 'Something went wrong!'
+		Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+	End If
+	
+	Do $cinst.$behaviour()

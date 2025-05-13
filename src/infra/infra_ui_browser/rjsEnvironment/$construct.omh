@@ -1,0 +1,49 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+
+# Enter your initialization code here
+Calculate $cinst.$objs.icFormIntro.$visible as kFalse
+
+Do $DefineList(ilDisplayRecords,'infra.tsysReferenceOrg') ## required for fetchSearchList
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','RFO_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','RFO_Intro','label')
+
+Do method UserPermissions
+Do method showPermissions
+Do method networkInfo
+Do method sysVars
+Do method tConstants
+
+# Calculate icNetwork as con('active connections:',sys(244),'  multi process server:',sys(243))
+Do $sessions.$makelist($ref.$name,$ref.$sessionobject) Returns ilSessions
+Do $sessionpools.$makelist($ref.$name,$ref.$poolsize,$ref.$inuse) Returns ilSessionPools
+Do $libs.$makelist($ref.$name) Returns ilLibraries
+# separate libraries of different types on different lines
+While $Loop(ilLibraries)
+	If ilLibraries.C1=low(ilLibraries.C1)
+		Calculate lcLibsLower as con(lcLibsLower,pick(lcLibsLower<>'','',lcSeparator),ilLibraries.C1)
+	Else If ilLibraries.C1=upp(ilLibraries.C1)
+		Calculate lcLibsUpper as con(lcLibsUpper,pick(lcLibsUpper<>'','',lcSeparator),ilLibraries.C1)
+	Else
+		Calculate lcLibsMixed as con(lcLibsMixed,pick(lcLibsMixed<>'','',lcSeparator),ilLibraries.C1)
+	End If
+End While
+
+If lcLibsUpper<>''
+	Calculate icOmnisLibraries as con(icOmnisLibraries,pick(icOmnisLibraries<>'','',kCr),lcLibsUpper)
+End If
+If lcLibsLower<>''
+	Calculate icOmnisLibraries as con(icOmnisLibraries,pick(icOmnisLibraries<>'','',kCr),lcLibsLower)
+End If
+If lcLibsMixed<>''
+	Calculate icOmnisLibraries as con(icOmnisLibraries,pick(icOmnisLibraries<>'','',kCr),lcLibsMixed)
+End If
+
+# Calculate $cinst.$objs.TabControl_RFO.$currenttab as 1
+Calculate $cinst.$objs.PagedPane.$currentpage as 1
+
+Do $cinst.$behaviour()

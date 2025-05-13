@@ -1,0 +1,122 @@
+{
+	"ident": 1066,
+	"order": 22,
+	"objtype": "kComponent",
+	"componentlib": "jsCheckbox",
+	"componentctrl": "Checkbox Control",
+	"properties": {
+		"active": true,
+		"alpha": 255,
+		"ariadescribedby": "",
+		"arialabel": "",
+		"arialabelledby": "",
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"bordercolor": "RGB(16,3,0)",
+		"checkboxcolor": "kColorDefault",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"dataname": "ibComparePermissions",
+		"defaultinactiveappearance": true,
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disabledefaultcontextmenu": false,
+		"disablesystemfocus": false,
+		"dropmode": "kAcceptNone",
+		"effect": "kJSborderNone",
+		"events": "",
+		"fieldstyle": "",
+		"font": 1,
+		"fontsize": 10,
+		"fontstyle": "kPlain",
+		"iconid": 0,
+		"linestyle": 1,
+		"nexttabobject": "",
+		"objlink": 65543,
+		"preventlayoutanimation": false,
+		"removefromtaborder": false,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"text": "compare permissions",
+		"textcolor": "RGB(16,3,0)",
+		"tooltip": "If this is checked, click on roles in list on left to see a comparison between permissions below. !!!",
+		"userinfo": "",
+		"visible": true
+	},
+	"layout": {
+		"320": {
+			"left": 8,
+			"top": 512,
+			"width": 184,
+			"height": 21,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"375": {
+			"left": 16,
+			"top": 480,
+			"width": 200,
+			"height": 19,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"480": {
+			"left": 8,
+			"top": 544,
+			"width": 296,
+			"height": 25,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"667": {
+			"left": 8,
+			"top": 472,
+			"width": 200,
+			"height": 23,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"768": {
+			"left": 8,
+			"top": 396,
+			"width": 216,
+			"height": 25,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"1024": {
+			"left": 8,
+			"top": 400,
+			"width": 264,
+			"height": 24,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"1700": {
+			"left": 8,
+			"top": 400,
+			"width": 264,
+			"height": 25,
+			"dragborder": false,
+			"edgefloat": "kEFtopBottom",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

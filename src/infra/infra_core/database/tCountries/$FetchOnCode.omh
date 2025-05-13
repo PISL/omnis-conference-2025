@@ -1,0 +1,71 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcCoCode),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, [lrCurrency.$selectnames()]
+Sta:
+Sta:from [$cinst.$servertablenames()]
+Sta:left outer join [lrCoCurrLink.$servertablenames()] on CCL_CO_REF = CO_SEQ and CCL_PRIMARY = 1
+Sta:left outer join [lrCurrency.$servertablenames] on CU_SEQ = CCL_CU_REF
+Sta:
+If len(pcCoCode)=2
+	Sta:where CO_ISO2 = @[pcCoCode]
+Else
+	Sta:where CO_ISO3 = @[pcCoCode]
+End If
+End statement
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+If pbAddOtherInfo
+	Do $cinst.$cols.$findname('shareOfferOpen') Returns liColRef
+	If liColRef
+		# extra cols already added
+	Else
+		Do $cinst.$addcols('shareOfferOpen',kBoolean,#NULL,#NULL,'shareOfferClosed',kBoolean,#NULL,#NULL)
+		Do $cinst.$addcols('companyName',kCharacter,kSimplechar,100,'emailAdmin',kCharacter,kSimplechar,100,'emailComms',kCharacter,kSimplechar,100)
+		Do $cinst.$addcols('bankAccountName',kCharacter,kSimplechar,100,'bankSortCode',kCharacter,kSimplechar,20,'bankAccountNo',kCharacter,kSimplechar,15,'bankAccountIBAN',kCharacter,kSimplechar,40)
+	End If
+	
+	If $cinst.CO_OTHER_INFO<>''
+		Do OJSON.$jsontolistorrow($cinst.CO_OTHER_INFO) Returns lrTemp
+		For lnColNo from 1 to lrTemp.$colcount step 1
+			Set reference liTempColRef to lrTemp.$cols.[lnColNo].$ref
+			
+			Calculate lcColName as liTempColRef.$name
+			Do $cinst.$cols.$findname(lcColName) Returns liCountryColRef
+			If liCountryColRef
+				# column already exists
+			Else
+				# Do irCountry.$cols.$add(lcColName,liTempColRef.$coltype,liTempColRef.$colsubtype,liTempColRef.$colsublen)
+				Do $cinst.$cols.$add(lcColName,kCharacter,kSimplechar,255)
+			End If
+			Calculate $cinst.[lcColName] as lrTemp.[lcColName]
+		End For
+	End If
+	
+End If
+
+Quit method lbOK

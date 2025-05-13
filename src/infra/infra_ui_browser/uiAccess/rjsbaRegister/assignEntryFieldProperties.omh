@@ -1,0 +1,53 @@
+If icMode='E'|icMode='I' ## We are creating or editing an Organisation record so override the defaults
+	Calculate lnlinestyle as 2
+	Calculate lrFieldAttributes as OJSON.$jsontolistorrow(trFormColours.FIELDCOLOURS)
+	Calculate lnbordercolour as eval(lrFieldAttributes.mandatory)
+	Calculate lneffect as kJSborderPlain
+	Calculate lnEnterable as eval(lrFieldAttributes.enterable)
+	Calculate lnUnique as eval(lrFieldAttributes.unique)
+End If
+
+Set reference lrefObjects to $cinst.$objs.PagedPane
+
+If inCurrentForm=1
+	Calculate lrefObjects.$objs.GO_NAME_FULL.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.GO_NAME_FULL.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.GO_NAME_FULL.$effect as lneffect
+	Calculate lrefObjects.$objs.GO_NAME_FULL.$backcolor as lnEnterable
+	
+	# Calculate $cinst.$objs.GO_NAME_SHORT.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.GO_NAME_SHORT.$bordercolor as lnbordercolour
+	# Calculate $cinst.$objs.GO_NAME_SHORT.$effect as lneffect
+	# Calculate $cinst.$objs.GO_NAME_SHORT.$backcolor as lnEnterable
+	Calculate lrefObjects.$objs.email.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.email.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.email.$effect as lneffect
+	Calculate lrefObjects.$objs.email.$backcolor as lnEnterable
+	
+	Calculate lrefObjects.$objs.postcode.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.postcode.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.postcode.$effect as lneffect
+	Calculate lrefObjects.$objs.postcode.$backcolor as lnEnterable
+	
+	Calculate lrefObjects.$objs.address.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.address.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.address.$effect as lneffect
+	Calculate lrefObjects.$objs.address.$backcolor as lnEnterable
+	
+	Calculate lrefObjects.$objs.ilCountries.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.ilCountries.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.ilCountries.$effect as lneffect
+	Calculate lrefObjects.$objs.ilCountries.$backcolor as lnEnterable
+	
+Else If inCurrentForm=2
+	Calculate lrefObjects.$objs.icNewPassword.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.icNewPassword.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.icNewPassword.$effect as lneffect
+	Calculate lrefObjects.$objs.icNewPassword.$backcolor as lnEnterable
+	
+	Calculate lrefObjects.$objs.icCheckPassword.$linestyle as lnlinestyle
+	Calculate lrefObjects.$objs.icCheckPassword.$bordercolor as lnbordercolour
+	Calculate lrefObjects.$objs.icCheckPassword.$effect as lneffect
+	Calculate lrefObjects.$objs.icCheckPassword.$backcolor as lnEnterable
+	
+End If

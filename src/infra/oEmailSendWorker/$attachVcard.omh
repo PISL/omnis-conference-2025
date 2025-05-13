@@ -1,0 +1,364 @@
+Breakpoint not tested
+
+Calculate icVcardSpec as ''
+Do irVcardConfig.$assignrow(prVcardDetails)
+
+# protocol errors
+If irVcardConfig.rVERSION>0
+	# good
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('version is mandatory and must be an integer > 0'))
+	Calculate lbErrorDetected as kTrue
+End If
+If irVcardConfig.rFN<>''
+	# good
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('FN is mandatory but is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+
+# our error checking
+Calculate lRow as irVcardConfig.oN ## FAMILYNAME, FIRSTNAME, MIDDLENAMES, PREFIX, SUFFIX
+If lRow.FAMILYNAME<>''
+	# good
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('N attribute, FAMILYNAME is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+If lRow.FIRSTNAME<>''
+	# good
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('N attribute, FIRSTNAME is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+
+If lbErrorDetected
+	Quit method kFalse
+End If
+
+#   = = = = = = = = = = = =      prepare the content     = = = = = = = = = = = = = =
+
+Begin text block
+Text:BEGIN:VCARD(Carriage return,Linefeed)
+
+Text:VERSION[lcDelimiterSingle][irVcardConfig.rVERSION](Carriage return,Linefeed)
+Text:FN[lcDelimiterSingle][irVcardConfig.rFN](Carriage return,Linefeed)
+
+Calculate lRow as irVcardConfig.oN ## FAMILYNAME, FIRSTNAME, MIDDLENAMES, PREFIX, SUFFIX
+If lRow.FAMILYNAME<>''
+	# A structured representation of the name of the person, place or thing associated with the vCard object.
+	#    Structure recognizes, in order separated by semicolons: Family Name, Given Name, Additional/Middle Names, Honorific Prefixes, and Honorific Suffixes
+	#    e.g. N:Doe;John;;Dr;  Text:N;[irVcardConfig.oN](Carriage return,Linefeed)
+	Text:N[lcDelimiterSingle][lRow.FAMILYNAME];[lRow.FIRSTNAME];[lRow.MIDDLENAMES];[lRow.PREFIX];[lRow.SUFFIX]](Carriage return,Linefeed)
+End If
+
+Calculate lRow as irVcardConfig.oADR ## TYPE, BUILDING, STREET, LOCALITY, TOWN, POSTCODE, STATE, COUNTRY
+If lRow.STREET<>''
+	# A structured representation of the physical delivery address for the vCard object   e.g.  ADR;TYPE=home:;;123 Main St.;Springfield;IL;12345;USA
+	Text:ADR[lcDelimiterMulti]TYPE=[lRow.TYPE]:[lRow.BUILDING];[lRow.STREET][pick(lRow.LOCALITY<>'','',', ')][lRow.LOCALITY];[lRow.TOWN];[lRow.STATE];[lRow.POSTCODE];[lRow.COUNTRY](Carriage return,Linefeed)
+End If
+
+If irVcardConfig.oCATEGORIES<>''
+	# A list of "tags" that can be used to describe the object represented by this vCard   e.g.  CATEGORIES:swimmer,biker
+	Text:CATEGORIES[lcDelimiterSingle][irVcardConfig.oCATEGORIES](Carriage return,Linefeed)
+End If
+
+Calculate lRow as irVcardConfig.oEMAIL ## TYPE, CODE
+If lRow.CODE<>''
+	# The address for electronic mail communication with the vCard object   e.g. EMAIL:johndoe@hotmail.com
+	Text:EMAIL[lcDelimiterMulti]TYPE=[lRow.TYPE]:[lRow.CODE](Carriage return,Linefeed)
+End If
+
+Calculate lRow as irVcardConfig.oTEL ## TYPE, CODE
+If lRow.CODE<>''
+	# The canonical number string for a telephone number for telephony communication with the vCard object.   e.g. TEL;TYPE=cell:(123) 555-5832
+	Text:TEL[lcDelimiterMulti]TYPE=[lRow.TYPE]:[lRow.CODE](Carriage return,Linefeed)
+End If
+
+If irVcardConfig.oTITLE<>''
+	# Specifies the job title, functional position or function of the individual associated with the vCard object within an organization.   e.g. TITLE:V.P. Research and Development
+	Text:TITLE[lcDelimiterSingle][irVcardConfig.oTITLE](Carriage return,Linefeed)
+End If
+
+Calculate lRow as irVcardConfig.oTZ ## COUNTRY, CITY
+If lRow.CITY<>''
+	# The time zone of the vCard object.    e.g. TZ:America/New_York
+	Text:TZ[lcDelimiterSingle][replaceall(lRow.COUNTRY,' ','_')]/[replaceall(lRow.CITY,' ','_')](Carriage return,Linefeed)
+End If
+
+Calculate lRow as irVcardConfig.oUID ## TYPE, SUBTYPE, CODE
+If lRow.CITY<>''
+	# Specifies a value that represents a persistent, globally unique identifier associated with the object.    e.g. UID:urn:uuid:da418720-3754-4631-a169-db89a02b831b
+	Text:UID[lcDelimiterSingle][lRow.TYPE]:[lRow.SUBTYPE]:[lRow.CODE](Carriage return,Linefeed)
+End If
+
+If irVcardConfig.oURL<>''
+	Text:URL[lcDelimiterSingle][irVcardConfig.oURL](Carriage return,Linefeed)
+End If
+
+# the following columns may not be in the irVcardConfig row
+
+Do irVcardConfig.$cols.$findname('oANNIVERSARY') Returns liColRef
+If liColRef
+	If irVcardConfig.oANNIVERSARY<>''
+		# Defines the person's anniversary.    e.g. ANNIVERSARY:19901021
+		# What format has the developer used for date?  D/M/Y or M/D/Y ?
+		Breakpoint not tested
+		
+		Calculate ldDate as irVcardConfig.oANNIVERSARY
+		If ldDate>dat('1 JAN 1920')
+			Calculate lcTemp as dat(ldDate,'CYMD')
+		Else
+			# assuming its already in correct format
+			Calculate lcTemp as irVcardConfig.oANNIVERSARY
+		End If
+		Text:ANNIVERSARY[lcDelimiterSingle][lcTemp](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oBDAY') Returns liColRef
+If liColRef
+	If irVcardConfig.oBDAY<>''
+		# Date of birth of the individual associated with the vCard.   e.g. BDAY:19700310
+		# What format has the developer used for date?  D/M/Y or M/D/Y ?
+		Breakpoint not tested
+		
+		Calculate ldDate as irVcardConfig.oBDAY
+		If ldDate>dat('1 JAN 1920')
+			Calculate lcTemp as dat(ldDate,'CYMD')
+		Else
+			# assuming its already in correct format
+			Calculate lcTemp as irVcardConfig.oBDAY
+		End If
+		Text:BDAY[lcDelimiterSingle][irVcardConfig.oBDAY](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oCALADRURI') Returns liColRef
+If liColRef
+	If irVcardConfig.oCALADRURI<>''
+		Breakpoint not tested
+		Text:CALADRURI[lcDelimiterSingle][irVcardConfig.oCALADRURI](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oCALURI') Returns liColRef
+If liColRef
+	If irVcardConfig.oCALURI<>''
+		Breakpoint not tested
+		Text:CALURI[lcDelimiterSingle][irVcardConfig.oCALURI](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oCLIENTPIDMAP') Returns liColRef
+If liColRef
+	If irVcardConfig.oCLIENTPIDMAP<>''
+		Breakpoint not tested
+		Text:CLIENTPIDMAP[lcDelimiterSingle][irVcardConfig.oCLIENTPIDMAP](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oFBURL') Returns liColRef
+If liColRef
+	If irVcardConfig.oFBURL<>''
+		Breakpoint not tested
+		Text:FBURL[lcDelimiterSingle][irVcardConfig.oFBURL](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oGENDER') Returns liColRef
+If liColRef
+	If irVcardConfig.oGENDER<>''
+		Text:GENDER[lcDelimiterSingle][irVcardConfig.oGENDER](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oGEO') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oGEO ## LAT, LONG
+	If lRow.LAT<>''&lRow.LONG<>''
+		Breakpoint not tested
+		# Specifies a latitude and longitude   e.g. GEO:39.95,-75.1667
+		Text:GEO[lcDelimiterSingle][lRow.LAT],[lRow.LONG](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oIMPP') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oIMPP ## TYPE, CODE
+	If lRow.CODE<>''
+		Breakpoint not tested
+		# Defines an instant messenger handle      e.g. IMPP:aim:johndoe@aol.com
+		Text:IMPP[lcDelimiterSingle][lRow.TYPE]:[lRow.CODE](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oKEY') Returns liColRef
+If liColRef
+	If irVcardConfig.oKEY<>''
+		Breakpoint not tested
+		Text:KEY[lcDelimiterSingle][irVcardConfig.oKEY](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oKIND') Returns liColRef
+If liColRef
+	If irVcardConfig.oKIND<>''
+		Breakpoint not tested
+		Text:KIND[lcDelimiterSingle][irVcardConfig.oKIND](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oLANG') Returns liColRef
+If liColRef
+	If irVcardConfig.oLANG<>''
+		Breakpoint not tested
+		Text:LANG[lcDelimiterSingle][irVcardConfig.oLANG](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oLOGO') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oLOGO ## URL, IMAGE64
+	If lRow.URL<>''
+		# An image or graphic of the logo of the organization that is associated with the individual to which the vCard belongs. It may point to an external URL or may be embedded in the vCard as a Base64 encoded block of text.
+		Breakpoint not tested
+		Text:LOGO[lcDelimiterSingle][lRow.URL](Carriage return,Linefeed)
+	Else If lRow.IMAGE64<>''
+		Breakpoint not tested
+		Text:LOGO[lcDelimiterSingle][lRow.IMAGE64](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oMEMBER') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oMEMBER ## TYPE, SUBTYPE, CODE
+	If lRow.CODE<>''
+		Breakpoint not tested
+		
+		# Defines a member that is part of the group that this vCard represents. Acceptable values include:
+		#      a "mailto:" URL containing an email address
+		#      a UID which references the member's own vCard
+		#      The KIND property must be set to "group" in order to use this property.
+		Text:MEMBER[lcDelimiterSingle][lRow.CODE]](Carriage return,Linefeed)
+	End If
+End If
+Do irVcardConfig.$cols.$findname('oNICKNAME') Returns liColRef
+If liColRef
+	If irVcardConfig.oNICKNAME<>''
+		Breakpoint not tested
+		
+		Text:NICKNAME[lcDelimiterSingle][irVcardConfig.oNICKNAME]](Carriage return,Linefeed)
+	End If
+End If
+Do irVcardConfig.$cols.$findname('oNOTE') Returns liColRef
+If liColRef
+	If irVcardConfig.oNOTE<>''
+		Breakpoint not tested
+		
+		Text:NOTE[lcDelimiterSingle][irVcardConfig.oNOTE](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oORG') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oORG ## NAME, DIVISION, DEPT
+	If lRow.NAME<>''
+		# The name and optionally the unit(s) of the organization associated with the vCard object. This property is based on the X.520 Organization Name attribute and the X.520 Organization Unit attribute.
+		#      e.g. ORG:Google;GMail Team;Spam Detection Squad
+		Breakpoint not tested
+		
+		Text:ORG[lcDelimiterSingle][lRow.NAME];[lRow.DIVISION];[lRow.DEPT](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oPHOTO') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oPHOTO ## URL, IMAGE64
+	If lRow.URL<>''
+		# An image or graphic of the logo of the organization that is associated with the individual to which the vCard belongs. It may point to an external URL or may be embedded in the vCard as a Base64 encoded block of text.
+		Breakpoint not tested
+		
+		Text:PHOTO[lcDelimiterSingle][lRow.URL](Carriage return,Linefeed)
+	Else If lRow.IMAGE64<>''
+		Breakpoint not tested
+		Text:PHOTO[lcDelimiterSingle][lRow.IMAGE64](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oPRODID') Returns liColRef
+If liColRef
+	If irVcardConfig.oPRODID<>''
+		Breakpoint not tested
+		
+		Text:PRODID[lcDelimiterSingle][irVcardConfig.oPRODID](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oRELATED') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oRELATED ## TYPE, SUBTYPE, CODE
+	If lRow.CODE<>''
+		Breakpoint not tested
+		
+		# Another entity that the person is related to. Acceptable values include:
+		#     a "mailto:" URL containing an email address
+		#     a UID which references the person's own vCard
+		#     e.g.  RELATED;TYPE=friend:urn:uuid:03a0e51f-d1aa-4385-8a53-e29025acd8af
+		Text:RELATED[lcDelimiterMulti]TYPE=[lRow.TYPE]:[lRow.SUBTYPE]:[lRow.CODE](Carriage return,Linefeed)
+	End If
+End If
+Do irVcardConfig.$cols.$findname('oREV') Returns liColRef
+If liColRef
+	If irVcardConfig.oREV<>''
+		Breakpoint not tested
+		
+		Text:REV[lcDelimiterSingle][irVcardConfig.oREV](Carriage return,Linefeed)
+	End If
+End If
+Do irVcardConfig.$cols.$findname('oROLE') Returns liColRef
+If liColRef
+	If irVcardConfig.oROLE<>''
+		# The role, occupation, or business category of the vCard object within an organization.    e.g. ROLE:Executive
+		Breakpoint not tested
+		
+		Text:ROLE[lcDelimiterSingle][irVcardConfig.oROLE](Carriage return,Linefeed)
+	End If
+End If
+
+Do irVcardConfig.$cols.$findname('oSOUND') Returns liColRef
+If liColRef
+	Calculate lRow as irVcardConfig.oSOUND ## URL, IMAGE64
+	If lRow.URL<>''
+		# By default, if this property is not grouped with other properties it specifies the pronunciation of the FN property of the vCard object. It may point to an external URL or may be embedded in the vCard as a Base64 encoded block of text.
+		# e.g. 4.0: SOUND:data:audio/ogg;base64,[base64-data]
+		Breakpoint not tested
+		
+		Text:SOUND[lcDelimiterSingle][lRow.URL](Carriage return,Linefeed)
+	Else If lRow.IMAGE64<>''
+		Breakpoint not tested
+		
+		Text:SOUND[lcDelimiterSingle][lRow.IMAGE64](Carriage return,Linefeed)
+	End If
+End If
+Do irVcardConfig.$cols.$findname('oSOURCE') Returns liColRef
+If liColRef
+	If irVcardConfig.oSOURCE<>''
+		Breakpoint not tested
+		Text:SOURCE[lcDelimiterMulti][irVcardConfig.oSOURCE](Carriage return,Linefeed)
+	End If
+End If
+Do irVcardConfig.$cols.$findname('oXML') Returns liColRef
+If liColRef
+	If irVcardConfig.oXML<>''
+		Breakpoint not tested
+		Text:XML[lcDelimiterMulti][irVcardConfig.oXML](Carriage return,Linefeed)
+	End If
+End If
+
+Text:END:VCARD(Carriage return,Linefeed)
+End text block
+
+Get text block icVcardSpec
+
+Quit method kTrue

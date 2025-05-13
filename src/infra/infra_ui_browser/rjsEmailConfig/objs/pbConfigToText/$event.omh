@@ -1,0 +1,15 @@
+On evClick
+	Calculate icConfigToText as ''
+	Calculate lcDelimCol as kCr
+	For lnColNo from 1 to irCurrentRecord.$colcount step 1
+		Calculate lcColName as irCurrentRecord.$cols.[lnColNo].$name
+		Calculate icConfigToText as con(icConfigToText,pick(icConfigToText<>'','',lcDelimCol),lcColName,lcDelimVal,irCurrentRecord.[lcColName])
+	End For
+	
+	# now the selected language entry
+	Calculate icConfigToText as con(icConfigToText,lcDelimCol)
+	For lnColNo from 1 to ilLanguages.$colcount step 1
+		Calculate lcColName as ilLanguages.$cols.[lnColNo].$name
+		Calculate icConfigToText as con(icConfigToText,pick(icConfigToText<>'','',lcDelimCol),lcColName,lcDelimVal,ilLanguages.[lcColName])
+	End For
+	Do $cinst.$behaviour()

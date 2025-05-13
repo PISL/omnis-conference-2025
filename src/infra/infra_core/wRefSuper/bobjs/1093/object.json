@@ -1,0 +1,33 @@
+{
+	"ident": 1093,
+	"order": 16392,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(kColorBackFill,255)",
+		"backpattern": 15,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "CtrlLabel",
+		"font": 6,
+		"fontsize": 0,
+		"fontstyle": "kPlain",
+		"forecolor": "RGBA(kColorForeFill,255)",
+		"height": 16,
+		"left": 17,
+		"linestyle": 1,
+		"objlink": 131086,
+		"text": "Select LOCAL class:",
+		"textcolor": "kColorWindowText",
+		"top": 35,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 136
+	}
+}

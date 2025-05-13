@@ -1,0 +1,32 @@
+# Breakpoint
+# need this to access irConfigFile
+Set reference lrefTask to $itasks.[tcCurrentLibrary] ## tcCurrentLibrary
+
+# Do pSessionObjRef.$database.$assign(lrefTask.irConfigFile.dbdatabase)
+# Do pSessionObjRef.$port.$assign(lrefTask.irConfigFile.dbport)
+# Do pSessionObjRef.$quotedidentifier.$assign(kFalse)
+
+# Calculate lrConfig as lrefTask.tlDatabases
+Do pSessionObjRef.$database.$assign(lrefTask.irConfigFile.DB)
+Do pSessionObjRef.$port.$assign(lrefTask.irConfigFile.port)
+Do pSessionObjRef.$quotedidentifier.$assign(kFalse)
+Do pSessionObjRef.$options.$assign(con('application_name=Omnis_',sys(1),'_',$clib().$name))
+Do pSessionObjRef.$clearcustomtypes()
+# Do pSessionObjRef.$addcustomtype(65533,'JSON')
+Do pSessionObjRef.$addcustomtype(100000000,'JSONB')
+
+# Do pSessionObjRef.$usetimezone.$assign(kTrue) ## buggers up timestamp without timezone columns !
+
+If sys(2)=17&$ctask.tcCurrentLibrary='HTMLp'&#D<=dat('7-FEB-2024')
+	Do pSessionObjRef.$debuglevel.$assign(4) Returns #F
+	# Do pSessionObjRef.$debugfile.$assign('/Users/robert/Desktop/pgSessionLog.txt') Returns #F
+	Do pSessionObjRef.$debugfile.$assign('~/Desktop/pgSessionLog.txt') Returns #F
+End If
+
+# check for SSL
+If lrefTask.$columnExists(lrefTask.tlDatabases,'UseSSL')
+	Calculate lbSSL as eval(lrefTask.tlDatabases.UseSSL)
+	If lbSSL
+		Do pSessionObjRef.$options.$assign(con(pSessionObjRef.$options,'  sslmode=verify-ca'))
+	End If
+End If

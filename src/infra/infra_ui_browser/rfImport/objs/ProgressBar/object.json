@@ -1,0 +1,59 @@
+{
+	"ident": 1195,
+	"order": 46,
+	"objtype": "kComponent",
+	"componentlib": "jsProg",
+	"componentctrl": "Progress Bar Control",
+	"properties": {
+		"::max": 100,
+		"::value": 0,
+		"active": true,
+		"alpha": 255,
+		"ariadescribedby": "",
+		"arialabel": "",
+		"arialabelledby": "",
+		"backalpha": 128,
+		"backcolor": "kColorWindow",
+		"bordercolor": "RGB(0,187,187)",
+		"borderradius": "2",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"defaultinactiveappearance": true,
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disabledefaultcontextmenu": false,
+		"disablesystemfocus": false,
+		"dropmode": "kAcceptNone",
+		"events": "evCarryOn",
+		"fieldstyle": "",
+		"nexttabobject": "",
+		"objlink": 65567,
+		"preventlayoutanimation": false,
+		"progressanimation": true,
+		"progresscolor": "RGB(153,153,255)",
+		"removefromtaborder": false,
+		"secondarycolor": "kJSThemeColorPrimaryLight",
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"tooltip": "",
+		"userinfo": "",
+		"usesystemappearance": true,
+		"visible": false
+	},
+	"screensizes": [
+		{
+			"name": "kSSZDesktop",
+			"left": 136,
+			"top": 197,
+			"width": 774,
+			"height": 13,
+			"edgefloat": "kEFnone",
+			"dragborder": false,
+			"errortextpos": "kJSErrorTextPosUnder"
+		}
+	]
+}

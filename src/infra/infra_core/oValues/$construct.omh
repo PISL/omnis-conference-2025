@@ -1,0 +1,36 @@
+# 2017-11-30 GRS swapped back to $DefineList() for the VCS - JSON conversion
+If 1=1 ## Studio 8.0.1 bug - losing scope with task
+	Do $DefineList(ilBaseGlobal,'infra.tsysReferenceGlobal') ## tConstants
+	Do $DefineList(ilBaseLocal,'infra.tsysReferenceLocal')
+	Do $DefineList(ilBaseOrg,'infra.tsysReferenceOrg')
+	Do $DefineList(ilBaseUser,'infra.tsysReferenceUser')
+	
+	Do [$ctask.tcCurrentLibrary].$tables.$findname(('tIpAddresses')) Returns lrefClass
+	If lrefClass
+		Do $DefineList(ilIPs,con($ctask.tcCurrentLibrary,'.tIpAddresses'))
+	End If
+Else
+	Do ilBaseGlobal.$definefromsqlclass('infra.tsysReferenceGlobal')
+	Do ilBaseLocal.$definefromsqlclass('infra.tsysReferenceLocal')
+	Do ilBaseOrg.$definefromsqlclass('infra.tsysReferenceOrg')
+	Do ilBaseUser.$definefromsqlclass('infra.tsysReferenceUser')
+	
+	Do ilIPs.$definefromsqlclass('tIpAddresses')
+End If
+
+Calculate irErrorSQL as ilBaseGlobal.irErrorSQL
+
+If clGlobal.$colcount=0
+	# to build up a cache of REFERENCE values when running through WebService
+	# 2023-02-28 switched from copying the instance variables to using schema classes as the task variables will not be accessing the DB
+	Do $DefineList(clGlobal,'infra.ssysReferenceGlobal') ## tConstants
+	Do $DefineList(clLocal,'infra.ssysReferenceLocal')
+	Do $DefineList(clOrganisation,'infra.ssysReferenceOrg')
+	Do $DefineList(clUser,'infra.ssysReferenceUser')
+	
+	# initialise a class case with a comma.  Each requested class is surrounded by a comma.
+	Calculate ccClassesG as ','
+	Calculate ccClassesL as ccClassesG
+	Calculate ccClassesO as ccClassesG
+	Calculate ccClassesU as ccClassesG
+End If

@@ -1,0 +1,6 @@
+# Calculate inCurrentTab as 1
+# Calculate $cinst.$objs.TabControl_ELC.$currenttab as inCurrentTab
+
+Do inherited ## irCurrentRecord
+
+Do $cinst.$setcurfield('ELC_CODE',kTrue)
