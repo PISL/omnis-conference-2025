@@ -1,0 +1,5 @@
+On evClick
+	Calculate ilDurations.$line as pLineNumber
+	Calculate irTopic.TPC_DURN_MINS as ilDurations.RFO_VALUE
+	Do $cinst.$anyModifications()
+	Do $cinst.$behaviour()

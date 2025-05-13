@@ -1,0 +1,5 @@
+Calculate $cinst.$line as 0
+
+While $Loop($cinst)
+	Do $cinst.$DisplayName()
+End While

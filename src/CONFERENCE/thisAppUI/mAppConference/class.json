@@ -1,0 +1,57 @@
+{
+	"classtype": "kMenu",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 30,
+	"designtaskname": "Startup_Task",
+	"nextident": 1030,
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "irefCORETASK",
+			"order": 1,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irefWorkerTask",
+			"order": 4,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:07",
+		"defaulticoncolor": "kColorDefault",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"enabled": true,
+		"external": true,
+		"helpfile": 0,
+		"helptext": "",
+		"inheritedorder": 0,
+		"issupercomponent": false,
+		"moddate": "2019-06-11 15:19:00",
+		"showascheckedout": false,
+		"title": {
+			"type": 0,
+			"calc": "Conference console"
+		},
+		"userinfo": "",
+		"users": "12345678",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

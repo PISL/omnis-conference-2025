@@ -1,0 +1,227 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+Do tlOpenConferences.$search($ref.CF_DATE_FROM<#D&$ref.CF_ADMIN_DATE_TO>=#D,1,0,0,0) Returns lbFound
+If not(lbFound)
+	Do tlOpenConferences.$search($ref.CF_DATE_FROM,1,0,0,0) Returns lbFound
+End If
+If tlOpenConferences.$linecount=1
+	Calculate trCurrentConference as tlOpenConferences.1
+Else If tlOpenConferences.$line>0
+	Calculate trCurrentConference as tlOpenConferences
+End If
+Calculate irCompany as trGroupOrg
+
+Do $DefineList(irDelegate,'tDelegates')
+Do irDelegate.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_EMAIL')
+Do irDelegate.$addDisplayName()
+
+Calculate ilConferences as tlOpenConferences
+# If ilConferences.$linecount>0
+# we could use trCurrentConference to set default line
+# Calculate ilConferences.$line as 1
+# End If
+
+Do ilArrangements.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilArrangements.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilAttendees,'tArrAttendee')
+Do ilAttendees.$addLinkedCols('ARR_DATE,ARR_DAYNO,ARR_STARTTIME,ARR_ENDTIME,ARR_SLOT')
+Do ilAttendees.$addLinkedCols('TPC_TITLE')
+Do ilAttendees.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME')
+Do ilAttendees.$fetch_fk(ilArrangements.ARR_SEQ)
+Calculate irAttendee as ilAttendees
+Calculate ilDelegateSessions as ilAttendees
+
+Do method TranslateText
+
+# do not call $behaviour here because objects on js page to not yet exist
+Calculate incPageLogin as cnPageLogin ## because $behaviour cannot refer to class variables
+
+# how do we cope with server being in UK and clients being in Europe?
+If isnumber(trCurrentConference.VEN_TIMEZONE)
+	Calculate inVenueTimezoneOffset as trCurrentConference.VEN_TIMEZONE
+Else
+	Calculate inVenueTimezoneOffset as 0
+End If
+# changed the following to use VEN_TIMEZONE in place of the browser TZ offset to confound Australian EurOmnis attendees!
+Calculate itServerTimeZone as utctoloc()
+# Calculate itClientTimeZoneToServer as dadd(kMinute,-tWebParameters.JStimezoneOffset,utctoloc())
+Calculate itClientTimeZoneToServer as dadd(kHour,-inVenueTimezoneOffset,utctoloc())
+Calculate idTestDate as #D-itClientTimeZoneToServer ## trParameters
+Calculate idtTestTime as #T-itClientTimeZoneToServer
+
+Do method DefaultSlot
+Do method ShowArrangements
+If inSlot=1&idtTestTime>tim('12:00')
+	# lets look at morning of next day
+	If ilDates.$line<ilDates.$linecount
+		Calculate ilDates.$line as ilDates.$line+1
+	End If
+End If
+
+Do toValues.$initOrg('ARA_CONFIG','CUTOFF_MINS') Returns lrReference
+If lrReference.RFO_SEQ>0&lrReference.RFO_INT>0
+	Calculate inCutoffMinutes as lrReference.RFO_INT
+Else
+	Calculate inCutoffMinutes as 20
+End If
+
+Do toValues.$initOrg('ARA_CONFIG','PRE_START_MINS') Returns lrReference
+If lrReference.RFO_SEQ>0&lrReference.RFO_INT>0
+	Calculate inPreStartMinutes as lrReference.RFO_INT
+Else
+	Calculate inPreStartMinutes as 0 ## 12*60 = 12 hours beforehand
+End If
+
+Do toValues.$initOrg('ARA_CONFIG','POST_START_MINS') Returns lrReference
+If lrReference.RFO_SEQ>0&lrReference.RFO_INT>0
+	Calculate inPostStartMinutes as lrReference.RFO_INT
+Else
+	Calculate inPostStartMinutes as 30
+End If
+
+Do toValues.$initOrg('ARA_CONFIG','PRE_TODAY_MINS') Returns lrReference
+If lrReference.RFO_SEQ>0&lrReference.RFO_INT>0
+	Calculate inPreDayOfEventMinutes as lrReference.RFO_INT
+Else
+	Calculate inPreDayOfEventMinutes as 0 ## PRE_TODAY_MINS will be superceded by PRE_START_MINS
+End If
+
+# inPreDayOfEventMinutes and inPreStartMinutes are mutually exclusive values.
+# These values determine when someone can register for a sessionbefore the event actually starts.
+# If inPreDayOfEventMinutes has a value e.g. 180 then this is the number of munutes before the day of event starts that a delegate can register. ## e.g. 21:00 on the day before.
+# If inPreStartMinutes has a value e.g. 12*60=720 then delegate can register this many minutes (12 hours) before an event starts.
+# There is no sense in having both values so here we enforce mutual exclusivity. ## With inPreTodayMinutes taking precedence.
+If inPreDayOfEventMinutes>0
+	Calculate inPreStartMinutes as 0
+End If
+
+# How many minutes after an event can a delegate provide feedback? ## It used to be any time on day of event after one had attended.
+# But some delegates wanted to provide feedback throughout conference.
+Do toValues.$initOrg('ARA_CONFIG','FEEDBACK_MINS') Returns lrReference
+If lrReference.RFO_SEQ>0&lrReference.RFO_INT>0
+	Calculate inFeedbackMinutes as lrReference.RFO_INT
+Else
+	Calculate inFeedbackMinutes as 0 ## feedback disabled
+End If
+
+Do method initFeedbackValues
+
+Do $DefineList(ilAttFeedback,'tAttendeeFeedback')
+Do ilAttFeedback.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_EMAIL')
+Do $DefineList(irFeedback,'tAttendeeFeedback')
+Do toValues.$initOrg('SPKR_FBACK') Returns ilFeedback
+Do ilFeedback.$cols.$add('score',kCharacter,kSimplechar,50)
+Do ilFeedback.$cols.$add(irFeedback.AFB_SEQ)
+Do ilFeedback.$cols.$add(irFeedback.AFB_SCORE)
+# Calculate ilFeedback.AFB_SEQ as irFeedback.AFB_SEQ
+# Calculate ilFeedback.AFB_SCORE as irFeedback.AFB_SCORE
+# Calculate ilFeedback.score as pick(ilFeedback.AFB_SCORE,'','poor','good','very good','excellent')
+# Calculate ilFeedback.score as ilFeedbackValues.desc
+#
+
+# do we allow delegates to rate sessions?
+# 3 RFO_ records determining this with class of ARACONFIG
+Calculate ibDisplayFeedbackConfig as kFalse
+Do lrReference.$clear()
+Do toValues.$initOrg('ARACONFIG','FEEDBACK') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Calculate ibDisplayFeedbackConfig as kTrue
+	Do toValues.$initOrg('ARA_RATING') Returns ilRatings
+	If ilRatings.$linecount>0
+		Do ilRatings.$addbefore(1,#NULL,#NULL,#NULL,'no rating') ## provide a null line to "undo" comment
+	End If
+End If
+
+Do lrReference.$clear()
+Do toValues.$initOrg('ARACONFIG','COMMENT') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Calculate ibDisplayComment as kTrue
+End If
+
+Do lrReference.$clear()
+Do toValues.$initOrg('ARACONFIG','ANONYMOUS') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Calculate ibDisplayAnonymous as kTrue
+End If
+
+# code is here but it doesn't actually work as pbCancel runs on client and cannot refer to instance variable. ## For some stupid reason!!
+Do lrReference.$clear()
+Do toValues.$initOrg('RF_SESSIONS','PB_CANCEL') Returns lrReference
+If lrReference.RFO_CHAR<>''
+	Calculate icCancelURL as lrReference.RFO_CHAR
+End If
+
+Calculate icFormHeading as con($cell(clLabels,'objName','SA_Heading','label'))
+Calculate icFormHeading as con('View sessions and register for different streams.')
+
+Calculate icFormIntro as con($cell(clLabels,'objName','SA_Intro','label'))
+If inPreDayOfEventMinutes>0
+	Calculate icFormIntro as con('You can register for or de-register from sessions from ',rnd(inPreDayOfEventMinutes/60,1),' hours before date of event and up to )the end of the conference.')
+Else If inPreStartMinutes>0
+	Calculate icFormIntro as con('You can register for or de-register from sessions ',rnd(inPreStartMinutes/60,1),' hours before and up to ',inCutoffMinutes,' minutes after session starts.')
+Else
+	
+End If
+# some controls are hidden depending on the device and orientation
+# If $cinst.$screensize=kSSZDesktop
+# everything visible
+# JS Migration message -- Following line needs to be updated due to use of an old constant
+# Else If $cinst.$screensize=kSSZjs320x480Landscape ## hand held
+# simulating date & time for testing
+# Calculate $cinst.$objs.PagedPane.$objs.label_SimDate.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.idDate.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.idtTestTime.$visible as kFalse
+# selecting what session info to display ## only abstract
+# Calculate $cinst.$objs.PagedPane.$objs.label_ArrInfo.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.inDisplaySessionText.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.bg_box_SessionInfo.$visible as kFalse
+# who else has registered
+# Calculate $cinst.$objs.PagedPane.$objs.ilAttendees.$visible as kTrue ## different from Portrait
+#
+# JS Migration message -- Following line needs to be updated due to use of an old constant
+# Else If $cinst.$screensize=kSSZjs320x480Portrait ## hand held
+# simulating date & time for testing
+# Calculate $cinst.$objs.PagedPane.$objs.label_SimDate.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.idDate.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.idtTestTime.$visible as kFalse
+# selecting what session info to display ## only abstract
+# Calculate $cinst.$objs.PagedPane.$objs.label_ArrInfo.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.inDisplaySessionText.$visible as kFalse
+# Calculate $cinst.$objs.PagedPane.$objs.bg_box_SessionInfo.$visible as kFalse
+# who else has registered
+# Calculate $cinst.$objs.PagedPane.$objs.ilAttendees.$visible as kFalse
+#
+# JS Migration message -- Following line needs to be updated due to use of an old constant
+# Else If $cinst.$screensize=kSSZjs768x1024Landscape ## tablet
+# everything same as desktop
+# JS Migration message -- Following line needs to be updated due to use of an old constant
+# Else If $cinst.$screensize=kSSZjs768x1024Portrait ## tablet
+# everything same as desktop
+# End If
+
+Do tWebParameters.$cols.$findname('URLparams') Returns liColRef
+If liColRef
+	Do OJSON.$jsontolistorrow(tWebParameters.URLparams,lcTemp) Returns lrParams
+	Calculate icDGreference as lrParams.id
+	Calculate icSurname as upp(lrParams.name)
+	Do method Identify
+	If ibPrivileged ## user is privileged so preconference testing is allowed
+		Calculate idTestDate as dat(lrParams.date,'yMD')
+		Calculate idtTestTime as tim(lrParams.time,'HN')
+	End If
+Else
+	Do $cinst.$behaviour()
+End If
+
+# if we're developing, set the timeout to a reasonable value - 2 hours
+If sys(2)=17
+	Do $setTimeout(120)
+End If
+
+# open the push connection to allow the server to warn us when we have timed out
+Do $ctask.$setForm($cinst) ## give the remote task a handle on us
+Do $cinst.$clientcommand('openpush',row()) ## allow the server to call us

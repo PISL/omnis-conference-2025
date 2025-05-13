@@ -1,0 +1,6 @@
+If inMinutesBreak<60
+	# hits are broken down into minute groupings, not hourly.
+	# do not print the averages
+Else
+	Do default
+End If

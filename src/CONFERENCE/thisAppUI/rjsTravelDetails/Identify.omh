@@ -1,0 +1,60 @@
+Calculate icDisplayMessage as ''
+Calculate icDGreference as replaceall(icDGreference,' ','')
+Do $cinst.$validation() Returns lbProceed
+If lbProceed
+	Do irDelegate.$clear() Returns lbOK
+	If mid(upp(icDGreference),1,2)='DG' ## this will be recorded in CBY & MBY columns
+		Calculate lcTemp as mid(icDGreference,3,9) ## extra spaces will be ignored
+		Do irDelegate.$fetchForConference(ilConferences.CF_SEQ,,con('DG_SEQ = ',lcTemp)) Returns lbOK
+	Else If isnumber(icDGreference)
+		Do irDelegate.$fetchForConference(ilConferences.CF_SEQ,,con('DG_SEQ = ',icDGreference)) Returns lbOK
+	End If
+	
+	If irDelegate.DG_SEQ>0
+		# is there a match between DG reference and surname?
+		If upp(irDelegate.PSN_SURNAME)=icSurname
+			# good
+			Do method RecordLogin
+			
+			# does the DG reference match the current Conference?
+			If irDelegate.DG_CF_REF=ilConferences.CF_SEQ
+				# all is good
+				Do irDelegate.$DisplayName()
+				
+				Do irTravelDetails.$fetch_fk(irDelegate.DG_SEQ)
+				Do ilMusic.$search($ref.RFO_VALUE=irTravelDetails.TP_MUSIC_PLAYER,1,0,0,0)
+				Calculate irTravelDetails.dayOfWeek as jst(irTravelDetails.TP_ARR_DATE,'D:V')
+				Calculate irOriginalTravelInfo as irTravelDetails
+				
+				# PAX record is link between DG and Diet - it will never change on this form
+				Do irPAX.$fetch_fk(irDelegate.DG_SEQ)
+				If irPAX.PX_SEQ>0
+					Do irDietDG.$fetch_fk(irPAX.PX_SEQ)
+					Calculate irOriginalDietDG as irDietDG
+				End If
+				
+				Calculate inCurrentPage as 2
+				Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentPage
+				
+				Calculate irDelegateOrig as irDelegate ## delegate may provide feedback - need this to see if things have changed
+				
+				Do irPAX.$fetch_fk(irDelegate.DG_SEQ,'PX_DG_REF'," PX_ROLE in ( 'DG', 'DELEGATE' ) ")
+				Calculate irOriginalPaxDG as irPAX
+				Do irDietDG.$fetch_fk(irPAX.PX_SEQ)
+				Calculate irOriginalDietDG as irDietDG
+				
+				Do irSpouse.$fetch_fk(irDelegate.DG_SEQ,'PX_DG_REF'," PX_ROLE = 'SPOUSE' ")
+				Calculate irOriginalSpouse as irSpouse
+				Do irDietSpouse.$fetch_fk(irSpouse.PX_SEQ)
+				Calculate irOriginalDietSpouse as irDietSpouse
+			Else
+				Calculate icDisplayMessage as con('The delegate / surname combination does not match conference ',ilConferences.CF_TITLE)
+			End If
+		Else
+			Calculate icDisplayMessage as con('The delegate / surname combination does not match.')
+		End If
+	Else
+		Calculate icDisplayMessage as 'identification not verified'
+	End If
+End If
+Do $cinst.$behaviour()

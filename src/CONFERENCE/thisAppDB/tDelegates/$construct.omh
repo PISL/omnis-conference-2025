@@ -1,0 +1,7 @@
+Calculate icPrefix as 'DG_'
+Calculate icPrimarykey as 'DG_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'DG_CF_REF'
+# Calculate icForeignKey as 'DG_PSN_REF'
+
+Do inherited

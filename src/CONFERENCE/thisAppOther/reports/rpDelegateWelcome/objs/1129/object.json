@@ -1,0 +1,35 @@
+{
+	"ident": 1129,
+	"order": 18,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 8.113,
+		"left": 0.0,
+		"lineno": 76,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "*   You can only register for sessions on the day they occur and from 21:00 the night before.\r\r*   You cannot register for multiple sessions in the same time slot.\r\r*   You can de-register from a session to change your mind.\r\r*   You can de-register and register for sessions up to 30 minutes after the session starts.\r\r*   You can provide feedback for sessions from 30 minutes after the session starts until \r     the end of the day.\r\r*   Any per session delegate limit will be enforced on the system.\r\r*   The timeout for inactivity is only 2 minutes."
+		},
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 18.273
+	}
+}

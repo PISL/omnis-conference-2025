@@ -1,0 +1,120 @@
+On evClick
+	Calculate $cobj.$errortext as ''
+	Calculate icDisplayMessage as ''
+	Calculate irTopic as ilTopics
+	
+	# Do method arrangementsCheck
+	Do ilArrangements.$search(0) ## highlight the sessions for this topic from list of all topics for this speaker
+	Do ilArrangements.$search($ref.ARR_TPC_REF=ilTopics.TPC_SEQ,1,0,1,0)
+	
+	# added RSM21-JAN-20
+	# After "Nominated topics" is selected from Tools menu
+	# we have a list of topics from various persons which are yet to be assigned to the Conference
+	# using sTopicConferenceLink.  Instead of clicking on ilDisplayList to display Topics
+	# we need to click on Topic to get Person (who may not be a Delegate yet)
+	If irTopic.PSN_SEQ<>ilDisplayRecords.DG_PSN_REF
+		Do ilDisplayRecords.$search($ref.DG_PSN_REF=irTopic.PSN_SEQ,1,0,0,0)
+	End If
+	
+	Do $cinst.$behaviour()
+	
+On evExecuteContextMenu
+	# Breakpoint {pClickedField  pCommandID  pEventCode  pPosition} ## q
+	If ilSearch1.CF_DATE_TO>=#D
+		# the conference / event is open so arrangements can be made
+	Else
+		Calculate $cobj.$errortext as 'You cannot make arrangements as the selected conference is in the past.'
+		Quit method
+	End If
+	If not(ilTopics.checked)
+		Calculate $cobj.$errortext as 'That topic has not been scheduled for the selected conference.'
+		Quit method
+	End If
+	
+	Calculate lrArrangement as ilArrangements
+	Do lrArrangement.$clear()
+	Do lrArrangement.$defaults()
+	Calculate lrArrangement.ARR_CF_REF as ilSearch1.CF_SEQ
+	Calculate lrArrangement.ARR_TPC_REF as ilTopics.TPC_SEQ
+	
+	If pCommandID=1002 ## MoveTopicToPerson
+		# ilTopics
+		Calculate $cinst.$objs.PagedPane.$objs.label_NewPerson.$text as con('MOVE topic "',mid(irTopic.TPC_TITLE,1,15),'" to other speaker:')
+		Calculate icMode as 'MT' ## move topic
+		
+	Else If pCommandID=1003 ## CloneTopicToPerson
+		Calculate $cinst.$objs.PagedPane.$objs.label_NewPerson.$text as con('COPY topic "',mid(irTopic.TPC_TITLE,1,15),'" to other speaker:')
+		Calculate icMode as 'CT' ## clone topic
+		
+		# 1004 is a blank line
+	Else If pCommandID=1005 ## arrangement day 1 AM
+		Do method arrangementFree (1,ldtStartAM,ldtEndAM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1006 ## arrangement day 1 PM
+		Do method arrangementFree (1,ldtStartPM,ldtEndPM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1015 ## arrangement day 1 evening
+		Do method arrangementFree (1,ldtStartEvening,ldtEndEvening,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1007 ## arrangement day 2 AM
+		Do method arrangementFree (2,ldtStartAM,ldtEndAM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1008 ## arrangement day 2 PM
+		Do method arrangementFree (2,ldtStartPM,ldtEndPM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1017 ## arrangement day 2 evening
+		Do method arrangementFree (2,ldtStartEvening,ldtEndEvening,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1009 ## arrangement day 3 AM
+		Do method arrangementFree (3,ldtStartAM,ldtEndAM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1010 ## arrangement day 3 PM
+		Do method arrangementFree (3,ldtStartPM,ldtEndPM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1019 ## arrangement day 3 evening
+		Do method arrangementFree (3,ldtStartEvening,ldtEndEvening,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1011 ## arrangement day 4 AM
+		Do method arrangementFree (4,ldtStartAM,ldtEndAM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1012 ## arrangement day 4 PM
+		Do method arrangementFree (4,ldtStartPM,ldtEndPM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1022 ## arrangement day 4 evening
+		Do method arrangementFree (4,ldtStartEvening,ldtEndEvening,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1013 ## arrangement day 5 AM
+		Do method arrangementFree (5,ldtStartAM,ldtEndAM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1014 ## arrangement day 5 PM
+		Do method arrangementFree (5,ldtStartPM,ldtEndPM,lrArrangement) Returns lbInsert
+		
+	Else If pCommandID=1023 ## arrangement day 1 evening
+		Do method arrangementFree (5,ldtStartEvening,ldtEndEvening,lrArrangement) Returns lbInsert
+		
+	End If
+	If lbFound
+		# Calculate icDisplayMessage as 'That timeslot is already scheduled.'
+		Calculate $cobj.$errortext as 'That timeslot is already scheduled.'
+	Else If not(lbInsert)
+		Calculate $cobj.$errortext as 'That timeslot is out of bounds.'
+	End If
+	If lbInsert
+		Do lrArrangement.$insert() Returns lbOK
+		If lbOK
+			# refresh
+			Calculate icDisplayMessage as ''
+			Do ilArrangements.$clear()
+			Do ilArrangements.$fetchTopicSessions(ilSearch1.CF_SEQ,ilTopics.TPC_SEQ)
+			While $Loop(ilArrangements)
+				Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',kCr),ilArrangements.DisplayName)
+			End While
+		End If
+	End If
+	If icMode<>''
+		Calculate ilNewPerson as ilDisplayRecords
+		# remove current person so they cannot be selected
+		Do ilNewPerson.$remove(ilNewPerson.$line)
+	End If
+	
+	Do $cinst.$behaviour()

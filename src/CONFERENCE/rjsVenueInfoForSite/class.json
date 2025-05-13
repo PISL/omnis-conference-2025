@@ -1,0 +1,225 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 35,
+	"superclass": "infra.rjsInfraBlank",
+	"designtaskname": "rtRegistration",
+	"nextident": 1287,
+	"lastgroupident": 16,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 5,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnPageConfirm",
+			"order": 4,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnPageLogin",
+			"order": 1,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnPageRoles",
+			"order": 2,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnPageThankYou",
+			"order": 3,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "3"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "icAddress",
+			"order": 15,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icFormIntro",
+			"order": 12,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 1000,
+			"desc": "overidden to make longer"
+		},
+		{
+			"name": "icIcsFileContents",
+			"order": 4,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "iFileName",
+			"order": 8,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iJSFileName",
+			"order": 5,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iJSFileRow",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iJSMediaType",
+			"order": 6,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iJSVariableName",
+			"order": 7,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "ilVenues",
+			"order": 13,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentPane",
+			"order": 20,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "irCalendar",
+			"order": 3,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irCompany",
+			"order": 28,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(2,29,60)",
+		"backpattern": 1,
+		"cancelkeyobject": "pbCancel",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2023-12-20 10:54:17",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 798,
+		"menulineheight": 0,
+		"moddate": "2023-12-20 14:34:55",
+		"okkeyobject": "pbIdentify",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 0,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1451,
+		"height": 1215,
+		"320": {
+			"height": 1200,
+			"padding": 2
+		},
+		"375": {
+			"height": 1200,
+			"padding": 2
+		},
+		"480": {
+			"height": 1200,
+			"padding": 2
+		},
+		"667": {
+			"height": 800,
+			"padding": 2
+		},
+		"768": {
+			"height": 800,
+			"padding": 2
+		},
+		"1024": {
+			"height": 800,
+			"padding": 2
+		},
+		"1700": {
+			"height": 800,
+			"padding": 2
+		}
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"ident": 1078,
+	"order": 5,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "unit price",
+		"align": "kRightJst",
+		"backcolor": "RGB(80,0,0)",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 5,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 8.118,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"rowid": "MB_TO",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 2.047
+	}
+}

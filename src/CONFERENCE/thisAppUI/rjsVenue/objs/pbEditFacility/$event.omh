@@ -1,0 +1,6 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Do irFacility.$fetch_pk() ## re-read from db
+	Calculate icMode as 'EF' ## edit facility
+	
+	Do $cinst.$behaviour()

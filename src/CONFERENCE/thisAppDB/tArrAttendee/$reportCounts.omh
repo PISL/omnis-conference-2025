@@ -1,0 +1,33 @@
+Do lrData.$cols.$add('countAll',kInteger,k32bitint)
+Do lrData.$cols.$add('countThisUser',kInteger,k32bitint)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where  ARA_ARR_REF = @[pnARR_SEQ]
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountAll) Returns lbOK
+
+Begin statement
+Sta:select  count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where  ARA_ARR_REF = @[pnARR_SEQ]
+Sta:and    ARA_DG_REF = @[pnUSR_REF]
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountThisUser) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Calculate lrData.countAll as lnCountAll
+Calculate lrData.countThisUser as lnCountThisUser
+
+Quit method lrData

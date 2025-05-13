@@ -1,0 +1,321 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 81,
+	"superclass": "infra.rjsInfraBlank",
+	"designtaskname": "rtSessions",
+	"nextident": 1074,
+	"lastgroupident": 0,
+	"cvardefs": [
+		{
+			"name": "cnPageGeneralFeedback",
+			"order": 5,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "5"
+		},
+		{
+			"name": "cnPageLogin",
+			"order": 1,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnPageRoles",
+			"order": 2,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnPageSession",
+			"order": 4,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnPageSessionFeedback",
+			"order": 3,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "4"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ibDataModified",
+			"order": 11,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibDisplayShuttleInfo",
+			"order": 22,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibSeenDepartureTab",
+			"order": 9,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibSeenDietTab",
+			"order": 25,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icCancelURL",
+			"order": 12,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icDGreference",
+			"order": 16,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10
+		},
+		{
+			"name": "icDisplayMessage",
+			"order": 19,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icShuttleServiceInfo",
+			"order": 18,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icSurname",
+			"order": 21,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "ilConferences",
+			"order": 14,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMusic",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "incPageLogin",
+			"order": 20,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentPage",
+			"order": 24,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "irCompany",
+			"order": 26,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDelegate",
+			"order": 23,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDelegateOrig",
+			"order": 13,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDietDG",
+			"order": 7,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDietSpouse",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irOriginalDietDG",
+			"order": 10,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irOriginalDietSpouse",
+			"order": 4,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irOriginalPaxDG",
+			"order": 6,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irOriginalSpouse",
+			"order": 5,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irOriginalTravelInfo",
+			"order": 17,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPAX",
+			"order": 8,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irSpouse",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTravelDetails",
+			"order": 15,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2017-10-30 11:44:12",
+		"currentlayoutbreakpoint": 1700,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 69,
+		"menulineheight": 0,
+		"moddate": "2023-01-26 10:59:57",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 6,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1283,
+		"height": 1058,
+		"320": {
+			"height": 568
+		},
+		"375": {
+			"height": 667
+		},
+		"480": {
+			"height": 440
+		},
+		"667": {
+			"height": 440
+		},
+		"768": {
+			"height": 1024
+		},
+		"1024": {
+			"height": 768,
+			"padding": 2
+		},
+		"1700": {
+			"height": 800,
+			"padding": 2
+		}
+	}
+}

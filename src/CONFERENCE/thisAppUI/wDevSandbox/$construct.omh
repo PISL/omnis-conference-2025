@@ -1,0 +1,9 @@
+# Enter your initialization code here
+Do method resetSearch
+
+Do $defineList(ilOrganisations,'infra.tentGroupOrganisations')
+Do ilOrganisations.$fetch_all()
+Do ilOrganisations.$search($ref.GO_NAME_SHORT='OmnisWorld',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate trGroupOrg as ilOrganisations
+End If

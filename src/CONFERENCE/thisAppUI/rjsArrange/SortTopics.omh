@@ -1,0 +1,7 @@
+If inCurrentTopicSort=0
+	Do ilTopics.$sort($ref.TPC_TITLE,0)
+Else If inCurrentTopicSort=1
+	Do ilTopics.$sort($ref.PSN_SURNAME,0)
+Else
+	Breakpoint
+End If

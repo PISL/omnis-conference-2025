@@ -1,0 +1,95 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+
+Calculate irCompany as trGroupOrg
+
+# get the exit/cancel URL
+Do toValues.$initInherited('URL','EXIT') Returns lrReference
+If not(isclear(lrReference.RFO_CHAR))
+	Calculate icURLexit as lrReference.RFO_CHAR
+End If
+
+# Calculate ilConferences as tlOpenConferences
+Do $defineList(ilConferences,'tConference')
+Do ilConferences.$fetchLatest(3) ## future (current), previous, 2nd previous  Adds Venue info
+Do ilConferences.$addDisplayName()
+Do ilConferences.$sort($ref.CF_DATE_FROM,1) ## most recent at top of list
+
+If ilConferences.$linecount>0
+	Calculate ilConferences.$line as 0
+	While $Loop(ilConferences)
+		Do ilConferences.$DisplayName(4)
+	End While
+	
+	# list of conferences could display a conference with no Arrangements (a future conference)
+	# so identify conference with most desirable content
+	Do ilConferences.$search($ref.countArrangements>5,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		# we could use trCurrentConference to set default line
+		Calculate ilConferences.$line as 1
+	End If
+End If
+
+If ilConferences.$linecount>20
+	Calculate ilCities as ilConferences
+	Do ilCities.$cols.VEN_TOWN.$removeduplicates(kTrue)
+	If ilCities.$linecount>10
+		Calculate $cinst.$objs.PagedPane.$currentpage as 5 ## allows user to filter available conference choice by city
+	End If
+	Do ilCities.$cols.$findname('VEN_TOWN') Returns liColRef
+	Calculate $cinst.$objs.ilCities.$listcolumn as liColRef.$ident
+End If
+
+Do ilConferences.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.ilConferences.$listcolumn as liColRef.$ident
+End If
+
+Do ilDay1.$cols.$add('AMspeaker',kCharacter,kSimplechar,100)
+Do ilDay1.$cols.$add('AMtitle',kCharacter,kSimplechar,255)
+Do ilDay1.$cols.$add('AMdesc',kCharacter,kSimplechar,1000)
+Do ilDay1.$cols.$add('AMfull',kCharacter,kSimplechar,10000)
+Do ilDay1.$cols.$add('AMtime',kCharacter,kSimplechar,10)
+
+Do ilDay1.$cols.$add('PMspeaker',kCharacter,kSimplechar,100)
+Do ilDay1.$cols.$add('PMtitle',kCharacter,kSimplechar,255)
+Do ilDay1.$cols.$add('PMdesc',kCharacter,kSimplechar,1000)
+Do ilDay1.$cols.$add('PMfull',kCharacter,kSimplechar,10000)
+Do ilDay1.$cols.$add('PMtime',kCharacter,kSimplechar,10)
+
+Do ilDay1.$cols.$add('EVEspeaker',kCharacter,kSimplechar,100)
+Do ilDay1.$cols.$add('EVEtitle',kCharacter,kSimplechar,255)
+Do ilDay1.$cols.$add('EVEdesc',kCharacter,kSimplechar,1000)
+Do ilDay1.$cols.$add('EVfull',kCharacter,kSimplechar,10000)
+Do ilDay1.$cols.$add('EVEtime',kCharacter,kSimplechar,10)
+
+Calculate ilDay2 as ilDay1
+Calculate ilDay3 as ilDay1
+Calculate ilDay4 as ilDay1
+Calculate ilDay5 as ilDay1
+
+Do iRowDays.$cols.$add('day1',kDate,kDate2000)
+Do iRowDays.$cols.$add('day2',kDate,kDate2000)
+Do iRowDays.$cols.$add('day3',kDate,kDate2000)
+Do iRowDays.$cols.$add('day4',kDate,kDate2000)
+Do iRowDays.$cols.$add('day5',kDate,kDate2000)
+
+Calculate inDayHighlight as 1
+
+Do method fetchArrangements
+
+Do method TranslateText
+
+Calculate $cinst.$objs.label_SelectEvent.$visible as ilConferences.$linecount>1
+Calculate $cinst.$objs.ilConferences.$visible as ilConferences.$linecount>1
+
+# if we're developing, set the timeout to a reasonable value - 2 hours
+If sys(2)=17
+	Do $setTimeout(120)
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

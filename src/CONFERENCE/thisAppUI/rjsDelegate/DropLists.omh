@@ -1,0 +1,6 @@
+Do ilPersons.$search($ref.PSN_SEQ=irCurrentRecord.DG_PSN_REF,1,0,0,0)
+Do ilStatus.$search($ref.RFO_VALUE=irCurrentRecord.DG_STATUS,1,0,0,0)
+Do ilOccupancy.$search($ref.RFO_VALUE=irCurrentRecord.DG_OCCUPANCY,1,0,0,0)
+Do ilWhoIsPaying.$search($ref.EO_SEQ=irCurrentRecord.DG_EO_REF,1,0,0,0)
+Do ilRoles.$search($ref.RFO_VALUE=irCurrentRecord.DG_ROLE,1,0,0,0)
+Do ilCountries.$search($ref.REF_VALUE=irCurrentRecord.DG_COUNTRY,1,0,0,0)

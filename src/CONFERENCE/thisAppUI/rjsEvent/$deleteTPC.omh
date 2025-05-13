@@ -1,0 +1,12 @@
+# callback method from clientmessage - Yes
+Do irTopic.$delete_pk() Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as irTopic.irErrorSQL.NativeErrorText
+Else
+	Do ilTopics.$remove(ilTopics.$line)
+	Calculate ilTopics.$line as 0
+	Do irTopic.$clear()
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

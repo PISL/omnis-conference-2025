@@ -1,0 +1,6 @@
+Calculate icPrefix as 'ARR_'
+Calculate icPrimarykey as 'ARR_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'ARR_CF_REF'
+
+Do inherited

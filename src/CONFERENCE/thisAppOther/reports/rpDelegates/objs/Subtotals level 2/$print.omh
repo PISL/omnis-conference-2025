@@ -1,0 +1,5 @@
+# if there is a non standard sort order then suppress this section
+If irSortOption.sortCode=''
+	# standard
+	Do default
+End If

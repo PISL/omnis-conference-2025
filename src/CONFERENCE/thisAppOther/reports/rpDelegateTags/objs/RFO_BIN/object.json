@@ -1,0 +1,36 @@
+{
+	"ident": 1087,
+	"order": 9,
+	"objtype": "kPictureobj",
+	"properties": {
+		"alt": "",
+		"calculated": false,
+		"componentinfo": {
+
+		},
+		"dataname": "irLogo.RFO_BIN",
+		"desgroup": 0,
+		"deslock": false,
+		"effect": "kBorderNone",
+		"fontextra": 0,
+		"height": 1.905,
+		"horzdpi": 0,
+		"keepaspectratio": false,
+		"left": 0.48,
+		"lineno": 6,
+		"lineoffset": 0.0,
+		"nolineifempty": false,
+		"noreload": false,
+		"noscale": false,
+		"printontop": false,
+		"rawpictformat": "JPEG",
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "",
+		"totalsifnoline": false,
+		"userinfo": "",
+		"vertdpi": 0,
+		"visible": true,
+		"width": 4.572
+	}
+}

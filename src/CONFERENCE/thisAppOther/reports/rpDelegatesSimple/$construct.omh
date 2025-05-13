@@ -1,0 +1,51 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate irSortOption as prSortRow
+Calculate ilOccupancy as plOccupancy
+
+Calculate icReportTitle as con('Delegates (simple) as at ',jst(#D,'D:D m Y'),' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+Calculate icSummary as pcSummary
+
+# there are sub totals on level 1 and level 2
+Calculate icSortTitle as prSortRow.sortName
+If irSortOption.sortCode='PSN_SURNAME'
+	Do $cinst.$sorts.$add(nam(ilData.SortName)) Returns liSortRef
+	Calculate liSortRef.$subtotals as kFalse
+	
+	Do ilData.$sort($ref.SortName,0)
+	
+Else If irSortOption.sortCode='DG_REG_DATE'
+	Do $cinst.$sorts.$add(nam(ilData.month)) Returns liSortRef ## print a blank line on change of month
+	Calculate liSortRef.$subtotals as kTrue
+	Do $cinst.$sorts.$add(nam(ilData.DG_REG_DATE)) Returns liSortRef
+	Calculate liSortRef.$subtotals as kFalse
+	Do $cinst.$sorts.$add(nam(ilData.SortName)) Returns liSortRef
+	Calculate liSortRef.$subtotals as kFalse
+	
+	Do ilData.$sort($ref.DG_REG_DATE,0,$ref.SortName,0)
+	
+Else
+	Do $cinst.$sorts.$add(nam(ilData.DG_STATUS)) Returns liSortRef
+	Calculate liSortRef.$subtotals as kTrue
+	Do $cinst.$sorts.$add(nam(ilData.DG_OCCUPANCY)) Returns liSortRef
+	Calculate liSortRef.$subtotals as kTrue
+	Do $cinst.$sorts.$add(nam(ilData.SortName)) Returns liSortRef
+	
+	Do ilData.$sort($ref.DG_STATUS,1,$ref.DG_OCCUPANCY,0,$ref.SortName,0)
+End If
+
+# If pnPrintDestination=2
+# Do toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SortName,DG_REG_DATE,DG_OCCUPANCY,DG_GROUP,DG_STATUS,DG_EMAIL_INVOICE_SENT,DG_EMAIL_TRAVEL_SENT,DG_ROOM_ASSIGNMENT,TotalDue,TotalReceived,FOH_INV_NO,countSpouse,RoomRequirement') Returns lcTextBlock
+# Calculate prefText as lcTextBlock
+# Do ilData.$clear()
+# Do ilData.$add() ## Print manager needs something to print
+# End If
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

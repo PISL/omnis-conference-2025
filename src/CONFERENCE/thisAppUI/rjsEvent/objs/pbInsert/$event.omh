@@ -1,0 +1,8 @@
+On evClick
+	If inCurrentTab=cnConfInfo
+		Do $cinst.$clientNoYesMsg(icWarnDuplicateText,icWarnDuplicateTitle,'','$InsertCR')
+	Else If inCurrentTab=cnConfPriceRules
+		Do method PricingRuleAdd
+		
+		Do $cinst.$insertCR()
+	End If

@@ -1,0 +1,96 @@
+Do $DefineList(llPAX,'tPAX')
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do llPAX.$clear()
+	Do llPAX.$fetch_fk(ilData.DG_SEQ)
+	If llPAX.$linecount>0
+		If llPAX.$linecount>1
+			# Breakpoint
+		End If
+		While $Loop(llPAX)
+			If llPAX.$line>1
+				# add another line to ilData to reflect the extra person checking in
+				Do ilData.$addafter(ilData.$line)
+				Calculate ilData.$line as ilData.$line+1
+				Calculate ilData.DG_STATUS as llPAX.PX_ROLE ## SPOUSE typically
+				Calculate ilData.DG_OCCUPANCY as ilData.[ilData.$line-1].DG_OCCUPANCY
+				Calculate ilData.DG_GROUP as ilData.[ilData.$line-1].DG_GROUP
+				Calculate ilData.DG_ROOM_ASSIGNMENT as ilData.[ilData.$line-1].DG_ROOM_ASSIGNMENT
+				Calculate ilData.DG_COUNTRY as ilData.[ilData.$line-1].DG_COUNTRY
+				Calculate ilData.PSN_SURNAME as ilData.[ilData.$line-1].PSN_SURNAME
+				If llPAX.PX_NAME<>''
+					Calculate ilData.PSN_FIRST_NAME as llPAX.PX_NAME
+				Else
+					Calculate ilData.PSN_FIRST_NAME as low(llPAX.PX_ROLE)
+				End If
+				Calculate ilData.SectionHeading as ilData.[ilData.$line-1].SectionHeading
+				Calculate ilData.SortName as con(ilData.[ilData.$line-1].SortName,llPAX.PX_ROLE) ## make sure this comes after DELEGATE
+				
+				Do ilData.$DisplayName()
+				Calculate ilData.DisplayName as con(ilData.DisplayName,' *')
+			End If
+			
+			Calculate lbMealOrAccommodation as 0
+			# the logic behind PAX day numbering is peculiar ## but it has a logic!
+			# The day number represents the day upon which the person would be BILLED for the item.
+			# In the case of a meal it is the day the meal was incurred.
+			# In the case of Accommodation (NIGHT) the bill is incurred on a Monday, meaning the guest arrived the day before, Sunday.
+			For lnDayArrive from 0 to 6 step 1
+				If llPAX.PX_[lnDayArrive]_NIGHT
+					Calculate lbMealOrAccommodation as 2 ## arrived day before
+					Break to end of loop
+				Else If llPAX.PX_[lnDayArrive]_BFAST
+					Calculate lbMealOrAccommodation as 1
+					Break to end of loop
+				Else If llPAX.PX_[lnDayArrive]_LUNCH
+					Calculate lbMealOrAccommodation as 1
+					Break to end of loop
+				Else If llPAX.PX_[lnDayArrive]_DINNER
+					Calculate lbMealOrAccommodation as 1
+					Break to end of loop
+				End If
+			End For
+			
+			If lbMealOrAccommodation=2
+				Calculate ilData.Arriving as dadd(kDay,lnDayArrive-1,irConference.CF_DATE_FROM)
+			Else
+				Calculate ilData.Arriving as dadd(kDay,lnDayArrive,irConference.CF_DATE_FROM)
+			End If
+			
+			Calculate lbMealOrAccommodation as 0
+			
+			For lnDayDepart from 6 to 0 step -1
+				If llPAX.PX_[lnDayDepart]_NIGHT
+					Calculate lbMealOrAccommodation as 2
+					Break to end of loop
+				Else If llPAX.PX_[lnDayDepart]_BFAST
+					Calculate lbMealOrAccommodation as 1
+					Break to end of loop
+				Else If llPAX.PX_[lnDayDepart]_LUNCH
+					Calculate lbMealOrAccommodation as 1
+					Break to end of loop
+				Else If llPAX.PX_[lnDayDepart]_DINNER
+					Calculate lbMealOrAccommodation as 1
+					Break to end of loop
+				End If
+			End For
+			
+			# in calculating the departure date, last occurence of any item, meal or accommodation, is the same.
+			Calculate ilData.Departing as dadd(kDay,lnDayDepart,irConference.CF_DATE_FROM)
+		End While
+	Else
+		# these people are currently UNPAID ## however leaving their arrival and departure dates buggers up the report
+		Calculate ilData.Arriving as irConference.CF_DATE_FROM
+		Calculate ilData.Departing as irConference.CF_DATE_TO
+	End If
+	
+	# If a guest is coming for the dinner only then their arrival and departure dates will be the same, meaning they won't be staying overnight.
+	# At least, not under our bill anyway.  This was the case with Bastiaan Olij's parents staying at the hotel for some time and attending the Gala Dinner.
+	# The accommodation was under their own steam but we included them in our dinner count.
+	If ilData.Arriving=ilData.Departing
+		Calculate ilData.[ilData.$line].$selected as kTrue ## will be deleted
+	End If
+End While
+
+Do ilData.$remove(kListDeleteSelected)

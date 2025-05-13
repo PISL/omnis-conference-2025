@@ -1,0 +1,231 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 49,
+	"superclass": "infra.rjsInfraBlank",
+	"designtaskname": "rtRegistration",
+	"nextident": 1289,
+	"lastgroupident": 45,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 5,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnPageConfirm",
+			"order": 4,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnPageLogin",
+			"order": 1,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnPageRoles",
+			"order": 2,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnPageThankYou",
+			"order": 3,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "3"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "icBankDetailsEUR",
+			"order": 4,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icBankDetailsGBP",
+			"order": 5,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icDaySelected",
+			"order": 22,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 40
+		},
+		{
+			"name": "icImageHtmlPost",
+			"order": 7,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icImageHtmlPre",
+			"order": 6,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "ilBankDetails",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilCities",
+			"order": 25,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilConferences",
+			"order": 40,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilTopicsWithSpeakers",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inDayHighlight",
+			"order": 21,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "irCompany",
+			"order": 28,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iRowDays",
+			"order": 16,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTitles",
+			"order": 15,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(2,29,60)",
+		"backpattern": 1,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2023-11-11 16:50:52",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 429,
+		"menulineheight": 0,
+		"moddate": "2024-06-27 16:29:23",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 21,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1636,
+		"height": 971,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

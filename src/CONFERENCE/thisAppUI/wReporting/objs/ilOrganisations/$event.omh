@@ -1,0 +1,4 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	Do oReporting.$conferenceList(ilOrganisations.GO_SEQ) Returns ilConferences
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

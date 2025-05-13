@@ -1,0 +1,3 @@
+On evAfter
+	Calculate irCurrentRecord.MB_TO as dadd(kDay,-1,dim(irCurrentRecord.MB_FROM,12))
+	Do $cinst.$redraw()

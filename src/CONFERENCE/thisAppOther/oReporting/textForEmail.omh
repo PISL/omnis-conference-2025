@@ -1,0 +1,64 @@
+If sys(2)=17
+	If icEmailFromEmail<>''&icEmailFromName<>''
+		Do $libs.infra.$objects.oAppleScript.$newref() Returns loApplescript
+		If loApplescript.$ref
+			Calculate lbSendToEmailClient as kTrue
+		End If
+	End If
+End If
+
+Calculate llSpeakers as ilData
+Do llSpeakers.$cols.SpeakerSort.$removeduplicates(kTrue)
+Calculate llSpeakers.$line as 0
+While $Loop(llSpeakers)
+	Do ilData.$search(0)
+	Do ilData.$search($ref.SpeakerSort=llSpeakers.SpeakerSort,1,0,1,0)
+	Calculate lcBegin as ''
+	Calculate lcMessage as ''
+	
+	Begin text block
+	Text:mailTo=[llSpeakers.PSN_EMAIL](Carriage return)
+	Text:speakerName=[llSpeakers.SpeakerSort](Carriage return)
+	Text:subject=[icEmailSubject](Carriage return)
+	Text:(Carriage return)
+	Text:(Carriage return)
+	End text block
+	Get text block lcBegin
+	
+	Begin text block
+	Text:Dear [llSpeakers.PSN_FIRST_NAME],(Carriage return)
+	Text:(Carriage return)
+	Text:[icEmailTextBefore](Carriage return)
+	Text:(Carriage return)
+	
+	# topic data in a row each
+	Calculate ilData.$line as 0
+	While $Loop(ilData,kTrue)
+		Text:[kTab]
+		Text:[ilData.TPC_TITLE][kTab][kTab]
+		Text:[ilData.CF_TITLE][kTab][kTab]
+		Text:[ilData.attended] / [ilData.ARR_MAX_BOOKINGS] = [ilData.percent]%
+		Text:(Carriage return)
+		# Text:  (Carriage return)
+	End While
+	
+	Text:(Carriage return)
+	Text:[icEmailTextAfter](Carriage return)
+	End text block
+	Get text block lcMessage
+	
+	Calculate iReportText as con(iReportText,pick(iReportText<>'','',kCr),lcBegin,kCr,kCr,lcMessage) ## subject is embedded within lcBegin
+	If llSpeakers.$line<llSpeakers.$linecount
+		Calculate iReportText as con(iReportText,pick(iReportText<>'','',kCr),'==============================')
+	End If
+	
+	If lbSendToEmailClient
+		If lcBegin<>''&lcMessage<>''
+			Do loApplescript.$PrepareEmail(llSpeakers.PSN_EMAIL,icEmailSubject,lcMessage,kTrue,icEmailFromEmail,icEmailFromName)
+		End If
+	End If
+End While
+
+If lbSendToEmailClient
+	Do loApplescript.$close()
+End If

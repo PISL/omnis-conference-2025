@@ -1,0 +1,34 @@
+If icBiasTopicOrSpeaker=''
+	Calculate icBiasTopicOrSpeaker as 'T'
+End If
+
+# time portion
+If $cinst.ARR_DATE>dat('1 JAN 2010')
+	# specific date
+	Calculate lcWhen as jst($cinst.ARR_DATE,'D:D m')
+Else
+	# relative date
+	Calculate lcWhen as con('day ',$cinst.ARR_DAYNO)
+End If
+# time slot
+If $cinst.ARR_STARTTIME>tim('00:00')&$cinst.ARR_ENDTIME>tim('00:00')
+	Calculate lcWhen as con(lcWhen,' : ',$cinst.ARR_STARTTIME,' - ',$cinst.ARR_ENDTIME)
+Else If $cinst.ARR_STARTTIME>tim('00:00')
+	Calculate lcWhen as con(lcWhen,' : ',$cinst.ARR_STARTTIME)
+Else
+	Calculate lcWhen as con(lcWhen,' : ',$cinst.ARR_SLOT)
+End If
+
+If icBiasTopicOrSpeaker='T' ## Topic
+	Calculate lcBias as con($cinst.TPC_TITLE,': ',$cinst.ARR_DAYNO)
+Else If icBiasTopicOrSpeaker='S' ## Speaker
+	If $cinst.ARR_LEADER<>''
+		Calculate lcBias as con($cinst.ARR_LEADER)
+	Else If $cinst.ARR_PSN_REF>0
+		Calculate lcBias as con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)
+	End If
+Else
+	# leave bias blank - display date and timeslot only
+End If
+
+Calculate $cinst.DisplayName as con(lcBias,pick(lcBias<>''&lcWhen<>'','',' '),lcWhen)

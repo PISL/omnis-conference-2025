@@ -1,0 +1,14 @@
+If inCurrentTab=cnTabArrangement
+	Do irCurrentRecord.$clear()
+	
+	Calculate ilOccupancy.$line as 0
+	Calculate ilPersons.$line as 0
+	Calculate ilTopics.$line as 0
+	Calculate ilFacilities.$line as 0
+	Calculate ilFormat.$line as 0
+End If
+
+If inCurrentTab=cnTabAttendees
+	Do irAttendee.$clear() ## NOT ilPax
+	
+End If

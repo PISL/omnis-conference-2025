@@ -1,0 +1,70 @@
+Calculate inTotalAmountPaid as 0
+Calculate icDisplayMessage as ''
+Do irPayment.$clear()
+Calculate icInvoiceNo as ''
+
+Do ilPayments.$clear()
+# RSM 2023-08-15  $fetch_pk works when delegate selected has the payment record against it
+#          but its misleading when a payment applies to multiple delegates.  Hence new method.
+# Do ilPayments.$fetch_fk(irCurrentRecord.DG_SEQ)
+Do ilPayments.$fetchConnectedPayments(irCurrentRecord.DG_SEQ) Returns llPaymentsInAll
+Do llPaymentsInAll.$search($ref.PY_DG_REF=irCurrentRecord.DG_SEQ,1,0,0,0) Returns lbPaymentFound
+If llPaymentsInAll.$linecount>0
+	Do ilPayments.$add()
+	Calculate ilPayments.$line as 1
+	If lbPaymentFound
+		# there is a direct payment record
+		Do ilPayments.$assignrow(llPaymentsInAll)
+		# no need to populate DisplayName
+	Else
+		# no direct link... which link to we point to?  For now, just first connection.
+		Calculate llPaymentsInAll.$line as 1
+		Do ilPayments.$assignrow(llPaymentsInAll)
+		Calculate ilPayments.DisplayName as con("?? see ",llPaymentsInAll.PSN_SURNAME,", ",llPaymentsInAll.PSN_FIRST_NAME)
+	End If
+End If
+
+# multiple invoices?
+# This will be rare but if an invoice has been issued followed by a credit note or partial refund
+# then we will be processing two distinct transactions.
+Calculate ilInvoices.$line as 0 ## populated in $displayListClick
+While $Loop(ilInvoices)
+	Do ilInvoiceDetails.$clear()
+	Do ilInvoiceDetails.$fetchInvDetails(ilInvoices.FOH_SEQ)
+	While $Loop(ilInvoiceDetails)
+		Do ilInvoiceDetails.$calculatedValues()
+	End While
+	Calculate ilInvoices.detailLines as ilInvoiceDetails
+	
+	If ilInvoices.$line=1
+		Calculate llDetails as ilInvoiceDetails
+	Else
+		Do llDetails.$merge(ilInvoiceDetails)
+	End If
+End While
+If llDetails.$linecount
+	Calculate ilInvoiceDetails as llDetails
+End If
+
+Do ilInvoices.$search($ref.DIL_DG_REF=irCurrentRecord.DG_SEQ,1,0,0,0) Returns #F
+
+Calculate $cinst.$objs.PagedPane.$objs.pbPrintInvoice.$errortext as ''
+Calculate ilMultipleDelegatesOnOneInvoice.$line as 0
+While $Loop(ilMultipleDelegatesOnOneInvoice) ## was "the other person(s) with 2nd param kTrue, but now all names
+	Calculate lcNames as con(lcNames,pick(lcNames<>'','',', '),ilMultipleDelegatesOnOneInvoice.PSN_SURNAME)
+End While
+If lcNames<>''
+	Calculate icInvoiceNo as con('Inv # ',ilInvoices.FOH_INV_NO,' / ',lcNames)
+	Calculate $cinst.$objs.PagedPane.$objs.pbPrintInvoice.$errortext as lcNames
+Else
+	Calculate icInvoiceNo as con('Inv # ',ilInvoices.FOH_INV_NO)
+End If
+
+Do method PaymentTotals
+
+If ilPayments.$linecount>0
+	Do ilPayments.$sort($ref.PY_DATE,0)
+	
+	Calculate ilPayments.$line as 1
+	Calculate irPayment as ilPayments
+End If

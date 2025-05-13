@@ -1,0 +1,6 @@
+Test for window open wReporting
+If flag true
+	Bring window instance to front wReporting
+Else
+	Open window instance wReporting/CEN
+End If

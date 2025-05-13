@@ -1,0 +1,6 @@
+Calculate icPrefix as 'FCY_'
+Calculate icPrimarykey as 'FCY_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'FCY_VEN_REF'
+
+Do inherited

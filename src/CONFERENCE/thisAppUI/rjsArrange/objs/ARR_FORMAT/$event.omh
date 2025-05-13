@@ -1,0 +1,2 @@
+On evClick
+	Calculate $cinst.irCurrentRecord.ARR_FORMAT as ilFormat.RFO_VALUE

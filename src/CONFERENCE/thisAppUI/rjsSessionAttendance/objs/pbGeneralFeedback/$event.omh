@@ -1,0 +1,3 @@
+On evClick
+	# Breakpoint {ilAttendees  ilArrangements}
+	Calculate $cinst.$objs.PagedPane.$currentpage as cnPageGeneralFeedback

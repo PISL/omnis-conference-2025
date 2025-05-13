@@ -1,0 +1,6 @@
+On evClick
+	Calculate irRegistration.EO_CO_ISO3_REF as ilCountriesEO.REF_VALUE
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		# Calculate ilPersons.EO_CO_ISO3_REF as irRegistration.EO_CO_ISO3_REF ## fix notation error ilPersons.EO_CO_ISO3_REF missing
+	End If
+	Do $cinst.$behaviour()

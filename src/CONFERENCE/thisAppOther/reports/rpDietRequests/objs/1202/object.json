@@ -1,0 +1,29 @@
+{
+	"ident": 1202,
+	"order": 4,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "",
+		"align": "kLeftJst",
+		"backcolor": "kColorWindow",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "kBlack",
+		"height": 0.422,
+		"left": 5.786,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"rowid": "PX_ROLE",
+		"textcolor": "kColorWindowText",
+		"userinfo": "",
+		"width": 2.05
+	}
+}

@@ -1,0 +1,68 @@
+Do toValues.$initInherited("GRAPH","ACTIVITY") Returns lrRefRow
+Calculate $cinst.icGraphConfig as lrRefRow.RFO_JSON
+
+Do $DefineList(llTemp,'tCharts')
+Do llTemp.$fetchRecentActivity(tlOpenConferences.CF_SEQ) Returns lbOK
+
+# massage the data
+Do llTemp.$cols.$add('label',kCharacter,kSimplechar,15)
+Calculate llTemp.1.label as 'Total'
+For llTemp.$line from 2 to llTemp.$linecount-2 step 1
+	Calculate llTemp.label as con(left(dtw(llTemp.dt),3),' ',dtd(llTemp.dt))
+End For
+Calculate llTemp.[llTemp.$linecount-1].label as 'Yesterday'
+Calculate llTemp.[llTemp.$linecount].label as 'Today'
+
+# now remove chart entries for categories with all zeros
+# DG
+Calculate lnCategoryTotal as llTemp.$cols.dgins.$total()+llTemp.$cols.dgupd.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('dgins')
+	Do method removeSeriesConfig ('dgupd')
+End If
+Calculate $cinst.icGraphConfig as OJSON.$formatjson($cinst.icGraphConfig)
+# PX
+Calculate lnCategoryTotal as llTemp.$cols.pxins.$total()+llTemp.$cols.pxupd.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('pxins')
+	Do method removeSeriesConfig ('pxupd')
+End If
+# TP
+Calculate lnCategoryTotal as llTemp.$cols.tpins.$total()+llTemp.$cols.tpupd.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('tpins')
+	Do method removeSeriesConfig ('tpupd')
+End If
+# PY
+Calculate lnCategoryTotal as llTemp.$cols.pyins.$total()+llTemp.$cols.pyupd.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('pyins')
+	Do method removeSeriesConfig ('pyupd')
+End If
+# TPF
+Calculate lnCategoryTotal as llTemp.$cols.tpfins.$total()+llTemp.$cols.tpfupd.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('tpfins')
+	Do method removeSeriesConfig ('tpfupd')
+End If
+# DSL
+Calculate lnCategoryTotal as llTemp.$cols.dslins.$total()+llTemp.$cols.dslupd.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('dslins')
+	Do method removeSeriesConfig ('dslupd')
+End If
+# EMAILS
+Calculate lnCategoryTotal as llTemp.$cols.invsent.$total()+llTemp.$cols.travsent.$total()
+If lnCategoryTotal=0
+	# remove the seriesConfigs object
+	Do method removeSeriesConfig ('invsent')
+	Do method removeSeriesConfig ('travsent')
+End If
+
+Quit method llTemp

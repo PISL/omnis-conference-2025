@@ -1,0 +1,6 @@
+Calculate icPrefix as 'CRT_'
+Calculate icPrimarykey as 'CRT_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'CRT_CF_REF'
+
+Do inherited

@@ -1,0 +1,51 @@
+Do $cinst.$cols.$findname('PSN_SURNAME') Returns liColRef
+If liColRef
+	# columns already added
+Else
+	# 'DG_REG_DATE,DG_OCCUPANCY,DG_STATUS,CF_TITLE,PSN_SURNAME,PSN_FIRST_NAME'
+	Do $cinst.$cols.$add(lrDelegates.DG_REG_DATE)
+	Do $cinst.$cols.$add(lrDelegates.DG_OCCUPANCY)
+	Do $cinst.$cols.$add(lrDelegates.DG_STATUS)
+	Do $cinst.$cols.$add(lrConference.CF_TITLE)
+	Do $cinst.$cols.$add(lrPerson.PSN_SURNAME)
+	Do $cinst.$cols.$add(lrPerson.PSN_FIRST_NAME)
+	Do $cinst.$cols.$add(lrPerson.PSN_SEX)
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# Do $cinst.$Sql(,con('where DG_CF_REF = ',pnCF_SEQ),0,0,lcFromClause) ## only load the models with the latest version number for the current Group Org
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, DG_REG_DATE, DG_OCCUPANCY, DG_STATUS
+Sta:, CF_TITLE
+Sta:, PSN_SURNAME, PSN_FIRST_NAME, PSN_SEX
+Sta:from [$cinst.$servertablenames()]
+Sta:, [lrDelegates.$servertablenames()]
+Sta:, [lrConference.$servertablenames()]
+Sta:, [lrPerson.$servertablenames()]
+Sta:where PX_DG_REF = DG_SEQ
+Sta:and     DG_PSN_REF = PSN_SEQ
+Sta:and     DG_CF_REF = CF_SEQ
+# for a particular conference
+Sta:and     DG_CF_REF = @[pnCF_SEQ]
+If pcAdditionalCriteria<>''
+	If left(upp(pcAdditionalCriteria),4)='AND '
+		Sta:[pcAdditionalCriteria]
+	Else
+		Sta:and   [pcAdditionalCriteria]
+	End If
+End If
+Do $cinst.$executesqlandfetch() Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do $cinst.$sort($ref.DG_REG_DATE,0)
+Quit method lbOK

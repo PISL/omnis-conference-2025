@@ -1,0 +1,72 @@
+Do $DefineList(ilData,'tentExtOrganisations')
+Do ilData.$fetch_all()
+While $Loop(ilData)
+	Working message Obfuscating External Organisations... (Cancel button) {[ilData.$line] of [ilData.$linecount] records}
+	Redraw working message
+	Do method obfuscateText (ilData.EO_NAME,kTrue) Returns lcTemp
+	Calculate ilData.EO_NAME as lcTemp
+	
+	Do method obfuscateText (ilData.EO_CONTACT,kTrue) Returns lcTemp
+	Calculate ilData.EO_CONTACT as lcTemp
+	
+	Do method obfuscateText (ilData.EO_ADDR_BILL,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_BILL as lcTemp
+	
+	Do method obfuscateText (ilData.EO_ADDR_SHIP,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_SHIP as lcTemp
+	
+	Do method obfuscateEmail (ilData.EO_EMAIL) Returns lcTemp
+	Calculate ilData.EO_EMAIL as lcTemp
+	
+	Do method obfuscateText (ilData.EO_INSTRUCTIONS) Returns lcTemp
+	Calculate ilData.EO_INSTRUCTIONS as lcTemp
+	
+	Do method obfuscateText (ilData.EO_COMMENT) Returns lcTemp
+	Calculate ilData.EO_COMMENT as lcTemp
+	
+	# phones
+	Do method obfuscateDigits (ilData.EO_PHONE) Returns lcTemp
+	Calculate ilData.EO_PHONE as lcTemp
+	
+	Do method obfuscateDigits (ilData.EO_MOBILE) Returns lcTemp
+	Calculate ilData.EO_MOBILE as lcTemp
+	
+	# registered numbers
+	Do method obfuscateDigits (ilData.EO_COMPANY_NO) Returns lcTemp
+	Calculate ilData.EO_COMPANY_NO as lcTemp
+	
+	Do method obfuscateDigits (ilData.EO_VAT_NO) Returns lcTemp
+	Calculate ilData.EO_VAT_NO as lcTemp
+	
+	# address
+	Do method obfuscateText (ilData.EO_ADDR_BUILDING,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_BUILDING as lcTemp
+	
+	Do method obfuscateText (ilData.EO_ADDR_STREET,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_STREET as lcTemp
+	
+	Do method obfuscateText (ilData.EO_ADDR_LOCALITY,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_LOCALITY as lcTemp
+	
+	Do method obfuscateText (ilData.EO_ADDR_TOWN,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_TOWN as lcTemp
+	
+	Do method obfuscateText (ilData.EO_ADDR_STATE,kTrue) Returns lcTemp
+	Calculate ilData.EO_ADDR_STATE as lcTemp
+	
+	# we will leave EO_POSTCODE as is
+	
+	If left(ilData.EO_CBY,4)='onl:'
+		Calculate ilData.EO_CBY as 'onl:'
+		Calculate ilData.EO_MBY as 'onl:'
+	Else
+		# leave CBY as is - it will be one of the staff - not confidential
+	End If
+	
+	
+	Calculate lrUpdate as ilData
+	Do lrUpdate.$update() Returns lbOK
+	If not(lbOK)
+		Breakpoint
+	End If
+End While

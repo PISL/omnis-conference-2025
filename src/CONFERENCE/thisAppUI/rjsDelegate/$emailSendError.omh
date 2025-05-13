@@ -1,0 +1,23 @@
+# prResult.errorCode
+# prResult.errorInfo
+# prResult.failedRecipients
+# prResult.log
+If prResult.errorCode<>0
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',kCr),'error code ',prResult.errorCode)
+End If
+If prResult.errorInfo<>''
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',kCr),'error info ',prResult.errorInfo)
+End If
+If prResult.failedRecipients<>''
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',kCr),'failed recipients ',prResult.failedRecipients)
+End If
+If prResult.log<>''
+	# prResult.log is in binary format and must be converted
+	Calculate lbOK as uniconv(kUniTypeUTF32,prResult.log,kUniTypeCharacter,lcLog,kFalse,#S1)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',con(kCr,kCr)),'protocol log ',lcLog)
+End If
+# Breakpoint
+
+Do $LogError('EMAIL_SEND','FAIL',con(rFingerprint.PSN_FIRST_NAME,' ',rFingerprint.PSN_SURNAME,kCr,lcMessage)) ## for the developer
+Do $cinst.$clientcommand('okcancelmessage',row(lcMessage,'Email failure')) ## for the user
+Calculate icDisplayMessage as lcMessage

@@ -1,0 +1,9 @@
+If inTotalAmountDue>0&inTotalOutstanding<(inTotalAmountDue*0.01) ## outstanding less than 1% of total
+	If irCurrentRecord.DG_ROLE='SPEAKER'
+		# ignore
+	Else If irCurrentRecord.DG_STATUS<>'PAID' ## ilStatus
+		Calculate llTemp as ilStatus
+		Do llTemp.$search($ref.RFO_VALUE='PAID',1,0,0,0)
+		Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_statusChange','label'),' ',con('"',irCurrentRecord.DisplayName,'"','//',' from "',ilStatus.RFO_DESC,'" // to "',llTemp.RFO_DESC),'" ? // // ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$statusToPaid')
+	End If
+End If

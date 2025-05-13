@@ -1,0 +1,17 @@
+Calculate ilTopics.$line as 0
+
+Do irTopic.$clear()
+If icMode='I'
+	Do irTopic.$defaults()
+	Do ioTags.$clearTags() Returns ilTagsDisplay
+End If
+
+Calculate irTopicOrig as irTopic
+Do ilDurations.$search($ref.RFO_VALUE=irTopic.TPC_DURN_MINS,1,0,0,0) Returns lbFound
+
+Do ilTagsDisplay.$search(0) ## deselect all lines
+Do ilTagsDisplay.$sort($ref.RFO_ORDER,0,$ref.RFO_DESC,0)
+Calculate ilTagsOrig as ilTagsDisplay
+
+Calculate ibModifiedTopic as kFalse
+Calculate ibModifiedTag as kFalse

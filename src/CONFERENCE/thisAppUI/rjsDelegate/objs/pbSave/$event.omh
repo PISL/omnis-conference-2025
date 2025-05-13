@@ -1,0 +1,42 @@
+On evClick
+	Do $cinst.$saveData() Returns lbOK
+	If lbOK
+		# update lists
+		If inCurrentTab=cnTabDelegate
+			Calculate lnCurrent as irCurrentRecord.DG_SEQ
+			Do method determineStatusCriteria Returns lcCriteria
+			Do method fetchDisplayList (lcCriteria)
+			# restore the record just worked on, back to the user
+			Do ilDisplayRecords.$search($ref.DG_SEQ=lnCurrent,1,0,0,0) Returns lbOK
+			Do method $displayListClick
+			
+		Else If inCurrentTab=cnTabPAX
+			If icMode='IP'
+				Do ilPax.$add()
+				Calculate ilPax.$line as ilPax.$linecount
+			End If
+			Do irPax.$calculateTotals()
+			Calculate ilPax.[ilPax.$line] as irPax
+			
+		Else If inCurrentTab=cnTabReceipts
+			# If icMode='IY'
+			# Do ilPayments.$add()
+			# Calculate ilPayments.$line as ilPayments.$linecount
+			# End If
+			# Calculate ilPayments.[ilPayments.$line] as irPayment
+			Calculate lrTemp as irPayment
+			Do method FetchAndPresentPayments
+			Do ilPayments.$search($ref.PY_SEQ=lrTemp.PY_SEQ,1,0,0,0)
+			
+		Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+			# no need to update any lists
+			
+		End If
+		
+		# all changes to db are done ## clear the semaphore
+		Do irSemaphore.$clearSemaphore() Returns lbOK ## kTrue if the semaphore was actually cleared.  irSemaphore will also be cleared if lbOK is kTrue.
+		Calculate ibUserHasSemaphore as not(lbOK)
+		
+		Calculate icMode as ''
+		Do $cinst.$behaviour()
+	End If

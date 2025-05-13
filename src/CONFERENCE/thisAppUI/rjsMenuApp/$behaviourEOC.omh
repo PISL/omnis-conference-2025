@@ -1,0 +1,36 @@
+Calculate $cinst.icMode as pcMode
+
+Calculate lnFlagDisable as kNavMenuFlagDisabled
+
+For ilNavMenu.$line from 1 to ilNavMenu.$linecount-1 step 1 ## leave feedback option enabled
+	Calculate lnFlags as ilNavMenu.flags
+	If icMode=''
+		JavaScript:if (lcflagDisable & lnFlags)   // bitwise comparison to test if the disabled flag is set
+		Calculate ilNavMenu.flags as ilNavMenu.flags-lnFlagDisable ## remove the flag
+	Else
+		JavaScript:if (lcflagDisable & lnFlags)   // bitwise comparison to test if the disabled flag is set
+		JavaScript:{} // do nothing
+		JavaScript:else
+		Calculate ilNavMenu.flags as ilNavMenu.flags+lnFlagDisable ## add the flag
+	End If
+End For
+
+# now do the cascading menu
+Calculate lrCascadeInfo as ilNavMenuCascade.1.info
+Calculate llCascade as lrCascadeInfo.C1
+
+For llCascade.$line from 1 to llCascade.$linecount-1 step 1
+	Calculate lnFlags as llCascade.flags
+	If icMode=''
+		JavaScript:if (lcflagDisable & lnFlags)   // bitwise comparison to test if the disabled flag is set
+		Calculate llCascade.flags as llCascade.flags-lnFlagDisable ## remove the flag
+	Else
+		JavaScript:if (lcflagDisable & lnFlags)   // bitwise comparison to test if the disabled flag is set
+		JavaScript:{} // do nothing
+		JavaScript:else
+		Calculate llCascade.flags as llCascade.flags+lnFlagDisable ## add the flag
+	End If
+End For
+
+Calculate lrCascadeInfo.C1 as llCascade
+Calculate ilNavMenuCascade.1.info as lrCascadeInfo

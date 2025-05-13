@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.DG_STATUS as ilStatus.RFO_VALUE

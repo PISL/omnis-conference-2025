@@ -1,0 +1,65 @@
+Calculate icTextForClipboard as ''
+If ilSearch2.RFO_VALUE='LIST_TO_TEXT'
+	Calculate llTemp as ilDisplayRecords
+	Do llTemp.$cols.$add('travelLink',kCharacter,kSimplechar,255)
+	Calculate llTemp.$line as 0
+	While $Loop(llTemp)
+		Do method generateTravelLink (llTemp) Returns llTemp.travelLink
+	End While
+	
+	Do toStrings.$ExportList(llTemp,'TAB',kTrue,'TEXT','','DisplayName,PSN_SURNAME,PSN_FIRST_NAME,PSN_EMAIL,travelLink') Returns lcTabData
+	Calculate icTextForClipboard as con(icLastTextTitle,kCr,lcTabData)
+	Do ilSearch2.$search($ref.RFO_VALUE=icLastSearch2Value,1,0,0,0)
+	Calculate $cinst.$objs.PagedPane.$currentpage as cnTabText
+	Quit method
+Else
+	Calculate icLastTextTitle as ilSearch2.RFO_DESC
+	Calculate icLastSearch2Value as ilSearch2.RFO_VALUE
+End If
+
+Do method determineStatusCriteria Returns lcStatusCriteria
+Do method fetchDisplayList (lcStatusCriteria)
+
+If ilSearch2.RFO_CLASS='SORT'
+	If ilSearch2.RFO_VALUE='DG_STATUS'
+		Do ilDisplayRecords.$sort($ref.DG_STATUS,0,$ref.SortName,0)
+		Calculate lbBlankLineAtBreak as kTrue
+	Else If ilSearch2.RFO_VALUE='DG_OCCUPANCY'
+		Do ilDisplayRecords.$sort($ref.DG_OCCUPANCY,0,$ref.SortName,0)
+		Calculate lbBlankLineAtBreak as kTrue
+	Else If ilSearch2.RFO_VALUE='DG_SURNAME'
+		Do ilDisplayRecords.$sort($ref.SortName,0)
+	Else If ilSearch2.RFO_VALUE='DG_COUNTRY'
+		Do ilDisplayRecords.$sort($ref.DG_COUNTRY,0,$ref.SortName,0)
+		Calculate lbBlankLineAtBreak as kTrue
+	Else If ilSearch2.RFO_VALUE='DG_REG_DATE'
+		Do ilDisplayRecords.$sort($ref.DG_REG_DATE,0,$ref.SortName,0)
+		# Calculate lbBlankLineAtBreak as kTrue
+	Else If ilSearch2.RFO_VALUE='PY_DATE'
+		Do ilDisplayRecords.$sort($ref.PY_DATE,1,$ref.SortName,0)
+		# Calculate lbBlankLineAtBreak as kTrue
+	End If
+	
+	If lbBlankLineAtBreak
+		# insert a blank line between each break
+		Calculate ilDisplayRecords.$line as 1 ## that's right - miss the first line
+		While $Loop(ilDisplayRecords)
+			If ilDisplayRecords.[ilSearch2.RFO_VALUE]<>ilDisplayRecords.[ilDisplayRecords.$line-1].[ilSearch2.RFO_VALUE]
+				Do ilDisplayRecords.$addbefore(ilDisplayRecords.$line)
+				Calculate ilDisplayRecords.$line as ilDisplayRecords.$line+1
+			End If
+		End While
+	End If
+Else
+	# RSM 23-SEP-18 ## when selecting a registration month I want it sorted by DG_REG_DATE
+	If left(ilSearch2.RFO_VALUE,6)='MONTH_'
+		Do ilDisplayRecords.$sort($ref.DG_REG_DATE,0,$ref.SortName,0)
+	End If
+End If
+# Do ilDisplayRecords.$search(len($ref.SortName)=0,1,0,1,0)
+# Do ilDisplayRecords.$remove(kListDeleteSelected)
+
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Do $cinst.$behaviour

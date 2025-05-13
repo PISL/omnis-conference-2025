@@ -1,0 +1,6 @@
+Calculate icPrefix as 'MB_'
+Calculate icPrimarykey as 'MB_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'MB_PSN_REF'
+
+Do inherited

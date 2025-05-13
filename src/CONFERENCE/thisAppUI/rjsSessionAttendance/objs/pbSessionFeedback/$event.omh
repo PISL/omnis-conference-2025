@@ -1,0 +1,14 @@
+On evClick
+	# Breakpoint {ilAttendees  ilArrangements}
+	# Calculate icFeedbackSpeaker as ilArrangements.displaySpeaker
+	# Calculate icFeedbackTitle as ilArrangements.TPC_TITLE
+	If ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF
+		# the Person clicking this button is a speaker
+		Calculate $cinst.$objs.PagedPane.$currentpage as cnPageViewFeedback
+	Else
+		Calculate $cinst.$objs.PagedPane.$objs.label_FeedbackSpeakerDisplay.$text as con(mid(ilArrangements.displaySpeaker,rpos(',',ilArrangements.displaySpeaker)+2),' ',left(ilArrangements.displaySpeaker,pos(',',ilArrangements.displaySpeaker)-1))
+		Calculate $cinst.$objs.PagedPane.$objs.label_FeedbackTitleDisplay.$text as ilArrangements.TPC_TITLE
+		Calculate ilFeedback.$line as 0
+		Calculate inFeedback as 0
+		Calculate $cinst.$objs.PagedPane.$currentpage as cnPageSessionFeedback
+	End If

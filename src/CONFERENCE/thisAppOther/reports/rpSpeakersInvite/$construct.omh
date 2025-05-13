@@ -1,0 +1,19 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate icReportTitle as con('Invitation to past speakers')
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+Calculate icEmailTextBefore as pcTextBefore
+Calculate icEmailTextAfter as pcTextAfter
+
+If ilData.$linecount=0
+	Do ilData.$add('no records found')
+End If
+
+# with a Speaker listed under each column and facility
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

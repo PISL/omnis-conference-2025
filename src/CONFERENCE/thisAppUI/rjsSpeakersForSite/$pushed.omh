@@ -1,0 +1,9 @@
+If pRow.C1='ilTopics'
+	Calculate irCurrentRecord as pRow.C2
+	Calculate irCurrentSpeaker as pRow.C3
+	
+Else If pRow.C1='ilSpeakers'
+	Calculate irCurrentSpeaker as pRow.C2
+	Calculate irCurrentRecord as pRow.C3
+	
+End If

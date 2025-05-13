@@ -1,0 +1,12 @@
+Calculate icDisplayMessage as ''
+
+Do ilQuestions.$clear()
+Do ilQuestions.$fetch_fk(irCurrentRecord.TST_SEQ)
+While $Loop(ilQuestions)
+	Do ilQuestions.$DisplayName()
+End While
+Do ilQuestions.$sort($ref.TSQ_ORDER,0)
+
+Calculate ilQuestions.$line as 0
+Do irQuestion.$clear()
+Calculate irQuestionOrig as irQuestion

@@ -1,0 +1,67 @@
+Do llData.$cols.$add(lrPerson.PSN_SEQ)
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
+Do llData.$cols.$add(lrTopics.TPC_DESC)
+
+Do llData.$cols.$add($cinst.ARR_SEQ)
+Do llData.$cols.$add($cinst.ARR_DATE)
+Do llData.$cols.$add($cinst.ARR_DAYNO)
+Do llData.$cols.$add($cinst.ARR_STARTTIME)
+Do llData.$cols.$add($cinst.ARR_ENDTIME)
+Do llData.$cols.$add($cinst.ARR_SLOT)
+Do llData.$cols.$add($cinst.ARR_ORDER)
+Do llData.$cols.$add($cinst.ARR_BOOKING_REQD)
+Do llData.$cols.$add($cinst.ARR_MAX_BOOKINGS)
+
+Do llData.$cols.$add(lrFacility.FCY_NAME)
+
+Do llData.$cols.$add(lrConference.CF_TITLE)
+Do llData.$cols.$add(lrConference.CF_DATE_FROM)
+Do llData.$cols.$add(lrConference.CF_DATE_TO)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  PSN_SEQ, PSN_SURNAME, PSN_FIRST_NAME
+
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC
+
+Sta:, ARR_SEQ, ARR_DATE, ARR_DAYNO, ARR_STARTTIME, ARR_ENDTIME, ARR_SLOT
+Sta:, ARR_ORDER, ARR_BOOKING_REQD, ARR_MAX_BOOKINGS
+
+Sta:, FCY_NAME
+
+Sta:, CF_TITLE, CF_DATE_FROM, CF_DATE_TO
+
+Sta:from [$cinst.$servertablenames()]
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = ARR_CF_REF
+Sta:join [lrTopics.$servertablenames] on TPC_SEQ = ARR_TPC_REF
+Sta:left outer join [lrPerson.$servertablenames()] as spkr on spkr.PSN_SEQ = ARR_PSN_REF
+# in case no one attends a session
+Sta:left outer join [lrFacility.$servertablenames()] on ARR_FCY_REF = FCY_SEQ
+Sta:where  CF_SEQ = @[pnCF_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+While $Loop(llData)
+	# Do $cinst.$backfill_ARR_DATE()
+	Do method $backfill_ARR_DATE (#NULL,llData) Returns llData.ARR_DATE
+End While
+
+Do llData.$sort($ref.ARR_DATE,0,$ref.ARR_STARTTIME,0,$ref.FCY_NAME,0)
+Quit method llData

@@ -1,0 +1,7 @@
+Do inherited
+Do $ctask.$ArrangeAccessList()
+
+Do $ctask.tlOpenConferences.$fetchIncompleteWithVenue()
+If tlOpenConferences.$linecount>0
+	Calculate tlOpenConferences.$line as 1
+End If

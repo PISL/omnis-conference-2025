@@ -1,0 +1,16 @@
+# Do toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy
+
+Do $DefineList(ilData,'tDelegates')
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL')
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilData.$fetchForConference(prConference.CF_SEQ,#NULL," DG_STATUS <> 'CANCEL' and PSN_EMAIL <> '' ") ## conference committee has an empty email address
+
+While $Loop(ilData)
+	If isnull(ilData.DG_GROUP)
+		Calculate ilData.DG_GROUP as ''
+	End If
+End While
+Do ilData.$sort($ref.DG_GROUP,1,$ref.SortName)

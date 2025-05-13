@@ -1,0 +1,62 @@
+{
+	"ident": 1160,
+	"order": 10,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+			"type": [
+				{
+					"name": "group",
+					"order": 1,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "iconid",
+					"order": 2,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "default",
+					"order": 3,
+					"type": "kBoolean",
+					"subtype": 0,
+					"sublen": 0
+				}
+			],
+			"data": {
+				"group": "Labels",
+				"iconid": "textstringlabel1+16x16",
+				"default": false
+			}
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 1.163,
+		"left": 0.582,
+		"lineno": 10,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "We had a terrific conference this year, thanks in part to you!  To complete our conference I am sending you your session attendance figures and any feedback we received."
+		},
+		"textcolor": "RGB(8,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 17.701
+	}
+}

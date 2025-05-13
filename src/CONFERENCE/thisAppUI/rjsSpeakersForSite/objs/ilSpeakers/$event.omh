@@ -1,0 +1,18 @@
+On evClick
+	Calculate ilSpeakers.$line as pLineNumber
+	Calculate irCurrentSpeaker as ilSpeakers
+	
+	Do ilTopics.$search(0)
+	# when topics are fetched they are sorted by DisplayName - alphabetically by title
+	# If we search on this list we typically get non contiguous selected lines which makes it harder for viewer to see all topics by speaker.
+	# So we will sort by speaker and then topic so we get contiguous lines selected.
+	Do ilTopics.$sort($ref.PSN_SURNAME,0,$ref.DisplayName,0)
+	Do ilTopics.$search($ref.PSN_SEQ=ilSpeakers.DG_PSN_REF,1,0,1,0)
+	Do ilTopics.$first(kTrue) ## to draw the list so first line is visible - needs $vscoll to work though
+	Calculate irCurrentRecord as ilTopics
+	
+	Do $cinst.$pushdata(row('ilSpeakers',irCurrentSpeaker,irCurrentRecord))
+	# This was commented out because if we use it, ilTopics loses its $smartlist status which we need for text search
+	
+	Calculate $cinst.$objs.PagedPane.$objs.ilTopics.$vscroll as ilTopics.$line
+	Do $cinst.$behaviour()

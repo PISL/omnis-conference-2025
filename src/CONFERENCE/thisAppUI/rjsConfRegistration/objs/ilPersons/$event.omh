@@ -1,0 +1,31 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	# before populating irRegistration ## see if irRegistration needs to be saved into ilPersons
+	If irRegistration.PSN_SURNAME<>''&irRegistration.PSN_FIRST_NAME<>''&irRegistration.PSN_EMAIL<>''
+		Calculate llCopy as ilPersons ## we must not lose current line in list
+		Do llCopy.$search($ref.PSN_EMAIL=irRegistration.PSN_EMAIL,1,0,0,0) Returns lbFound
+		If lbFound
+			# hey... this check works but it also stops user from clicking on different lines in list
+			# to display different users ## oops !
+			# Calculate icDisplayMessage as 'you cannot duplicate entries in the registration'
+			# Quit method
+			If tot(ilPersons,ilPersons.DIL_PRIMARY)=0
+				Calculate ilPersons.DIL_PRIMARY as kTrue
+			End If
+		Else
+			Calculate lnLineClicked as ilPersons.$line
+			Do ilPersons.$add()
+			Calculate ilPersons.$line as ilPersons.$linecount
+			Do method RegistrationToPersonList
+			Calculate ilPersons.$line as lnLineClicked
+		End If
+	End If
+	
+	# Do irRegistration.$assigncols(ilPersons,kTrue)
+	Do method PersonsListToRegistration
+	
+	Do method DisplayPrice2
+	
+	Do $cinst.$setcurfield('PSN_EMAIL')
+	Do $cinst.$behaviour()

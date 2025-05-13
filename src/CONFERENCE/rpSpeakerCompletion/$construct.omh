@@ -1,0 +1,31 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate ilData as plData
+
+Calculate icReportTitle as con('Speaker Completion letters ',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If isnull(ilData.ARR_DATE)
+		If not(isnull(irConference.CF_DATE_FROM))
+			If ilData.ARR_DAYNO>0
+				Calculate ilData.ARR_DATE as irConference.CF_DATE_FROM+ilData.ARR_DAYNO
+			Else
+				Calculate ilData.ARR_DATE as irConference.CF_DATE_FROM
+			End If
+		End If
+	End If
+	
+	# RSM 2023-11-15  for some reason the break on sort order displayNameSpeaker has to be done explicitly, not automatically.
+	# Maybe its because we are looping through and doing $printrecord explicitly?
+	If ilData.$line>1
+		If ilData.displayNameSpeaker<>ilData.[ilData.$line-1].displayNameSpeaker
+			Do $cinst.$printsection(1)
+		End If
+	End If
+	
+	Do $cinst.$printrecord()
+End While

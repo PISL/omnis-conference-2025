@@ -1,0 +1,27 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "pcClassFromOtherWindowInstance",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20,
+				"param": 1
+			},
+			{
+				"name": "prSelectedDatabase",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+
+		]
+	}
+]

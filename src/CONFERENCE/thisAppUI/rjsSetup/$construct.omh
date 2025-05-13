@@ -1,0 +1,12 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform
+Calculate inTabCount as 1
+Do inherited
+
+Do method initTabControl
+Do method setTabColours
+
+Set reference irefContainer to $cinst.$container
+# Breakpoint
+
+Do method TranslateText

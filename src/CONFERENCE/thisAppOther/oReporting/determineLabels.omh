@@ -1,0 +1,8 @@
+Calculate plLabels as plSourceData
+Do plLabels.$search($ref.column_source<>lcFilter,1,0,1,0)
+Do plLabels.$remove(kListDeleteSelected)
+If lcFilter='DG_REG_MO'
+	Do plLabels.$sendall($ref.value2.$assign(jst(plLabels.value2,'-2P0')))
+	Do plLabels.$sendall($ref.value1.$assign(con(plLabels.value1,'-',plLabels.value2)))
+End If
+Do plLabels.$cols.value1.$removeduplicates(kTrue)

@@ -1,0 +1,5 @@
+# RSM outlining an alternative interface to tkWorker architecture - TO BE CONSIDERED LATER
+# only gets called if $jobStart is used
+If prReturnRecord.DG_SEQ=irCurrentRecord.DG_SEQ&icMode=''
+	Do $cinst.$displayListClick() ## so delegateLog gets updated
+End If

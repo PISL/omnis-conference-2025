@@ -1,0 +1,20 @@
+# Do ilPersons.$assignrow(irRegistration,kTrue)
+Calculate ilPersons.PSN_SURNAME as irRegistration.PSN_SURNAME
+Calculate ilPersons.PSN_FIRST_NAME as irRegistration.PSN_FIRST_NAME
+Calculate ilPersons.PSN_EMAIL as irRegistration.PSN_EMAIL
+Calculate ilPersons.PSN_COUNTRY as irRegistration.PSN_COUNTRY
+Calculate ilPersons.PSN_SPOUSE_NAME as irRegistration.PSN_SPOUSE_NAME
+Calculate ilPersons.PSN_PHOTOID_TYPE as irRegistration.PSN_PHOTOID_TYPE
+Calculate ilPersons.PSN_PHOTOID_NO as irRegistration.PSN_PHOTOID_NO
+
+Calculate ilPersons.DR_REQUEST as irRegistration.DR_REQUEST
+Calculate ilPersons.DIL_PRIMARY as irRegistration.DIL_PRIMARY
+
+Calculate ilPersons.inDG_OCCUPANCY as inDG_OCCUPANCY
+Calculate ilPersons.inExtras as inExtras
+Calculate ilPersons.inMembership as inMembership
+Calculate ilPersons.inNoDays as inNoDays
+Calculate ilPersons.icWhichDays as icWhichDays
+Calculate ilPersons.inPSN_SEX as inPSN_SEX
+
+# Calculate ilPersons.EO_CO_ISO3_REF as irRegistration.EO_CO_ISO3_REF ## fix notation error

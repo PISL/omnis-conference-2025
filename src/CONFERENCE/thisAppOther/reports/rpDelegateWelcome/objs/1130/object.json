@@ -1,0 +1,35 @@
+{
+	"ident": 1130,
+	"order": 17,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportH2",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 14,
+		"fontstyle": "kBold",
+		"height": 0.599,
+		"left": 0.0,
+		"lineno": 74,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "SESSION REGISTRATION RULES"
+		},
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 18.273
+	}
+}

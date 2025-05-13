@@ -1,0 +1,22 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''
+Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canUpdate&icMode=''&irCurrentRecord.MB_SEQ>0
+Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.MB_SEQ>0&icMode=''
+
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+Calculate $cinst.$objs.MB_CURRENCY.$enabled as icMode<>''
+Calculate $cinst.$objs.MB_AMOUNT.$enabled as icMode<>''
+Calculate $cinst.$objs.MB_FROM.$enabled as icMode<>''
+Calculate $cinst.$objs.MB_TO.$enabled as icMode<>''
+Calculate $cinst.$objs.MB_TYPE.$enabled as icMode<>''
+
+Do method assignEntryFieldProperties
+
+Do inherited

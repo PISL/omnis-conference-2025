@@ -1,0 +1,73 @@
+Breakpoint not tested
+# this method gets called when additional delegates are to be added to the conference but the invoice has already been prepared
+Calculate lrDetail as ilInvoiceDetail
+Do lrDetail.$clear()
+
+Do irDelegate.$clear()
+Do irDelegate.$assignrow(prDelegate)
+Do irDelegate.$validation() Returns lbProceed
+If lbProceed
+	Do irDelegate.$insert() Returns lbOK
+	If lbOK
+		Do prDelegate.$assignrow(irDelegate) ## return result to calling object
+		
+		# the invoice has already been inserted
+		# Do irInvoiceHeader.$clear()
+		# Do irInvoiceHeader.$assignrow(prInvHeader)
+		# Do irInvoiceHeader.$validation() Returns lbProceed
+		# If lbProceed
+		# Do irInvoiceHeader.$insert() Returns lbOK
+		# If lbOK
+		# Do prInvHeader.$assignrow(irInvoiceHeader)
+		
+		Do irLinkDelegateInvoice.$clear()
+		Calculate irLinkDelegateInvoice.DIL_DG_REF as irDelegate.DG_SEQ
+		Calculate irLinkDelegateInvoice.DIL_FOH_REF as prInvHeader.FOH_SEQ
+		
+		Do irLinkDelegateInvoice.$validation() Returns lbProceed
+		If lbProceed
+			Do irLinkDelegateInvoice.$insert() Returns lbOK
+			If lbOK
+				# Calculate plInvDetails.$line as 0
+				# While $Loop(plInvDetails)
+				# Do lrDetail.$assignrow(plInvDetails)
+				# Calculate lrDetail.FOD_FOH_REF as irInvoiceHeader.FOH_SEQ
+				# Do lrDetail.$validation() Returns lbProceed
+				# If lbProceed
+				# If lrDetail.FOD_SEQ>0
+				# Do lrDetail.$update() Returns lbOK
+				# Else
+				# Do lrDetail.$insert() Returns lbOK
+				# End If
+				# If lbOK
+				# Do plInvDetails.$assignrow(lrDetail)
+				# Else
+				# Calculate icErrorMessage as lrDetail.irErrorSQL.NativeErrorText
+				# Quit method kFalse
+				# End If
+				# Else
+				# Calculate icErrorMessage as con('validation error: ',lrDetail.icValidationMessage)
+				# Quit method kFalse
+				# End If
+				# End While
+			Else
+				Calculate icErrorMessage as irLinkDelegateInvoice.irErrorSQL.NativeErrorText
+				Quit method kFalse
+			End If
+		Else
+			Calculate icErrorMessage as con('validation error: ',irLinkDelegateInvoice.icValidationMessage)
+			Quit method kFalse
+		End If
+		# End If ## not(lbOK) after irInvoiceHeader.$insert()
+		# End If ## not(lbProceed) after irInvoiceHeader.$validation()
+		
+	Else ## not(lbOK) after irDelegate.$insert()
+		Calculate icErrorMessage as irDelegate.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+Else
+	Calculate icErrorMessage as con('validation error: ',irDelegate.icValidationMessage)
+	Quit method kFalse
+End If
+
+Quit method kTrue

@@ -1,0 +1,4 @@
+Calculate tConstants.debugMode as not(tConstants.debugMode)
+Do $setRemoteDebug() ## uses tConstants.debugMode to turn on/off
+
+Do $cinst.$behaviour()

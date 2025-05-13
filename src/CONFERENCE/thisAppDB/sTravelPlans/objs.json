@@ -1,0 +1,338 @@
+[
+	{
+		"name": "TP_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_DG_REF",
+		"ident": 32002,
+		"order": 2,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to DELEGATE",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_ARR_POINT",
+		"ident": 32008,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "St. Pancras, Heathrow, etc",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_CARRIER",
+		"ident": 32003,
+		"order": 4,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "airline, Eurostar etc",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_FLIGHT_NO",
+		"ident": 32004,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 10,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_ARR_DATE",
+		"ident": 32006,
+		"order": 6,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "arrival date",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_ARR_TIME",
+		"ident": 32007,
+		"order": 7,
+		"type": "kDate",
+		"subtype": "kTime",
+		"sublen": 0,
+		"properties": {
+			"desc": "arrival time",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_EARLY_PLANS",
+		"ident": 32009,
+		"order": 8,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "may be arriving some days before and staying elsewhere",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_CONNECT_HOW",
+		"ident": 32010,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "bus, train etc with departure time if relevant",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_LOCAL_ARR_WHERE",
+		"ident": 32018,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "local arrival venue - bus, train",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_LOCAL_ARR_TIME",
+		"ident": 32016,
+		"order": 11,
+		"type": "kDate",
+		"subtype": "kTime",
+		"sublen": 0,
+		"properties": {
+			"desc": "local arrival time - to determine shuttle times",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_COMMENT",
+		"ident": 32020,
+		"order": 12,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "any other comment",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_CWHEN",
+		"ident": 32011,
+		"order": 13,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_CBY",
+		"ident": 32012,
+		"order": 14,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_MWHEN",
+		"ident": 32013,
+		"order": 15,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_MBY",
+		"ident": 32014,
+		"order": 16,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_SHUTTLE",
+		"ident": 32021,
+		"order": 17,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "use shuttle service",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_MUSIC_PLAYER",
+		"ident": 32022,
+		"order": 18,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "can play instrument",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_MUSIC_INSTRUMENT",
+		"ident": 32023,
+		"order": 19,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "instrument that can be played",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_DEP_POINT",
+		"ident": 32024,
+		"order": 20,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "Which airport or train station",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_DEP_FLIGHT_CODE",
+		"ident": 32025,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "Flight number",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_DEP_FLIGHT_TIME",
+		"ident": 32026,
+		"order": 22,
+		"type": "kDate",
+		"subtype": "kTime",
+		"sublen": 0,
+		"properties": {
+			"desc": "departure time",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_DEP_VENUE",
+		"ident": 32027,
+		"order": 23,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "proposed time to leave venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TP_DEP_METHOD",
+		"ident": 32028,
+		"order": 24,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "Plan on how to get from venue to departure point.",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

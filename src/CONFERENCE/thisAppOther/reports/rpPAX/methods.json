@@ -1,0 +1,82 @@
+[
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$construct",
+		"order": 2,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "plData",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			},
+			{
+				"name": "prTotals",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lnColCount",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnTotalInteger",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnTotalReal",
+				"order": 4,
+				"type": "kNumber",
+				"subtype": "k1dp",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

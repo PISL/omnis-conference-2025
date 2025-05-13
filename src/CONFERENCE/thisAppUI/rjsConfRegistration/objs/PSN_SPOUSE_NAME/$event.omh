@@ -1,0 +1,8 @@
+On evBefore
+	
+On evAfter
+	Calculate icDisplayMessage as ''
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.PSN_SPOUSE_NAME as irRegistration.PSN_SPOUSE_NAME
+	End If
+	Do $cinst.$behaviour()

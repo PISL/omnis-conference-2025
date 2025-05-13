@@ -1,0 +1,1439 @@
+[
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$construct",
+		"order": 2,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "liColRef",
+				"order": 1,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llMenuCommands",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrAttendees",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sArrAttendee",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 3,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$init",
+		"order": 4,
+		"clientexec": true,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcForm",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lrefBackground",
+				"order": 1,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$event",
+		"order": 5,
+		"clientexec": true,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "setTabColours",
+		"order": 6,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcProperty",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lnCount",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrAttributes",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$behaviour",
+		"order": 7,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOpenConference",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			}
+		]
+	},
+	{
+		"name": "$cancelDelete",
+		"order": 8,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$saveData",
+		"order": 9,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbProceed",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "fetchSearch1List",
+		"order": 10,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcSelect",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 50,
+				"param": 1,
+				"desc": "row value to select after fetching"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "llConferences",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCFref",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"initval": "0"
+			}
+		]
+	},
+	{
+		"name": "fetchSearch2List",
+		"order": 11,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbFound",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "liColRef",
+				"order": 1,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llDates",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llDatesAndTimesAM",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llDatesAndTimesEVE",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llDatesAndTimesPM",
+				"order": 4,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llLeaders",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llSpeakers",
+				"order": 6,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnRatioFrom",
+				"order": 9,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnRatioTo",
+				"order": 10,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetchDisplayList",
+		"order": 12,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcSearch2",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 1
+			},
+			{
+				"name": "pcTextSearch",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 2
+			},
+			{
+				"name": "pcDesc",
+				"order": 21,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessageSpeakers",
+				"order": 14,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 300
+			},
+			{
+				"name": "lcMessageTopics",
+				"order": 11,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 300
+			},
+			{
+				"name": "lcPromptDay",
+				"order": 12,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "lcPromptTime",
+				"order": 13,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "lcSummaryDays",
+				"order": 19,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "lcSummarySpeakers",
+				"order": 20,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "llDatesDate",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llDatesDayNo",
+				"order": 8,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llScan",
+				"order": 9,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llSpeakers",
+				"order": 4,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTimesSlot",
+				"order": 10,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTimesTime",
+				"order": 6,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTopics",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountOther",
+				"order": 18,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountPaid",
+				"order": 16,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountSpeakers",
+				"order": 17,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountUnpaid",
+				"order": 15,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "assignEntryFieldProperties",
+		"order": 13,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lirefPagedPaneObjs",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnbordercolour",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"initval": "kColorDefault"
+			},
+			{
+				"name": "lnCount",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lneffect",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"initval": "kJSborderDefault"
+			},
+			{
+				"name": "lnEnterable",
+				"order": 4,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"initval": "rgb(238,238,238)"
+			},
+			{
+				"name": "lnlinestyle",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"initval": "1"
+			},
+			{
+				"name": "lnUnique",
+				"order": 5,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"initval": "rgb(238,238,238)"
+			},
+			{
+				"name": "lrFieldAttributes",
+				"order": 8,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "UserPermissions",
+		"order": 14,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llPrivsUsedInThisForm",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "TranslateText",
+		"order": 15,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llEntryFields",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llLabels",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llSuperLabels",
+				"order": 6,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$Search1ListClick",
+		"order": 16,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$Search2ListClick",
+		"order": 17,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcStatusCriteria",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			}
+		]
+	},
+	{
+		"name": "$displayListClick",
+		"order": 18,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pbFetchSlots",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1,
+				"initval": "kFalse"
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$deleteARR",
+		"order": 19,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "ClearWorkArea",
+		"order": 20,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "FetchAndPresentAttendees",
+		"order": 21,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$ParseClipboard",
+		"order": 22,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcClipboardFromClient",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$stringSearch",
+		"order": 23,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "DropLists",
+		"order": 24,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llRoomsNotTaken",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "PrintReceipt",
+		"order": 25,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "printPDF",
+		"order": 26,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pHeading",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000,
+				"param": 1
+			},
+			{
+				"name": "pText",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcdevice",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lID",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lReportInst",
+				"order": 3,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "ScheduleConflicts",
+		"order": 27,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessageSpeakers",
+				"order": 10,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 300
+			},
+			{
+				"name": "lcMessageTopics",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 300
+			},
+			{
+				"name": "lcPromptDay",
+				"order": 8,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "lcPromptTime",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "llDatesDate",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llDatesDayNo",
+				"order": 4,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llScan",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTimesSlot",
+				"order": 6,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTimesTime",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "SortTopics",
+		"order": 28,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "printSessionsReport",
+		"order": 29,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbFormatSpeaker",
+				"order": 7,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lcdevice",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lID",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "llDataRaw",
+				"order": 4,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lReportInst",
+				"order": 3,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrSpeakers",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "ref",
+				"order": 8,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			}
+		]
+	},
+	{
+		"name": "autoCreateArrangements",
+		"order": 30,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbFound",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbOK",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "llRooms",
+				"order": 11,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llSpeakers",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llSpeakerTopics",
+				"order": 6,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnAmPm",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "lnNoOfDays",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "lnRoomCount",
+				"order": 10,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "lnSpeaker",
+				"order": 4,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "lnThisTopic",
+				"order": 9,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "lnWhichDay",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			}
+		]
+	},
+	{
+		"name": "reduceFacilityList",
+		"order": 31,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llRoomsNotTaken",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "handleShortcutKey",
+		"order": 32,
+		"clientexec": true,
+		"pvardefs": [
+			{
+				"name": "pKey",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lnLine",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			}
+		]
+	},
+	{
+		"name": "handleMenuCall",
+		"order": 33,
+		"clientexec": true,
+		"pvardefs": [
+			{
+				"name": "pIdent",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$insertCR",
+		"order": 34,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$editCR",
+		"order": 35,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$deleteCR",
+		"order": 36,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcRecordDesc",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 1
+			},
+			{
+				"name": "pcDeleteMethod",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcTablesWithChildren",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "lnCountChildren",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lrDietRequest",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "sDietRequests",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "fetchSlots",
+		"order": 37,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "defineSlots",
+		"order": 38,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "liColRef",
+				"order": 1,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "moveArrangement",
+		"order": 39,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcObjName",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 30,
+				"param": 1
+			},
+			{
+				"name": "pnDayTo",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"param": 2
+			},
+			{
+				"name": "pcSession",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10,
+				"param": 3,
+				"desc": "AM  PM  or EVE"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbAnnounceWarning",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbFound",
+				"order": 7,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbOK",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcDragTo",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "lnSecondsSinceLastEvent",
+				"order": 9,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrTemp",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "clearErrorTextSlots",
+		"order": 40,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "highlightSpeaker",
+		"order": 41,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcObjName",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 30,
+				"param": 1
+			},
+			{
+				"name": "pnDayTo",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"param": 2
+			},
+			{
+				"name": "pcSession",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10,
+				"param": 3,
+				"desc": "AM  PM  or EVE"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbFound1",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound10",
+				"order": 15,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound11",
+				"order": 16,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound12",
+				"order": 17,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound13",
+				"order": 18,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound14",
+				"order": 19,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound15",
+				"order": 20,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound2",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound3",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound4",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound5",
+				"order": 6,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound6",
+				"order": 11,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound7",
+				"order": 12,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound8",
+				"order": 13,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFound9",
+				"order": 14,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbOK",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lnPSN_REF",
+				"order": 10,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnTotal",
+				"order": 21,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$refreshForm",
+		"order": 42,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

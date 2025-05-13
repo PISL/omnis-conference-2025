@@ -1,0 +1,15 @@
+On evLayoutChanged
+	Do inherited ## sets inBreakpoint
+	
+	Calculate $cinst.$objs.PagedPane.$objs.pbSessionFeedback.$text as pick(inBreakpoint=320,'session feedback','feedback')
+	
+	Switch inBreakpoint
+		Case 320,375
+			Calculate $cinst.$objs.rg_Feedback.$columncount as 3 ## horizontally beneath ilFeedback
+			Calculate $cinst.$objs.rg_inSlot.$columncount as 2
+			
+		Default
+			Calculate $cinst.$objs.rg_Feedback.$columncount as 1 ## vertically to the right of ilFeedback
+			Calculate $cinst.$objs.rg_inSlot.$columncount as 1
+			
+	End Switch

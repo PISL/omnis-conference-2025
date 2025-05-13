@@ -1,0 +1,7 @@
+Calculate icPrefix as 'CF_'
+Calculate icPrimarykey as 'CF_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'CF_GO_REF'
+# Calculate icForeignKey as 'CF_VEN_REF'
+
+Do inherited

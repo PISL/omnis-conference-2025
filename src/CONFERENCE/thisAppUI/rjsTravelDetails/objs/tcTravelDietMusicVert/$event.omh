@@ -1,0 +1,8 @@
+
+On evTabSelected
+	If pTabNumber=2
+		Calculate ibSeenDietTab as kTrue
+	End If
+	If pTabNumber=3
+		Calculate ibSeenDepartureTab as kTrue
+	End If

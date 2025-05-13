@@ -1,0 +1,106 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+Do $DefineList(ilDisplayRecords,'tArrangements')
+Do ilDisplayRecords.$AddLinkedCols("TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS",kTrue)
+Do ilDisplayRecords.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL",kTrue)
+Do ilDisplayRecords.$AddLinkedCols("FCY_NAME,FCY_LOCATION",kTrue)
+Do ilDisplayRecords.$cols.$add('countAttended',kInteger,k32bitint)
+Do ilDisplayRecords.$AddFunction(con("( select count(*) from ",lrAttendees.$servertablenames," where ARA_ARR_REF = ARR_SEQ) as countAttended"))
+Do ilDisplayRecords.$cols.$add('DisplayDate',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$cols.$add('DisplayTime',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+# Do ilDisplayRecords.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+Do method defineSlots
+
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do $DefineList(ilPersons,'tPerson')
+Do ilPersons.$addDisplayName()
+Do ilPersons.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilPersons.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilPersons.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilPersons.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ARR_PSN_REF.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilTopics,'tTopics')
+# Do ilTopics.$addLinkedCols('PSN_SURNAME(DG),PSN_FIRST_NAME,PSN_SEQ,DG_STATUS') ## $SubString method missing from oStringThings
+# Do ilTopics.$addDisplayName()
+# Do ilTopics.$cols.$findname('DisplayName') Returns liColRef
+# Calculate $cinst.$objs.PagedPane.$objs.ARR_TPC_REF.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilFacilities,'tFacility')
+Do ilFacilities.$addDisplayName()
+Do ilFacilities.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ARR_FCY_REF.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ARR_FCY_REF_show.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilAttendees,'tArrAttendee')
+Do ilAttendees.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME')
+Do ilAttendees.$addDisplayName()
+Do ilAttendees.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilAttendees.$listcolumn as liColRef.$ident
+
+# Do irCurrentRecord.$cols.$findname('TPC_TITLE') Returns liColRef
+# Calculate $cinst.$objs.PagedPane.$objs.ArrangementName.$listcolumn as liColRef.$ident
+
+Do ilSummaryDays.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilSummaryDays.$cols.$add('count',kInteger,k32bitint)
+Calculate ilSummarySpeakers as ilSummaryDays
+
+Do method fetchSearch1List ## Conferences  ilSearch1  line 1 current
+Do method $Search1ListClick
+Do method fetchSearch2List
+
+Do toValues.$initInherited('ARR_FORMAT') Returns ilFormat
+Do ilFormat.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ARR_FORMAT.$listcolumn as liColRef.$ident
+Do ilFormat.$add(#NULL,'ARR_FORMAT','WEBINAR','Webinar')
+Do ilFormat.$add(#NULL,'ARR_FORMAT','SESSION','Session')
+Do ilFormat.$add(#NULL,'ARR_FORMAT','LECTURE','Lecture')
+Do ilFormat.$add(#NULL,'ARR_FORMAT','WORKSHOP','Workshop')
+Do ilFormat.$add(#NULL,'ARR_FORMAT','GL_CAFE','Global cafe')
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as con($cell(clLabels,'objName','DG_Heading','label'))
+# icFormIntro has been hijacked for summary
+If icFormIntro=''
+	Calculate icFormIntro as $cell(clLabels,'objName','DG_Intro','label')
+End If
+
+Do method UserPermissions
+
+Do ilTopics.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ARR_TPC_REF.$listcolumn as liColRef.$ident
+
+Calculate $cinst.$objs.pbDelCascade.$visible as irUserRights.canDeleteCascade
+
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick (kTrue)
+
+Calculate inMinSearchString as 0
+
+Do $cinst.$superText(kTrue,'text search')
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE')
+Do $cinst.$superSearchList2($cell(clLabels,'objName','sel_date','label'),'DisplayDate')
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_values','label'),'DisplayName')
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_ARR.$currenttab as inCurrentTab
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMenuID if this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do irDragEvent.$cols.$add('timestamp',kDate,kDatetime)
+Do irDragEvent.$cols.$add('speaker_ref',kInteger,k32bitint)
+Do irDragEvent.$cols.$add('from_slot_no',kInteger,kShortint)
+Do irDragEvent.$cols.$add('from_slot_code',kCharacter,kSimplechar,10)
+Do irDragEvent.$cols.$add('to_slot_no',kInteger,kShortint)
+Do irDragEvent.$cols.$add('to_slot_code',kCharacter,kSimplechar,10)
+
+Do $cinst.$behaviour()

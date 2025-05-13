@@ -1,0 +1,10 @@
+Calculate pList.$line as 0
+While $Loop(pList)
+	Calculate lcTemp as pcColumns
+	While lcTemp<>''
+		Calculate lcColName as strtok(nam(lcTemp),',')
+		Calculate pList.[lcColName] as replaceall(pList.[lcColName],kLf,'')
+		Calculate pList.[lcColName] as replaceall(pList.[lcColName],kCr,pcReplaceChar)
+		# Calculate ilData.TPC_DESC as replaceall(ilData.TPC_DESC,kCr,'__')
+	End While
+End While

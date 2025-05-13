@@ -1,0 +1,49 @@
+If pbAddLinkedPersons>0
+	# proceed
+Else
+	Calculate icErrorMessage as 'Mandatory parameter missing.'
+	Quit method kFalse
+End If
+
+If pbAddLinkedPersons
+	Do $cinst.$cols.$findname('PSN_SURNAME') Returns liColRef
+	If liColRef
+		# column already exists
+	Else
+		Do $cinst.$cols.$add(lrPerson.PSN_SURNAME)
+		Do $cinst.$cols.$add(lrPerson.PSN_FIRST_NAME)
+		Do $cinst.$cols.$add(lrPerson.PSN_SEQ)
+		Do $cinst.$cols.$add(lrDelegate.DG_STATUS)
+		Do $cinst.$addDisplayName()
+		Calculate ibPSNcolsExist as kTrue
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# Calculate inID as pnCF_SEQ
+# Do $cinst.$Sql(,con('where DG_CF_REF = @[inID] and PSN_ACTIVE = 1'),0,0)
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+If pbAddLinkedPersons
+	Sta:, PSN_SURNAME, PSN_FIRST_NAME, PSN_SEQ, DG_STATUS
+End If
+Sta:from [$cinst.$servertablenames]
+If pbAddLinkedPersons
+	Sta:join [lrLinkTP.$servertablenames()] on TPP_TPC_REF = TPC_SEQ
+	Sta:join [lrPerson.$servertablenames()] on TPP_PSN_REF = PSN_SEQ
+End If
+Sta:where    TPC_GO_REF = @[trGroupOrg.GO_SEQ]
+End statement
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

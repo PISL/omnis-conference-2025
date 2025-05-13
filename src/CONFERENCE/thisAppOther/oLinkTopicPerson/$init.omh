@@ -1,0 +1,11 @@
+Do irTopic.$clear()
+Do irLinkRecord.$clear()
+Do irPerson.$clear()
+Do ilJoinedFetch.$clear()
+
+Calculate pretTopic as irTopic
+Calculate pretLink as irLinkRecord
+Calculate pretPerson as irPerson
+Calculate pretJoined as ilJoinedFetch
+
+Quit method kTrue

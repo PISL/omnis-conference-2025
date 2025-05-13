@@ -1,0 +1,98 @@
+# now look to see if there are any conflicts
+# a.  speakers appearing twice in same slot
+# b.  topics appearing in same slot
+Calculate llDatesDate as ilDisplayRecords
+Do llDatesDate.$cols.ARR_DATE.$removeduplicates(kTrue)
+If llDatesDate.$linecount=1&isnull(llDatesDate.1.ARR_DATE)
+	Do llDatesDate.$clear()
+End If
+
+Calculate llDatesDayNo as ilDisplayRecords
+Do llDatesDayNo.$cols.ARR_DAYNO.$removeduplicates(kTrue)
+If llDatesDayNo.$linecount=1&isnull(llDatesDayNo.1.ARR_DAYNO)
+	Do llDatesDayNo.$clear()
+End If
+
+Do llDatesDate.$merge(llDatesDayNo)
+
+Calculate llTimesTime as ilDisplayRecords
+Do llTimesTime.$cols.ARR_STARTTIME.$removeduplicates(kTrue)
+If llTimesTime.$linecount=1&isnull(llTimesTime.1.ARR_STARTTIME)
+	Do llTimesTime.$clear()
+End If
+
+Calculate llTimesSlot as ilDisplayRecords
+Do llTimesSlot.$cols.ARR_SLOT.$removeduplicates(kTrue)
+If llTimesSlot.$linecount=1&isnull(llTimesSlot.1.ARR_SLOT)
+	Do llTimesSlot.$clear()
+End If
+
+Do llTimesTime.$merge(llTimesSlot)
+
+Calculate llScan as ilDisplayRecords
+Calculate llScan.$smartlist as kTrue
+
+Calculate llDatesDate.$line as
+While $Loop(llDatesDate)
+	If llDatesDate.ARR_DATE>dat('1 JAN 2010')
+		Do llScan.$filter($ref.ARR_DATE=llDatesDate.ARR_DATE)
+		Calculate lcPromptDay as con(llDatesDate.ARR_DATE)
+	Else ## llDatesDate.ARR_DAYNO
+		Do llScan.$filter($ref.ARR_DAYNO=llDatesDate.ARR_DAYNO)
+		Calculate lcPromptDay as con('day # ',llDatesDate.ARR_DAYNO)
+	End If
+	
+	# for this day now reduce further to time slots
+	Calculate llTimesTime.$line as 0
+	While $Loop(llTimesTime)
+		If llTimesTime.ARR_STARTTIME>tim('00:00')
+			Do llScan.$filter($ref.ARR_STARTTIME=llTimesTime.ARR_STARTTIME)
+			Calculate lcPromptTime as con(llTimesTime.ARR_STARTTIME)
+		Else ## llTimesTime.ARR_SLOT
+			Do llScan.$filter($ref.ARR_SLOT=llTimesTime.ARR_SLOT)
+			Calculate lcPromptTime as con('slot # ',llTimesTime.ARR_SLOT)
+		End If
+		
+		Calculate llTemp as llScan
+		Do llTemp.$sort($ref.ARR_TPC_REF,1)
+		Calculate llTemp.$line as 0
+		While $Loop(llTemp)
+			If llTemp.$line>1
+				If llTemp.ARR_TPC_REF=llTemp.[llTemp.$line-1].ARR_TPC_REF
+					# we have a duplicate Topic
+					Calculate lcMessageTopics as con(lcMessageTopics,pick(lcMessageTopics<>'','',kCr),lcPromptDay,' ',lcPromptTime,' duplicate topic "',llTemp.TPC_TITLE,'"')
+				End If
+			End If
+		End While
+		
+		Calculate llTemp as llScan
+		Do llTemp.$sort($ref.ARR_PSN_REF,1)
+		Calculate llTemp.$line as 0
+		While $Loop(llTemp)
+			If llTemp.$line>1
+				If llTemp.ARR_PSN_REF=llTemp.[llTemp.$line-1].ARR_PSN_REF
+					# we have a duplicate Speaker
+					Calculate lcMessageTopics as con(lcMessageTopics,pick(lcMessageTopics<>'','',kCr),lcPromptDay,' ',lcPromptTime,' duplicate speaker ',llTemp.PSN_SURNAME)
+				End If
+			End If
+		End While
+		
+		Calculate llTemp as llScan
+		Do llTemp.$sort($ref.ARR_FCY_REF,1)
+		Calculate llTemp.$line as 0
+		While $Loop(llTemp)
+			If llTemp.$line>1
+				If llTemp.ARR_FCY_REF=llTemp.[llTemp.$line-1].ARR_FCY_REF
+					# we have a duplicate Room
+					Calculate lcMessageTopics as con(lcMessageTopics,pick(lcMessageTopics<>'','',kCr),lcPromptDay,' ',lcPromptTime,' duplicate room "',llTemp.FCY_NAME,'"')
+				End If
+			End If
+		End While
+		
+		Do llScan.$unfilter() ## undo time filter
+	End While
+	
+	Do llScan.$unfilter() ## undo date filter
+End While
+
+Calculate icDisplayMessage as con(lcMessageTopics,pick(lcMessageSpeakers<>'','',kCr),lcMessageSpeakers)

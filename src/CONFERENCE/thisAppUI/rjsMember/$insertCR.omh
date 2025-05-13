@@ -1,0 +1,16 @@
+If irUserRights.canInsert&icMode='' ## copied from $behaviour()
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'IM' ## insert membership
+	Do irCurrentRecord.$clear()
+	Do irCurrentRecord.$defaults()
+	# if there is a prior membership, use the latest as the anniversary dates for next
+	If ilMembershipHistory.$linecount>0
+		Calculate irCurrentRecord.MB_FROM as dim(ilMembershipHistory.1.MB_FROM,12)
+		Calculate irCurrentRecord.MB_TO as dim(ilMembershipHistory.1.MB_TO,12)
+		
+		Calculate irCurrentRecord.MB_CURRENCY as ilMembershipHistory.1.MB_CURRENCY
+		Calculate irCurrentRecord.MB_AMOUNT as ilMembershipHistory.1.MB_AMOUNT
+	End If
+	
+	Do $cinst.$behaviour()
+End If

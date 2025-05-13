@@ -1,0 +1,23 @@
+On evClick
+	Do $cinst.$saveData() Returns lbOK
+	If lbOK
+		# update lists
+		If inCurrentTab=cnTabDelegate
+			Do method fetchDisplayList
+			
+		Else If inCurrentTab=cnTabTopics
+			# If icMode='IP'
+			# Do ilTopics.$add()
+			# Calculate ilTopics.$line as ilTopics.$linecount
+			# End If
+			# Calculate ilTopics.[ilTopics.$line] as irPax
+			
+		End If
+		
+		# all changes to db are done ## clear the semaphore
+		Do irSemaphore.$clearSemaphore() Returns lbOK ## kTrue if the semaphore was actually cleared.  irSemaphore will also be cleared if lbOK is kTrue.
+		Calculate ibUserHasSemaphore as not(lbOK)
+		
+		Calculate icMode as ''
+		Do $cinst.$behaviour()
+	End If

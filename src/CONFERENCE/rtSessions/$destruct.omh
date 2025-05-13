@@ -1,0 +1,17 @@
+# Enter your termination code here
+Calculate ldtCurrent as #D
+If ldtCurrent-$cinst.$lastresponse>$cinst.$timeout*60*100 ## convert $timeout in minutes to 100ths of a second
+	# send the timeout message to the client
+	# Breakpoint
+	Do irefForm.$pushdata(row('Your server session has timed out due to inactivity.  You will need to login again.  Do you wish to do so now?'))
+End If
+
+Do inherited
+
+If trLogAccess.ULA_SEQ>0
+	Calculate trLogAccess.ULA_LOGOUT as $ServerTime()
+	# There is a new systaskstats table that is being created in $construct of rtSuper and updated in $destruct in rtSuper.
+	# it records the session statistics so, the ones here were removed.
+	
+	Do trLogAccess.$update() Returns lbOK
+End If

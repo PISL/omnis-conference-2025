@@ -1,0 +1,20 @@
+# Enter your initialization code here
+Do $DefineList(ilArrangements,'tArrangements')
+Do ilArrangements.$AddLinkedCols("TPC_TITLE,TPC_ABSTRACT,TPC_DESC,TPC_DURN_MINS",kTrue)
+# PSN_SEX = 'O' to exclude conference organiser in some situations
+Do ilArrangements.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SPEAKER_BIO,PSN_SEX",kTrue)
+Do ilArrangements.$cols.$add('displaySpeaker',kCharacter,kSimplechar,100)
+Do ilArrangements.$AddFunction(" case when PSN_SURNAME is null then ARR_LEADER else concat(PSN_SURNAME,', ',PSN_FIRST_NAME) end ")
+Do ilArrangements.$AddLinkedCols("FCY_NAME,FCY_LOCATION",kTrue)
+Do ilArrangements.$cols.$add('DisplayWhen',kCharacter,kSimplechar,100)
+Do ilArrangements.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Do ilArrangements.$cols.$add('countAll',kInteger,k32bitint)
+Do ilArrangements.$cols.$add('countThisUser',kInteger,k32bitint)
+Do ilArrangements.$cols.$add('displayCount',kCharacter,kSimplechar,30)
+Do ilArrangements.$cols.$add('displayThisUser',kCharacter,kSimplechar,1) ## ☞𯿿WHITE RIGHT POINTING INDEX𯿿Unicode: U+261E, UTF-8: E2 98 9E
+
+Do ilMultipleChoiceOptions.$cols.$add('signal',kCharacter,kSimplechar,2)
+Do ilMultipleChoiceOptions.$cols.$add('text',kCharacter,kSimplechar,100)
+Do ilMultipleChoiceOptions.$cols.$add('checked',kBoolean)
+
+Do $DefineList(ilBookings,'tArrAttendee')

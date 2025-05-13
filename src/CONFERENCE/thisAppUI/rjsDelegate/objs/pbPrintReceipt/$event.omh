@@ -1,0 +1,4 @@
+On evClick
+	Do method PrintReceipt
+	
+	Do $cinst.$behaviour()

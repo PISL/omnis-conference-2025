@@ -1,0 +1,173 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$fetchRecentActivity",
+		"order": 3,
+		"pvardefs": [
+			{
+				"name": "pConfSeq",
+				"order": 11,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbTransBegun",
+				"order": 12,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcSQL",
+				"order": 13,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "createSQLforTempTable",
+		"order": 4,
+		"pvardefs": [
+			{
+				"name": "pConfSeq",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcSQL",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			}
+		]
+	},
+	{
+		"name": "$fetchRegistrationCounts",
+		"order": 5,
+		"pvardefs": [
+			{
+				"name": "pConfSeq",
+				"order": 11,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbTransBegun",
+				"order": 12,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcSQL",
+				"order": 13,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 6,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

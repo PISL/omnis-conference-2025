@@ -1,0 +1,22 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	# Breakpoint
+	If inCurrentTab=cnTabDelegate
+		# user has permission to delete cascade from the DG to Invoice
+		# however the DG_STATUS must be UNPAID
+		Do loLinks.$fetchDelegateWithInvoice(irCurrentRecord.DG_SEQ,lrDelegate,lrLink,lrHeader,llDetails)
+		Do loLinks.$deleteDelegateWithInvoice(irCurrentRecord.DG_SEQ) Returns lbOK
+		If lbOK
+			Calculate lcTemp as con('Delegate "',irCurrentRecord.DisplayName,'" and all linked children records have been deleted')
+			
+			Do method ClearWorkArea
+			Do ilDisplayRecords.$remove(ilDisplayRecords.$line)
+			Do method $displayListClick ## to display new selected delegate
+			
+			Calculate icDisplayMessage as lcTemp
+		Else
+			Calculate icDisplayMessage as loLinks.icErrorMessage
+		End If
+	Else
+		Breakpoint
+	End If

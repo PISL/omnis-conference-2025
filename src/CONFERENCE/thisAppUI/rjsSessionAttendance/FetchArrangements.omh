@@ -1,0 +1,23 @@
+Do ioArrangements.$fetchForConference(ilConferences.CF_SEQ,irDelegate) Returns ilArrangements
+While $Loop(ilArrangements)
+	If ilArrangements.ARR_DATE>dat('1 JAN 2010')
+		# leave as is
+	Else
+		Calculate ilArrangements.ARR_DATE as dadd(kDay,ilArrangements.ARR_DAYNO,ilConferences.CF_DATE_FROM)
+	End If
+End While
+Calculate ilArrangements.$smartlist as kTrue
+Calculate icTimeType as ioArrangements.icTimeType
+
+# for some reason the ARR_DATE which is null on the database is coming back with a value of '4 Jan 00'
+Do ilDates.$define(ilArrangements.ARR_DATE,ilArrangements.ARR_DAYNO)
+Do ilDates.$merge(ilArrangements,kTrue)
+Do ilDates.$cols.ARR_DATE.$removeduplicates(kTrue)
+
+Do ilDates.$cols.$findname('ARR_DATE') Returns liColRef
+Calculate $cinst.$objs.ilDates.$listcolumn as liColRef.$ident
+
+Do ilDates.$search($ref.ARR_DATE=idTestDate,1,0,0,0) Returns lbFound
+If not(lbFound)
+	Calculate ilDates.$line as 1
+End If

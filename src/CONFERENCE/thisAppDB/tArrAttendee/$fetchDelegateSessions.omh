@@ -1,0 +1,35 @@
+If pnDG_SEQ>0
+	# proceed
+Else
+	Quit method kFalse
+End If
+
+Calculate inID as pnDG_SEQ
+If pdDate>dat('1 JAN 2010')
+	Calculate idDateNoTime as pdDate
+	Calculate lcTimeClause as con('ARR_DATE = @[',nam(idDateNoTime),']')
+End If
+If not(isnull(pnDay))
+	Calculate lcTimeClause as con(lcTimeClause,pick(lcTimeClause<>'','',' or '),'ARR_DAYNO = ',pnDay)
+End If
+If lcTimeClause<>''
+	Calculate lcTimeClause as con(' and ( ',lcTimeClause,' ) ')
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Calculate lcCriteria as con(' ARA_DG_REF = @[',nam(inID),'] ',lcTimeClause)
+
+Do $cinst.$Sql(,lcCriteria,0,0)
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

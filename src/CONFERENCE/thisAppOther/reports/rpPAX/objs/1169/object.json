@@ -1,0 +1,29 @@
+{
+	"ident": 1169,
+	"order": 100,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "room requirement",
+		"align": "kRightJst",
+		"backcolor": "kColorUser16",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.493,
+		"left": 1.516,
+		"lineno": 23,
+		"lineoffset": 0.0,
+		"rowid": "word_roomRequirement",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 3.564
+	}
+}

@@ -1,0 +1,86 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Calculate $cinst.$objs.ilSearch1.$enabled as icMode=''
+# Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+# Calculate $cinst.$objs.TabControl_DG.$enabled as icMode='' ## we need this permanently enabled as we have more than 1 tab with enrty fields
+If inCurrentTab=cnTabCertificate
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.CRT_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.CRT_SEQ>0&icMode=''
+	
+Else If inCurrentTab=cnTabAwardedTo
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&irCurrentRecord.CRT_SEQ>0
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irAwardee.CSN_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irAwardee.CSN_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbAddCertificate.$enabled as irUserRights.canDelete&ilDelegates.DG_SEQ>0&icMode=''&ilCertAssigned.$line=0
+	
+	Calculate $cinst.$objs.CSN_COMMENTS.$enabled as icMode<>''
+	
+End If
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+Set reference lirefPagedPaneObjs to $cinst.$objs.PagedPane.$objs
+If inCurrentTab=cnTabCertificate
+	Calculate lirefPagedPaneObjs.CRT_TITLE.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.CRT_DESC.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.CRT_TYPE.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.CRT_CF_REF.$enabled as icMode<>''
+	
+Else If inCurrentTab=cnTabComments
+	Calculate lirefPagedPaneObjs.CRT_CRITERIA.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.CRT_RULES.$enabled as icMode<>''
+	
+Else If inCurrentTab=cnTabAwardedTo
+	# Breakpoint
+	# Calculate lirefPagedPaneObjs.PX_NAME.$visible as irAwardee.PX_ROLE<>''&irAwardee.PX_ROLE<>'DELEGATE'
+	# Calculate $cinst.$objs.PagedPane.$objs.ilAttendees.$enabled as icMode=''
+	
+End If
+
+Calculate $cinst.$objs.TabControl_CRT.$enabled as icMode=''
+If icMode<>''
+	If inCurrentTab=cnTabCertificate|inCurrentTab=cnTabComments
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabCertificate
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabComments
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabTechnical
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+		
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabAwardedTo
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kFalse)
+	Else If inCurrentTab=cnTabAwardedTo
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabCertificate
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kFalse)
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabComments
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kFalse)
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabTechnical
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kFalse)
+		
+		Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabAwardedTo
+		Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+	End If
+	
+Else
+	# no mode - all tabs enabled
+	Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabCertificate
+	Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue) ## $tabenabled notation not supported
+	Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabComments
+	Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+	Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabTechnical
+	Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+	
+	Calculate $cinst.$objs.TabControl_CRT.$selectedtab as cnTabAwardedTo
+	Do $cinst.$objs.TabControl_CRT.$tabenabled.$assign(kTrue)
+End If
+Calculate $cinst.$objs.TabControl_CRT.$selectedtab as inCurrentTab
+
+Do method assignEntryFieldProperties
+
+Do inherited ## handle objects in the navigation and results panes

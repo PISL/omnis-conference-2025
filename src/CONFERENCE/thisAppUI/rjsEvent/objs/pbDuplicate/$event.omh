@@ -1,0 +1,70 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	If inCurrentTab=cnConfInfo
+		Calculate icMode as 'IC' ## insert conference/event
+		Calculate inCF_SEQbeingDuplicated as irCurrentRecord.CF_SEQ
+		Calculate irCurrentRecord.CF_SEQ as #NULL
+		Do irCurrentRecord.$defaults()
+		
+		# RSM  2024-12-09  When duplicating an event, typically a conference for following year,
+		# change 2024 to 2025 in the obvious places.
+		Calculate lcCurrentYear as dtcy(irCurrentRecord.CF_DATE_FROM)
+		Calculate lcNewYear as dtcy(#D)
+		If lcCurrentYear=lcNewYear
+			Calculate lcNewYear as lcNewYear+1
+		End If
+		Calculate irCurrentRecord.CF_DATE_FROM as dadd(kYear,1,irCurrentRecord.CF_DATE_FROM)
+		Calculate irCurrentRecord.CF_DATE_TO as dadd(kYear,1,irCurrentRecord.CF_DATE_TO)
+		Calculate irCurrentRecord.CF_ADMIN_DATE_TO as dadd(kYear,1,irCurrentRecord.CF_ADMIN_DATE_TO)
+		If pos(lcCurrentYear,irCurrentRecord.CF_TITLE)
+			Calculate irCurrentRecord.CF_TITLE as replace(irCurrentRecord.CF_TITLE,lcCurrentYear,lcNewYear)
+		End If
+		If pos(lcCurrentYear,irCurrentRecord.CF_TITLE_CODE)
+			Calculate irCurrentRecord.CF_TITLE_CODE as replace(irCurrentRecord.CF_TITLE_CODE,lcCurrentYear,lcNewYear)
+		End If
+		
+		Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_dupArrangements','label'),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$duplicateCFarr','$duplicateCFnarr')
+		
+	Else If inCurrentTab=cnConfPriceRules
+		Calculate icMode as 'IP' ## insert conference/event
+		Calculate inCFP_SEQbeingDuplicated as irProductPriceRule.CFP_SEQ
+		
+		Do ilPricingGrid.$add()
+		Calculate ilPricingGrid.$line as ilPricingGrid.$linecount
+		
+		Calculate irProductPriceRule.CFP_SEQ as #NULL
+		Calculate irProductPriceRule.CFP_ORDER as ilPricingGrid.$linecount
+		
+		Do irProductPriceRule.$defaults()
+		
+		# prompting for with/without arrangements not required here.
+		# User can still cancel to back out.
+		# Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_dupPriceRule','label'),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$duplicateCFP','')
+		
+	Else
+		Quit method
+	End If
+	# Do irCurrentRecord.$clear()
+	
+	
+	
+	# duplicating a conference also means duplicating the following:
+	# confPricing rules
+	# and possibly the arrangements
+	# these extra tables will be handled in $saveData method
+	
+	# so leave ilArrangements in memory
+	# and  ilPricingGrid
+	
+	If inCurrentTab=cnConfInfo|inCurrentTab=cnConfTerms|inCurrentTab=cnConfTechInfo
+		Calculate inCurrentTab as cnConfInfo
+		
+	Else If inCurrentTab=cnConfPriceRules
+		Calculate inCurrentTab as cnConfPriceRules
+		
+	End If
+	Calculate $cinst.$objs.TabControl_CF.$currenttab as inCurrentTab
+	Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

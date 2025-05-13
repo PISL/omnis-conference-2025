@@ -1,0 +1,4 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Do method ShowArrangements
+	Do $cinst.$behaviour()

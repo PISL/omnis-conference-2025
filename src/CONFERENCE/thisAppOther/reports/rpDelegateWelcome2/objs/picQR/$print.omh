@@ -1,0 +1,19 @@
+# Calculate lcFileName as con(ilData.DG_SEQ,'.png')
+# Calculate lcFilePath as con('/tmp/',lcFileName)
+Calculate lcURL as con(irSessionURL.RFO_CHAR,'?id=',ilData.DG_SEQ,'&name=',replaceall(ilData.PSN_SURNAME,' ','%20'))
+
+Do OIMAGE.$makeqrcode(lcURL,lbinImage,kOIMAGEfmtPNG,256,kOIMAGEerrLow,4,lcErrorText) Returns lbOK
+If not(lbOK)
+	Breakpoint [lcErrorText]
+End If
+
+# run the shell command to invoke qrencode
+# Calculate lcScript as con("/opt/local/bin/qrencode -l M -o ",lcFilePath," '",lcURL,"'")
+# Do $runapplescript(con('do shell script "',lcScript,'"'),lcResponse,lcErrorText) Returns lnExecuteErrorCode
+# ReadBinFile (con('/tmp/',lcFileName),lbinImage) ## HFS to posix
+
+Do pictconvfrom('PNG',lbinImage) Returns ipQR
+Do $cinst.$objs.picQR.$rawpictformat.$assign(pictformat(ipQR))
+
+Calculate pData as ipQR
+Do default

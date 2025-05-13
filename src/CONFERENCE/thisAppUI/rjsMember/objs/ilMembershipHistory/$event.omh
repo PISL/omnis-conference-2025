@@ -1,0 +1,11 @@
+On evClick
+	Calculate irCurrentRecord as ilMembershipHistory
+	Do ilType.$search($ref.RFO_VALUE=irCurrentRecord.MB_TYPE,1,0,0,0)
+	
+On evDoubleClick
+	
+On evCellChanged
+	
+On evHeaderClick
+	
+On evHeadedListDisplayOrderChanged

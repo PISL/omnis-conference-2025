@@ -1,0 +1,15 @@
+# what determines all Conference records?
+# up to the last 20 events
+
+# Do ilDisplayRecords.$fetch_all()
+Do ilDisplayRecords.$fetchLatest(20,kTrue)
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+End If
+
+# after duplicating an event record, the CF_DATE_FROM and CF_TITLE may be duplicated also.
+# Ensure latest created record is above the previous record using CF_SEQ.      RSM 2024-12-09
+Do ilDisplayRecords.$sort($ref.CF_DATE_FROM,1,$ref.CF_TITLE,0,$ref.CF_SEQ,1)
+
+Calculate ilDisplayRecords.$line as 1 ## most recent conference
+Do method $displayListClick

@@ -1,0 +1,35 @@
+{
+	"ident": 1108,
+	"order": 10,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": true,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 9.172,
+		"left": 0.0,
+		"lineno": 11,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "\rWelcome to [irConference.CF_TITLE] and what should be another informative and invigorating conference!\r\rWe hope you will be basking in our new venue this year - the ultimate in technology focussed venues - with large display screens for all presentations.\r\rWhat's new this year?  We are extending automated testing.  Last year one method was presented and this year we have two.  Emmerse yourself in this important aspect that will be critical in any long term software solution.\r\rLou is expanding our minds further with the Internet of Things.  Much hyped, much dreaming but what about the reality?  This series of sessions will help you demystify the hype and inform you how you might exploit this in the future.\r\rStudio 9 will be out shortly and this is your chance to be ahead of the development curve in preparing for this significant release.  Although the author is not sure what is significant about a text editor... we shall hopefully be enlightened to discover what we have been missing out on all these years!  :-)"
+		},
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 18.273
+	}
+}

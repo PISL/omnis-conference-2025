@@ -1,0 +1,6 @@
+Calculate $cinst.icPrefix as 'AFB_'
+Calculate icPrimarykey as 'AFB_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'AFB_ARA_REF'
+
+Do inherited

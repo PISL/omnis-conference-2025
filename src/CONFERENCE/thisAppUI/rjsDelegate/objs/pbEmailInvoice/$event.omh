@@ -1,0 +1,46 @@
+On evClick
+	# emailing invoice is a two step process
+	# 1. generating the invoice using the PDFobject and waiting for it to complete.
+	# 2. using the path returned from 1, attach it to an email that is being sent out.
+	
+	Do iFiles.$clear()
+	
+	# Open task instance infra.tkAsyncPDF returns lrefAsyncPdf
+	Do $tasks.tkAsyncPdfApp.$open('*',tcCurrentLibrary,$cinst) Returns irefAsyncPdf
+	If irefAsyncPdf
+		Do irefAsyncPdf.$getAttributes() Returns irJobAttributes
+		Do irefAsyncPdf.$setVar(nam(trGroupOrg),trGroupOrg)
+		Do irefAsyncPdf.$setVar(nam(trCurrUser),trCurrUser)
+		
+		If ibManualWorkflow
+			Calculate irJobAttributes.instruction as 'DOWNL_INVOICE'
+		Else
+			Calculate irJobAttributes.instruction as 'EMAIL_INVOICE'
+		End If
+		Calculate irJobAttributes.author as trGroupOrg.GO_NAME
+		Calculate irJobAttributes.title as 'Customer Invoice'
+		Calculate irJobAttributes.subject as 'Order confirmation'
+		Calculate irJobAttributes.reportClass as 'rpInvoice' ## or infra.rpInvoice
+		Calculate irJobAttributes.reportData as ilInvoices
+		Calculate irJobAttributes.jobIdentification as irCurrentRecord
+		Calculate irJobAttributes.saveOnError as kTrue
+		Calculate irJobAttributes.timeout as 10 ## minutes
+		
+		Do irefAsyncPdf.$setAttributes(irJobAttributes)
+		Do irefAsyncPdf.$setCallback($cinst,'$pdfcomplete','$emailSendError')
+		Do irefAsyncPdf.$generatePdf()
+		
+		# our job is finished momentarily.
+		# a distinct task running from main server will take the attributes provided and generate a PDF
+		# when the PDF completes it will call method in the new task that will in turn call $pdfcomplete
+		
+	Else
+		Breakpoint
+		
+	End If
+	
+	# old code below
+	
+	# Do method $sendInvoiceToCustomer ('EMAIL_INVOICE')
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

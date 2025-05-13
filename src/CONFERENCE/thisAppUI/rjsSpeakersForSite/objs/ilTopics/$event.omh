@@ -1,0 +1,11 @@
+On evClick
+	Calculate ilTopics.$line as pVertCell
+	Do ilSpeakers.$search($ref.DG_PSN_REF=ilTopics.PSN_SEQ,1,0,0,0)
+	Calculate irCurrentRecord as ilTopics
+	Calculate irCurrentSpeaker as ilSpeakers
+	
+	# The above sets the correct lines in lists but it is not being reflected in the form!
+	Do $cinst.$pushdata(row('ilTopics',irCurrentRecord,irCurrentSpeaker))
+	# This was commented out because if we use it, ilTopics loses its $smartlist status which we need for text search
+	
+	Do $cinst.$behaviour()

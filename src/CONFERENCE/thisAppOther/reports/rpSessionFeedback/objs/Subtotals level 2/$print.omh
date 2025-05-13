@@ -1,0 +1,4 @@
+If ilData.Section=ccSection3
+	Do default
+End If
+# otherwise this section is suppressed

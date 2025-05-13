@@ -1,0 +1,263 @@
+[
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$construct",
+		"order": 2,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbFound",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbOK",
+				"order": 10,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcFilename",
+				"order": 12,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcSearchCountry",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcTemp",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "liColRef",
+				"order": 8,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "liInstRef",
+				"order": 2,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llConferences",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llGroupOrgs",
+				"order": 4,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loWorkerObj",
+				"order": 11,
+				"type": "kObject",
+				"subtype": "infra.oEmailSendWorker",
+				"sublen": 0
+			},
+			{
+				"name": "lrGroupOrg",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrReference",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$event",
+		"order": 3,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 4,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$behaviour",
+		"order": 5,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbMultipleDelegates",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbTemp",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
+		],
+		"empty": true
+	},
+	{
+		"name": "$GetVar",
+		"order": 6,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcVarName",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$SetVar",
+		"order": 7,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "prefVariable",
+				"order": 1,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "TranslateText",
+		"order": 8,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llEntryFields",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llLabels",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llSuperLabels",
+				"order": 6,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "logAccess",
+		"order": 9,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "downloadEventFile",
+		"order": 10,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbDone",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcFilename",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			}
+		]
+	}
+]

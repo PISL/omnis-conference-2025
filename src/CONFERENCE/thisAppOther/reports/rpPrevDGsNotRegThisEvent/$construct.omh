@@ -1,0 +1,27 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate irSortOption as prSortRow
+
+Calculate icReportTitle as con('Previous Delegates not registered to ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+If prSortRow.sortCode='PSN_SURNAME'
+	Do ilData.$sort($ref.SortName,0)
+Else If prSortRow.sortCode='PSN_COUNTRY'
+	Do $cinst.$sorts.$add(nam(ilData.PSN_COUNTRY)) Returns liSortRef
+	Calculate liSortRef.$subtotals as kTrue
+	Do ilData.$sort($ref.PSN_COUNTRY,0,$ref.SortName,0)
+End If
+
+If ilData.$linecount=0
+	Do ilData.$add(#NULL,'nothing listed')
+End If
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

@@ -1,0 +1,72 @@
+Do llData.$cols.$add(lrPerson.PSN_SEQ)
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_SPEAKER_BIO)
+Do llData.$cols.$add('SpeakerSort',kCharacter,kSimplechar,100)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
+Do llData.$cols.$add(lrTopics.TPC_DESC)
+Do llData.$cols.$add(lrTopics.TPC_DURN_MINS)
+Do llData.$cols.$add(lrTopics.TPC_COMMENT)
+
+Do llData.$cols.$add($cinst.ARR_SEQ)
+Do llData.$cols.$add($cinst.ARR_DATE)
+Do llData.$cols.$add($cinst.ARR_DAYNO)
+Do llData.$cols.$add($cinst.ARR_STARTTIME)
+Do llData.$cols.$add($cinst.ARR_ENDTIME)
+Do llData.$cols.$add($cinst.ARR_SLOT)
+Do llData.$cols.$add($cinst.ARR_ORDER)
+Do llData.$cols.$add($cinst.ARR_BOOKING_REQD)
+Do llData.$cols.$add($cinst.ARR_MAX_BOOKINGS)
+
+Do llData.$cols.$add(lrConference.CF_TITLE)
+Do llData.$cols.$add(lrConference.CF_DATE_FROM)
+Do llData.$cols.$add(lrConference.CF_DATE_TO)
+
+Do llData.$cols.$add('att_PSN_SURNAME',kCharacter,kSimplechar,40)
+Do llData.$cols.$add('att_PSN_FIRST_NAME',kCharacter,kSimplechar,40)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  distinct  spkr.PSN_SEQ
+Sta:, coalesce(spkr.PSN_SURNAME,ARR_LEADER)
+Sta:, spkr.PSN_FIRST_NAME, spkr.PSN_SPEAKER_BIO
+Sta:, case when spkr.PSN_SURNAME is null then ARR_LEADER else concat(spkr.PSN_SURNAME,', ',spkr.PSN_FIRST_NAME) end
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC, TPC_DURN_MINS, TPC_COMMENT
+Sta:, ARR_SEQ, ARR_DATE, ARR_DAYNO, ARR_STARTTIME, ARR_ENDTIME, ARR_SLOT
+Sta:, ARR_ORDER, ARR_BOOKING_REQD, ARR_MAX_BOOKINGS
+Sta:, CF_TITLE, CF_DATE_FROM, CF_DATE_TO
+Sta:, att.PSN_SURNAME, att.PSN_FIRST_NAME
+Sta:from [$cinst.$servertablenames()]
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = ARR_CF_REF
+Sta:join [lrTopics.$servertablenames] on TPC_SEQ = ARR_TPC_REF
+Sta:left outer join [lrPerson.$servertablenames()] as spkr on spkr.PSN_SEQ = ARR_PSN_REF
+# in case no one attends a session
+Sta:left outer join [lrAttendee.$servertablenames()] on ARA_ARR_REF = ARR_SEQ
+Sta:left outer join [lrDelegate.$servertablenames()] on ARA_DG_REF = DG_SEQ
+Sta:left outer join [lrPerson.$servertablenames()] as att on DG_PSN_REF = att.PSN_SEQ
+Sta:where  CF_SEQ = @[pnCF_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+While $Loop(llData)
+	# Do $cinst.$backfill_ARR_DATE()
+	Do method $backfill_ARR_DATE (#NULL,llData) Returns llData.ARR_DATE
+End While
+
+Do llData.$sort($ref.SpeakerSort,0)
+Quit method llData

@@ -1,0 +1,8 @@
+Calculate icDisplayMessage as ''
+Do ilArrangements.$clear()
+If pbAllForSpeaker
+	Do ilArrangements.$fetchConference(ilSearch1.CF_SEQ,con(" ARR_PSN_REF =  ",ilDisplayRecords.DG_PSN_REF))
+Else
+	Do ilArrangements.$fetchTopicSessions(ilSearch1.CF_SEQ,ilTopics.TPC_SEQ)
+End If
+Do ilArrangements.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0)

@@ -1,0 +1,520 @@
+[
+	{
+		"name": "TSQ_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>record ID</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_CWHEN",
+		"ident": 32009,
+		"order": 2,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>created when</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_CBY",
+		"ident": 32010,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>created by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_MWHEN",
+		"ident": 32011,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>last modified</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_MBY",
+		"ident": 32012,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>last modified by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_MCOUNT",
+		"ident": 32013,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>mod. count</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_TST_REF",
+		"ident": 32018,
+		"order": 7,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>test</lbl><tt>Reference to the test being formulated.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_ORDER",
+		"ident": 32022,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>order</lbl><tt>This is used to order the questions.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_QUESTION",
+		"ident": 32020,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "<lbl>question text</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_FORMAT",
+		"ident": 32002,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>format</lbl><tt>The question could be multiple choice, textual response, or whatever.  The response type is specified here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_MC_OPTIONS",
+		"ident": 32003,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "<lbl>multiple choice options</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_CORRECT",
+		"ident": 32016,
+		"order": 12,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "<lbl>correct response</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_RULE",
+		"ident": 32014,
+		"order": 13,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>rule(s)</lbl><tt>Encoded programming rule(s) required to determine correct response.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_TYPE",
+		"ident": 32023,
+		"order": 14,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "question type: 1 of 12 types of question",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_IMAGE",
+		"ident": 32024,
+		"order": 15,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "url to image file",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_ALT_TAG",
+		"ident": 32025,
+		"order": 16,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "text when IMAGE not found",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_DESCRIPTION",
+		"ident": 32026,
+		"order": 17,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "description of question",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_CTA",
+		"ident": 32027,
+		"order": 18,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "call to action - call to web based resource",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_INTRODUCTION",
+		"ident": 32028,
+		"order": 19,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "introductory text",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_IMAGE_DIFF",
+		"ident": 32029,
+		"order": 20,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "url to other image to spot differences",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_IMAGE_HOT",
+		"ident": 32030,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "url to image to place hot spots",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_BACKG_TYPE",
+		"ident": 32031,
+		"order": 22,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "type of background (rectabngle, arrow, other)",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_ORDER_EXPLN",
+		"ident": 32032,
+		"order": 23,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "criteria to order the options by",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_RESULT",
+		"ident": 32033,
+		"order": 24,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_ORDER",
+		"ident": 32034,
+		"order": 25,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_REMOVE_SPACE",
+		"ident": 32035,
+		"order": 26,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_BUTTONS",
+		"ident": 32036,
+		"order": 27,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_HINT",
+		"ident": 32037,
+		"order": 28,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_NUMBER_GUESSES",
+		"ident": 32038,
+		"order": 29,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "number of guesses - zero means unlimited",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_BRIEFLY",
+		"ident": 32039,
+		"order": 30,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_BUTTON_TEXT",
+		"ident": 32040,
+		"order": 31,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "customised button text",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SKIP_TEXT",
+		"ident": 32041,
+		"order": 32,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "customised skip button text",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_SKIP",
+		"ident": 32042,
+		"order": 33,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_SHOW_CORRECT",
+		"ident": 32043,
+		"order": 34,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_FONT",
+		"ident": 32044,
+		"order": 35,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "font selection",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_COLOUR_FONT",
+		"ident": 32045,
+		"order": 36,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "colour of text",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TSQ_COLOUR_BACKG",
+		"ident": 32046,
+		"order": 37,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "colour of background area",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

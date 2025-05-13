@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.ARR_FCY_REF as ilFacilities.FCY_SEQ

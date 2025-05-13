@@ -1,0 +1,54 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "prFingerPrint",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbFound",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "liColRef",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCurrentLine",
+				"order": 4,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lrTemp",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	}
+]

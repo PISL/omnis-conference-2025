@@ -1,0 +1,111 @@
+Do loFileOps.$openfile(pcFilePath) Returns lnFileCode
+Do loFileOps.$readfile(lbinContentPDF) Returns lnFileCode
+Do loFileOps.$closefile()
+
+Calculate iPdfFilePath as pcFilePath
+Do iFiles.$clear()
+
+# called from tkWorkerApp.$pdfcomplete
+Switch prJob.instruction
+	## this tells the form what to do next
+	Case "EMAIL_INVOICE"
+		# implement new OW3 worker method  May 2023
+		# Breakpoint
+		If ibManualWorkflow
+			Calculate ibinPdf as lbinContentPDF
+			
+			# we now need to run a method on the client that saves ibinPDF to downloads file
+			Do $cinst.$pushdata(row(prJob))
+		Else
+			If ilDisplayRecords.DG_INV_TO_EO_ONLY
+				Do ioNewOw3SendEmail.$primeConfig('EMAIL_INVOICE',irCurrentRecord.EO_EMAIL) Returns lbOK
+			Else
+				Do ioNewOw3SendEmail.$primeConfig('EMAIL_INVOICE',irCurrentRecord.PSN_EMAIL) Returns lbOK
+			End If
+			If lbOK
+				Calculate irEmailConfig as ioNewOw3SendEmail.irConfigEmail
+				
+				# Do ioNewOw3SendEmail.$secureOptionsRead() Returns irSecureOptionsOW3
+				# Calculate irSecureOptionsOW3.iSecBoolVerifyPeer as kFalse
+				# Calculate irSecureOptionsOW3.iSecBoolVerifyHost as kFalse
+				# Do ioNewOw3SendEmail.$secureOptionsAssign(irSecureOptionsOW3)
+				
+				Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord)) Returns lbOK
+				If lbOK
+					# no need to attach a .ics file for the event
+					# Do ioNewOw3SendEmail.$getCalendarStructure() Returns lrCalendar
+					
+					Do ioNewOw3SendEmail.$attachFileBinary(lbinContentPDF,con('OmnisWorld_invoice_',irCurrentRecord.DG_SEQ,'.pdf'),'application/pdf','','base64','attachment') Returns lbOK
+					If lbOK
+						Do ioNewOw3SendEmail.$setCallback($cinst,'$emailSuccess','$emailSendError',irCurrentRecord) Returns lbOK
+						If lbOK
+							Do ioNewOw3SendEmail.$initialise() Returns lbOK
+							If lbOK
+								# fire the worker off
+								Calculate lbRunOnCurrentThread as kFalse
+								If lbRunOnCurrentThread
+									Do ioNewOw3SendEmail.$run() Returns lbOK
+								Else
+									Do ioNewOw3SendEmail.$start() Returns lbOK
+								End If
+							End If
+						End If
+					End If
+				End If
+			End If
+			If not(lbOK)
+				If ioNewOw3SendEmail.icErrors<>''
+					# show user what went wrong
+					Breakpoint
+					Calculate icDisplayMessage as ioNewOw3SendEmail.icErrors
+				End If
+			End If
+		End If
+		
+	Case 'SHOWPDF'
+		Breakpoint
+		
+		
+	Case 'DOWNL_INVOICE'
+		# we are downloading the invoice created to the user client machine for a manual email
+		# code copied from Omnis sample.  Using the list iFiles this method can download multiple files - all lines in list.
+		
+		# populate the list with file content
+		Do iFiles.$add(con('OmnisWorld_invoice_',irCurrentRecord.DG_SEQ,'.pdf'),binlength(lbinContentPDF),lbinContentPDF)
+		Do iFiles.$line.$assign(iFiles.$linecount)
+		
+		# prime the email config and substitute values so we can pinch the email text
+		Do ioNewOw3SendEmail.$primeConfig('EMAIL_INVOICE',irCurrentRecord.PSN_EMAIL) Returns lbOK
+		Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord)) Returns lbOK
+		Calculate irEmailConfig as ioNewOw3SendEmail.irConfigEmail
+		Calculate icTextForClipboard as irEmailConfig.ELC_MSG_TEXT
+		Do toStrings.$ListToString(ioNewOw3SendEmail.ilTo,'address') Returns icEmailTo
+		# Do $cinst.$pushdata(row(prJob,iFiles,irEmailConfig))
+		# cannot download from here.  User user generated event ,ust occur.  Make visible the download button.
+		Calculate inCurrentTab as cnTabText
+		Calculate $cinst.$objs.TabControl_DG.$currenttab as inCurrentTab ## download and text to clipboard
+		
+		# Case 'EMAIL_INVOICE'
+		# although not using the new worker we will want to use text from config record
+		# If ilDisplayRecords.DG_INV_TO_EO_ONLY
+		# Do ioNewOw3SendEmail.$primeConfig('EMAIL_INVOICE',irCurrentRecord.EO_EMAIL) Returns lbOK
+		# Else
+		# Do ioNewOw3SendEmail.$primeConfig('EMAIL_INVOICE',irCurrentRecord.PSN_EMAIL) Returns lbOK
+		# End If
+		# Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord)) Returns lbOK
+		# Calculate irEmailConfig as ioNewOw3SendEmail.irConfigEmail
+		
+		# Do method emailPDF (prJob.instruction,iPdfFilePath)
+		
+	Case "EMAIL_CHASEPAY"
+		# call the appropriate method
+		Do method emailPDF (prJob.instruction,iPdfFilePath)
+		
+	Case 'PDF_THANKS_DG','PDF_THANKS_SPK','PDF_THANKS_VIP'
+		# call the appropriate methof
+		Do method emailPDF (prJob.instruction,pcFilePath,prJob.C2) ## ipdfFilePath may get overwritten if sending a batch of emails
+		
+	Default
+		# display the PDF
+		Do $cinst.$pushdata(row(prJob,pcPDFid,pcFilePath,prResult))
+End Switch

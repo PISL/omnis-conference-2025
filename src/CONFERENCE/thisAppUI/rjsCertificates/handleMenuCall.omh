@@ -1,0 +1,20 @@
+# Return true if this form has handled the shortcut key
+
+
+Switch pIdent
+	Case 1101
+		Do $cinst.$insertCR() ## because of the complexity of the various tabs, handle validity of call in this method
+		Quit method kTrue ## tell the parent that we've dealt with it
+		
+	Case 1102
+		Do $cinst.$editCR() ## because of the complexity of the various tabs, handle validity of call in this method
+		Quit method kTrue ## tell the parent that we've dealt with it
+		
+	Case 1103
+		Do $cinst.$deleteCR() ## because of the complexity of the various tabs, handle validity of call in this method
+		Quit method kTrue ## tell the parent that we've dealt with it
+		
+	Default
+		Quit method kFalse
+		
+End Switch

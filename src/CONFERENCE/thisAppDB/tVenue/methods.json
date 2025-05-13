@@ -1,0 +1,149 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$validation",
+		"order": 4,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessage",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			}
+		]
+	},
+	{
+		"name": "$Links",
+		"order": 9,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llLinks",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrGroupOrg",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "infra.sentGroupOrganisations",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$ForeignKeys",
+		"order": 10,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llForeignKeyList",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrGroupOrg",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "infra.sentGroupOrganisations",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$insert",
+		"order": 11,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$FetchOurVenues",
+		"order": 12,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lnNumber",
+				"order": 1,
+				"type": "kNumber",
+				"subtype": "k0dp",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 4,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetch_all",
+		"order": 13,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 14,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

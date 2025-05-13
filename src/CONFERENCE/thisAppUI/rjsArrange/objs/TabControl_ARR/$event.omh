@@ -1,0 +1,13 @@
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	
+	If inCurrentTab=cnTabAttendees
+		Do method FetchAndPresentAttendees
+		
+	Else If inCurrentTab=cnTabOverview
+		Do method fetchSlots
+		
+	End If
+	
+	Do $cinst.$behaviour
+	Do $cinst.$redraw()

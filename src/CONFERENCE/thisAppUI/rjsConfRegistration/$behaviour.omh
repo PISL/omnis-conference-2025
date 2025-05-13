@@ -1,0 +1,73 @@
+Calculate $cinst.$objs.PagedPane.$objs.borderPSN_SEQ.$visible as inDG_OCCUPANCY=ikOccupancyShared
+Calculate $cinst.$objs.PagedPane.$objs.label_PSN_SEX.$visible as inDG_OCCUPANCY=ikOccupancyShared
+Calculate $cinst.$objs.PagedPane.$objs.PSN_SEX.$visible as inDG_OCCUPANCY=ikOccupancyShared
+
+# inExtras
+Calculate $cinst.$objs.PagedPane.$objs.label_Extras.$visible as (inDG_OCCUPANCY=ikOccupancySingle|inDG_OCCUPANCY=ikOccupancySpeaker)
+Calculate $cinst.$objs.PagedPane.$objs.rg_inExtras.$visible as (inDG_OCCUPANCY=ikOccupancySingle|inDG_OCCUPANCY=ikOccupancySpeaker)
+# Calculate $cinst.$objs.PagedPane.$objs.borderExtras.$visible as (inDG_OCCUPANCY=ikOccupancySingle|inDG_OCCUPANCY=ikOccupancySpeaker)
+
+Calculate $cinst.$objs.PagedPane.$objs.pbAddPerson.$enabled as (irRegistration.PSN_SURNAME<>''&irRegistration.PSN_FIRST_NAME<>''&irRegistration.PSN_EMAIL<>'') ## |(ilPersons.$linecount>0)
+Calculate $cinst.$objs.PagedPane.$objs.pbMinusPerson.$enabled as (ilPersons.$linecount>1&ilPersons.$line>0)
+Calculate $cinst.$objs.PagedPane.$objs.ilPersons.$visible as ilPersons.$linecount>0
+
+Calculate $cinst.$objs.PagedPane.$objs.borderDaily.$visible as inDG_OCCUPANCY=ikOccupancyDailyRate
+Calculate $cinst.$objs.PagedPane.$objs.label_NoDays.$visible as inDG_OCCUPANCY=ikOccupancyDailyRate ## 24hr rate
+Calculate $cinst.$objs.PagedPane.$objs.inNoDays.$visible as inDG_OCCUPANCY=ikOccupancyDailyRate ## 24hr rate
+Calculate $cinst.$objs.PagedPane.$objs.label_WhichDays.$visible as inDG_OCCUPANCY=ikOccupancyDailyRate ## 24hr rate
+Calculate $cinst.$objs.PagedPane.$objs.icWhichDays.$visible as inDG_OCCUPANCY=ikOccupancyDailyRate ## 24hr rate
+
+# are there multiple delegates involved?
+Do method TestForMultipleDelegates Returns lbMultipleDelegates
+Calculate $cinst.$objs.PagedPane.$objs.DIL_PRIMARY.$visible as lbMultipleDelegates
+Calculate $cinst.$objs.PagedPane.$objs.ilPersons.$visible as lbMultipleDelegates
+
+Calculate $cinst.$objs.PagedPane.$objs.label_PSN_SPOUSE_NAME.$visible as inExtras=ikExtraSpouse
+Calculate $cinst.$objs.PagedPane.$objs.PSN_SPOUSE_NAME.$visible as inExtras=ikExtraSpouse
+
+Calculate $cinst.$objs.label_FullPrice.$visible as icPriceFull<>''
+# Calculate $cinst.$objs.icPriceParticipation.$visible as icPriceFull<>'' ## icPriceParticipation does not exist???
+Calculate $cinst.$objs.icPriceEarlyBirdCategory.$visible as icPriceFull<>''
+Calculate $cinst.$objs.FullPrice_PID_UNIT_PRICE.$visible as icPriceFull<>''
+
+# no label for CF_CURRENCY_1 as it is a product code field
+Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_1.$visible as irEarlyBirdPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_EarlyBirdVAT.$visible as irEarlyBirdPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_2.$visible as irEarlyBirdPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_EarlyBirdTotal.$visible as irEarlyBirdPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_3.$visible as irEarlyBirdPrice.PRD_SEQ>0
+
+Calculate $cinst.$objs.PagedPane.$objs.label_FullPrice.$visible as irFullPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_4.$visible as irFullPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_FullVAT.$visible as irFullPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_5.$visible as irFullPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_FullTotal.$visible as irFullPrice.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_6.$visible as irFullPrice.PRD_SEQ>0
+
+# Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_7.$visible as irPriceExtras.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_plus_Extras.$visible as irPriceExtras.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_equals_Extras.$visible as irPriceExtras.PRD_SEQ>0
+
+# Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_8.$visible as irPriceMembership.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_plus_Membership.$visible as irPriceMembership.PRD_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.label_equals_Membership.$visible as irPriceMembership.PRD_SEQ>0
+
+# hide VAT relevant objects if no VAT payable
+If not(irFullPrice.RFL_NUMBER>0)
+	Calculate $cinst.$objs.EarlyBirdTax.$visible as kFalse
+	Calculate $cinst.$objs.EarlyBirdTotal.$visible as kFalse
+	Calculate $cinst.$objs.FullPriceTax.$visible as kFalse
+	Calculate $cinst.$objs.FullPriceTotal.$visible as kFalse
+	Calculate $cinst.$objs.label_FullVAT.$visible as kFalse
+	Calculate $cinst.$objs.label_FullTotal.$visible as kFalse
+	Calculate $cinst.$objs.label_EarlyBirdVAT.$visible as kFalse
+	Calculate $cinst.$objs.label_EarlyBirdTotal.$visible as kFalse
+	Calculate $cinst.$objs.CF_CURRENCY_2.$visible as kFalse
+	Calculate $cinst.$objs.CF_CURRENCY_3.$visible as kFalse
+	Calculate $cinst.$objs.CF_CURRENCY_5.$visible as kFalse
+	Calculate $cinst.$objs.CF_CURRENCY_6.$visible as kFalse
+End If
+
+Calculate $cinst.$objs.rg_Occupancy.$enabled as irRegistration.PSN_EMAIL<>''
+Calculate $cinst.$objs.rg_inExtras.$enabled as irRegistration.PSN_EMAIL<>''
+Calculate $cinst.$objs.inMembership.$enabled as irRegistration.PSN_EMAIL<>''

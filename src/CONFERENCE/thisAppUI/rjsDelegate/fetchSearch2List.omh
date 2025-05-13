@@ -1,0 +1,60 @@
+Do toValues.$initOrg('DG_STATUS') Returns ilSearch2
+Calculate ilSearch2.$line as 0
+While $Loop(ilSearch2)
+	Calculate ilSearch2.RFO_DESC as con('status ',ilSearch2.RFO_DESC)
+End While
+Do ilSearch2.$add(#NULL,'DG_STATUS','EX_CANCEL','exclude cancelled',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'DG_STATUS','ALL_UNPAID','any unpaid',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'VIEW','INCL_INVIS','include hidden',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'VIEW','ONLY_INVIS','only hidden',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$addbefore(1,#NULL,#NULL,'ALL','All')
+
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+# add ROLE options
+Calculate ilRoles.$line as 0
+While $Loop(ilRoles)
+	Do ilSearch2.$add(#NULL,'DG_ROLE',ilRoles.RFO_VALUE,con('role ',ilRoles.RFO_DESC),#NULL,#NULL,#NULL)
+End While
+
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Calculate ilOccupancy.$line as 0
+While $Loop(ilOccupancy)
+	Do ilSearch2.$add(#NULL,'DG_OCCUPANCY',ilOccupancy.RFO_VALUE,con('occupancy ',ilOccupancy.RFO_DESC),#NULL,#NULL,#NULL)
+End While
+
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+# now add "registered in" options
+For lnCount from 1 to 12 step 1
+	Do ilSearch2.$add(#NULL,'DG_REG_DATE',con('MONTH_',lnCount),con('registered ',pick(lnCount,'','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')),#NULL,#NULL,#NULL,lnCount)
+End For
+
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Do ilSearch2.$add(#NULL,'SORT','DG_SURNAME','sort by surname',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SORT','DG_STATUS','sort by status',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SORT','DG_OCCUPANCY','sort by occupancy',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SORT','DG_REG_DATE','sort by registration date',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SORT','DG_COUNTRY','sort by country',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SORT','PY_DATE','sort by receipt date',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Do ilSearch2.$add(#NULL,'SUBQ','INV_NOT_SENT','invoice not sent (excl. speakers)',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','TRAVEL_NOT_SENT','travel request not sent',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','WITH_PAX','with PAX record',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','NO_PAX','without PAX record',#NULL,#NULL,#NULL,#NULL)
+# Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Do ilSearch2.$add(#NULL,'SUBQ','WITH_TRAVEL','with TRAVEL record',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','NO_TRAVEL','without TRAVEL record',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','TRAVEL0','no pick up',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','TRAVEL1','international pick up',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','TRAVEL2','local pick up',#NULL,#NULL,#NULL,#NULL)
+# Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Do ilSearch2.$add(#NULL,'SUBQ','WITH_PAYMENT','with RECEIPT record',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','NO_PAYMENT','without RECEIPT record',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','NO_PAY_EXSPKRS','without RECEIPT record (excl. speakers)',#NULL,#NULL,#NULL,#NULL)
+Do ilSearch2.$add(#NULL,'SUBQ','FIRST_TIME','first time delegates',#NULL,#NULL,#NULL,#NULL)
+# Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Do ilSearch2.$add(#NULL,'TEXT','LIST_TO_TEXT','dg list to text',#NULL,#NULL,#NULL,#NULL)
+
+Do ilSearch2.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.ilSearch2.$listcolumn as liColRef.$ident

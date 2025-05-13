@@ -1,0 +1,8 @@
+If inTotalDue=inTotalReceived
+	Calculate $cinst.$objs.1076.$backcolor as kWhite
+Else If inTotalDue<(inTotalReceived*0.98) ## tolerance for erroneous bank fees etc
+	Calculate $cinst.$objs.1076.$backcolor as kWhite
+Else
+	Calculate $cinst.$objs.1076.$backcolor as rgb(255,170,255)
+End If
+Do default

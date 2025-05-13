@@ -1,0 +1,43 @@
+Do toValues.$initGlobal() Returns llTypes
+
+If pcQuestionType='QUIZ'
+	Do llTypes.$add(#NULL,'OTYPES','ANS','Answers')
+	
+Else If pcQuestionType='PERSON_TEST'
+	# no option types
+	
+Else If pcQuestionType='OPINION_POLL'
+	# no option types
+	
+Else If pcQuestionType='SURVEY'
+	Do llTypes.$add(#NULL,'OTYPES','RESP','Responses')
+	
+Else If pcQuestionType='LIST_MESSAGES'
+	# no option types
+	
+Else If pcQuestionType='DYNAMIC_SEQ'
+	Do llTypes.$add(#NULL,'OTYPES','ANS','Answers')
+	
+Else If pcQuestionType='REACTION_POLL'
+	# no option types
+	
+Else If pcQuestionType='LIST_RANKED'
+	# no option types
+	
+Else If pcQuestionType='TAP_FIND'
+	Do llTypes.$add(#NULL,'OTYPES','IMG_HOTSPOTS','Image hotspots')
+	
+Else If pcQuestionType='ORDER_IT'
+	Do llTypes.$add(#NULL,'OTYPES','CARDS','Cards')
+	
+Else If pcQuestionType='SOCIAL_STORY'
+	# no option types
+	
+Else If pcQuestionType='POLL_RANKED'
+	# no option types
+	
+End If
+
+Do method TranslateText (llTypes)
+
+Quit method llTypes

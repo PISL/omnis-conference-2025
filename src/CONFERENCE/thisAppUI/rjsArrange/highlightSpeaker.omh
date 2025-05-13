@@ -1,0 +1,30 @@
+Do method clearErrorTextSlots
+If pcObjName<>'' ## e.g. ilDay1AM
+	Calculate lnPSN_REF as [pcObjName].ARR_PSN_REF
+	
+	Do ilDay1AM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound1
+	Do ilDay1PM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound2
+	Do ilDay1EVE.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound3
+	
+	Do ilDay2AM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound4
+	Do ilDay2PM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound5
+	Do ilDay2EVE.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound6
+	
+	Do ilDay3AM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound7
+	Do ilDay3PM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound8
+	Do ilDay3EVE.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound9
+	
+	Do ilDay4AM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound10
+	Do ilDay4PM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound11
+	Do ilDay4EVE.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound12
+	
+	Do ilDay5AM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound13
+	Do ilDay5PM.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound14
+	Do ilDay5EVE.$search($ref.ARR_PSN_REF=lnPSN_REF,1,0,0,0) Returns lbFound15
+	
+	Calculate lnTotal as lbFound1+lbFound2+lbFound3+lbFound4+lbFound5+lbFound6+lbFound7+lbFound8+lbFound9+lbFound10+lbFound11+lbFound12+lbFound13+lbFound14+lbFound15
+	Calculate icDisplayMessage as con(lnTotal,' found')
+Else
+	Calculate icDisplayMessage as 'Invalid parameters'
+	Quit method
+End If

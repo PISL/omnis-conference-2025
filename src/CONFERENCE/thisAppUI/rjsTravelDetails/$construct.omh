@@ -1,0 +1,82 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+If tlOpenConferences.$linecount=1
+	Calculate trCurrentConference as tlOpenConferences.1
+Else If tlOpenConferences.$line>0
+	Calculate trCurrentConference as tlOpenConferences
+End If
+Calculate irCompany as trGroupOrg
+
+Do $DefineList(irDelegate,'tDelegates')
+Do irDelegate.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_EMAIL,PSN_PHONE')
+Do irDelegate.$addDisplayName()
+
+Calculate ilConferences as tlOpenConferences
+If ilConferences.$linecount>0
+	# we could use trCurrentConference to set default line
+	Calculate ilConferences.$line as 1
+End If
+
+Do $DefineList(irTravelDetails,'tTravelPlans')
+Do irTravelDetails.$cols.$add('dayOfWeek',kCharacter,kSimplechar,20)
+Do toValues.$initOrg('TP_MUSIC_PLAYER') Returns ilMusic
+Do ilMusic.$search($ref.RFO_VALUE=0,1,0,0,0)
+If ilMusic.$line
+	Calculate irTravelDetails.TP_MUSIC_PLAYER as ilMusic.RFO_VALUE
+Else
+	Calculate irTravelDetails.TP_MUSIC_PLAYER as 0
+End If
+Calculate $cinst.$objs.PagedPane.$objs.TP_MUSIC_PLAYER.$visible as ilMusic.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.label_TP_MUSIC_PLAYER.$visible as ilMusic.$linecount>0
+
+Do $DefineList(irPAX,'tPAX')
+Do $DefineList(irDietDG,'tDietRequests')
+Calculate irOriginalDietDG as irDietDG
+
+Do $DefineList(irSpouse,'tPAX')
+Do $DefineList(irDietSpouse,'tDietRequests')
+
+Do method TranslateText
+
+# do not call $behaviour here because objects on js page to not yet exist
+Calculate incPageLogin as cnPageLogin ## because $behaviour cannot refer to class variables
+
+# code is here but it doesn't actually work as pbCancel runs on client and cannot refer to instance variable. ## For some stupid reason!!
+Do lrReference.$clear()
+Do toValues.$initOrg('RF_SESSIONS','PB_CANCEL') Returns lrReference
+If lrReference.RFO_CHAR<>''
+	Calculate icCancelURL as lrReference.RFO_CHAR
+End If
+
+Do $ctask.toValues.$initOrg('SHUTTLE','FORM_HEADING') Returns lrReference
+Do OJSON.$jsontolistorrow(lrReference.RFO_JSON) Returns lrAttributes
+# Calculate icFormHeading as con($cell(clLabels,'objName','TP_Heading','label'))
+If lrAttributes.heading<>''
+	Calculate icFormHeading as lrAttributes.heading
+Else
+	Calculate icFormHeading as con('Please provide travel details.')
+End If
+# Calculate icFormIntro as con($cell(clLabels,'objName','TP_Intro','label'))
+If lrAttributes.introduction<>''
+	Calculate icFormIntro as lrAttributes.introduction
+Else
+	Calculate icFormIntro as con("This is primarily so we can arrange an effective shuttle service but it is also helpful even if you aren't planning on using the shuttle.")
+End If
+# Calculate icShuttleServiceInfo as con($cell(clLabels,'objName','TP_Shuttle','label'))
+Do lrReference.$clear()
+Do toValues.$initOrg('SHUTTLE',con('INFO_',ilConferences.CF_SEQ)) Returns lrReference
+Calculate icShuttleServiceInfo as lrReference.RFO_CHAR
+Calculate $cinst.$objs.PagedPane.$objs.pbShuttleInfo.$visible as icShuttleServiceInfo<>''
+
+Do tWebParameters.$cols.$findname('URLparams') Returns liColRef
+If liColRef
+	Do OJSON.$jsontolistorrow(tWebParameters.URLparams,lcTemp) Returns lrParams
+	Calculate icDGreference as lrParams.id
+	Calculate icSurname as upp(lrParams.name)
+	Do method Identify
+Else
+	Do $cinst.$behaviour()
+End If

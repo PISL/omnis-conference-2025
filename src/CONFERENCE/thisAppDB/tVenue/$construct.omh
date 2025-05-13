@@ -1,0 +1,6 @@
+Calculate icPrefix as 'VEN_'
+Calculate icPrimarykey as 'VEN_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'VEN_GO_REF'
+
+Do inherited

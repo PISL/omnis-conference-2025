@@ -1,0 +1,59 @@
+Calculate icDisplayMessage as ''
+
+If irDelegate.DG_SEQ>0
+	# continue
+Else
+	Quit method kFalse
+End If
+
+If irInvHeader.FOH_SEQ>0
+	Do ilInvDetails.$delete_fk(irInvHeader.FOH_SEQ) Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as ilInvDetails.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+End If
+
+If irLinkDelegateToInvoice.[irLinkDelegateToInvoice.icPrimaryKey]>0
+	Do irLinkDelegateToInvoice.$delete() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irLinkDelegateToInvoice.irErrorSQL.NativeErrorText
+		Quit method
+	End If
+Else
+	Do irLinkDelegateToInvoice.$fetch_fk(irDelegate.DG_SEQ,'DIL_DG_REF') Returns lbOK
+	Do irLinkDelegateToInvoice.$delete() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irLinkDelegateToInvoice.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+End If
+
+If irInvHeader.FOH_SEQ>0
+	Do irInvHeader.$delete() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irInvHeader.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+End If
+
+If irDelegate.DG_SEQ>0
+	Do irDelegate.$delete() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irDelegate.irErrorSQL.NativeErrorText
+		Do irDelegate.$fetch_ck()
+		Breakpoint
+	Else
+		Calculate icDisplayMessage as 'registration deleted'
+	End If
+Else
+	Do irDelegate.$fetch_ck()
+	If irDelegate.DG_SEQ>0
+		Do irDelegate.$delete() Returns lbOK
+		If lbOK
+			Calculate icDisplayMessage as 'delegate record deleted'
+		Else
+			Calculate icDisplayMessage as irDelegate.irErrorSQL.NativeErrorText
+		End If
+	End If
+End If

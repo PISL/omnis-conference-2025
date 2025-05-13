@@ -1,0 +1,37 @@
+Do $cinst.$cols.$findname('VEN_NAME') Returns liColRef
+If liColRef
+	# already added
+Else
+	Do $cinst.$cols.$add(lrVenue.VEN_NAME)
+	Do $cinst.$cols.$add(lrVenue.VEN_COUNTRY)
+	Do $cinst.$cols.$add(lrVenue.VEN_POSTCODE)
+	Do $cinst.$cols.$add(lrVenue.VEN_TOWN)
+	Do $cinst.$cols.$add(lrVenue.VEN_STATE)
+	Do $cinst.$cols.$add(lrVenue.VEN_TIMEZONE)
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, VEN_NAME, VEN_COUNTRY, VEN_POSTCODE, VEN_TOWN, VEN_STATE, VEN_TIMEZONE
+Sta:from [$cinst.$servertablenames()]
+Sta:left outer join [lrVenue.$servertablenames()] on ven_seq = cf_ven_ref
+Sta:where CF_GO_REF = @[trGroupOrg.GO_SEQ]
+# Sta: and     CF_DATE_TO >= date_trunc('day',localtimestamp)
+# beyond end of conference
+Sta:and     CF_ADMIN_DATE_TO >= date_trunc('day',localtimestamp)
+Sta:and     CF_ACTIVE = 1
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

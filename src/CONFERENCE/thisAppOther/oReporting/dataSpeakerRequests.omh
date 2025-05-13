@@ -1,0 +1,30 @@
+Do $DefineList(lrTopics,'tTopics')
+Do lrTopics.$reportSpeakerRequests(prConference.CF_SEQ) Returns ilData
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Calculate ilData.CF_DATE_FROM as dat(ilData.CF_DATE_FROM)
+	
+	If isclear(ilData.FCY_NAME)
+		Calculate ilData.FCY_NAME as ilData.ARR_FACILITY
+	End If
+	If isclear(ilData.FCY_NAME)
+		Calculate ilData.FCY_NAME as '<not set>'
+	End If
+	
+	If isclear(ilData.PSN_SURNAME)
+		Calculate ilData.PSN_SURNAME as ilData.ARR_LEADER
+	End If
+	If isclear(ilData.PSN_SURNAME)
+		Calculate ilData.PSN_SURNAME as '<not set>'
+	End If
+	
+	If ilData.ARR_DATE>dat('1 JAN 2010')
+		# leave as is
+	Else
+		# relative day number works for us but not hotel ## absolute dates are better
+		Calculate ilData.ARR_DATE as dadd(kDay,ilData.ARR_DAYNO,ilData.CF_DATE_FROM) ## doesn't work !
+	End If
+End While
+
+Do ilData.$sort($ref.ARR_DATE,0,$ref.ARR_STARTTIME,0,$ref.FCY_NAME,0,$ref.PSN_SURNAME,0)

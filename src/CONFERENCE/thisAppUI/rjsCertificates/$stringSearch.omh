@@ -1,0 +1,10 @@
+If icSearch<>''
+	If len(icSearch)>=3
+		Do method FetchDisplayList (,icSearch)
+	End If
+Else
+	Do method FetchDisplayList
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

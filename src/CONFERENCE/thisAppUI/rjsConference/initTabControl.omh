@@ -1,0 +1,55 @@
+# initialise the TabControl $enabled and select first enabled tab
+Calculate inTabCount as 1
+
+Calculate llAllowed as tlPermissions
+Do llAllowed.$search(low($ref.FormPrefix)='dg',1,0,0,0) Returns lbVenueTab
+Do llAllowed.$search(low($ref.FormPrefix)='dg',1,0,0,0) Returns lbEventTab
+Do llAllowed.$search(low($ref.FormPrefix)='arr',1,0,0,0) Returns lbPersonTab
+Do llAllowed.$search(low($ref.FormPrefix)='mem',1,0,0,0) Returns lbReportTab
+
+Calculate $cinst.$objs.TabControl_Conference.$selectedtab as 1
+Calculate $cinst.$objs.TabControl_Conference.$tabvisible as lbVenueTab
+Do ilTabShortcuts.$add()
+If lbVenueTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Conference.$selectedtab as 2
+Calculate $cinst.$objs.TabControl_Conference.$tabvisible as lbEventTab
+Do ilTabShortcuts.$add()
+If lbEventTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Conference.$selectedtab as 3
+Calculate $cinst.$objs.TabControl_Conference.$tabvisible as lbPersonTab
+Do ilTabShortcuts.$add()
+If lbPersonTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Conference.$selectedtab as 4
+Calculate $cinst.$objs.TabControl_Conference.$tabvisible as lbReportTab
+Do ilTabShortcuts.$add()
+If lbReportTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+If lbVenueTab
+	Calculate inCurrentTab as 1
+	Do $ctask.$setCurrentForm('code','FORM_VEN')
+Else If lbEventTab
+	Calculate inCurrentTab as 2
+	Do $ctask.$setCurrentForm('code','FORM_CONF')
+Else If lbPersonTab
+	Calculate inCurrentTab as 3
+	Do $ctask.$setCurrentForm('code','FORM_PSN')
+Else If lbReportTab
+	Calculate inCurrentTab as 4
+	Do $ctask.$setCurrentForm('code','FORM_REPORT')
+End If
+Calculate $cinst.$objs.TabControl_Conference.$currenttab as inCurrentTab

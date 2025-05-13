@@ -1,0 +1,24 @@
+If pnFormat=1
+	Calculate $cinst.DisplayName as $cinst.CF_TITLE
+	
+Else If pnFormat=2
+	Calculate $cinst.DisplayName as con($cinst.CF_TITLE,': ',$cinst.CF_DATE_FROM,' - ',$cinst.CF_DATE_TO)
+	
+Else If pnFormat=3
+	# this list will typically be joined with Venue information
+	If $cinst.VEN_TOWN<>''
+		Calculate $cinst.DisplayName as con($cinst.CF_TITLE,' @ ',$cinst.VEN_TOWN,', ',$cinst.VEN_COUNTRY)
+	Else
+		Calculate $cinst.DisplayName as $cinst.CF_TITLE
+	End If
+	
+Else If pnFormat=4
+	# this list will typically be joined with Venue information
+	Calculate lcDateFormat as 'D m'
+	If $cinst.VEN_TOWN<>''
+		Calculate $cinst.DisplayName as con($cinst.CF_TITLE,': ',dat($cinst.CF_DATE_FROM,lcDateFormat),' - ',dat($cinst.CF_DATE_TO,lcDateFormat),' @ ',$cinst.VEN_TOWN,', ',$cinst.VEN_COUNTRY)
+	Else
+		Calculate $cinst.DisplayName as $cinst.CF_TITLE
+	End If
+	
+End If

@@ -1,0 +1,26 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabContact|inCurrentTab=cnTabSpeakerBio|inCurrentTab=cnTabTechnical
+	If irUserRights.canInsertPerson&icMode='' ## copied from $behaviour()
+		Calculate icMode as 'IP' ## insert person
+		Do irCurrentRecord.$clear()
+		Do irCurrentRecord.$defaults()
+		Do ilTopicConferences.$clear()
+		
+	End If
+Else If inCurrentTab=cnTabTopics
+	If irUserRights.canInsertTopic&icMode='' ## copied from $behaviour()
+		Calculate icMode as 'IT' ## insert topic
+		Do irTopic.$clear()
+		Do irTopic.$defaults()
+		Calculate irTopic.TPC_PSN_REF as irCurrentRecord.PSN_SEQ
+	End If
+Else If inCurrentTab=cnTabConferences
+	# read only on this form, leave as is
+Else If inCurrentTab=cnTabMembership
+	# read only on this form, leave as is
+Else
+	Breakpoint
+End If
+
+Do $cinst.$behaviour()

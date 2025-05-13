@@ -1,0 +1,9 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('dg_insert','canInsert')
+Do llPrivsUsedInThisForm.$add('dg_delete','canDelete')
+Do llPrivsUsedInThisForm.$add('dg_update','canEdit')
+Do llPrivsUsedInThisForm.$add('dg_del_cascade','canDeleteCascade')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

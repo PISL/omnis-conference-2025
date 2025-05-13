@@ -1,0 +1,15 @@
+On evClick
+	If ilAttendees.ARA_DG_REF=irDelegate.DG_SEQ
+		Do irAttendee.$assignrow(ilAttendees,kTrue)
+		Do ilRatings.$search($ref.RFO_VALUE=irAttendee.ARA_RATING,1,0,0,0)
+		Do ilAttFeedback.$clear()
+		Do method FetchFeedback
+	Else
+		Do irAttendee.$clear()
+		Calculate ilRatings.$line as 0
+		Do ilAttFeedback.$clear()
+	End If
+	Calculate irAttendeeOrig as irAttendee
+	Calculate ibFeedbackModified as kFalse
+	
+	Do $cinst.$behaviour()

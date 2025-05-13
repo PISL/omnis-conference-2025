@@ -1,0 +1,64 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+
+Calculate $cinst.$objs.ilSearch1.$enabled as icMode=''
+Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+Calculate $cinst.$objs.pbSummary.$enabled as icMode=''
+
+If inCurrentTab=cnTabDelegate ## Delegate
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.DG_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.DG_SEQ>0&icMode=''
+	
+Else If inCurrentTab=cnTabTopics ## Topics
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&irCurrentRecord.DG_SEQ>0
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irTopic.TPC_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irTopic.TPC_SEQ>0&icMode=''
+	
+End If
+
+If icMode='CT'
+	Calculate $cinst.$objs.pbSave.$text as 'clone'
+Else If icMode='MT'
+	Calculate $cinst.$objs.pbSave.$text as 'move'
+Else
+	Calculate $cinst.$objs.pbSave.$text as $cell(clLabels,'objName','pbSave','label')
+End If
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+If irCurrentRecord.PSN_IMAGE_LINK<>''
+	Do $cinst.$objs.PagedPane.$objs.PSN_ImageLink.$html.$assign(con(icImageHtmlPre,kDq,irCurrentRecord.PSN_IMAGE_LINK,kDq,icImageHtmlPost)) Returns lbOK
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_ImageLink.$visible as kTrue
+Else
+	Do $cinst.$objs.PagedPane.$objs.PSN_ImageLink.$html.$assign('') Returns lbOK
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_ImageLink.$visible as kFalse
+End If
+
+If inCurrentTab=cnTabDelegate
+	Calculate $cinst.$objs.DG_REG_DATE.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.DG_GROUP.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.DG_COMMENT.$enabled as icMode<>''
+	
+	
+Else If inCurrentTab=cnTabTopics
+	Calculate $cinst.$objs.ilTopics.$enabled as icMode='' ## disable if MT or CT happening
+	
+	Calculate $cinst.$objs.cbThisConference.$enabled as icMode=''&irUserRights.canEdit ## disable if MT or CT happening
+	
+	Calculate $cinst.$objs.label_NewPerson.$visible as icMode<>''
+	Calculate $cinst.$objs.ilNewPerson.$visible as icMode<>''
+	Calculate $cinst.$objs.ilNewPerson.$enabled as irUserRights.canEdit
+End If
+
+Calculate $cinst.$objs.TabControl_SPKR.$enabled as icMode=''
+
+Do method assignEntryFieldProperties
+
+Do inherited ## handle objects in the navigation and results panes

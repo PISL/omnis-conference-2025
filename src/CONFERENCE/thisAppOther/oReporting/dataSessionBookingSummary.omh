@@ -1,0 +1,161 @@
+# The main aim of this report is to find peak activity of the session booking system.
+# Track the 5 highest counts and highlight them in the report.
+Do irTopFive.$cols.$add('top1',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top1count',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top2',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top2count',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top3',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top3count',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top4',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top4count',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top5',kInteger,k32bitint)
+Do irTopFive.$cols.$add('top5count',kInteger,k32bitint)
+
+Do $DefineList(lrTemp,'infra.tuaLogAccess')
+Do lrTemp.$reportSessionSummary(#NULL,prConference.CF_DATE_FROM,prConference.CF_DATE_TO,pnFloorMinutes,pnCountHaving) Returns llTemp
+
+Do llTemp.$cols.$add('hr',kCharacter,kSimplechar,10)
+Do llTemp.$cols.$add('min',kInteger,kShortint)
+Do llTemp.$sort($ref.floor_time,0)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Calculate llTemp.hr as jst(dpart(kHour,llTemp.floor_time),'-2P0')
+	Calculate llTemp.min as dpart(kMinute,llTemp.floor_time)
+End While
+
+Do ilData.$define(llTemp.floor_time,llTemp.date,llTemp.hour,llTemp.min)
+Do ilData.$cols.$add('type',kCharacter,kSimplechar,10)
+
+Calculate llHourlyCols as llTemp
+Do llHourlyCols.$cols.hr.$removeduplicates(kTrue)
+Calculate llHourlyCols.$line as 0
+While $Loop(llHourlyCols)
+	Do ilData.$cols.$add(con('total',llHourlyCols.hr),kInteger,k32bitint)
+End While
+
+Calculate llMinsCols as llTemp
+Do llMinsCols.$cols.min.$removeduplicates(kTrue)
+
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	If llTemp.$line=1
+		Calculate llMinsCols.$line as 0
+		While $Loop(llMinsCols)
+			Do ilData.$add(llTemp.floor_time,llTemp.date,llTemp.hour,llMinsCols.min,'count')
+		End While
+		# Calculate ilData.$line as ilData.$linecount
+	Else If llTemp.date<>llTemp.[llTemp.$line-1].date
+		Calculate llMinsCols.$line as 0
+		While $Loop(llMinsCols)
+			Do ilData.$add(llTemp.floor_time,llTemp.date,llTemp.hour,llMinsCols.min,'count')
+		End While
+	End If
+	
+	Do ilData.$search($ref.date=llTemp.date&$ref.min=llTemp.min,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Breakpoint
+	End If
+	Calculate ilData.total[llTemp.hr] as llTemp.count
+	# is this count in our top 5?
+	If llTemp.count>irTopFive.top1
+		Calculate irTopFive.top5 as irTopFive.top4
+		Calculate irTopFive.top5count as irTopFive.top4count
+		Calculate irTopFive.top4 as irTopFive.top3
+		Calculate irTopFive.top4count as irTopFive.top3count
+		Calculate irTopFive.top3 as irTopFive.top2
+		Calculate irTopFive.top3count as irTopFive.top2count
+		Calculate irTopFive.top2 as irTopFive.top1
+		Calculate irTopFive.top2count as irTopFive.top1count
+		Calculate irTopFive.top1 as llTemp.count
+		Calculate irTopFive.top1count as irTopFive.top1count+1
+	Else If llTemp.count=irTopFive.top1
+		# ignore
+		Calculate irTopFive.top1count as irTopFive.top1count+1
+	Else If llTemp.count>irTopFive.top2&irTopFive.top2>0
+		Calculate irTopFive.top5 as irTopFive.top4
+		Calculate irTopFive.top5count as irTopFive.top4count
+		Calculate irTopFive.top4 as irTopFive.top3
+		Calculate irTopFive.top4count as irTopFive.top3count
+		Calculate irTopFive.top3 as irTopFive.top2
+		Calculate irTopFive.top3count as irTopFive.top2count
+		Calculate irTopFive.top2 as llTemp.count
+		Calculate irTopFive.top2count as irTopFive.top2count+1
+	Else If llTemp.count=irTopFive.top2
+		# ignore
+		Calculate irTopFive.top2count as irTopFive.top2count+1
+	Else If llTemp.count>irTopFive.top3&irTopFive.top3>0
+		Calculate irTopFive.top5 as irTopFive.top4
+		Calculate irTopFive.top5count as irTopFive.top4count
+		Calculate irTopFive.top4 as irTopFive.top3
+		Calculate irTopFive.top4count as irTopFive.top3count
+		Calculate irTopFive.top3 as llTemp.count
+		Calculate irTopFive.top3count as irTopFive.top3count+1
+	Else If llTemp.count=irTopFive.top3
+		# ignore
+		Calculate irTopFive.top3count as irTopFive.top3count+1
+	Else If llTemp.count>irTopFive.top4&irTopFive.top4>0
+		Calculate irTopFive.top5 as irTopFive.top4
+		Calculate irTopFive.top5count as irTopFive.top4count
+		Calculate irTopFive.top4 as llTemp.count
+		Calculate irTopFive.top4count as irTopFive.top4count+1
+	Else If llTemp.count=irTopFive.top4
+		# ignore
+		Calculate irTopFive.top4count as irTopFive.top4count+1
+	Else If llTemp.count>irTopFive.top5&irTopFive.top5>0
+		Calculate irTopFive.top5 as llTemp.count
+		Calculate irTopFive.top5count as irTopFive.top5count+1
+	Else If llTemp.count=irTopFive.top5
+		# ignore
+	End If
+End While
+
+If inMinutesBreak<60
+	# When inMinutesBreak = 1 then the top 5 may include counts of 1 which are abundant and not worth highlighting.
+	# If the number of incidents represents more than 10% of values then it is meaningless.
+	Calculate lnPercentCutoff as 10 ## this is an arbitrary figure
+	If 100*irTopFive.top5count/llTemp.$linecount>lnPercentCutoff
+		Calculate irTopFive.top5 as 0
+	End If
+	If 100*irTopFive.top4count/llTemp.$linecount>lnPercentCutoff
+		Calculate irTopFive.top4 as 0
+	End If
+	If 100*irTopFive.top3count/llTemp.$linecount>lnPercentCutoff
+		Calculate irTopFive.top3 as 0
+	End If
+	If 100*irTopFive.top2count/llTemp.$linecount>lnPercentCutoff
+		Calculate irTopFive.top2 as 0
+	End If
+End If
+If inMinutesBreak=1
+	# There are many minute rows that are empty because they are repated for each day.
+	Calculate ilData.$line as 0
+	While $Loop(ilData)
+		Calculate lnLineTotal as 0
+		Calculate llHourlyCols.$line as 0
+		While $Loop(llHourlyCols)
+			Calculate lnLineTotal as lnLineTotal+ilData.total[llHourlyCols.hr]
+		End While
+		If lnLineTotal=0
+			Calculate ilData.[ilData.$line].$selected as kTrue
+		End If
+	End While
+	Do ilData.$remove(kListDeleteSelected)
+End If
+
+# Because a column for each hour and a row for each minutes has been provided, there are a lot of rows where all columns are zero.
+Calculate llHourlyCols.$line as 0
+While $Loop(llHourlyCols)
+	Calculate lcCalcString as con(lcCalcString,pick(lcCalcString<>'','','+'),nam(ilData),'.total',llHourlyCols.hr)
+End While
+# Let's get rid of these.
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If evalf(lcCalcString)=0
+		Calculate ilData.[ilData.$line].$selected as kTrue
+	End If
+End While
+Do ilData.$remove(kListDeleteSelected)
+
+If ilData.$linecount=0
+	Do ilData.$add(#NULL,#NULL,#NULL,#NULL,'nothing')
+End If

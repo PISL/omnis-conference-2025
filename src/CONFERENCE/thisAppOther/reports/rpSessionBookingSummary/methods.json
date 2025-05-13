@@ -1,0 +1,128 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pnFloorMinutes",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"param": 2,
+				"initval": "60",
+				"desc": "hourly figures"
+			},
+			{
+				"name": "pnCountHaving",
+				"order": 4,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"param": 3,
+				"initval": "0"
+			},
+			{
+				"name": "plData",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 4
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbFound",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcColSuffix",
+				"order": 12,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 2
+			},
+			{
+				"name": "llHourlyCols",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llMinsCols",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnColCount",
+				"order": 10,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnLineTotal",
+				"order": 11,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnPercentCutoff",
+				"order": 9,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrTemp",
+				"order": 22,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

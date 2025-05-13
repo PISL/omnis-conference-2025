@@ -1,0 +1,124 @@
+[
+	{
+		"name": "$event",
+		"order": 16384,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 9,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCLASS",
+				"order": 10,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcClipBoard",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lcColName",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcLastCLASS",
+				"order": 13,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcLastRowName",
+				"order": 12,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcLine",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lcReal",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcRowName",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcUOM",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcVALUE",
+				"order": 11,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "llItems",
+				"order": 16,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnHeaderOrder",
+				"order": 14,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnOrder",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "10"
+			},
+			{
+				"name": "lrInfo",
+				"order": 15,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrRefGlobal",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "infra.tsysFeedback",
+				"sublen": 0
+			}
+		]
+	}
+]

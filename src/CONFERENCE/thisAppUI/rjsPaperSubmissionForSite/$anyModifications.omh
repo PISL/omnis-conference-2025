@@ -1,0 +1,30 @@
+Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL.$errortext as ''
+Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as ''
+
+# if email address has been altered we need to check it is correctly formatted
+Do toStrings.$HasRowBeenModified(irPersonOrig,irPerson,kTrue) Returns lcAlteredCols
+Calculate ibModifiedPerson as lcAlteredCols<>''
+If pos('EMAIL',lcAlteredCols)>0
+	# check proper email format
+	Do toFormat.$FormatEmail(irPerson.PSN_EMAIL) Returns lcFormatError
+	If lcFormatError<>''
+		Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL.$errortext as lcFormatError
+	End If
+End If
+
+# irTopic
+Do toStrings.$HasRowBeenModified(irTopicOrig,irTopic) Returns ibModifiedTopic
+
+# compare ilTagsOrig and ilTagsDisplay
+#changing current line in ilTagsOrig leaves ilTagsDisplay untouched
+
+Calculate ilTagsOrig.$line as 0
+While $Loop(ilTagsOrig)
+	Calculate lbSelected1 as ilTagsOrig.[ilTagsOrig.$line].$selected
+	Calculate lbSelected2 as ilTagsDisplay.[ilTagsOrig.$line].$selected ## ilTagsOrig driving the check
+	
+	If lbSelected1<>lbSelected2
+		Calculate ibModifiedTag as kTrue
+		Break to end of loop
+	End If
+End While

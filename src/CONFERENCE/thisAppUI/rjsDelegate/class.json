@@ -1,0 +1,718 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 2613,
+	"superclass": "infra.rjsInfraRecords",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1195,
+	"lastgroupident": 6,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnTabDelegate",
+			"order": 2,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnTabDisplayPDF",
+			"order": 7,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "8"
+		},
+		{
+			"name": "cnTabPAX",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnTabReceipts",
+			"order": 5,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnTabText",
+			"order": 8,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "7"
+		},
+		{
+			"name": "cnTabTravelArrive",
+			"order": 4,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnTabTravelDepart",
+			"order": 6,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "5"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "iAuthor",
+			"order": 48,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Software'"
+		},
+		{
+			"name": "ibActiveConference",
+			"order": 45,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibCurrentMember",
+			"order": 30,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibGetFileForEmail",
+			"order": 41,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibinPdf",
+			"order": 58,
+			"type": "kBinary",
+			"subtype": 0,
+			"sublen": 100000000
+		},
+		{
+			"name": "ibManualWorkflow",
+			"order": 57,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibSendEmailAsWorker",
+			"order": 21,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibUserHasSemaphore",
+			"order": 18,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icDietComment",
+			"order": 46,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icEmailTo",
+			"order": 56,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 500
+		},
+		{
+			"name": "icInvoiceNo",
+			"order": 20,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 50
+		},
+		{
+			"name": "icLastSearch2Value",
+			"order": 53,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icLastTextTitle",
+			"order": 51,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icTextForClipboard",
+			"order": 35,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "icTravelLink",
+			"order": 22,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "icWorkerAction",
+			"order": 36,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "idPseudoInvoiceEmailed",
+			"order": 28,
+			"type": "kDate",
+			"subtype": "kDatetime",
+			"sublen": 6
+		},
+		{
+			"name": "idtStartEmailWorker",
+			"order": 50,
+			"type": "kDate",
+			"subtype": "kDatetime",
+			"sublen": 7
+		},
+		{
+			"name": "iFileBinary",
+			"order": 71,
+			"type": "kBinary",
+			"subtype": 0,
+			"sublen": 100000000
+		},
+		{
+			"name": "iFileLen",
+			"order": 70,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "iFileLineRef",
+			"order": 77,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iFileName",
+			"order": 69,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iFiles",
+			"order": 66,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iJSFileName",
+			"order": 74,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iJSFileRow",
+			"order": 72,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iJSFormFile",
+			"order": 68,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iJSMediaType",
+			"order": 75,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "iJSVariableName",
+			"order": 73,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "ilCountries",
+			"order": 34,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilDelegateLog",
+			"order": 64,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilEmailMessageAttachments",
+			"order": 54,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilGroupInvoices",
+			"order": 60,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilInvoiceDetails",
+			"order": 19,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilInvoices",
+			"order": 16,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMembership",
+			"order": 29,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMultipleDelegatesOnOneInvoice",
+			"order": 39,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMusic",
+			"order": 33,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOccupancy",
+			"order": 4,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPax",
+			"order": 5,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPayments",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPersons",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilRoles",
+			"order": 31,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSpouse",
+			"order": 9,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilStatus",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilWhoIsPaying",
+			"order": 15,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentTab",
+			"order": 1,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inTotalAmountDue",
+			"order": 11,
+			"type": "kNumber",
+			"subtype": "k0dp",
+			"sublen": 0
+		},
+		{
+			"name": "inTotalAmountPaid",
+			"order": 12,
+			"type": "kNumber",
+			"subtype": "k0dp",
+			"sublen": 0
+		},
+		{
+			"name": "inTotalOutstanding",
+			"order": 13,
+			"type": "kNumber",
+			"subtype": "k0dp",
+			"sublen": 0
+		},
+		{
+			"name": "ioEmail",
+			"order": 52,
+			"type": "kObject",
+			"subtype": "infra.oEmailAsync",
+			"sublen": 0
+		},
+		{
+			"name": "ioEmailConfig",
+			"order": 78,
+			"type": "kObject",
+			"subtype": "infra.oEmailOW3",
+			"sublen": 0
+		},
+		{
+			"name": "ioNewOw3SendEmail",
+			"order": 67,
+			"type": "kObject",
+			"subtype": "infra.oEmailSendWorker",
+			"sublen": 0
+		},
+		{
+			"name": "iPdfFilePath",
+			"order": 27,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "irDiet",
+			"order": 7,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irefAsyncPdf",
+			"order": 59,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irefWorkerTask",
+			"order": 62,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailChasePayment",
+			"order": 63,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailConfig",
+			"order": 55,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailInvoiceMessage",
+			"order": 24,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailMessageAttributes",
+			"order": 42,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailMessageBody",
+			"order": 43,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailMessageServer",
+			"order": 44,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailTravelConfig",
+			"order": 76,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailTravelFromAddress",
+			"order": 25,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailTravelFromName",
+			"order": 26,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailTravelMessage",
+			"order": 23,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEmailWorker",
+			"order": 61,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irInvoiceHeader",
+			"order": 38,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irJobAttributes",
+			"order": 65,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPax",
+			"order": 8,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPayment",
+			"order": 10,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irProduct",
+			"order": 37,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irSemaphore",
+			"order": 17,
+			"type": "kRow",
+			"subtype": "infra.tsysSemaphores",
+			"sublen": 0
+		},
+		{
+			"name": "irTravelInfoLink",
+			"order": 40,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTravelPlan",
+			"order": 14,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iSubject",
+			"order": 49,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'PDF Device'"
+		},
+		{
+			"name": "iTitle",
+			"order": 47,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Studio JS Client'"
+		},
+		{
+			"name": "orefReporting",
+			"order": 32,
+			"type": "kObjectref",
+			"subtype": "oReporting",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2018-04-17 16:27:16",
+		"currentlayoutbreakpoint": 1700,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evScreenOrientationChanged,evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 58,
+		"menulineheight": 0,
+		"moddate": "2025-05-12 10:22:03",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 4,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1604,
+		"height": 1033,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

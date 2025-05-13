@@ -1,0 +1,612 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 301,
+	"superclass": "infra.rjsInfraBlank",
+	"designtaskname": "rtSessions",
+	"nextident": 1065,
+	"lastgroupident": 0,
+	"cvardefs": [
+		{
+			"name": "cnPageGeneralFeedback",
+			"order": 5,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "5"
+		},
+		{
+			"name": "cnPageLogin",
+			"order": 1,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnPageRoles",
+			"order": 2,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnPageSession",
+			"order": 4,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnPageSessionFeedback",
+			"order": 3,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnPageViewFeedback",
+			"order": 6,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "6"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ibArrangementBeforeToday",
+			"order": 11,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibCanSeeFeedback",
+			"order": 9,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDateTimePast",
+			"order": 53,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibDateToday",
+			"order": 48,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibDelegateAlreadyAttending",
+			"order": 58,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDelegateAlreadyBookedForSelectedTime",
+			"order": 46,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDelegateAlreadySpeakingInThisTimeSlot",
+			"order": 59,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibDelegateIsPresenter",
+			"order": 52,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibDelegateIsRegistered",
+			"order": 30,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDisplayAnonymous",
+			"order": 2,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDisplayComment",
+			"order": 7,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDisplayFeedbackConfig",
+			"order": 8,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDuringConference",
+			"order": 19,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibFeedbackModified",
+			"order": 4,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibFeedbackWithinRangeOfEvent",
+			"order": 10,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibMaxAttendeesReached",
+			"order": 47,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibPrivileged",
+			"order": 61,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibTimeFuture",
+			"order": 49,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibTimeNow",
+			"order": 51,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibTimePast",
+			"order": 50,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibWithinCutoffTime",
+			"order": 66,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibWithinPostStartTime",
+			"order": 67,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibWithinPreStartTime",
+			"order": 68,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icBookedTotal",
+			"order": 23,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icCancelURL",
+			"order": 29,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icDGreference",
+			"order": 42,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10
+		},
+		{
+			"name": "icDisplayMessage",
+			"order": 40,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icSessionInfo",
+			"order": 12,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 2000
+		},
+		{
+			"name": "icSurname",
+			"order": 38,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "icTimeType",
+			"order": 41,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10
+		},
+		{
+			"name": "idTestDate",
+			"order": 55,
+			"type": "kDate",
+			"subtype": "kDate2000",
+			"sublen": 0
+		},
+		{
+			"name": "idtTestTime",
+			"order": 56,
+			"type": "kDate",
+			"subtype": "kTime",
+			"sublen": 0
+		},
+		{
+			"name": "ilArrangements",
+			"order": 32,
+			"type": "kList",
+			"subtype": "sArrangements",
+			"sublen": 0
+		},
+		{
+			"name": "ilAttendees",
+			"order": 31,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilAttFeedback",
+			"order": 20,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilConferences",
+			"order": 44,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilDates",
+			"order": 34,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilDelegateSessions",
+			"order": 37,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilFeedback",
+			"order": 22,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilFeedbackValues",
+			"order": 17,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilRatings",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilViewFeedbackToSpeaker",
+			"order": 43,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCountDelegates",
+			"order": 24,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inCountSpeakers",
+			"order": 25,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "incPageLogin",
+			"order": 39,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentPage",
+			"order": 35,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inCutoffMinutes",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inDisplaySessionText",
+			"order": 13,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inFeedback",
+			"order": 60,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "0"
+		},
+		{
+			"name": "inFeedbackMinutes",
+			"order": 65,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inPostStartMinutes",
+			"order": 64,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inPreDayOfEventMinutes",
+			"order": 28,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inPreStartMinutes",
+			"order": 15,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inSlot",
+			"order": 45,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inVenueTimezoneOffset",
+			"order": 62,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "ioArrangements",
+			"order": 14,
+			"type": "kObject",
+			"subtype": "oArrangements",
+			"sublen": 0
+		},
+		{
+			"name": "irAttendee",
+			"order": 57,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irAttendeeOrig",
+			"order": 5,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irCompany",
+			"order": 33,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDelegate",
+			"order": 36,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDelegateOrig",
+			"order": 16,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irFeedback",
+			"order": 21,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "itClientTimeZoneToServer",
+			"order": 26,
+			"type": "kDate",
+			"subtype": "kDatetime",
+			"sublen": 2
+		},
+		{
+			"name": "itServerTimeZone",
+			"order": 27,
+			"type": "kDate",
+			"subtype": "kDatetime",
+			"sublen": 2
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2017-10-30 11:44:12",
+		"currentlayoutbreakpoint": 375,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evScreenOrientationChanged,evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 145,
+		"menulineheight": 0,
+		"moddate": "2024-12-09 17:19:25",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 0,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1128,
+		"height": 826,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 768,
+			"padding": 2
+		},
+		"1700": {
+			"height": 800,
+			"padding": 2
+		}
+	}
+}

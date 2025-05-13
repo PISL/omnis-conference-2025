@@ -1,0 +1,53 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbProceed",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcTo",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lrEmailAttributes",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrEmailMessageBody",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrEmailMessageServer",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrParams",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	}
+]

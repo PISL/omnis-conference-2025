@@ -1,0 +1,33 @@
+Do llData.$cols.$add(lrArrangement.ARR_SEQ)
+Do llData.$cols.$add('countAll',kInteger,k32bitint)
+Do llData.$cols.$add('countThisUser',kInteger,k32bitint)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  distinct ARR_SEQ
+Sta:, ( select count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where  ARA_ARR_REF = ARR_SEQ
+Sta:)
+Sta:, ( select count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where  ARA_ARR_REF = ARR_SEQ
+Sta:and     ARA_DG_REF = @[pnDG_SEQ]
+Sta:)
+Sta:from [lrArrangement.$servertablenames()]
+Sta:left outer join [$cinst.$servertablenames()] on ARA_ARR_REF = ARR_SEQ
+Sta:where  ARR_CF_REF = @[pnCF_SEQ]
+End statement
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llData

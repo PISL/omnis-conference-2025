@@ -1,0 +1,8 @@
+# called from a containing form
+Calculate icMode as pcMode
+
+If $cinst.$container ## should be rjsMenuApp
+	Do $cinst.$container().$behaviour(icMode)
+End If
+
+Calculate $cinst.$objs.TabControl_Conference.$enabled as $cinst.icMode=''

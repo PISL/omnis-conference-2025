@@ -1,0 +1,63 @@
+# text string
+If pcText<>''
+	Calculate lbNextCharIsUpper as kTrue
+	Calculate lcTempBio as ''
+	Calculate lcTemp as pcText
+	Calculate lcTempOrig as lcTemp
+	While lcTemp<>''
+		Calculate lcToken as strtok(nam(lcTemp),' ')
+		
+		# token may have a full stop or other punctuation
+		If right(lcToken,2)=con('.',kCr)
+			Calculate lcTemp2 as $cobj.$getRandString('lower',len(lcToken)-2)
+			Calculate lcTempBio as con(lcTempBio,lcTemp2,'.',kCr)
+			Calculate lbNextCharIsUpper as kTrue
+			
+		Else If right(lcToken,1)=kCr
+			Calculate lcTemp2 as $cobj.$getRandString('lower',len(lcToken)-1)
+			Calculate lcTempBio as con(lcTempBio,lcTemp2,kCr)
+			Calculate lbNextCharIsUpper as kTrue
+			
+		Else If left(lcToken,1)=kCr
+			Calculate lcTemp2 as $cobj.$getRandString('lower',len(lcToken)-1)
+			Calculate lcTempBio as con(lcTempBio,kCr,lcTemp2,' ')
+			Calculate lbNextCharIsUpper as kTrue
+			
+		Else If right(lcToken,1)=','
+			Calculate lcTemp2 as $cobj.$getRandString('lower',len(lcToken)-1)
+			Calculate lcTempBio as con(lcTempBio,lcTemp2,', ')
+			Calculate lbNextCharIsUpper as kTrue
+			
+		Else If right(lcToken,1)='.'
+			If lbNextCharIsUpper
+				Calculate lcTemp2 as cap($cobj.$getRandString('lower',len(lcToken)-1))
+			Else
+				Calculate lcTemp2 as $cobj.$getRandString('lower',len(lcToken)-1)
+			End If
+			Calculate lcTempBio as con(lcTempBio,lcTemp2,'. ')
+			Calculate lbNextCharIsUpper as kTrue
+			
+		Else If pos(kCr,lcToken)
+			# insert a space, restore lcTemp and return to start of loop
+			Calculate lcToken as replaceall(lcToken,kCr,con(kCr,' '))
+			Calculate lcTemp as con(lcToken,' ',lcTemp)
+			Jump to start of loop
+			
+		Else
+			If lbNextCharIsUpper
+				Calculate lcTemp2 as cap($cobj.$getRandString('lower',len(lcToken)))
+			Else
+				Calculate lcTemp2 as cap($cobj.$getRandString('lower',len(lcToken)))
+			End If
+			Calculate lcTempBio as con(lcTempBio,lcTemp2,' ')
+			Calculate lbNextCharIsUpper as kFalse
+		End If
+	End While
+End If
+
+If pbCapEverything
+	Calculate lcTempBio as cap(lcTempBio)
+End If
+Calculate lcTempBio as trim(lcTempBio) ## remove trailing space
+
+Quit method lcTempBio

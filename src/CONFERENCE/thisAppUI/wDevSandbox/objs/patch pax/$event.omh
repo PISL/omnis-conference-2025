@@ -1,0 +1,212 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Breakpoint
+	Calculate lnIntOrgSEQ as 20 ## 20=OmnisWorld
+	Calculate lnConferenceSEQ as 6 ## 6 = 2012 at Shendish
+	
+	Do lrProduct.$addSchemaColumns('infra.sProductInternalData')
+	
+	
+	Do llPAX.$AddLinkedCols('DG_REG_DATE,DG_OCCUPANCY,DG_STATUS,CF_TITLE,PSN_SURNAME,PSN_FIRST_NAME')
+	
+	Do llPAX.$fetchForConference(lnConferenceSEQ)
+	While $Loop(llPAX)
+		Calculate lrPAX as llPAX
+		
+		Switch dpart(kMonth,lrDelegate.DG_REG_DATE)
+			Case 5
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB7£'
+			Case 4
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB6£'
+			Case 5
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB5£'
+			Case 6
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB4£'
+			Case 7
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB3£'
+			Case 8
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB2£'
+			Case 9
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_EB1£'
+			Default
+				Calculate lrPAX.PX_INT_PRODCODE as 'SI_M_F£'
+		End Switch
+		
+		Do lrProduct.$clear()
+		Do lrProduct.$fetchIntProdCode(lrPAX.PX_INT_PRODCODE)
+		Calculate lrPAX.PX_AGREED_PRICE as lrProduct.PID_UNIT_PRICE
+		
+		Do lrPAX.$update() Returns lbOK
+	End While
+	
+	Quit method
+	
+	Paste from clipboard lcClipBoard
+	# don't copy & paste from numbers ! ## Excel works better
+	
+	While lcClipBoard<>''
+		Calculate lcLine as strtok(nam(lcClipBoard),kCr)
+		
+		# While lcLine<>''
+		Do lrDelegate.$clear()
+		Do lrPerson.$clear()
+		Do llPAX.$clear()
+		Do lrPayment.$clear()
+		Do lrMember.$clear()
+		Do lrCheckPerson.$clear()
+		Calculate lcCreateSpouseEntry as kFalse
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		Calculate lrPerson.PSN_FIRST_NAME as strtok(nam(lcToken),' ')
+		Calculate lrPerson.PSN_SURNAME as lcToken
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		If len(lcToken)<=3
+			Calculate lrPerson.PSN_COUNTRY as upp(lcToken)
+		Else
+			Calculate lrPerson.PSN_COUNTRY as upp(mid(lcToken,1,3))
+		End If
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		Calculate lrPerson.PSN_EMAIL as lcToken
+		
+		Calculate lrPerson.PSN_ACTIVE as kTrue
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		
+		# see if this person has already been entered
+		Do lrCheckPerson.$fetchOnVarious(lrPerson.PSN_FIRST_NAME,lrPerson.PSN_SURNAME,lrPerson.PSN_EMAIL,lnIntOrgSEQ) ## 20=OmnisWorld
+		If lrCheckPerson.PSN_SEQ>0
+			# deal with this later - before lrPerson.$insert()
+		End If
+		# If upp(lcToken)='REGISTERED'
+		# Calculate lrDelegate.DG_STATUS as upp(lcToken)
+		# Else
+		Calculate lrDelegate.DG_STATUS as 'PAID' ## 'SPEAKER'
+		# End If
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		If upp(lcToken)='SINGLE'|lrDelegate.DG_STATUS='SPEAKER'
+			Calculate lrDelegate.DG_OCCUPANCY as 'I'
+		Else If upp(lcToken)='SHARED'
+			Calculate lrDelegate.DG_OCCUPANCY as 'H'
+		Else If upp(lcToken)='FAMILY'
+			Calculate lrDelegate.DG_OCCUPANCY as 'F'
+			Calculate lcCreateSpouseEntry as kTrue
+		Else If upp(lcToken)='SINGLE + WIFE'
+			Calculate lrDelegate.DG_OCCUPANCY as 'I'
+			Calculate lcCreateSpouseEntry as kTrue
+		End If
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		Calculate lrDelegate.DG_REG_DATE as lcToken
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		Calculate lrDelegate.DG_AMOUNT_DUE as lcToken
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		Calculate lrPayment.PY_DATE as lcToken
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		Calculate lrMember.MB_AMOUNT as lcToken
+		
+		Calculate lcToken as strtok(nam(lcLine),kTab)
+		# Calculate lrMember.MB_AMOUNT as lcToken ## ignore this
+		
+		Calculate lrPerson.PSN_GO_REF as lnIntOrgSEQ
+		
+		# let the data entry begin
+		If lrCheckPerson.PSN_SEQ>0
+			# deal with this later - before lrPerson.$insert()
+			Calculate lrPerson as lrCheckPerson
+			Calculate lbOK as kTrue
+		Else
+			Do lrPerson.$insert() Returns lbOK
+		End If
+		If lbOK
+			Do lrCheckDelegate.$clear()
+			Do lrCheckDelegate.$fetchUnique(lnConferenceSEQ,lrPerson.PSN_SEQ)
+			If lrCheckDelegate.DG_SEQ>0
+				# do we continue with import or drop it?
+				# because of all the children records, and the chance that they are already in there correctly it is much easier to stop handling this row
+				Calculate lrDelegate as lrCheckDelegate
+				# Calculate lbOK as kTrue ## proceed with import
+				Calculate lbOK as kFalse ## stop importing this row
+			Else
+				Calculate lrDelegate.DG_CF_REF as lnConferenceSEQ
+				Calculate lrDelegate.DG_PSN_REF as lrPerson.PSN_SEQ
+				Do lrDelegate.$insert() Returns lbOK
+			End If
+			If lbOK
+				Calculate lrMember.MB_PSN_REF as lrPerson.PSN_SEQ
+				Calculate lrMember.MB_CURRENCY as '£'
+				Calculate lrMember.MB_AMOUNT as 84
+				Calculate lrMember.MB_FROM as dat('1 APR 2012')
+				Calculate lrMember.MB_TO as dat('31 MAR 2013')
+				Do lrMember.$insert() Returns lbOK
+				
+				Calculate lrPayment.PY_DG_REF as lrDelegate.DG_SEQ
+				Calculate lrPayment.PY_AMOUNT as lrDelegate.DG_AMOUNT_DUE
+				Do lrPayment.$insert() Returns lbOK
+				
+				Do llPAX.$clear()
+				Do llPAX.$defaults()
+				Calculate llPAX.PX_DG_REF as lrDelegate.DG_SEQ
+				Calculate llPAX.PX_ROLE as 'DELEGATE' ## delegate
+				If lrDelegate.DG_STATUS='SPEAKER'
+					Calculate llPAX.PX_INT_PRODCODE as 'SPEAKER' ## freebies
+				Else
+					OK message {[dpart(kMonth,lrDelegate.DG_REG_DATE)]}
+					Switch dpart(kMonth,lrDelegate.DG_REG_DATE)
+						Case 5
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB7£'
+						Case 4
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB6£'
+						Case 5
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB5£'
+						Case 6
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB4£'
+						Case 7
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB3£'
+						Case 8
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB2£'
+						Case 9
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_EB1£'
+						Default
+							Calculate llPAX.PX_INT_PRODCODE as 'SI_M_F£'
+					End Switch
+				End If
+				# get price of product and include in this record ## for posterity - prices will go up in the future
+				Do lrProduct.$clear()
+				Do lrProduct.$fetchIntProdCode(llPAX.PX_INT_PRODCODE)
+				Calculate llPAX.PX_AGREED_PRICE as lrProduct.PID_UNIT_PRICE
+				
+				Do llPAX.$insert() Returns lbOK
+				If lcCreateSpouseEntry
+					# add wife
+					Calculate llPAX.PX_SEQ as #NULL
+					Calculate llPAX.PX_ROLE as 'SPOUSE'
+					Calculate llPAX.PX_1_LUNCH as 0
+					Calculate llPAX.PX_2_LUNCH as 0
+					Calculate llPAX.PX_3_LUNCH as 0
+					Calculate llPAX.PX_4_LUNCH as 0
+					Calculate llPAX.PX_INT_PRODCODE as 'SPOUSE£'
+					# get price of product and include in this record ## for posterity - prices will go up in the future
+					Do lrProduct.$clear()
+					Do lrProduct.$fetchIntProdCode(llPAX.PX_INT_PRODCODE)
+					Calculate llPAX.PX_AGREED_PRICE as lrProduct.PID_UNIT_PRICE
+					
+					Do llPAX.$insert() Returns lbOK
+				End If
+				If lrDelegate.DG_OCCUPANCY='F'
+					# add children
+					Calculate llPAX.PX_SEQ as #NULL
+					Calculate llPAX.PX_ROLE as 'CHILD'
+					Do llPAX.$insert() Returns lbOK
+					# in certain circumstances a 2nd child was included
+					# Calculate lrPAX.PX_SEQ as #NULL
+					# Do lrPAX.$insert() Returns lbOK
+				End If
+			End If
+		End If
+		# End While
+	End While

@@ -1,0 +1,43 @@
+If pcString<>''
+	Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+	If lbImmediateSession
+		Do $cinst.$SetSession(loSession,loStatement)
+	Else If not(ibGoodConnectionToDb)
+		Quit method kFalse
+	End If
+	
+	Calculate inID as $ctask.trGroupOrg.GO_SEQ
+	Calculate icSearchString as con('%',pcString,'%')
+	
+	Calculate lcCriteria as " ( PSN_FIRST_NAME ilike @[icSearchString]"
+	Calculate lcCriteria as con(lcCriteria,' or PSN_SURNAME ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_COMPANY ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_EMAIL ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_PHONE ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' ) ')
+	
+	If lcCriteria<>''
+		Do $cinst.$Sql(,con('where PSN_GO_REF = @[inID] and ',lcCriteria),0,0)
+	Else
+		Do $cinst.$Sql(,con('where PSN_GO_REF = @[inID]'),0,0)
+	End If
+	
+	# Begin statement
+	# Sta: select [$cinst.$selectnames()]
+	# Sta: from [$cinst.$servertablenames]
+	# Sta: where ( PSN_FIRST_NAME ilike @[pcString]
+	# Sta: or         PSN_SURNAME ilike @[pcString]
+	# Sta: or         PSN_COMPANY ilike @[pcString]
+	# Sta: or         PSN_EMAIL ilike @[pcString]
+	# Sta: or         PSN_PHONE ilike @[pcString]
+	# Sta: )
+	# Sta: and    PSN_GO_REF = @[$ctask.trGroupOrg.GO_SEQ]
+	# End statement
+	
+	Do $cinst.$executesqlandfetch() Returns lbOK
+	If lbImmediateSession
+		Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+	End If
+	
+	Quit method lbOK
+End If

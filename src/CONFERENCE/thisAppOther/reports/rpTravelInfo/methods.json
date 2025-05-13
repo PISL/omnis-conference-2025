@@ -1,0 +1,82 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "plData",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			},
+			{
+				"name": "prOtherValues",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "liSortRef",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llPAX",
+				"order": 4,
+				"type": "kList",
+				"subtype": "sfinInvoiceOutD",
+				"sublen": 0
+			},
+			{
+				"name": "llPaymentsIn",
+				"order": 3,
+				"type": "kList",
+				"subtype": "tPaymentsIn",
+				"sublen": 0
+			},
+			{
+				"name": "lnNumber",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

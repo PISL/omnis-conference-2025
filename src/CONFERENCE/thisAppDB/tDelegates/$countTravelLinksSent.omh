@@ -1,0 +1,21 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select   count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and    DG_STATUS <> 'CANCEL'
+Sta:and    DG_EMAIL_TRAVEL_SENT > @[ldDate]
+End statement
+
+Do $cinst.$executesqlandfetchinto(lnCount) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lnCount

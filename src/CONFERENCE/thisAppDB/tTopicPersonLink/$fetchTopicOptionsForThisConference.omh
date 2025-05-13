@@ -1,0 +1,57 @@
+Do $cinst.$cols.$findname('TPC_SEQ') Returns liColRef
+If liColRef
+	# don't add extra cols
+Else
+	Do $cinst.$addSchemaColumns(lrTopics.$sqlclassname)
+End If
+
+Do $cinst.$cols.$findname('PSN_SEQ') Returns liColRef
+If liColRef
+	# don't add extra cols
+Else
+	Do $cinst.$addSchemaColumns(lrPerson.$sqlclassname)
+End If
+
+Do $cinst.$cols.$findname('TPF_SEQ') Returns liColRef
+If liColRef
+	# don't add extra cols
+Else
+	Do $cinst.$cols.$add(lrTopicConference.TPF_SEQ) ## the basis of a checkbox in the user interface
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  [$cinst.$selectnames()]
+Sta:, [lrTopics.$selectnames()]
+Sta:, [lrPerson.$selectnames()]
+Sta:, ( select TPF_SEQ from [lrTopicConference.$servertablenames()] where TPF_TPC_REF = TPP_TPC_REF and TPF_CF_REF = @[pnCF_SEQ] )
+
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on TPP_PSN_REF = PSN_SEQ
+Sta:join [lrTopics.$servertablenames()] on TPP_TPC_REF = TPC_SEQ
+# If pnCF_SEQ>0
+# Sta: left join [lrTopicConference.$servertablenames()] on  TPP_TPC_REF = TPF_TPC_REF
+# End If
+
+Sta:where TPP_PSN_REF = @[pnPSN_SEQ]
+# Sta: and      TPC_GO_REF = @[trGroupOrg.GO_SEQ]
+
+# If pnCF_SEQ>0
+# Sta: and     TPF_CF_REF = @[pnCF_SEQ]
+# End If
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method

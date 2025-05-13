@@ -1,0 +1,34 @@
+If isclear(pnCF_SEQ)
+	If $cinst.CF_SEQ>0
+		Calculate pnCF_SEQ as $cinst.CF_SEQ
+	End If
+End If
+If isclear(pnCF_SEQ)
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select count(*)
+Sta:from [lrDelegate.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_ROLE = 'SPEAKER'
+Sta:and     DG_STATUS <> 'CANCEL'
+# exclude _Conference Committee
+# not the conference organiser
+Sta:and     PSN_SEX <> 'O'
+End statement
+
+Do $cinst.$executesqlandfetchinto(lnCount) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lnCount

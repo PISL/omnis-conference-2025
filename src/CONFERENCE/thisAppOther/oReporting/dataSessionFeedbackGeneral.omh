@@ -1,0 +1,2 @@
+Do $DefineList(lrDelegate,'tDelegates')
+Do lrDelegate.$reportFeedback(prConference.CF_SEQ) Returns ilData

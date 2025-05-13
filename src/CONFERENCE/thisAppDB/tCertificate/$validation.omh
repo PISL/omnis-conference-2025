@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.CRT_CF_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' conference missing')
+End If
+
+If $cinst.CRT_TITLE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' title missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

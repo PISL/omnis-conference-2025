@@ -1,0 +1,420 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 1058,
+	"superclass": "infra.rjsInfraRecords",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1175,
+	"lastgroupident": 0,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnConfArrangements",
+			"order": 6,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "5"
+		},
+		{
+			"name": "cnConfInfo",
+			"order": 2,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnConfPriceRules",
+			"order": 8,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "7"
+		},
+		{
+			"name": "cnConfPrices",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnConfStats",
+			"order": 7,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "6"
+		},
+		{
+			"name": "cnConfTechInfo",
+			"order": 5,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnConfTerms",
+			"order": 4,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "iAuthor",
+			"order": 28,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Software'"
+		},
+		{
+			"name": "ibDuplicateWithArrangements",
+			"order": 24,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icPriceProdCode",
+			"order": 13,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icSearchPricing",
+			"order": 7,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icShowDate",
+			"order": 17,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icWarnDuplicateText",
+			"order": 31,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icWarnDuplicateTitle",
+			"order": 32,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "idPriceRegistration",
+			"order": 12,
+			"type": "kDate",
+			"subtype": "kDate2000",
+			"sublen": 0
+		},
+		{
+			"name": "ilArrangements",
+			"order": 15,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilCountriesPSN",
+			"order": 23,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilDisplayStats",
+			"order": 16,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMoveConfPrice",
+			"order": 10,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOccupancyDG",
+			"order": 22,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPricingGrid",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPricingGridOrig",
+			"order": 8,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilProductResolutionErrors",
+			"order": 36,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilStatistics",
+			"order": 26,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilStatusDG",
+			"order": 21,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilTopics",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilValidation",
+			"order": 35,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilVenues",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCFP_SEQbeingDuplicated",
+			"order": 34,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inCF_SEQbeingDuplicated",
+			"order": 18,
+			"type": "kInteger",
+			"subtype": "k64bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentTab",
+			"order": 4,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inPrice",
+			"order": 14,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "inPriceOccupancy",
+			"order": 11,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inStatsChoice",
+			"order": 5,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ioResolve",
+			"order": 9,
+			"type": "kObject",
+			"subtype": "oResolveProduct",
+			"sublen": 0
+		},
+		{
+			"name": "iPdfFilePath",
+			"order": 30,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "irLogo",
+			"order": 19,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPrices",
+			"order": 25,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irProduct",
+			"order": 20,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irProductPriceRule",
+			"order": 33,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTopic",
+			"order": 3,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iSubject",
+			"order": 29,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'PDF Device'"
+		},
+		{
+			"name": "iTitle",
+			"order": 27,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Studio JS Client'"
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2018-04-17 10:03:38",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evScreenOrientationChanged,evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 184,
+		"menulineheight": 0,
+		"moddate": "2025-05-12 10:22:03",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 0,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1407,
+		"height": 769,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

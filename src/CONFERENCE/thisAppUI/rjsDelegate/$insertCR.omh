@@ -1,0 +1,43 @@
+# may be called from pbInsert or handleMenuCall
+
+
+If inCurrentTab=cnTabDelegate
+	If irUserRights.canInsert&icMode=''&ibActiveConference ## taken from $behaviour()
+		Calculate icDisplayMessage as ''
+		Do method ClearWorkArea
+		Calculate icMode as 'ID' ## insert delegate
+		Calculate irCurrentRecord.DG_CF_REF as ilSearch1.CF_SEQ
+	End If
+	
+Else If inCurrentTab=cnTabPAX
+	If irUserRights.canInsertChild&icMode=''&irCurrentRecord.DG_SEQ>0&ibActiveConference ## taken from $behaviour()
+		Calculate icDisplayMessage as ''
+		Calculate icMode as 'IP' ## insert PAX
+		Do irPax.$clear()
+		Calculate irPax.PX_DG_REF as irCurrentRecord.DG_SEQ
+		If ilPax.$linecount=0
+			Calculate irPax.PX_ROLE as 'DG'
+		Else If ilPax.$linecount=1 ## assume spouse is being added
+			Calculate irPax.PX_ROLE as 'SPOUSE'
+		End If
+		
+		Do ilSpouse.$search($ref.RFO_VALUE=irPax.PX_ROLE,1,0,0,0)
+		Do irPax.$defaults()
+	End If
+	
+Else If inCurrentTab=cnTabReceipts
+	If irUserRights.canInsertChild&icMode=''&irCurrentRecord.DG_SEQ>0&ibActiveConference ## taken from $behaviour()
+		Calculate icDisplayMessage as ''
+		Do irPayment.$clear()
+		Calculate icMode as 'IY' ## insert payment
+	End If
+	
+Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+	If irUserRights.canInsertChild&icMode=''&irCurrentRecord.DG_SEQ>0&ibActiveConference ## taken from $behaviour()
+		Calculate icDisplayMessage as ''
+		Calculate icMode as 'IT' ## insert travel plan
+	End If
+	
+End If
+
+Do $cinst.$behaviour()

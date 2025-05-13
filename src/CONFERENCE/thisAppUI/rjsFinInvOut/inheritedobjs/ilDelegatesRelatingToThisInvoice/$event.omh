@@ -1,0 +1,3 @@
+On evClick
+	Calculate ilDelegatesRelatingToThisInvoice.$line as pLineNumber ## this line is not working on the Client, so pass pLineNumber as a parameter
+	Do method DelegateLinkClicked (kTrue,#SHIFT) ## #SHIFT allows deletion of the last delegate from an invoice

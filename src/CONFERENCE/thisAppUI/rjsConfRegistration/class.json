@@ -1,0 +1,620 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 1628,
+	"superclass": "infra.rjsInfraBlank",
+	"designtaskname": "rtRegistration",
+	"nextident": 1146,
+	"lastgroupident": 18,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 5,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnPageConfirm",
+			"order": 4,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnPageLogin",
+			"order": 1,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnPageRoles",
+			"order": 2,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnPageThankYou",
+			"order": 3,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0,
+			"initval": "3"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ibCustomerModified",
+			"order": 27,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibFormHasBeenUsed",
+			"order": 67,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icBankDetailsEUR",
+			"order": 4,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icBankDetailsGBP",
+			"order": 5,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icDisplayMessage",
+			"order": 35,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icPriceEarlyBirdCategory",
+			"order": 17,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "icPriceExtras",
+			"order": 33,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icPriceFull",
+			"order": 16,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "icPriceMembership",
+			"order": 18,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icPriceParticipation",
+			"order": 38,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icPricingTrace",
+			"order": 66,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 500
+		},
+		{
+			"name": "icRegistrationReference",
+			"order": 50,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20
+		},
+		{
+			"name": "icValidationText",
+			"order": 64,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icWhichDays",
+			"order": 22,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "ikExtraAlone",
+			"order": 47,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikExtraFamily",
+			"order": 45,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikExtraSpouse",
+			"order": 46,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikMembershipCorporate",
+			"order": 42,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikMembershipNone",
+			"order": 13,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikMembershipPersonal",
+			"order": 43,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikOccupancyDailyRate",
+			"order": 21,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "99"
+		},
+		{
+			"name": "ikOccupancyNoAccomm",
+			"order": 2,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "99"
+		},
+		{
+			"name": "ikOccupancyShared",
+			"order": 37,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "99"
+		},
+		{
+			"name": "ikOccupancySingle",
+			"order": 20,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikOccupancySpeaker",
+			"order": 19,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikOccupancySponsored",
+			"order": 24,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikOccupancyWaitlist",
+			"order": 62,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikSexFemale",
+			"order": 29,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ikSexMale",
+			"order": 30,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "ilBankDetails",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilCities",
+			"order": 25,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilConferences",
+			"order": 40,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilCountriesEO",
+			"order": 65,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilCountriesPSN",
+			"order": 36,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilInvDetails",
+			"order": 11,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOccupancy",
+			"order": 52,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPersons",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPhotoIdTypes",
+			"order": 26,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCountDelegates",
+			"order": 61,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inCountSpeakers",
+			"order": 60,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "incPageLogin",
+			"order": 34,
+			"type": "kNumber",
+			"subtype": "k0dpShortnum",
+			"sublen": 0
+		},
+		{
+			"name": "inDG_OCCUPANCY",
+			"order": 32,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inExtras",
+			"order": 49,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inInvoiceTotal",
+			"order": 1,
+			"type": "kNumber",
+			"subtype": "k2dp",
+			"sublen": 0
+		},
+		{
+			"name": "inMembership",
+			"order": 44,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inNoDays",
+			"order": 23,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inOurTotal",
+			"order": 56,
+			"type": "kNumber",
+			"subtype": "k2dp",
+			"sublen": 0
+		},
+		{
+			"name": "inPSN_SEX",
+			"order": 31,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inTaxTotal",
+			"order": 55,
+			"type": "kNumber",
+			"subtype": "k2dp",
+			"sublen": 0
+		},
+		{
+			"name": "ioDelegateInvoice",
+			"order": 54,
+			"type": "kObject",
+			"subtype": "oLinkDelegateInvoice",
+			"sublen": 0
+		},
+		{
+			"name": "ioExternalOrgs",
+			"order": 41,
+			"type": "kObject",
+			"subtype": "infra.oExternalOrg",
+			"sublen": 0
+		},
+		{
+			"name": "ioFormat",
+			"order": 63,
+			"type": "kObject",
+			"subtype": "infra.oFormatData",
+			"sublen": 0
+		},
+		{
+			"name": "ioResolve",
+			"order": 12,
+			"type": "kObject",
+			"subtype": "oResolveProduct",
+			"sublen": 0
+		},
+		{
+			"name": "irCompany",
+			"order": 28,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irConfigColours",
+			"order": 68,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irCustomer",
+			"order": 7,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irCustomerOrig",
+			"order": 14,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irDelegate",
+			"order": 10,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irEarlyBirdPrice",
+			"order": 57,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irFullPrice",
+			"order": 15,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irInvHeader",
+			"order": 9,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irLinkCustToIntOrg",
+			"order": 51,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irLinkCustToIntOrgOrig",
+			"order": 53,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irLinkDelegateToInvoice",
+			"order": 8,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irLocales",
+			"order": 48,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPriceExtras",
+			"order": 58,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPriceMembership",
+			"order": 59,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irRegistration",
+			"order": 39,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2017-10-30 11:44:12",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 0,
+		"menulineheight": 0,
+		"moddate": "2025-05-13 08:49:07",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 1453,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "80,443",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1618,
+		"height": 1373,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 900,
+			"padding": 2
+		},
+		"480": {
+			"height": 800,
+			"padding": 2
+		},
+		"667": {
+			"height": 800,
+			"padding": 2
+		},
+		"768": {
+			"height": 780,
+			"padding": 2
+		},
+		"1024": {
+			"height": 780,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

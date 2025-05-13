@@ -1,0 +1,258 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 218,
+	"superclass": "infra.rjsInfraRecords",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1034,
+	"lastgroupident": 0,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnTabAwardedTo",
+			"order": 5,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnTabCertificate",
+			"order": 2,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnTabComments",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnTabDisplayPDF",
+			"order": 7,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "6"
+		},
+		{
+			"name": "cnTabTechnical",
+			"order": 6,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "5"
+		},
+		{
+			"name": "cnTabTravel",
+			"order": 4,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "4"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "iAuthor",
+			"order": 13,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Software'"
+		},
+		{
+			"name": "ibUserHasSemaphore",
+			"order": 8,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ilCertAssigned",
+			"order": 11,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilCertType",
+			"order": 9,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilDelegates",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPax",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPayments",
+			"order": 4,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilStatus",
+			"order": 10,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentTab",
+			"order": 1,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "irAwardee",
+			"order": 5,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPayment",
+			"order": 6,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irSemaphore",
+			"order": 7,
+			"type": "kRow",
+			"subtype": "infra.tsysSemaphores",
+			"sublen": 0
+		},
+		{
+			"name": "iSubject",
+			"order": 14,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'PDF Device'"
+		},
+		{
+			"name": "iTitle",
+			"order": 12,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Studio JS Client'"
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2018-04-17 10:08:07",
+		"currentlayoutbreakpoint": 1700,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evScreenOrientationChanged,evLayoutChanged",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 3,
+		"menulineheight": 0,
+		"moddate": "2025-05-12 10:22:02",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 0,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1302,
+		"height": 952,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

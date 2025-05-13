@@ -1,0 +1,10 @@
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	
+	If inCurrentTab=cnTabQuestions
+		Do method FetchAndPresentQuestions
+		
+	End If
+	
+	Do $cinst.$behaviour
+	Do $cinst.$redraw()

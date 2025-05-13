@@ -1,0 +1,91 @@
+Do $ctask.$DefineList(llDetails,'infra.tfinInvoiceOutD')
+Do llDetails.$AddSchemaColumns('infra.tProducts')
+
+# NA_M_EB1£ ## no accommodation, member price, early bird 1
+# OW_MEMC£ ## OmnisWorld membership corporate
+# SH_M_EB1€ ## shared, member price, early bird 1
+# SI_M_EB1€ ## single, member price, early bird 1
+# SPEAKER£
+# SPOUSE£
+
+Calculate plPersons.$line as 0
+While $Loop(plPersons)
+	Calculate lcProductCode as ''
+	# ilOccupancyOptions
+	Calculate ilOccupancyOptions.$line as plPersons.inDG_OCCUPANCY+1
+	Switch ilOccupancyOptions.RFO_VALUE
+		Case 'I','H','N' ## single, shared, no accomm.
+			# dtm(#D) ## March
+			# dpart(kMonth,#D) ## 3
+			# If upp(dtm(#D))=upp(prConference.CF_RATE0_TEXT)
+			# Calculate lcColumnName as con('CF_RATE0_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE1_TEXT)
+			# Calculate lcColumnName as con('CF_RATE1_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE2_TEXT)
+			# Calculate lcColumnName as con('CF_RATE2_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE3_TEXT)
+			# Calculate lcColumnName as con('CF_RATE3_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE4_TEXT)
+			# Calculate lcColumnName as con('CF_RATE4_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE5_TEXT)
+			# Calculate lcColumnName as con('CF_RATE5_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE6_TEXT)
+			# Calculate lcColumnName as con('CF_RATE6_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE7_TEXT)
+			# Calculate lcColumnName as con('CF_RATE7_',ilOccupancyOptions.RFO_VALUE)
+			# Else If upp(dtm(#D))=upp(prConference.CF_RATE8_TEXT)
+			# Calculate lcColumnName as con('CF_RATE8_',ilOccupancyOptions.RFO_VALUE)
+			# End If
+			# Calculate lcProductCode as con(prConference.[lcColumnName])
+		Case 'P' ## speaker
+			Calculate lcProductCode as con(prConference.CF_PRODCODE_SPKR,prConference.CF_CURRENCY)
+		Default
+			Breakpoint
+	End Switch
+	
+	Do irProduct.$clear()
+	Do irProduct.$fetchIntCode(lcProductCode,kTrue)
+	If irProduct.PRD_SEQ>0
+		# repeat this product code for each person listed
+		Do llDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,irProduct.PRD_TAX_BAND,1,llInvDetails.$linecount) Returns llInvDetails
+		Calculate llDetails.$line as llDetails.$linecount
+		Do llDetails.$assignrow(irProduct,kTrue)
+	End If
+	
+	If plPersons.inExtras=1|plPersons.inExtras=2 ## 1=spouse, 2=family
+		Do irProduct.$clear()
+		Do irProduct.$fetchIntCode(con(prConference.CF_PRODCODE_SPOUSE,prConference.CF_CURRENCY),kTrue)
+		If irProduct.PRD_SEQ>0
+			Do llDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,irProduct.PRD_TAX_BAND,1,llInvDetails.$linecount) Returns llInvDetails
+			Calculate llDetails.$line as llDetails.$linecount
+			Do llDetails.$assignrow(irProduct,kTrue)
+		End If
+	End If
+	
+	# and everyone gets charged membership
+	Do irProduct.$clear()
+	If plPersons.inMembership=0 ## personal
+		Do irProduct.$fetchIntCode(con('OW_MEMP',prConference.CF_CURRENCY),kTrue)
+	Else If plPersons.inMembership=1 ## corporate
+		Do irProduct.$fetchIntCode(con('OW_MEMC',prConference.CF_CURRENCY),kTrue)
+	Else If plPersons.inMembership=2 ## no membership
+		# ignore
+	Else ## no membership
+		Breakpoint
+	End If
+	If irProduct.PRD_SEQ>0
+		If plPersons.inMembership=0 ## personal
+			# repeat this product code for each person listed
+			Do llDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,irProduct.PRD_TAX_BAND,1,llInvDetails.$linecount) Returns llInvDetails
+			Calculate llDetails.$line as llDetails.$linecount
+			Do llDetails.$assignrow(irProduct,kTrue)
+		Else If plPersons.inMembership=1 ## corporate
+			Do llDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,irProduct.PRD_NAME,irProduct.PID_UNIT_PRICE,irProduct.PRD_TAX_BAND,1,llInvDetails.$linecount) Returns llInvDetails
+			Calculate llDetails.$line as llDetails.$linecount
+			Do llDetails.$assignrow(irProduct,kTrue)
+		End If
+	End If
+End While
+
+Calculate llDetails.$line as 0
+Quit method llDetails

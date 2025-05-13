@@ -1,0 +1,2 @@
+On evAfter
+	Calculate $cinst.$objs.TabControl_CF.$objs.TabControl_TOPIC.$currenttab as 2

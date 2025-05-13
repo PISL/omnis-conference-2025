@@ -1,0 +1,16 @@
+On evAfter
+	If pKeyList.systemkey=28 ## tab
+	Else If pKeyList.1.C1=27 ## shift tab
+	End If
+	
+On evKeyPress
+	# systemkey=30=backspace
+	If pKeyList.key<>'' ## tab
+		# continue
+	Else
+		If pKeyList.systemkey>0 ## tab
+			Calculate $cinst.$objs.TabControl_CF.$objs.TabControl_TOPIC.$currenttab as 3
+		Else If pKeyList.1.C1=27 ## shift tab
+			Calculate $cinst.$objs.TabControl_CF.$objs.TabControl_TOPIC.$currenttab as 1
+		End If
+	End If

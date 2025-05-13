@@ -1,0 +1,33 @@
+Calculate irConference as prConference
+Calculate irOtherValues as prOtherValues
+Do inherited
+
+Calculate icReportTitle as con('Departure information for  ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+# If ilData.$linecount>=12
+# Calculate $cinst.$sorts.1.$newpage as kTrue ## TP_SHUTTLE
+# Else
+# Calculate $cinst.$sorts.1.$newpage as kFalse ## TP_SHUTTLE
+# End If
+
+Do $cinst.$printsection(kSubtotalhead1)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If ilData.$line>1
+		If ilData.TP_SHUTTLE<>ilData.[ilData.$line-1].TP_SHUTTLE
+			# Do $cinst.$printsection(kSubtotal1)
+		End If
+	End If
+	
+	If ilData.$line>1
+		If ilData.TP_SHUTTLE<>ilData.[ilData.$line-1].TP_SHUTTLE
+			# Do $cinst.$printsection(kSubtotalhead1)
+		End If
+	End If
+	
+	Do $cinst.$printrecord()
+	
+End While

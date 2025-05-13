@@ -1,0 +1,2 @@
+Do loTM.$trim(pcString,chr(32,13,10,9)) ## Space, CR, LF, Tab
+Quit method pcString

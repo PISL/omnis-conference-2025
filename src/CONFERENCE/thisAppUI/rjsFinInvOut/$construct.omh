@@ -1,0 +1,52 @@
+# Enter your initialization code here
+Do inherited
+
+# CONFERENCE specific code removed from the superclass
+# Breakpoint
+If $columnExists(irParameters,"Conference")
+	Calculate irConference as irParameters.Conference
+End If
+If irConference.$colcount=0
+	# if specific conference not passed in then...
+	Do $getVar("trCurrentConference") Returns lrCurrentConference
+	Do $getVar("tlOpenConferences") Returns llConferences
+	
+	If lrCurrentConference.CF_SEQ>0
+		# current conference comes next
+		Calculate irConference as lrCurrentConference
+	Else If llConferences.$line>0
+		# oldest open conference comes last
+		Calculate irConference as llConferences
+	End If
+	If irConference.CF_CURRENCY<>''
+		Calculate icCurrency as irConference.CF_CURRENCY
+	Else If
+		Calculate icCurrency as trGroupOrg.GO_CURRENCY
+	End If
+End If
+
+Do $DefineList($cinst.ilDelegatesRelatingToThisInvoice,'tDelegateInvoiceLinks')
+Do ilDelegatesRelatingToThisInvoice.$AddLinkedCols("DG_COMPANY_NAME,PSN_SURNAME,PSN_FIRST_NAME,PSN_EMAIL,PSN_COMPANY,PSN_SEQ,DG_SEQ,DG_CF_REF,CF_DATE_TO")
+Do ilDelegatesRelatingToThisInvoice.$addDisplayName()
+Calculate $cinst.irDelegateInvoiceLink as $cinst.ilDelegatesRelatingToThisInvoice
+
+# create a list of all Delegates attending this conference who are not speakers and have not yet been invoiced
+Do $DefineList(ilAllUninvoicedDelegates,'tDelegates')
+Do ilAllUninvoicedDelegates.$AddLinkedCols("PSN_FIRST_NAME,PSN_SURNAME,PSN_COMPANY,PSN_SEQ")
+Do ilAllUninvoicedDelegates.$addDisplayName()
+
+Calculate $cinst.$objs.TabControl_FOH.$visible as kTrue
+
+Do ilDelegatesRelatingToThisInvoice.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.ilDelegatesRelatingToThisInvoice.$listcolumn as liColRef.$ident
+End If
+
+# is this form being opened from another form? ## e.g. from Delegates
+If irParameters.$cols.$findname('instruction')
+	If irParameters.instruction='INV_FROM_DG'
+		Do method PrepareAutomatedInvoice
+		Calculate icMode as 'I'
+		Calculate ilDisplayRecords.$line as 0
+	End If
+End If

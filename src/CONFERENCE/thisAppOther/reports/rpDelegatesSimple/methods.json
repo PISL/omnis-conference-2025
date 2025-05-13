@@ -1,0 +1,203 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "prSortRow",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			},
+			{
+				"name": "plData",
+				"order": 22,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 3
+			},
+			{
+				"name": "pcSummary",
+				"order": 23,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 500,
+				"param": 4
+			},
+			{
+				"name": "plOccupancy",
+				"order": 21,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 5
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcGroup",
+				"order": 16,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcInvoiceNumbers",
+				"order": 12,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcTemp",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "lcTextBlock",
+				"order": 24,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "liSortRef",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llCountries",
+				"order": 8,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llPAX",
+				"order": 4,
+				"type": "kList",
+				"subtype": "sfinInvoiceOutD",
+				"sublen": 0
+			},
+			{
+				"name": "llPaymentsIn",
+				"order": 3,
+				"type": "kList",
+				"subtype": "tPaymentsIn",
+				"sublen": 0
+			},
+			{
+				"name": "llSummary",
+				"order": 14,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 13,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnMaxWidthGroup",
+				"order": 15,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnMaxWidthValue",
+				"order": 17,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnNumber",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnSpaceBetweenCols",
+				"order": 20,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnSpaceGroup",
+				"order": 18,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnSpaceValue",
+				"order": 19,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrInvoice",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrInvoiceSummary",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrTotalInvoice",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

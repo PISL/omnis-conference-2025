@@ -1,0 +1,77 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TSQ_TST_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' test header must be set')
+End If
+
+If $cinst.TSQ_QUESTION<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' question text missing')
+End If
+
+If $cinst.TSQ_FORMAT<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' question format missing')
+End If
+
+If pos('MC',$cinst.TSQ_FORMAT)=1
+	# check for adequate multiple choice options
+	# is there more than 1 option?
+	If len($cinst.TSQ_MC_OPTIONS)=0
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' multiple choice options missing')
+	Else If pos(kCr,$cinst.TSQ_MC_OPTIONS)>1
+		# there must be more than one option
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' multiple choice options inadequate')
+	End If
+End If
+
+If $cinst.TSQ_CORRECT<>''
+	# good
+	If pos('MC',$cinst.TSQ_FORMAT)=1
+		# but is it adequate?
+		If $cinst.TSQ_FORMAT='MC1'
+			If pos(con('<',$cinst.TSQ_CORRECT,'>'),$cinst.TSQ_MC_OPTIONS)>0
+				# answer is amongst what is offered
+			Else
+				Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' provided answer is not amongst options')
+			End If
+		Else
+			Calculate lcTemp as $cinst.TSQ_CORRECT
+			While lcTemp<>''
+				If pos('|',lcTemp)
+					Calculate lnOptionNo as lnOptionNo+1
+				Else If lnOptionNo>0 ## 'cos last entry within lcTemp won't have the pipe in it.
+					Calculate lnOptionNo as lnOptionNo+1
+				End If
+				Calculate lcOption as strtok(nam(lcTemp),'|')
+				
+				While lcOption<>''
+					Calculate lcToken as strtok(nam(lcOption),',')
+					If pos(con('<',lcToken,'>'),$cinst.TSQ_MC_OPTIONS)>0
+						# answer is amongst what is offered
+					Else
+						If lnOptionNo>0
+							Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'option ',lnOptionNo,': provided answer is not amongst options')
+						Else
+							Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' provided answer is not amongst options')
+						End If
+					End If
+				End While
+			End While
+		End If
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' correct answer missing')
+	End If
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

@@ -1,0 +1,5 @@
+# may be called from  handleMenuCall
+Do method $sendInvoiceToCustomer ('EMAIL_CHASEPAY')
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

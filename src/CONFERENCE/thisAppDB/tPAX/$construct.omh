@@ -1,0 +1,6 @@
+Calculate icPrefix as 'PX_'
+Calculate icPrimarykey as 'PX_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'PX_DG_REF'
+
+Do inherited

@@ -1,0 +1,226 @@
+[
+	{
+		"name": "TQR_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>record ID</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_CWHEN",
+		"ident": 32009,
+		"order": 2,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>created when</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_CBY",
+		"ident": 32010,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>created by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_MWHEN",
+		"ident": 32011,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>last modified</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_MBY",
+		"ident": 32012,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>last modified by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_MCOUNT",
+		"ident": 32013,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>mod. count</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_TQO_REF",
+		"ident": 32018,
+		"order": 7,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>test</lbl><tt>Reference to the option being offered.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_IMAGE",
+		"ident": 32047,
+		"order": 8,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "url to image file",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_ALT_TAG",
+		"ident": 32048,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "text when IMAGE not found",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_TITLE",
+		"ident": 32049,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "<lbl>title</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_DESCRIPTION",
+		"ident": 32050,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "description of question",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_SCORE_FROM",
+		"ident": 32002,
+		"order": 12,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "lower score for this option",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_SCORE_TO",
+		"ident": 32027,
+		"order": 13,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "upper score for this option",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_CTA_ENABLED",
+		"ident": 32064,
+		"order": 14,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_CTA_URL",
+		"ident": 32028,
+		"order": 15,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "web resource to call",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TQR_CTA_NEWTAB",
+		"ident": 32031,
+		"order": 16,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "checkbox",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

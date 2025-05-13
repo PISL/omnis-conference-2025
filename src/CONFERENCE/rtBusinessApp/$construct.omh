@@ -1,0 +1,72 @@
+# this must be set before any other code runs
+Calculate tcCurrentLibrary as $clib().$name
+
+Do inherited
+If $cinst.$restfulapiwillclose.$canassign ## cannot read $cinst.$restful
+	Calculate trTaskStats.STS_TYPE as 'R' ## REST
+Else If $cinst.$webservice<>'' ## but this does work!!
+	Calculate trTaskStats.STS_TYPE as 'S' ## SOAP
+Else
+	Calculate trTaskStats.STS_TYPE as 'J' ## TRACKER does not do ultra thin
+End If
+
+Calculate tWebParameters as prParams
+
+# Enter your initialization code here
+# toValues is set to infa.oValues by default ## We need to override this to oValuesApp because we have app specific entries.
+Do $objects.$findname('oValuesApp') Returns liObjRef
+If liObjRef
+	Do $objects.oValuesApp.$new() Returns toValues ## subclassed from infra.oValues
+End If
+
+Do $DefineList($ctask.trCurrUser,'infra.tuaUsers')
+Do $DefineList(trGroupOrg,'infra.tentGroupOrganisations')
+Do $DefineList(trLogAccess,'infra.tuaLogAccess')
+
+If ibFormLogsAccess ## 2016-09-16 GRS changing rtSessions.$superclass to rtBusinessApp
+	# leave it to the remote form
+Else
+	Calculate trLogAccess.ULA_IP_ADDRESS as $cinst.$clientaddress
+	Calculate trLogAccess.ULA_CONNECT_TIME as $cinst.$connectiontime
+	
+	Do trLogAccess.$insert() Returns lbOK ## don't use $insert to avoid foreign key check
+End If
+
+# tlPermissions populated after successful login
+
+# RSM  8 AUG 15
+If tWebParameters.param1<>''
+	Do trGroupOrg.$fetchOnShortName(tWebParameters.param1)
+End If
+
+Do ilRemoteFormsOpen.$cols.$add('classname',kCharacter,kSimplechar,100)
+
+# to test language translations, set the value here
+# !!! reconcile tk v. tConstants - across all libraries
+Do tConstants.$cols.$findname('LanguageCode') Returns liColRef
+If liColRef
+	# column already exists
+Else
+	Do tConstants.$cols.$add('LanguageCode',kCharacter,kSimplechar,10)
+End If
+Calculate tConstants.LanguageCode as 'en_gb'
+# Calculate tk.LanguageCode as 'de_de'
+# Calculate tk.LanguageCode as 'sv'
+# Calculate tk.LanguageCode as 'ca_es'
+# Calculate tk.LanguageCode as 'es_es'
+# Calculate tk.LanguageCode as 'nl_nl'
+# Calculate tk.LanguageCode as 'zh_cn'
+
+Do method $OpenStringTable ('schemas')
+Do method $OpenStringTable ('labels')
+Do method $OpenStringTable ('messages')
+
+Do $DefineList(tlOpenConferences,'CONFERENCE.tConference')
+Do tlOpenConferences.$addLinkedCols('VEN_NAME,VEN_COUNTRY,VEN_POSTCODE,VEN_TOWN,VEN_STATE')
+
+Do toValues.$initLocal('SERVER','TIMEOUT') Returns lrReference
+If lrReference.RFL_INT>0
+	Calculate $cinst.$timeout as lrReference.RFL_INT
+End If
+
+Do ilEditStack.$cols.$add('x',kInteger,kShortint) ## column name and type are irrelevant, all we care about is $linecount

@@ -1,0 +1,43 @@
+# Enter your initialization code here
+Do $DefineList(irTopic,'tTopics')
+Do $DefineList(irLinkRecord,'tTopicPersonLink')
+Do $DefineList(irPerson,'tPerson')
+
+Calculate irOrigTopic as irTopic
+Calculate irOrigLinkRecord as irLinkRecord
+Calculate irOrigPerson as irPerson
+
+Do $DefineList(ilJoinedFetch,'tTopicPersonLink')
+Do ilJoinedFetch.$addSchemaColumns(lrTopic.$sqlclassname)
+Do ilJoinedFetch.$addSchemaColumns(lrPerson.$sqlclassname)
+Do ilJoinedFetch.$addSchemaColumns(lrTopicConferenceLink.$sqlclassname)
+
+# For lnCol from 1 to lrTopic.$colcount step 1
+# Calculate lcColName as lrTopic.$cols.[lnCol].$name
+# If lnCol=1
+# Calculate lcColumns as lcColName
+# Else
+# Calculate lcColumns as con(lcColumns,',',lcColName)
+# End If
+# End For
+# Do ilJoinedFetch.$addLinkedCols(lcColumns)
+#
+# For lnCol from 1 to lrPerson.$colcount step 1
+# Calculate lcColName as lrPerson.$cols.[lnCol].$name
+# If lnCol=1
+# Calculate lcColumns as lcColName
+# Else
+# Calculate lcColumns as con(lcColumns,',',lcColName)
+# End If
+# End For
+# Do ilJoinedFetch.$addLinkedCols(lcColumns)
+#
+# For lnCol from 1 to lrTopicConferenceLink.$colcount step 1
+# Calculate lcColName as lrTopicConferenceLink.$cols.[lnCol].$name
+# If lnCol=1
+# Calculate lcColumns as lcColName
+# Else
+# Calculate lcColumns as con(lcColumns,',',lcColName)
+# End If
+# End For
+# Do ilJoinedFetch.$addLinkedCols(lcColumns,kTrue) ## outer join

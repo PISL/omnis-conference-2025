@@ -1,0 +1,9 @@
+Do irTopic.$clear()
+Do irLinkRecord.$clear()
+Do irConference.$clear()
+
+Calculate pretTopic as irTopic
+Calculate pretLink as irLinkRecord
+Calculate pretConference as irConference
+
+Quit method kTrue

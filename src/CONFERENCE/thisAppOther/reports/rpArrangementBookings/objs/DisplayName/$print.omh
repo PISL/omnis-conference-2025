@@ -1,0 +1,6 @@
+If ilData.$line>1
+	If con(ilData.[ilData.$line-1].PSN_SURNAME,', ',ilData.[ilData.$line-1].PSN_FIRST_NAME)=pData
+		Calculate pData as ''
+	End If
+End If
+Do default

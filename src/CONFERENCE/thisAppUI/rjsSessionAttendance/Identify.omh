@@ -1,0 +1,52 @@
+Calculate icDisplayMessage as ''
+Calculate icDGreference as replaceall(icDGreference,' ','') ## DG 264 becomes DG264
+Do $cinst.$validation() Returns lbProceed
+If lbProceed
+	Do irDelegate.$clear() Returns lbOK
+	If mid(upp(icDGreference),1,2)='DG' ## this will be recorded in CBY & MBY columns
+		Calculate lcTemp as mid(icDGreference,3,9) ## extra spaces will be ignored
+		Do irDelegate.$fetchForConference(ilConferences.CF_SEQ,,con('DG_SEQ = ',lcTemp)) Returns lbOK
+	Else If isnumber(icDGreference)
+		Do irDelegate.$fetchForConference(ilConferences.CF_SEQ,,con('DG_SEQ = ',icDGreference)) Returns lbOK
+	End If
+	
+	If irDelegate.DG_SEQ>0
+		# is there a match between DG reference and surname?
+		If upp(irDelegate.PSN_SURNAME)=icSurname
+			# good
+			Do method RecordLogin
+			
+			Do method FetchArrangements
+			Do method ShowArrangements
+			
+			# does the DG reference match the current Conference?
+			If irDelegate.DG_CF_REF=ilConferences.CF_SEQ
+				# all is good
+				Do irDelegate.$DisplayName()
+				Calculate inCurrentPage as 2
+				Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentPage
+				
+				# we need a count of all regular delegates (non speakers)
+				Do irDelegate.$delegateCount(ilConferences.CF_SEQ,'SPEAKER') Returns inCountSpeakers
+				Do irDelegate.$delegateCount(ilConferences.CF_SEQ,'PAID') Returns inCountDelegates
+				
+				# we offer a simulated date & time for testing but this is dangerous for production
+				# So suppress these fields during the time of the selected Conference
+				Calculate ldToday as #D ## done like this for debugging purposes
+				Calculate ibPrivileged as pos(upp(irDelegate.PSN_SURNAME),'MOSTYN,STEVENS')
+				Calculate $cinst.$objs.PagedPane.$objs.label_SimDate.$visible as ibPrivileged ## &not(ldToday>=ilConferences.CF_DATE_FROM)
+				Calculate $cinst.$objs.PagedPane.$objs.idDate.$visible as ibPrivileged ## &not(ldToday>=ilConferences.CF_DATE_FROM)
+				Calculate $cinst.$objs.PagedPane.$objs.idtTestTime.$visible as ibPrivileged ## &not(ldToday>=ilConferences.CF_DATE_FROM)
+				
+				Calculate irDelegateOrig as irDelegate ## delegate may provide feedback - need this to see if things have changed
+			Else
+				Calculate icDisplayMessage as con('The delegate / surname combination does not match conference ',ilConferences.CF_TITLE)
+			End If
+		Else
+			Calculate icDisplayMessage as con('The delegate / surname combination does not match.')
+		End If
+	Else
+		Calculate icDisplayMessage as 'identification not verified'
+	End If
+End If
+Do $cinst.$behaviour()

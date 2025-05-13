@@ -1,0 +1,29 @@
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "SPEAKER_INVITE"
+
+Text:, "title" : "Speaker invitation"
+If sys(2)=17
+	Calculate lcTemp as con('Will generate email messages in the Mail client.','  ','BE SURE TO SELECT THE DESIRED FROM ACCOUNT in the Mail client before starting.')
+	Text:, "description" : "[lcTemp]"
+Else
+	Text:, "description" : "Pro forma email to past speakers inviting to speak again."
+End If
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('SPEAKERS',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

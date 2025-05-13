@@ -1,0 +1,74 @@
+Calculate icPriceFull as ''
+If inDG_OCCUPANCY=ikOccupancySingle
+	Calculate lcFullProductCode as 'SI_M_F'
+Else If inDG_OCCUPANCY=ikOccupancyShared
+	Calculate lcFullProductCode as 'SH_M_F'
+Else If inDG_OCCUPANCY=ikOccupancyNoAccomm
+	Calculate lcFullProductCode as 'NA_M_F'
+Else If inDG_OCCUPANCY=ikOccupancyDailyRate
+	Calculate lcFullProductCode as 'SI_24H_F'
+Else If inDG_OCCUPANCY=ikOccupancySponsored
+	Calculate lcFullProductCode as 'FTEDUC'
+Else
+	Calculate lcFullProductCode as ''
+End If
+If left(ilConferences.CF_TITLE_CODE,6)='EO2023'
+	If left(lcFullProductCode,5)='SI_M_'
+		Calculate lcFullProductCode as con(lcFullProductCode,'_23')
+	End If
+End If
+If lcFullProductCode<>''
+	Calculate lcFullProductCode as con(lcFullProductCode,ilConferences.CF_CURRENCY)
+	
+	Do irFullPrice.$fetchIntCode(lcFullProductCode,kTrue) ## SI_M_F£   SI_M_F€   SH_M_F£    SH_M_F€
+	Do irFullPrice.$calculatedValues()
+	Calculate icPriceFull as con(ilConferences.CF_CURRENCY,' ',irFullPrice.PID_UNIT_PRICE)
+End If
+Do method priceTrace (con('full price on ',irFullPrice.PRD_INT_PRODCODE,' = ',irFullPrice.PID_UNIT_PRICE,' + ',irFullPrice.Tax))
+
+Do method PrepareRegistration (kTrue) ## ilInvDetails
+
+# Do ilInvDetails.$search(pos('_M_',$ref.PRD_INT_PRODCODE)&pos(irRegistration.PSN_SURNAME,$ref.FOD_DESC),1,0,0,0) Returns lbFound
+Do ilInvDetails.$search(pos('_M_',$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+If not(lbFound)
+	Do ilInvDetails.$search(pos('_24H_',$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Do ilInvDetails.$search(pos('SPEAKER',$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+		If not(lbFound)
+			Do ilInvDetails.$search(pos('FTEDUC',$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+		End If
+	End If
+End If
+Do irEarlyBirdPrice.$clear()
+If lbFound
+	Do irEarlyBirdPrice.$fetch_pk(ilInvDetails.PRD_SEQ)
+	Do irEarlyBirdPrice.$calculatedValues()
+End If
+Do method priceTrace (con('early bird price on ',irEarlyBirdPrice.PRD_INT_PRODCODE,' = ',irEarlyBirdPrice.PID_UNIT_PRICE,' + ',irEarlyBirdPrice.Tax))
+
+Calculate icPriceParticipation as pick(lbFound,'',con(ilConferences.CF_CURRENCY,' ',ilInvDetails.FOD_UNIT_PRICE))
+Calculate icPriceEarlyBirdCategory as mid(ilInvDetails.PRD_INT_PRODCODE,6,3)
+If left(icPriceEarlyBirdCategory,2)='EB'
+	Calculate icPriceEarlyBirdCategory as con('Early bird ',right(icPriceEarlyBirdCategory,1))
+Else
+	Calculate icPriceEarlyBirdCategory as ''
+	Calculate icPriceFull as ''
+	Do irEarlyBirdPrice.$clear()
+End If
+
+Do irPriceMembership.$clear()
+Do ilInvDetails.$search(pos('OW_MEMP',$ref.PRD_INT_PRODCODE)&pos(irRegistration.PSN_SURNAME,$ref.FOD_DESC),1,0,0,0) Returns lbFound
+If not(lbFound)
+	Do ilInvDetails.$search(pos('OW_MEMC',$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+End If
+Calculate icPriceMembership as pick(lbFound,'',con(ilConferences.CF_CURRENCY,' ',ilInvDetails.FOD_UNIT_PRICE))
+Do irPriceMembership.$fetch_pk(ilInvDetails.PRD_SEQ)
+Do irPriceMembership.$calculatedValues()
+Do method priceTrace (con('price membership=',irPriceMembership.PID_UNIT_PRICE))
+
+Do irPriceExtras.$clear()
+Do ilInvDetails.$search(pos(ilConferences.CF_PRODCODE_SPOUSE,$ref.PRD_INT_PRODCODE)&pos(irRegistration.PSN_SURNAME,$ref.FOD_DESC),1,0,0,0) Returns lbFound
+Do irPriceExtras.$fetch_pk(ilInvDetails.PRD_SEQ)
+Do irPriceExtras.$calculatedValues()
+# Calculate icPriceExtras as pick(lbFound,'',con(ilConferences.CF_CURRENCY,' ',ilInvDetails.FOD_UNIT_PRICE))
+Do method priceTrace (con('extras on ',irPriceExtras.PRD_INT_PRODCODE,' = ',irPriceExtras.PID_UNIT_PRICE,' + ',irPriceExtras.Tax))

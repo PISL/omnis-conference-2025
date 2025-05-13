@@ -1,0 +1,115 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+Calculate irCompany as trGroupOrg
+
+Do $defineList(ilConferences,'tConference')
+Do ilConferences.$fetchLatest(3) ## future (current), previous, 2nd previous  Adds Venue info
+Do ilConferences.$addDisplayName()
+Do ilConferences.$sort($ref.CF_DATE_FROM,1) ## most recent at top of list
+
+Calculate icConferenceHeading as con(irCompany.GON_NAME_FULL,kSp,kSp,kSp,ilConferences.1.CF_TITLE)
+
+Calculate ldFirstDayThisMonth as fday(kMonth,#D)
+
+If ilConferences.$linecount>0
+	Calculate ilConferences.$line as 0
+	While $Loop(ilConferences)
+		Do ilConferences.$DisplayName(4)
+	End While
+	
+	# list of conferences could display a conference with no Arrangements (a future conference)
+	# so identify conference with most desirable content
+	Do ilConferences.$search($ref.CF_ADMIN_DATE_TO>=#D,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		# we could use trCurrentConference to set default line
+		Calculate ilConferences.$line as 1
+	End If
+End If
+
+Do $DefineList(irPersons,'tPerson')
+Do irPersons.$cols.$add(inDG_OCCUPANCY)
+Do irPersons.$cols.$add(inExtras)
+Do irPersons.$cols.$add(inMembership)
+
+Calculate irPersons.inDG_OCCUPANCY as 0 ## single
+Calculate irPersons.inExtras as 0 ## alone
+Calculate irPersons.inMembership as 0 ## personal
+
+Calculate OccupancyCode as pick(irPersons.inDG_OCCUPANCY,'Single','Shared','No accommodation')
+If clPricingTable.$linecount=0
+	# create pricing table for first time
+	Do ilPriceTable.$cols.$add('Type',kCharacter,kSimplechar,100)
+	Do ilPriceTable.$cols.$add('Period',kCharacter,kSimplechar,100)
+	Do ilPriceTable.$cols.$add('Price',kCharacter,kSimplechar,100)
+	
+	For lnMonthNo from 1 to 12 step 1
+		# Calculate RegDate as dat(con('1 ',pick(lnMonthNo,'','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'),dty(ilConferences.CF_DATE_FROM)))
+		If lnMonthNo=1
+			Calculate RegDate as fday(kMonth,#D)
+		Else
+			Calculate RegDate as dadd(kMonth,1,RegDate)
+		End If
+		If RegDate>=ilConferences.CF_DATE_FROM
+			# do not price beyond the start of the event
+			Break to end of loop
+		End If
+		
+		# calculate price for the current month going forward.  No point in displaying past discounts
+		If RegDate>=ldFirstDayThisMonth&RegDate<=ilConferences.CF_DATE_FROM
+			Calculate lcPeriod as dtm(RegDate)
+			# $productResolution is a slow running method with various db fetches
+			Do ioResolve.$productResolution(ilConferences,irPersons,#NULL,RegDate) Returns ilInvDetails
+			If ilInvDetails.$linecount=1|ilInvDetails.$linecount=2
+				Calculate lnAmountProduct as tot(ilInvDetails,ilInvDetails.FOD_UNIT_PRICE)
+				Calculate lnAmountTax as tot(ilInvDetails,ilInvDetails.FOD_UNIT_TAX)
+				
+				Do ilPriceTable.$add(OccupancyCode,lcPeriod,lnAmountProduct+lnAmountTax)
+			Else
+				Breakpoint
+			End If
+		End If
+	End For
+	
+	# cache the tab;e
+	Calculate clPricingTable as ilPriceTable
+Else
+	# restore table from cache
+	Calculate ilPriceTable as clPricingTable
+End If
+
+# apply a form backcolor if one has been set
+Do toValues.$initGlobal('FORMCOLOURS','ZC_FS_PRICENOW') Returns lrReference
+If lrReference.RFG_JSON<>''
+	Do OJSON.$jsontolistorrow(lrReference.RFG_JSON,lcTemp,kFalse) Returns lrJSON
+	Do lrJSON.$cols.$findname('backcolor') Returns liColRef
+	If liColRef
+		Calculate $cinst.$backcolor as eval(lrJSON.backcolor)
+	End If
+End If
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+Calculate inCurrentPane as 1
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentPane
+
+
+
+Calculate lnAmountProduct as ilPriceTable.1.Price
+# now see if there is an increment in price and if so, when
+Do ilPriceTable.$search($ref.Price>lnAmountProduct,1,0,0,0) Returns lbFound
+If lbFound
+	Begin text block
+	Line:[ilConferences.1.CF_CURRENCY] [jst(ilPriceTable.1.Price,'N0,')] until end of [ilPriceTable.[ilPriceTable.$line-1].Period]
+	End text block
+	Get text block icFormHeading
+	
+	Begin text block
+	Line:[ilConferences.1.CF_CURRENCY] [jst(ilPriceTable.Price,'N0,')] from [ilPriceTable.Period]
+	End text block
+	Get text block icFormIntro
+End If
+
+Do method TranslateText
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

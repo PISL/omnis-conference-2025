@@ -1,0 +1,4 @@
+On evClick
+	Calculate irFacility as ilFacilities
+	Do ilFacilityType.$search($ref.RFO_VALUE=irFacility.FCY_TYPE,1,0,0,0)
+	Do $cinst.$behaviour()

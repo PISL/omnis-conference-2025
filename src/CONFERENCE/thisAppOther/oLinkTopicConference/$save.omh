@@ -1,0 +1,98 @@
+# Breakpoint {not tested}
+
+Do irTopic.$clear()
+Do irTopic.$assignrow(prTopic)
+Do irTopic.$validation() Returns lbProceed
+If lbProceed
+	If irTopic.[irTopic.icPrimaryKey]>0
+		Do toStrings.$HasRowBeenModified(irOrigTopic,irTopic) Returns lbModified
+		If lbModified
+			Do irTopic.$update() Returns lbOK
+		Else
+			# no change
+			Calculate lbOK as kTrue
+		End If
+	Else
+		Do irTopic.$insert() Returns lbOK
+	End If
+	If lbOK
+		Do prTopic.$assignrow(irTopic) ## return result to calling object
+		Calculate irOrigTopic as irTopic
+		
+		Do irConference.$clear()
+		Do irConference.$assignrow(prConference)
+		Do irConference.$validation() Returns lbProceed
+		If lbProceed
+			If irConference.[irConference.icPrimaryKey]>0
+				Do toStrings.$HasRowBeenModified(irOrigConference,irConference) Returns lbModified
+				If lbModified
+					Do irConference.$update() Returns lbOK
+				Else
+					# no change
+					Calculate lbOK as kTrue
+				End If
+			Else
+				Do irConference.$insert() Returns lbOK
+			End If
+			If lbOK
+				Do prConference.$assignrow(irConference)
+				Calculate irOrigConference as irConference
+				
+				Do irLinkRecord.$clear()
+				Do irLinkRecord.$assignrow(prLinkRecord) ## TPF_STATUS may have changed
+				Calculate irLinkRecord.TPF_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+				Calculate irLinkRecord.TPF_CF_REF as irConference.[irConference.icPrimaryKey]
+				
+				Do irLinkRecord.$validation() Returns lbProceed
+				If lbProceed
+					If irLinkRecord.[irLinkRecord.icPrimaryKey]>0
+						If pbChecked
+							# record exists - leave as is
+							Calculate lbOK as kTrue
+						Else
+							# record exists but list is not checked ## delete link record
+							Do irLinkRecord.$delete() Returns lbOK
+							If lbOK
+								Do irLinkRecord.$clear()
+							End If
+						End If
+					Else
+						If pbChecked
+							# record exists - leave as is
+							Do irLinkRecord.$insert() Returns lbOK
+						Else
+							# record doesn't exists and list is not checked ## leave as is
+							Calculate lbOK as kTrue
+						End If
+					End If
+					If lbOK
+						# good
+						Do prLinkRecord.$assignrow(irLinkRecord)
+						Calculate irOrigLinkRecord as irLinkRecord
+					Else
+						Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
+						Quit method kFalse
+					End If
+				Else
+					Calculate icErrorMessage as con('validation error: ',irLinkRecord.icValidationMessage)
+					Quit method kFalse
+				End If
+			Else
+				Calculate icErrorMessage as irConference.irErrorSQL.NativeErrorText
+				Quit method kFalse
+			End If ## not(lbOK) after irInvoiceHeader.$insert()
+		Else
+			Calculate icErrorMessage as con('validation error: ',irConference.icValidationMessage)
+			Quit method kFalse
+		End If ## not(lbProceed) after irInvoiceHeader.$validation()
+		
+	Else ## not(lbOK) after irDelegate.$insert()
+		Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+Else
+	Calculate icErrorMessage as con('validation error: ',irTopic.icValidationMessage)
+	Quit method kFalse
+End If
+
+Quit method kTrue

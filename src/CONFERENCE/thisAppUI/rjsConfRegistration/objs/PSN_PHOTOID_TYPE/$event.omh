@@ -1,0 +1,6 @@
+On evClick
+	Calculate irRegistration.PSN_PHOTOID_TYPE as ilPhotoIdTypes.REF_VALUE
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.PSN_PHOTOID_TYPE as irRegistration.PSN_PHOTOID_TYPE
+	End If
+	Do $cinst.$behaviour()

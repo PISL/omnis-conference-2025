@@ -1,0 +1,31 @@
+Calculate icDisplayMessage as ''
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$errortext as ''
+
+Do irTopic.$clear()
+Do ilTopics.$clear()
+Do ilTopicConferences.$clear()
+Do ilDelegates.$clear()
+Do ilMembership.$clear()
+If irCurrentRecord.PSN_SEQ>0
+	If irCurrentRecord.PSN_SEQ=irLastPerson.PSN_SEQ
+		# then do not update
+	Else
+		Calculate irLastPerson as irCurrentRecord ## used to transfer/clone topics between persons
+	End If
+End If
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do irCurrentRecord.$fetch_pk() ## re-read from db - multi user application
+
+Do ioTopicPerson.$fetchUsingPerson(irCurrentRecord.PSN_SEQ) Returns llJoined
+# If ioTopicPerson.irErrorSQL.NativeErrorText<>'' ## notation error !!!
+# Calculate icDisplayMessage as ilTopics.irErrorSQL.NativeErrorText
+# End If
+Do ilTopics.$merge(llJoined,kTrue)
+Do ilTopics.$sort($ref.TPC_TITLE,0)
+
+Do ilDelegates.$fetch_fk(irCurrentRecord.PSN_SEQ,'DG_PSN_REF')
+Do ilMembership.$fetch_fk(irCurrentRecord.PSN_SEQ)
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

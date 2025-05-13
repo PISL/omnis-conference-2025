@@ -1,0 +1,74 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Breakpoint
+	Do irefCORETASK.$DefineList(lrRefGlobal,'infra.tsysFeedback')
+	Paste from clipboard lcClipBoard
+	While lcClipBoard<>''
+		Calculate lcLine as strtok(nam(lcClipBoard),kCr)
+		Calculate lcLine as trim(lcLine,1,1,kLf)
+		If lcLine<>''
+			Calculate lcRowName as strtok(nam(lcLine),kTab) ## defined within CONST_CLASSES
+			If lcRowName<>''
+				Calculate lcLastRowName as lcRowName
+			End If
+			
+			Calculate lcCLASS as strtok(nam(lcLine),kTab)
+			If lcCLASS<>''
+				Calculate lcLastCLASS as lcCLASS
+			End If
+			
+			If lcLastRowName=lcRowName
+				# then create new group header
+				Calculate lnHeaderOrder as lnHeaderOrder+1
+				
+				Do lrRefGlobal.$clear()
+				Calculate lrRefGlobal.RFG_CLASS as 'CONST_AG_FACTOR' ## con('CONST_',lcCLASS)
+				Calculate lrRefGlobal.RFG_VALUE as mid(lcCLASS,7,99)
+				Calculate lrRefGlobal.RFG_DESC as lcLastRowName
+				Calculate lrRefGlobal.RFG_ORDER as lnHeaderOrder
+				Calculate lrRefGlobal.RFG_ACTIVE as 1
+				Do lrRefGlobal.$insert() Returns lbOK
+				If not(lbOK)
+					If lrRefGlobal.icValidationMessage<>''
+						OK message {[lrRefGlobal.icValidationMessage]}
+					End If
+					Breakpoint
+					Calculate lrInfo as lrRefGlobal.irErrorSQL
+					# OK message  {[lrRefGlobal.irErrorSQL.NativeErrorText]}
+				End If
+				Calculate lnOrder as 0
+			End If
+			
+			Calculate lcVALUE as strtok(nam(lcLine),kTab)
+			Calculate lcColName as strtok(nam(lcLine),kTab)
+			Calculate lcUOM as strtok(nam(lcLine),kTab)
+			Calculate lcReal as strtok(nam(lcLine),kTab)
+			Calculate lnOrder as lnOrder+1
+			
+			# every now and then there is a blank line that has tabs only in it
+			# skip those lines ## we expect a new header record in next row
+			If lcVALUE<>''
+				Do lrRefGlobal.$clear()
+				Calculate lrRefGlobal.RFG_CLASS as lcLastCLASS ## con('CONST_',lcCLASS)
+				Calculate lrRefGlobal.RFG_VALUE as con(lcVALUE,'_',upp(lcUOM))
+				Calculate lrRefGlobal.RFG_DESC as con(lcColName,pick(lcUOM<>'','','_'),upp(lcUOM))
+				Calculate lrRefGlobal.RFG_ORDER as lnOrder
+				Calculate lrRefGlobal.RFG_ACTIVE as 1
+				Calculate lrRefGlobal.RFG_NUMBER as lcReal
+				Do lrRefGlobal.$insert() Returns lbOK
+				If not(lbOK)
+					If lrRefGlobal.icValidationMessage<>''
+						OK message {[lrRefGlobal.icValidationMessage]}
+					End If
+					Breakpoint
+					Calculate lrInfo as lrRefGlobal.irErrorSQL
+					# OK message  {[lrInfo.NativeErrorText]}
+					If pos('duplicate key value',lrInfo.NativeErrorText)&pos('(rfg_seq)',lrInfo.NativeErrorText)
+						Repeat
+							Do lrRefGlobal.$insert() Returns lbOK
+							Calculate lrInfo as lrRefGlobal.irErrorSQL
+						Until pos('duplicate key value',lrInfo.NativeErrorText)=0
+					End If
+				End If
+			End If
+		End If
+	End While

@@ -1,0 +1,82 @@
+Calculate icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+Do irTopic.$clear()
+Do irLogo.$clear()
+
+# The list of high level topics are general, pan event items for this company.
+# They are listed here against a conference, and the user can add more generic items but they are not ARRANGED for the conference.
+# That happens under SPEAKERS where both Speaker and Generic Topics can be put into the conference schedule.
+Do ilTopics.$fetchConferenceTopics(ilDisplayRecords.CF_SEQ) Returns lbOK ## excludes Topics assigned to specific speakers
+If not(lbOK)
+	Calculate icDisplayMessage as ilTopics.irErrorSQL.NativeErrorText
+	If icDisplayMessage=''
+		Calculate icDisplayMessage as ilTopics.icErrorMessage
+	End If
+End If
+Do ilTopics.$sort($ref.TPC_TITLE,0)
+
+Do ilPricingGrid.$fetch_fk(irCurrentRecord.CF_SEQ)
+Do ilPricingGrid.$sort($ref.CFP_ORDER,0)
+Calculate ilPricingGridOrig as ilPricingGrid
+Calculate ilPricingGrid.$smartlist as kTrue
+
+# arrangements are not displayed on the form
+# they are gethered here in case of a duplicate conference
+Do $DefineList(ilArrangements,'tArrangements')
+Do ilArrangements.$fetch_fk(irCurrentRecord.CF_SEQ)
+# the presentation of arrangements is done from the ilTopics list
+
+Do irLogo.$clear()
+Do toValues.$initOrg('IMAGES',irCurrentRecord.CF_LOGO_RFO_VALUE) Returns irLogo
+
+Do irCurrentRecord.$reportStatistics(irCurrentRecord.CF_SEQ) Returns ilStatistics
+Do ilStatistics.$sendall($ref.group.$assign(pick(ilStatistics.group='DG_OCCUPANCY',ilStatistics.group,'Occupancy')))
+Do ilStatistics.$sendall($ref.group.$assign(pick(ilStatistics.group='DG_STATUS',ilStatistics.group,'Status')))
+Do ilStatistics.$sendall($ref.group.$assign(pick(ilStatistics.group='DG_REG_MONTH',ilStatistics.group,"Reg'n month")))
+Do ilStatistics.$sendall($ref.group.$assign(pick(ilStatistics.group='DG_COUNTRY',ilStatistics.group,'Country')))
+Do ilStatistics.$sendall($ref.group.$assign(pick(ilStatistics.group='TOPICS',ilStatistics.group,'Topics')))
+
+Calculate ilStatistics.$line as 0
+While $Loop(ilStatistics)
+	If ilStatistics.$line>1&ilStatistics.group<>ilStatistics.[ilStatistics.$line-1].group
+		Do ilStatistics.$addbefore(ilStatistics.$line)
+		Calculate ilStatistics.count as #NULL
+		Calculate ilStatistics.proportion as #NULL
+		Calculate ilStatistics.$line as ilStatistics.$line+1
+	End If
+	If ilStatistics.group='Occupancy'
+		Do ilOccupancyDG.$search($ref.RFO_VALUE=ilStatistics.code,1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate ilStatistics.code as ilOccupancyDG.RFO_DESC
+		End If
+		
+	Else If ilStatistics.group='Status'
+		Do ilStatusDG.$search($ref.RFO_VALUE=ilStatistics.code,1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate ilStatistics.code as ilStatusDG.RFO_DESC
+		End If
+		
+	Else If ilStatistics.group="Reg'n month"
+		Calculate ilStatistics.code as pick(ilStatistics.code,'','January','February','March','April','May','June','July','August','September','October','November','December')
+		
+	Else If ilStatistics.group='Country'
+		Calculate ilStatistics.group as 'Country'
+		Do ilCountriesPSN.$search($ref.REF_VALUE=ilStatistics.code,1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate ilStatistics.code as ilCountriesPSN.REF_DESC
+		End If
+		
+	Else If ilStatistics.group='Topics'
+		Calculate ilStatistics.group as 'Topics'
+	End If
+End While
+
+Calculate ilStatistics.$smartlist as kTrue
+Do method FilterStatistics
+
+Do method FetchAllPrices
+
+Do method DropLists
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

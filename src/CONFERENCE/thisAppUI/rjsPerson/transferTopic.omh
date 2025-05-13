@@ -1,0 +1,25 @@
+# ilTopics  irCurrentRecord
+If pcMoveOrClone='MT'
+	Calculate lrTopicPersonLink as ilTopics
+	Calculate lrTopicPersonLink.TPP_PSN_REF as irLastPerson.PSN_SEQ
+	Do lrTopicPersonLink.$update() Returns lbOK
+	If lbOK
+		# this link no longer belongs to the irCurrentRecord
+		Do ilTopics.$remove(ilTopics.$line)
+	Else
+		Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$errortext as lrTopicPersonLink.irErrorSQL.NativeErrorText
+	End If
+	
+Else If pcMoveOrClone='CT'
+	Calculate lrTopicPersonLink as ilTopics
+	Calculate lrTopicPersonLink.TPP_SEQ as #NULL
+	Calculate lrTopicPersonLink.TPP_PSN_REF as irLastPerson.PSN_SEQ
+	Do lrTopicPersonLink.$insert() Returns lbOK
+	If lbOK
+		# row in irTopics still belongs to the irCurrentRecord
+		# whereas lrTopicPersonLink does not
+	Else
+		Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$errortext as lrTopicPersonLink.irErrorSQL.NativeErrorText
+	End If
+	
+End If

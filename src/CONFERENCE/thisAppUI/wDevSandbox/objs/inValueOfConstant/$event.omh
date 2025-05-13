@@ -1,0 +1,3 @@
+On evKey
+	# Do ioCFF.$filterList(icSearch) Returns ilDisplay
+	Do $cinst.$redraw()

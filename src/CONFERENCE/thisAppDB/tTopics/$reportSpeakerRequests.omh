@@ -1,0 +1,57 @@
+Do llData.$cols.$add(lrPerson.PSN_SEQ)
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add('SpeakerSort',kCharacter,kSimplechar,100)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_DURN_MINS)
+Do llData.$cols.$add(lrTopics.TPC_COMMENT)
+Do llData.$cols.$add(lrTopics.TPC_REQUESTS) ## this column is what this report is all about
+
+Do llData.$cols.$add(lrFacility.FCY_NAME)
+Do llData.$cols.$add(lrFacility.FCY_LOCATION)
+
+Do llData.$cols.$add(lrConference.CF_DATE_FROM)
+
+Do llData.$cols.$add(lrArrangements.ARR_DATE)
+Do llData.$cols.$add(lrArrangements.ARR_DAYNO)
+Do llData.$cols.$add(lrArrangements.ARR_STARTTIME)
+Do llData.$cols.$add(lrArrangements.ARR_ENDTIME)
+Do llData.$cols.$add(lrArrangements.ARR_SPECIFIC_EQUIPT)
+Do llData.$cols.$add(lrArrangements.ARR_LEADER)
+Do llData.$cols.$add(lrArrangements.ARR_FACILITY)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select   PSN_SEQ, PSN_SURNAME, PSN_FIRST_NAME, concat(upper(PSN_SURNAME),', ',upper(PSN_FIRST_NAME))
+Sta:, TPC_SEQ, TPC_TITLE, TPC_DURN_MINS, TPC_COMMENT, TPC_REQUESTS
+Sta:, FCY_NAME, FCY_LOCATION
+Sta:, CF_DATE_FROM
+Sta:, ARR_DATE, ARR_DAYNO, ARR_STARTTIME, ARR_ENDTIME, ARR_SPECIFIC_EQUIPT, ARR_LEADER, ARR_FACILITY
+Sta:from [$cinst.$servertablenames()]
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+Sta:join [lrLinkTopicToPerson.$servertablenames] on TPC_SEQ = TPP_TPC_REF
+Sta:join [lrPerson.$servertablenames()] on PSN_SEQ = TPP_PSN_REF
+Sta:join [lrLinkTopicToConference.$servertablenames] on TPF_TPC_REF = TPC_SEQ
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = TPF_CF_REF
+Sta:join [lrVenue.$servertablenames()] on VEN_SEQ = CF_VEN_REF
+Sta:left outer join [lrArrangements.$servertablenames()] on ARR_CF_REF = CF_SEQ and ARR_TPC_REF = TPC_SEQ
+Sta:left outer join [lrFacility.$servertablenames()] on ARR_FCY_REF = FCY_SEQ
+Sta:where  CF_SEQ = @[pnCF_SEQ]
+Sta:and     ( TPC_REQUESTS <> '' or ARR_SPECIFIC_EQUIPT <> '' )
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llData

@@ -1,0 +1,34 @@
+If irRegistration.EO_NAME<>''
+	Calculate lbFetch as kTrue
+End If
+If lbFetch
+	Do ioExternalOrgs.$init(lrCustomer,lrLinkCustToIntOrg) Returns lbOK
+	Do lrCustomer.$fetchOurCustomers(#NULL,irRegistration.EO_NAME)
+	If lrCustomer.EO_SEQ>0
+		Calculate irRegistration.EO_NAME as lrCustomer.EO_NAME
+		Calculate irRegistration.EO_EMAIL as lrCustomer.EO_EMAIL
+		Calculate irRegistration.EO_ADDR_BILL as lrCustomer.EO_ADDR_BILL
+		Calculate irRegistration.EO_CONTACT as lrCustomer.EO_CONTACT
+		Calculate irRegistration.EO_COMPANY_NO as lrCustomer.EO_COMPANY_NO ## not on screen
+		Calculate irRegistration.EO_VAT_NO as lrCustomer.EO_VAT_NO
+		Calculate irRegistration.EO_CO_ISO3_REF as lrCustomer.EO_CO_ISO3_REF
+		
+		Do ilCountriesEO.$search($ref.REF_VALUE=lrCustomer.EO_CO_ISO3_REF,1,0,0,0) Returns lbFound
+		If not(lbFound)
+			Do method resolveCountry (irRegistration.EO_ADDR_BILL)
+		End If
+	Else
+		If not(pbAutoLookup) ## manual lookup instructed by user
+			Calculate icDisplayMessage as 'Customer record not found using NAME'
+		Else
+			If ilCountriesPSN.$line>1&ilCountriesEO.$line=1 ## PSN country is set but EO is not
+				Calculate ilCountriesEO.$line as ilCountriesPSN.$line
+				Calculate irRegistration.EO_CO_ISO3_REF as ilCountriesEO.REF_VALUE
+			End If
+		End If
+	End If
+Else
+	If not(pbAutoLookup) ## manual lookup instructed by user
+		Calculate icDisplayMessage as 'Customer name must be provided'
+	End If
+End If

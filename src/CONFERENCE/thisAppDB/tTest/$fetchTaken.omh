@@ -1,0 +1,67 @@
+If pnDG_SEQ>0
+	# proceed
+Else
+	Quit method kFalse
+End If
+
+Do $cinst.$cols.$findname('TTK_STATUS') Returns liColRef
+If liColRef
+	# extra columns added
+Else
+	Do $cinst.$cols.$add(lrTestBegun.TTK_STATUS)
+	Do $cinst.$cols.$add(lrTestBegun.TTK_START)
+	Do $cinst.$cols.$add(lrTestBegun.TTK_END)
+	Do $cinst.$cols.$add(lrTestBegun.TTK_PERCENT)
+	Do $cinst.$cols.$add(lrTestBegun.TTK_MINUTES)
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# Calculate lnDataType as $cinst.$cols.[pForeignCol].$coltype
+# Calculate inID as pKey
+# Calculate lcCriteria as con("where ",pForeignCol," = @[inID]")
+# Do $cinst.$Sql(,lcCriteria,0,0)
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, TTK_STATUS, TTK_START, TTK_END, TTK_PERCENT, TTK_MINUTES
+Sta:from   [$cinst.$servertablenames()]
+Sta:join [lrTestBegun.$servertablenames()] on TTK_TST_REF = TST_SEQ
+Sta:where TST_CF_REF =
+Sta:(
+Sta:select DG_CF_REF
+Sta:from [lrDelegate.$servertablenames()]
+Sta:where DG_SEQ = @[pnDG_SEQ]
+Sta:)
+If pnARR_SEQ>0
+	Sta:and TST_ARR_REF = @[pnARR_SEQ]
+End If
+
+Sta:union
+
+Sta:select distinct [$cinst.$selectnames()]
+Sta:, TTK_STATUS, TTK_START, TTK_END, TTK_PERCENT, TTK_MINUTES
+Sta:from   [$cinst.$servertablenames()]
+Sta:join [lrTestBegun.$servertablenames()] on TTK_TST_REF = TST_SEQ
+Sta:join [lrArrangement.$servertablenames()] on TST_ARR_REF = ARR_SEQ
+Sta:where ARR_CF_REF =
+Sta:(
+Sta:select DG_CF_REF
+Sta:from [lrDelegate.$servertablenames()]
+Sta:where DG_SEQ = @[pnDG_SEQ]
+Sta:)
+If pnARR_SEQ>0
+	Sta:and TST_ARR_REF = @[pnARR_SEQ]
+End If
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

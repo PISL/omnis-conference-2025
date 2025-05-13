@@ -1,0 +1,18 @@
+# Breakpoint
+Calculate lnPos as pos(con(kDq,pcProperty,kDq),$cinst.icGraphConfig)
+If lnPos>0
+	
+	Calculate lcSubString1 as mid($cinst.icGraphConfig,1,lnPos)
+	Do method trimWhitespace (left(lcSubString1,rpos('{',lcSubString1)-1)) Returns lcSubString1
+	Calculate lcSubString2 as mid($cinst.icGraphConfig,lnPos)
+	Do method trimWhitespace (mid(lcSubString2,pos('}',lcSubString2)+1)) Returns lcSubString2
+	
+	If right(lcSubString1,1)=','
+		Calculate $cinst.icGraphConfig as con(trim(lcSubString1,kFalse,kTrue,","),lcSubString2)
+	Else If left(lcSubString2,1)=','
+		Calculate $cinst.icGraphConfig as con(lcSubString1,trim(lcSubString2,kTrue,kFalse,","))
+	Else
+		Calculate $cinst.icGraphConfig as con(lcSubString1,lcSubString2)
+	End If
+End If
+Quit method

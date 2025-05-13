@@ -1,0 +1,10 @@
+While len(pcRequiredLibraries)
+	Calculate lcLibName as strtok(nam(pcRequiredLibraries),',')
+	If isclear($libs.$findname(lcLibName))
+		Do $libs.$add(con(mid(sys(10),1,rpos(pathsep(),sys(10))),lcLibName,'.lbs')) Returns lrefLib
+		If isnull(lrefLib)
+			Quit method kFalse
+		End If
+	End If
+End While
+Quit method kTrue

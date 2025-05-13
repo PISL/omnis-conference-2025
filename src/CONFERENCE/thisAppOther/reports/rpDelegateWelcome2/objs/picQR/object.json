@@ -1,0 +1,36 @@
+{
+	"ident": 1123,
+	"order": 4,
+	"objtype": "kPictureobj",
+	"properties": {
+		"alt": "",
+		"calculated": false,
+		"componentinfo": {
+
+		},
+		"dataname": "",
+		"desgroup": 0,
+		"deslock": false,
+		"effect": "kBorderNone",
+		"fontextra": 0,
+		"height": 2.504,
+		"horzdpi": 0,
+		"keepaspectratio": false,
+		"left": 9.667,
+		"lineno": 1,
+		"lineoffset": 0.0,
+		"nolineifempty": false,
+		"noreload": false,
+		"noscale": false,
+		"printontop": false,
+		"rawpictformat": "JPEG",
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "",
+		"totalsifnoline": false,
+		"userinfo": "",
+		"vertdpi": 0,
+		"visible": true,
+		"width": 2.499
+	}
+}

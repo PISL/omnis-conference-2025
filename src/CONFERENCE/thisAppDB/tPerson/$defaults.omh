@@ -1,0 +1,2 @@
+Calculate $cinst.PSN_ACTIVE as 1
+Calculate $cinst.PSN_GO_REF as $ctask.trGroupOrg.GO_REF

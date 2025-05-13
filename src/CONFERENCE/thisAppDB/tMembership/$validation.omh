@@ -1,0 +1,46 @@
+Calculate icValidationMessage as ''
+
+If $cinst.MB_PSN_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'member (MB_PSN_REF) missing')
+End If
+
+If $cinst.MB_CURRENCY<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'currency (MB_CURRENCY) missing')
+End If
+
+If $cinst.MB_AMOUNT>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'amount (MB_AMOUNT) missing')
+End If
+
+If $cinst.MB_FROM>dat('1 JAN 2010')
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'membership from date (MB_FROM) missing')
+End If
+
+If $cinst.MB_TO>dat('1 JAN 2010')
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'membership to date (MB_TO) missing')
+End If
+
+If $cinst.MB_FROM>dat('1 JAN 2010')&$cinst.MB_TO>dat('1 JAN 2010')
+	If $cinst.MB_FROM<$cinst.MB_TO
+		# good
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'from date must be before to date')
+	End If
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

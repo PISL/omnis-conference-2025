@@ -1,0 +1,478 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcTemp",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lrRefLocal",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "infra.ssysReferenceLocal",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$products",
+		"order": 3,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "plPersons",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcColumnName",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 40
+			},
+			{
+				"name": "lcProductCode",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "llDetails",
+				"order": 9,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llInvDetails",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$productResolution",
+		"order": 4,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "plPersons",
+				"order": 10,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			},
+			{
+				"name": "pcTestString",
+				"order": 26,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000,
+				"param": 3
+			},
+			{
+				"name": "RegDate",
+				"order": 34,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0,
+				"param": 4,
+				"initval": "#D"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "Alone",
+				"order": 19,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "Corporate",
+				"order": 23,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "1"
+			},
+			{
+				"name": "CurrencySymbol",
+				"order": 31,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1
+			},
+			{
+				"name": "DailyRate",
+				"order": 35,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "DelegateCount",
+				"order": 4,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "Extras",
+				"order": 17,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lbChecked",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbFoundInCache",
+				"order": 7,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbMembershipApplies",
+				"order": 32,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbPostProcessingApplies",
+				"order": 39,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbRefreshRules",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbSatisfied",
+				"order": 6,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbSpouseOptionApplies",
+				"order": 33,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbValid",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbValidCalculation",
+				"order": 38,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lcCodeCheck",
+				"order": 11,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "lcProductCode",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "llInvDetails",
+				"order": 8,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrMethodRef",
+				"order": 37,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "Membership",
+				"order": 18,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "NoAccom",
+				"order": 15,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "3"
+			},
+			{
+				"name": "NoAccomm",
+				"order": 25,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "3"
+			},
+			{
+				"name": "NoDays",
+				"order": 36,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "NoMembership",
+				"order": 24,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "2"
+			},
+			{
+				"name": "nPersonal",
+				"order": 22,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "nShared",
+				"order": 14,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "2"
+			},
+			{
+				"name": "nSingle",
+				"order": 12,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "0"
+			},
+			{
+				"name": "nSpeaker",
+				"order": 13,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "1"
+			},
+			{
+				"name": "nWithFamily",
+				"order": 21,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "2"
+			},
+			{
+				"name": "nWithSpouse",
+				"order": 20,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "1"
+			},
+			{
+				"name": "Occupancy",
+				"order": 16,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "OccupancyCode",
+				"order": 27,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1
+			},
+			{
+				"name": "Shared",
+				"order": 29,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1,
+				"initval": "'H'"
+			},
+			{
+				"name": "Single",
+				"order": 30,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1,
+				"initval": "'I'"
+			},
+			{
+				"name": "Speaker",
+				"order": 28,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1,
+				"initval": "'P'"
+			}
+		]
+	},
+	{
+		"name": "$setOccupancyOptions",
+		"order": 5,
+		"pvardefs": [
+			{
+				"name": "plOccupancy",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$calculationText",
+		"order": 6,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcContent",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			}
+		]
+	},
+	{
+		"name": "$dailyRateOW",
+		"order": 7,
+		"pvardefs": [
+			{
+				"name": "plDetails",
+				"order": 1,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$getProduct",
+		"order": 8,
+		"pvardefs": [
+			{
+				"name": "pcProductCode",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$clearErrors",
+		"order": 9,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 10,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

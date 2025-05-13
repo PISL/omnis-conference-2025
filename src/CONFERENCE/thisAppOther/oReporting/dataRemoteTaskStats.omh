@@ -1,0 +1,60 @@
+If pcFilterCode='start>1'
+	Calculate lcCriteria as " ( STS_COUNT_START > 1 ) "
+Else If pcFilterCode='end>1'
+	Calculate lcCriteria as " (  STS_COUNT_END > 1 ) "
+Else If pcFilterCode='start>1&end>1'
+	Calculate lcCriteria as " ( STS_COUNT_START >= 1 and STS_COUNT_END >= 1 ) "
+	
+Else If pcFilterCode='start>4'
+	Calculate lcCriteria as " ( STS_COUNT_START > 4 ) "
+Else If pcFilterCode='end>4'
+	Calculate lcCriteria as " ( STS_COUNT_END > 4 ) "
+Else If pcFilterCode='start>4&end>4'
+	Calculate lcCriteria as " ( STS_COUNT_START > 4 and STS_COUNT_END > 4 ) "
+	
+Else If pcFilterCode='start>9'
+	Calculate lcCriteria as " ( STS_COUNT_START > 9 ) "
+Else If pcFilterCode='end>9'
+	Calculate lcCriteria as " ( STS_COUNT_END > 9 ) "
+Else If pcFilterCode='start>9&end>9'
+	Calculate lcCriteria as " ( STS_COUNT_START > 9 and STS_COUNT_END > 9 ) "
+	
+Else If pcFilterCode='start>19'
+	Calculate lcCriteria as " ( STS_COUNT_START > 19 ) "
+Else If pcFilterCode='end>19'
+	Calculate lcCriteria as " ( STS_COUNT_END > 19 ) "
+Else If pcFilterCode='start>19&end>19'
+	Calculate lcCriteria as " ( STS_COUNT_START > 19 and STS_COUNT_END > 19 ) "
+	
+Else If pcFilterCode='start>29'
+	Calculate lcCriteria as " ( STS_COUNT_START > 29 ) "
+Else If pcFilterCode='end>29'
+	Calculate lcCriteria as " ( STS_COUNT_END > 29 ) "
+Else If pcFilterCode='start>29&end>29'
+	Calculate lcCriteria as " ( STS_COUNT_START > 29 and STS_COUNT_END > 29 ) "
+	
+Else If pcFilterCode='start>49'
+	Calculate lcCriteria as " ( STS_COUNT_START > 49 ) "
+Else If pcFilterCode='end>49'
+	Calculate lcCriteria as " ( STS_COUNT_END > 49 ) "
+Else If pcFilterCode='start>49&end>49'
+	Calculate lcCriteria as " ( STS_COUNT_START > 49 and STS_COUNT_END > 49 ) "
+	
+Else
+	# anything else is ALL
+End If
+
+Do $DefineList(ilData,'infra.tsysTaskStats')
+# includes STS_DB_REQUESTS, STS_FETCHES, STS_INSERTS, STS_UPDATES   STS_DEVICE_SIZE
+Do ilData.$cols.$add(lrUserLogAccess.ULA_GO_NAME)
+Do ilData.$cols.$add(lrUserLogAccess.ULA_FORMS_VISITED)
+Do ilData.$addCalculatedCols()
+Do ilData.$fetchConcurrentTasks(#NULL,prConference.CF_DATE_FROM,prConference.CF_DATE_TO,lcCriteria)
+
+If pos('&',pcFilterCode)
+	Do ilData.$sort($ref.STS_COUNT_START,1,$ref.STS_COUNT_END,1)
+Else If pos('end',pcFilterCode)
+	Do ilData.$sort($ref.STS_COUNT_END,1,$ref.STS_COUNT_END,1)
+Else
+	Do ilData.$sort($ref.STS_COUNT_START,1,$ref.STS_COUNT_END,1)
+End If

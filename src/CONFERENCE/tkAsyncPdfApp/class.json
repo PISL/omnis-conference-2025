@@ -1,0 +1,36 @@
+{
+	"classtype": "kTask",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 9,
+	"superclass": "infra.tkAsyncPDF",
+	"tvardefs": [
+
+	],
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2023-05-21 03:26:39",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2023-05-21 09:49:54",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": ""
+	}
+}

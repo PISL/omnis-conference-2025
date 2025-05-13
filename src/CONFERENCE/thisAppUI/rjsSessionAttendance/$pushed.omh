@@ -1,0 +1,1 @@
+Do $cinst.$clientcommand('yesnomessage',row(pRow.C1,'','$refreshBrowser','$exitToUrl'))

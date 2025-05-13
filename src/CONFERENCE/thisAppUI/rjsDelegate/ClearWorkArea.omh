@@ -1,0 +1,34 @@
+If inCurrentTab=cnTabDelegate
+	Do irCurrentRecord.$clear()
+	Do irProduct.$clear()
+	Do ilInvoices.$clear()
+	Do ilDelegateLog.$clear()
+	
+	Calculate ilStatus.$line as 0
+	Calculate ilOccupancy.$line as 0
+	Calculate ilPersons.$line as 0
+	Calculate ilWhoIsPaying.$line as 0
+	Calculate ilRoles.$line as 0
+	Calculate ilCountries.$line as 0
+	Calculate ilMusic.$line as 0
+	
+	Calculate idPseudoInvoiceEmailed as #NULL
+	Calculate ibCurrentMember as kFalse
+End If
+
+If inCurrentTab<=2
+	Do irPax.$clear() ## NOT ilPax
+	Calculate ilSpouse.$line as 0
+	Do irDiet.$clear()
+	
+End If
+
+If inCurrentTab=cnTabReceipts
+	Do irPayment.$clear()
+	
+	Calculate inTotalAmountDue as 0
+	Calculate inTotalAmountPaid as 0
+	Calculate inTotalOutstanding as 0
+End If
+
+Calculate $cinst.$objs.PagedPane.$objs.pbPrintInvoice.$errortext as ''

@@ -1,0 +1,35 @@
+{
+	"ident": 1110,
+	"order": 12,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 4.796,
+		"left": 0.0,
+		"lineno": 40,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "One important announcement to make now is that Mike Matthews and Rob Mostyn will be taking a break from organising a conference in 2019.  Mike is decreasing his workload and the ensuing stresses and Rob is kicking off a major business proposition (come to his commercial session on Monday night).  We are making this announcement now so that you can discuss amongst yourselves what should happen next year.  One of the promises Jean Marc made several years ago was that we would establish a conference infrastructure that provided a legacy for others to take advantage of in the future.  We believe we have provided such a structure with the availability of the CONFERENCE application that supports the administration of each conference (you will see a little of this on Tuesday night)."
+		},
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 18.273
+	}
+}

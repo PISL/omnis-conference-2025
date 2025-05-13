@@ -1,0 +1,14 @@
+Calculate icAttributes as ''
+If ilData.DG_ROLE='SPEAKER'
+	Calculate lcString as con(lcString,pick(lcString<>'','',' '),'Spkr')
+End If
+If ilData.countMembPersonal
+	Calculate lcString as con(lcString,pick(lcString<>'','',' '),'memb: P')
+End If
+If ilData.countMembCorporate
+	Calculate lcString as con(lcString,pick(lcString<>'','',' '),'memb: C')
+End If
+
+Calculate icAttributes as lcString
+
+Do default

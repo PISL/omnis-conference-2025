@@ -1,0 +1,73 @@
+Calculate icEmailTextBefore as ''
+Calculate icEmailTextAfter as ''
+Calculate icEmailSubject as ''
+Calculate icEmailFromEmail as ''
+Calculate icEmailFromName as ''
+
+Do $ctask.toValues.$initOrg(pcSysOrgClass) Returns llText
+
+Do llText.$search($ref.RFO_VALUE='SUBJECT',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate icEmailSubject as llText.RFO_CHAR
+	Do llText.$remove(llText.$line)
+End If
+Do llText.$search($ref.RFO_VALUE='FROM_EMAIL',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate icEmailFromEmail as llText.RFO_CHAR
+	Do llText.$remove(llText.$line)
+End If
+Do llText.$search($ref.RFO_VALUE='FROM_NAME',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate icEmailFromName as llText.RFO_CHAR
+	Do llText.$remove(llText.$line)
+End If
+
+# gather text previous to previous topics list
+Calculate lnActualLineCount as 0
+Calculate llText.$line as 0
+Begin text block
+While $Loop(llText)
+	Calculate lbInclude as kFalse
+	If chk(llText.RFO_VALUE,'P1','P9') ## para 1 to 9
+		Calculate lbInclude as kTrue
+	Else If chk(llText.RFO_VALUE,'P1.1','P9.9') ## P1.1 to P9.9
+		Calculate lbInclude as kTrue
+	End If
+	
+	If lbInclude
+		Calculate lnActualLineCount as lnActualLineCount+1
+		If lnActualLineCount>1 ## extra CR between paragraphs
+			Text:(Carriage return)
+		End If
+		Text:[llText.RFO_CHAR](Carriage return)
+	End If
+End While
+End text block
+Get text block icEmailTextBefore
+# remove trailing CR
+Calculate icEmailTextBefore as trim(icEmailTextBefore,kFalse,kTransparent,kCr)
+
+# gather text previous to previous topics list
+Calculate lnActualLineCount as 0
+Calculate llText.$line as 0
+Begin text block
+While $Loop(llText)
+	Calculate lbInclude as kFalse
+	If chk(llText.RFO_VALUE,'C1','C9') ## closing 1 to 9
+		Calculate lbInclude as kTrue
+	Else If chk(llText.RFO_VALUE,'C1.1','C9.9') ## C1.1 to C9.9
+		Calculate lbInclude as kTrue
+	End If
+	
+	If lbInclude
+		Calculate lnActualLineCount as lnActualLineCount+1
+		If lnActualLineCount>1 ## extra CR between paragraphs
+			Text:(Carriage return)
+		End If
+		Text:[llText.RFO_CHAR](Carriage return)
+	End If
+End While
+End text block
+Get text block icEmailTextAfter
+# remove training CR
+Calculate icEmailTextAfter as trim(icEmailTextAfter,kFalse,kTransparent,kCr)

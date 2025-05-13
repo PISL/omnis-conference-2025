@@ -1,0 +1,92 @@
+# using a local row variable as irCurrentRecord may have been changed by the user
+Calculate lrDelegate as irCurrentRecord ## get the table class
+If pnDgRef>0 ## probably sending a batch
+	Do lrDelegate.$clear()
+	Do lrDelegate.$fetch_pk(pnDgRef)
+End If
+
+If ilInvoices.EO_EMAIL<>''
+	Calculate lcTo as ilInvoices.EO_EMAIL
+	Calculate lbFindCC as kTrue
+Else If lrDelegate.PSN_EMAIL<>''
+	Calculate lcTo as lrDelegate.PSN_EMAIL
+End If
+If lbFindCC
+	If lrDelegate.DG_INV_TO_EO_ONLY
+		# do not send to delegate
+	Else
+		If upp(lrDelegate.PSN_EMAIL)<>upp(lcTo)
+			# do not send to same email twice
+			Calculate lcCC as lrDelegate.PSN_EMAIL
+		End If
+	End If
+End If
+
+If pcInstruction='EMAIL_INVOICE_OW3'
+	Calculate lcSubject as con('Your invoice for ',ilSearch1.CF_TITLE)
+Else If pcInstruction='EMAIL_INVOICE'
+	Calculate lcSubject as con('Your invoice for ',ilSearch1.CF_TITLE)
+Else If pcInstruction='EMAIL_CHASEPAY'
+	Calculate lcSubject as con('Payment reminder for ',ilSearch1.CF_TITLE)
+Else If pcInstruction='EMAIL_TRAVEL'
+	Calculate lcSubject as con('Your travel arrangement for ',ilSearch1.CF_TITLE)
+Else If pos('THANKS',upp(pcInstruction))>0 ## PDF_THANKS_DG, PDF_THANKS_VIP etc
+	# overwrite the to, cc  above
+	Calculate lcTo as lrDelegate.PSN_EMAIL
+	Calculate lcCC as ''
+	
+	Calculate lcSubject as con('Thank you for your attendance')
+End If
+
+Do lrMessage.$cols.$findname('RFO_CHAR') Returns liColRef
+If liColRef
+	Calculate lcTextToParse as lrMessage.RFO_CHAR
+Else
+	If irEmailConfig.ELT_MSG_TEXT<>''
+		Calculate lcTextToParse as irEmailConfig.ELT_MSG_TEXT
+	Else
+		Breakpoint
+	End If
+End If
+Calculate pRow as irCurrentRecord
+
+While lcTextToParse<>''
+	Calculate lcChunk as ''
+	Calculate lcExpression as ''
+	
+	If pos('[[',lcTextToParse)
+		Calculate lcChunk as mid(lcTextToParse,1,pos('[[',lcTextToParse)-1)
+		Calculate lcTextToParse as mid(lcTextToParse,pos('[[',lcTextToParse),kFetchAll)
+		Calculate lcExpression as mid(lcTextToParse,3,pos(']]',lcTextToParse)-1-2)
+		Calculate lcTextToParse as mid(lcTextToParse,pos(']]',lcTextToParse)+2,kFetchAll)
+	Else
+		Calculate lcChunk as lcTextToParse
+		Calculate lcTextToParse as ''
+	End If
+	
+	If lcExpression<>''
+		Test for valid calculation [lcExpression]
+		If flag true
+			Calculate lcMessage as con(lcMessage,lcChunk,eval(lcExpression))
+		Else
+			Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+		End If
+	Else
+		Calculate lcMessage as con(lcMessage,lcChunk)
+	End If
+End While
+
+Calculate ibSendEmailAsWorker as kTrue
+# Calculate icWorkerAction as 'EMAIL_INVOICE' ## $emailInitialise uses this to determine EM_SRVR_FROM value; $emailCompleted uses this to determine what action to take
+
+# store the worker object attributes so user can drift to other records and correct record is updated when sent
+Calculate irEmailWorker.instruction as pcInstruction
+Calculate irEmailWorker.DG_SEQ as lrDelegate.DG_SEQ
+Calculate irEmailWorker.PSN_EMAIL as lrDelegate.PSN_EMAIL
+Calculate irEmailWorker.PSN_SURNAME as lrDelegate.PSN_SURNAME
+Calculate irEmailWorker.EO_EMAIL as ilInvoices.EO_EMAIL ## lrDelegate.EO_EMAIL
+
+Do $cinst.$emailInitialise()
+# Calculate lcTo as 'robertmostyn99@gmail.com'
+Do $cinst.$emailSend(lcTo,lcCC,,lcSubject,lcMessage,pcPDFpath) ## if pcPDFpath is empty, $emailSend will use iPdfFilePath
+Calculate iPdfFilePath as ''

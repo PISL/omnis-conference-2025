@@ -1,0 +1,33 @@
+On evClick
+	Do $cinst.$saveData() Returns lbOK
+	If lbOK
+		# update lists
+		If inCurrentTab=cnTabCertificate
+			Do method fetchDisplayList
+			
+		Else If inCurrentTab=cnTabAwardedTo
+			If icMode='IP'
+				Do ilPax.$add()
+				Calculate ilPax.$line as ilPax.$linecount
+			End If
+			Calculate ilPax.[ilPax.$line] as irAwardee
+			
+		Else If inCurrentTab=cnTabAwardedTo
+			If icMode='IY'
+				Do ilPayments.$add()
+				Calculate ilPayments.$line as ilPayments.$linecount
+			End If
+			Calculate ilPayments.[ilPayments.$line] as irPayment
+			
+		Else If inCurrentTab=cnTabTravel
+			# no need to update any lists
+			
+		End If
+		
+		# all changes to db are done ## clear the semaphore
+		Do irSemaphore.$clearSemaphore() Returns lbOK ## kTrue if the semaphore was actually cleared.  irSemaphore will also be cleared if lbOK is kTrue.
+		Calculate ibUserHasSemaphore as not(lbOK)
+		
+		Calculate icMode as ''
+		Do $cinst.$behaviour()
+	End If

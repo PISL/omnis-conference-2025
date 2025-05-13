@@ -1,0 +1,11 @@
+Do inherited
+Calculate lSeparators as $root.$prefs.$separators()
+Calculate icFPSep as mid(lSeparators,3,1) ## function parameter separator
+
+Do $cinst.$container().$initToolsMenu('') Returns llMenuCommands ## no menu needed
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do toValues.$initinherited('GRAPH') Returns ilGraphs
+If ilGraphs.$linecount
+	Do method openSubForms
+End If

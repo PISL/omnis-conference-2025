@@ -1,0 +1,40 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": true,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcTablesWithChildren",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "lnCountChildren",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lrDietRequest",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "sDietRequests",
+				"sublen": 0
+			}
+		]
+	}
+]

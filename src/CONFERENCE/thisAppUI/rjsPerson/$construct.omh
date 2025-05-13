@@ -1,0 +1,134 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+# Enter your initialization code here
+Do $DefineList(ilDisplayRecords,'tPerson')
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilDisplayRecords.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do $DefineList(ilTopicConferences,'tTopicConferenceLink')
+Do ilTopicConferences.$addLinkedCols('CF_TITLE,CF_DATE_FROM,CF_DATE_TO,CF_LANG')
+Do ilTopicConferences.$addLinkedCols('VEN_NAME,VEN_COUNTRY')
+Do ilTopicConferences.$cols.$findname('CF_TITLE') Returns liColRef
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.ilTopicConferences.$listcolumn as liColRef.$ident
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','PERSON_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','PERSON_Intro','label')
+
+Do method UserPermissions
+
+Do ioTopicPerson.$init(irTopic,#NULL,irLinkTP,ilTopics)
+# Calculate ilTopics as irTopic
+Calculate ilAllTopics as irTopic
+Do ilAllTopics.$fetchOurTopics()
+
+Do ilTopics.$cols.$findname('TPC_TITLE') Returns liColRef
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilDelegates,'tDelegates')
+Do ilDelegates.$addLinkedCols('CF_TITLE,CF_DATE_FROM,CF_DATE_TO,VEN_NAME')
+
+Do $DefineList(ilMembership,'tMembership')
+
+Do toValues.$initInherited('URL') Returns llUrlOptions
+
+Calculate icImageHtmlPre as "<div><img src=" ## default
+Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_PRE',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icImageHtmlPre as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+Calculate icImageHtmlPost as "?w=1200&amp;ssl=1 </div>" ## default
+Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_POST',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icImageHtmlPost as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+Do method FetchRecords
+# no drop lists needed for this small group of records
+Do $cinst.$superText(kTrue,'name search')
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_attendees','label'),'DisplayName')
+
+# RSM  2025-04-16  Providing markdown help
+Begin text block
+Line:There are many markdown cheat sheet pages on the web.  Here is just one of them: https://www.markdownguide.org/basic-syntax/
+Line:
+Line:Headings
+Line:# Heading level 1
+Line:## Heading level 2
+Line:up to 6 heading levels.  There must be a space after the #
+Line:
+Line:Paragraphs
+Line:Use a blank line.
+Line:
+Line:Line break
+Line:Use two spaces at the end of the line.
+Line:Line one text.<sp><sp>
+Line:Line two text.
+Line:
+Line:Bold
+Line:Use double asterisk either side of bold text.
+Line:e.g. The word bold will appear as **bold** text.
+Line:
+Line:Italic
+Line::Use single asterisk either side of italicised text.
+Line:e.g. The word italic will appear as *italic* text.
+Line:
+Line:Bold & Italic
+Line::Use three asterisks either side of highlighted text.
+Line:e.g. The words bold and italic will appear as ***bold and italic*** text.
+Line:
+Line:Blockquotes
+Line:Use > at the beginning of the line.
+Line:> Dorothy followed her through many of the beautiful rooms in her castle.
+Line:
+Line:Blockquotes with Multiple Paragraphs
+Line:> Dorothy followed her through many of the beautiful rooms in her castle.
+Line:>
+Line:> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with
+Line:
+Line:Nested Blockquotes
+Line:> Dorothy followed her through many of the beautiful rooms in her castle.
+Line:>
+Line:>> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed wit
+Line:
+Line:Ordered Lists
+Line:Add line items with numbers followed by periods.
+Line:1. First item
+Line:2. Second item
+Line:
+Line:Unordered Lists
+Line:Add dashes (-), asterisks (*), or plus signs (+) in front of line items.  Whatever character you use, be consistent.
+Line:- First item
+Line:- Second item
+Line:
+Line:Indented lists
+Line:Use dashes and prefix indented lines with a double space.
+Line:- First item
+Line:<sp><sp>- sub item 1
+Line:- Second item
+Line:<sp><sp>- sub item two
+Line:This pattern can be repeated for sub sub items.
+Line:
+Line:Images
+Line:Use ![[Tux, the Linux mascot](/assets/images/tux.png)
+End text block
+Get text block icMarkdownHelp
+
+Calculate inSubTabTopic as 1
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMenuID if this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do $cinst.$behaviour()

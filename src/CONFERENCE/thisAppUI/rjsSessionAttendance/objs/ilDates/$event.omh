@@ -1,0 +1,22 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate icSessionInfo as ''
+	
+	# Calculate inSlot as 0 ## always reset to ALL when date is selected
+	Do method DefaultSlot
+	
+	Do ilViewFeedbackToSpeaker.$clear()
+	Do ilAttendees.$clear()
+	Do irAttendee.$clear()
+	Calculate irAttendeeOrig as irAttendee
+	Calculate ibFeedbackModified as kFalse
+	
+	Calculate ilRatings.$line as 0
+	Calculate ibDelegateAlreadyAttending as #NULL
+	# If idTestDate>dat('1 JAN 2010')
+	# Calculate ibEnableButtons as ilDates.ARR_DATE=idTestDate
+	# Else
+	# Calculate ibEnableButtons as ilDates.ARR_DATE=#D
+	# End If
+	Do method ShowArrangements
+	Do $cinst.$behaviour()

@@ -1,0 +1,22 @@
+# may be called from pbInsert or handleMenuCall
+Calculate icDisplayMessage as ''
+Do method ClearWorkArea
+
+If inCurrentTab=cnTabDelegate
+	If irUserRights.canInsert&icMode='' ## taken from $behaviour()
+		Calculate icMode as 'ID' ## insert delegate
+		Calculate irCurrentRecord.DG_CF_REF as ilSearch1.CF_SEQ
+	End If
+	
+Else If inCurrentTab=cnTabTopics
+	If irUserRights.canInsert&icMode=''&irCurrentRecord.DG_SEQ>0 ## taken from $behaviour()
+		Calculate icMode as 'IP' ## insert PAX
+	End If
+	
+Else If inCurrentTab=cnTabTextForClipboard
+	# no equvalent in $behaviour
+	Calculate icMode as 'IY' ## insert payment
+	
+End If
+
+Do $cinst.$behaviour()

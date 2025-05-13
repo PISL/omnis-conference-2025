@@ -1,0 +1,10 @@
+# GRS 14/2/14
+# ## modified to use the DB sequence to return the PK
+# RSM  30/5/14 ## added use of pcIgnoreTheseErrors when cloning/copying permissions from one role to another
+If $cinst.VEN_GO_REF>0
+	# no need to do anything
+Else
+	Calculate $cinst.VEN_GO_REF as $ctask.trGroupOrg.GO_SEQ
+End If
+
+Do inherited

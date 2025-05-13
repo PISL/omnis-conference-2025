@@ -1,0 +1,37 @@
+
+# this method will pick up its parameters from irParams
+# Developer:  you are responsible for ensuring correct parameters are passed in to $setCompletionMethod
+
+# Do irefStartTask.$DefineList(lrDelegate,'tDelegates')
+# Do irefStartTask.$DynamicSession(loSession,loStatment)
+# Do lrDelegate.$setSession(loSession,loStatment)
+
+Do $DefineList(lrDelegate,con($clib().$name,'.tDelegates'))
+Do lrDelegate.$fetch_pk(irCompletionParams.DG_SEQ)
+
+If lrDelegate.DG_SEQ>0
+	If irCompletionParams.instruction="EMAIL_INVOICE"
+		Calculate lrDelegate.DG_EMAIL_INVOICE_SENT as #D
+		Do lrDelegate.$update() Returns lbOK
+		
+	Else If irCompletionParams.instruction="EMAIL_TRAVEL"
+		Calculate lrDelegate.DG_EMAIL_TRAVEL_SENT as #D
+		Do lrDelegate.$update() Returns lbOK
+		
+	Else If irCompletionParams.instruction="EMAIL_CHASEPAY"
+		# insert the dgstatuslog record only
+	End If
+	
+	# and now the log
+	# RSM 13-SEP-18 we now record email actions in the delegate log
+	Do $DefineList(lrDelegateLog,con($clib().$name,'.tDGstatusLog'))
+	
+	Calculate lrDelegateLog.DSL_DG_REF as lrDelegate.DG_SEQ
+	Calculate lrDelegateLog.DSL_STATUS_FROM as "-"
+	Calculate lrDelegateLog.DSL_STATUS_TO as "-"
+	Calculate lrDelegateLog.DSL_EVENT as irCompletionParams.instruction
+	Do lrDelegateLog.$insert() Returns lbOK
+End If
+
+
+Quit method lbOK

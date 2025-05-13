@@ -1,0 +1,12 @@
+On evClick
+	Do ilTopicSummary.$clear()
+	If ilPastTopics.TPC_SEQ>0 ## in case of blank line
+		Do ilTopicDetail.$reportTopicSummary(ilPastTopics.CF_SEQ,ilPastTopics.TPC_SEQ) Returns ilTopicSummary
+	End If
+	
+On evExecuteContextMenu
+	If pCommandID=1002 ## gridToText
+		Do $ctask.toStrings.$ExportList(ilPastTopics,'TAB',kTrue,'TEXT','','CF_TITLE,TPC_TITLE,attended,ARR_MAX_BOOKINGS,percent') Returns icTextForClipboard
+		Calculate inCurrentTab as cnTabTextForClipboard
+		Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+	End If

@@ -1,0 +1,46 @@
+# add Delegate columns for use in Delegates form
+For lnColNo from 1 to lrDelegate.$colcount step 1
+	Set reference liColRef to lrDelegate.$cols.[lnColNo].$ref
+	Do llData.$cols.$add(liColRef.$name,liColRef.$coltype,liColRef.$colsubtype,liColRef.$sublen)
+End For
+# add PSN columns for display
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_COMPANY)
+Do llData.$cols.$add(lrPerson.PSN_EMAIL)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:,  [lrDelegate.$selectnames()]
+Sta:,  [lrPerson.$servertablenames()].PSN_SURNAME
+Sta:,  [lrPerson.$servertablenames()].PSN_FIRST_NAME
+Sta:,  [lrPerson.$servertablenames()].PSN_COMPANY
+Sta:,  [lrPerson.$servertablenames()].PSN_EMAIL
+Sta:from [$cinst.$servertablenames]
+Sta:join [lrDelegate.$servertablenames()] on ( PY_DG_REF = DG_SEQ )
+Sta:join [lrPerson.$servertablenames()] on ( DG_PSN_REF = PSN_SEQ )
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+If pcText<>''
+	Calculate lcText as con('%',pcText,'%')
+	Sta:and ( PY_METHOD ilike @[lcText]  or  PY_STMT ilike @[lcText]  or  PY_COMMENT ilike @[lcText]
+	If isnumber(pcText)
+		Calculate lnAmount as pcText
+		Sta:or  PY_AMOUNT = @[lnAmount]
+	End If
+	Sta:)
+End If
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llData

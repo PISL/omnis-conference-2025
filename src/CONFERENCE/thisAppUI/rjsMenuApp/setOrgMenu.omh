@@ -1,0 +1,22 @@
+# and finally, the OrgMenu, if necessary
+Do $getVar("ilUserGroups") Returns llOrgs
+If llOrgs.$linecount>1
+	# build the menu
+	# initialise the user menu lists
+	Do ilOrgMenu.$copydefinition(ilNavMenu)
+	Do llCascade.$clear()
+	For llOrgs.$line from 1 to llOrgs.$linecount step 1
+		If llOrgs.GO_SEQ=trGroupOrg.GO_SEQ
+			Do llCascade.$add(kNavMenuTypeEntry,llOrgs.GON_NAME_FULL,'',kNavMenuFlagDisabled,llOrgs.GO_SEQ)
+		Else
+			Do llCascade.$add(kNavMenuTypeEntry,llOrgs.GON_NAME_FULL,'',0,llOrgs.GO_SEQ)
+		End If
+	End For
+	Do ilOrgMenu.$add(1,trGroupOrg.GO_NAME_SHORT,,0,1,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+	
+	Calculate $cinst.$objs.OrgMenu.$visible as kTrue
+	# Calculate $cinst.$objs.icCurrentGroupOrg.$visible as kFalse
+Else
+	Calculate $cinst.$objs.OrgMenu.$visible as kFalse
+	# Calculate $cinst.$objs.icCurrentGroupOrg.$visible as kTrue
+End If

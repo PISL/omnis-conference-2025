@@ -1,0 +1,14 @@
+Do inherited
+# be sure to set "loadpagesetup" class property to kTrue
+# Do $cinst.$orientation.$assign(kOrientLandscape) ## this also works
+
+Calculate irConference as prConference
+Calculate icReportTitle as con('PAX list',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+Calculate irTotal as prTotals
+
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

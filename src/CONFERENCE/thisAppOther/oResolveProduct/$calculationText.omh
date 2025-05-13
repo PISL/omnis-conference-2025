@@ -1,0 +1,12 @@
+Begin text block
+Text:For each application you can refer to:(Carriage return)
+Text:;  OccupancyCode     /* =Single   =Speaker  =Shared  =NoAccom(Carriage return)
+Text:;  Extras     /*  =Alone  =WithSpouse   =WithFamily(Carriage return)
+Text:;  Membership    /*  =Personal  =Corporate  =NoMembership(Carriage return)
+Text:;  DelegateCount    /* count of registrations made to date(Carriage return)
+Text:RegDate   /* registration date(Carriage return)
+Text:DailyRate   /* if daily rate applies(Carriage return)
+Text:NoDays   /* number of days to apply daily rate(Carriage return)
+End text block
+Get text block lcContent
+Quit method lcContent

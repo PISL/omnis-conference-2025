@@ -1,0 +1,5 @@
+On evClick
+	Calculate ilCountries.$line as pLineNumber
+	Calculate irPerson.PSN_COUNTRY as ilCountries.REF_VALUE
+	Do $cinst.$anyModifications()
+	Do $cinst.$behaviour()

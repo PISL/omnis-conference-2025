@@ -1,0 +1,12 @@
+If irUserRights.canDelete&ilDisplayRecords.VEN_SEQ>0&ilUserRoles.$linecount=0&ilUserGroupOrgLinks.$linecount=0&icMode='' ## copied from $behaviour()
+	Calculate icDisplayMessage as ''
+	
+	Do irCurrentRecord.$checkChildren() Returns lnCountChildren
+	If lnCountChildren=0
+		Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',irCurrentRecord.VEN_REAL_NAME,'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteUSR')
+	Else
+		Do irCurrentRecord.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+		Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+		Do $cinst.$behaviour()
+	End If
+End If

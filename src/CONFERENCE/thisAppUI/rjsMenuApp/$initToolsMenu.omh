@@ -1,0 +1,15 @@
+Do llMenuCommands.$cols.$add('code',kCharacter,kSimplechar,15)
+Do llMenuCommands.$cols.$add('ident',kInteger,k32bitint)
+Do llMenuCommands.$cols.$add('keypress',kCharacter,kSimplechar,1)
+
+If pos('I',pcDefaults)
+	Do llMenuCommands.$add('FACT_INSR',1101) ## Form ACTion insert record
+End If
+If pos('E',pcDefaults)
+	Do llMenuCommands.$add('FACT_UPDR',1102) ## form action update record
+End If
+If pos('D',pcDefaults)
+	Do llMenuCommands.$add('FACT_DELR',1103) ## form action delete record
+End If
+
+Quit method llMenuCommands

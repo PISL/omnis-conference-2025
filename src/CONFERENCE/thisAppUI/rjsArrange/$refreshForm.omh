@@ -1,0 +1,3 @@
+# called from the container form when this form's tab is selected
+Do $cinst.$fetchDisplayList()
+Do $cinst.$displayListClick(kTrue)

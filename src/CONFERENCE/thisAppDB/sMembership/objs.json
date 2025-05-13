@@ -1,0 +1,156 @@
+[
+	{
+		"name": "MB_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_PSN_REF",
+		"ident": 32002,
+		"order": 2,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to PERSON",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_CURRENCY",
+		"ident": 32005,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 3,
+		"properties": {
+			"desc": "currency code - GBP, EUR",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_AMOUNT",
+		"ident": 32003,
+		"order": 4,
+		"type": "kNumber",
+		"subtype": "k2dpShortnum",
+		"sublen": 0,
+		"properties": {
+			"desc": "amount for membership this year",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_FROM",
+		"ident": 32012,
+		"order": 5,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "membership from",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_TO",
+		"ident": 32013,
+		"order": 6,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "membership to (valid for 1 year)",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_CWHEN",
+		"ident": 32006,
+		"order": 7,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_CBY",
+		"ident": 32007,
+		"order": 8,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_MWHEN",
+		"ident": 32008,
+		"order": 9,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_MBY",
+		"ident": 32009,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "MB_TYPE",
+		"ident": 32014,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "personal or corporate membership",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

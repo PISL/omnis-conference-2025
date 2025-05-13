@@ -1,0 +1,82 @@
+Do inherited
+
+# Set labels across page {3}
+# Set record spacing
+# Set label width
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate irSortOption as prSortRow
+
+Calculate icReportTitle as con('Delegate Name Tags',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+# we cannot use Omnis' label printing attributes here because we are forced to use $printrecord method within a loop
+# So we prepare the data set in ilPreparation then convert data into ilData with multiple "columns"
+# to get labels across the page.
+Do $DefineList(ilPreparation,'tDelegates')
+Do ilPreparation.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY')
+Do ilPreparation.$addLinkedCols('EO_NAME',kTrue)
+# Do ilPreparation.$addLinkedCols('RFG_DESC,RFG_ORDER')
+Do ilPreparation.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilPreparation.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilPreparation.$addDisplayName()
+Do ilPreparation.$addFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilPreparation.$fetchForConference(irConference.CF_SEQ,," DG_STATUS <> 'CANCEL' and PSN_SEX <> 'O' ")
+
+Do ilPreparation.$cols.$add('Role',kCharacter,kSimplechar,50)
+Do ilPreparation.$cols.$add('Country',kCharacter,kSimplechar,50)
+
+# fetch applicable Country descriptions
+Calculate llTemp as ilPreparation
+Do llTemp.$cols.DG_COUNTRY.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Calculate lcCountryCodes as con(lcCountryCodes,pick(lcCountryCodes<>'','',','),llTemp.DG_COUNTRY)
+End While
+Do toValues.$ReturnCountries(lcCountryCodes) Returns llCountries
+
+If prConference.CF_LOGO_RFO_VALUE<>''
+	Do toValues.$initOrg('IMAGES',prConference.CF_LOGO_RFO_VALUE) Returns irLogo
+Else
+	Do toValues.$initOrg('IMAGES','LOGO_EO2015_JPG') Returns irLogo
+End If
+
+Do ilPreparation.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0)
+# content cosmetics ## Country and Speaker status
+Calculate ilPreparation.$line as 0
+Do llCountries.$search($ref.REF_VALUE=ilPreparation.1.DG_COUNTRY,1,0,0,0) ## prime the llCountries list with first search done
+While $Loop(ilPreparation)
+	If llCountries.REF_VALUE=ilPreparation.DG_COUNTRY
+		# no worries
+	Else
+		Do llCountries.$search($ref.REF_VALUE=ilPreparation.DG_COUNTRY,1,0,0,0)
+	End If
+	Calculate ilPreparation.Country as llCountries.REF_DESC
+	
+	If ilPreparation.DG_ROLE='SPEAKER'
+		# leave SPEAKER as is
+		Calculate ilPreparation.Role as 'Speaker'
+	Else If pos('TIGER',upp(ilPreparation.EO_NAME))>0
+		Calculate ilPreparation.Role as 'TigerLogic'
+	Else If pos('OMNIS',upp(ilPreparation.EO_NAME))>0&pos('SOFTWARE',upp(ilPreparation.EO_NAME))>0
+		Calculate ilPreparation.Role as 'Omnis Software'
+	Else If ilPreparation.DG_ROLE='OMNIS_EVAN'
+		Calculate ilPreparation.Role as 'Omnis Evangelist'
+	Else
+		Calculate ilPreparation.DG_ROLE as ''
+	End If
+	
+	# icDG_REFS
+	Calculate lcLine as con(lcLine,pick(lcLine<>'','','; '),ilPreparation.PSN_SURNAME,', ',mid(ilPreparation.PSN_FIRST_NAME,1,1),' = DG',ilPreparation.DG_SEQ)
+	If len(lcLine)>50 ## 50 is a trial and error figure that seems to work
+		Calculate icDG_REFS as con(icDG_REFS,pick(icDG_REFS<>'','',kCr),lcLine)
+		Calculate lcLine as ''
+	End If
+End While
+If lcLine<>''
+	Calculate icDG_REFS as con(icDG_REFS,pick(icDG_REFS<>'','',kCr),lcLine)
+End If
+
+# now convert ilPreparation to ilData
+# in sub class

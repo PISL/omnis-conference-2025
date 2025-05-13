@@ -1,0 +1,59 @@
+If isnull(ilSearch2.ARR_STARTTIME)
+	If ilSearch2.ARR_DATE>dat('1 JAN 2010')
+		Calculate lcStatusCriteria as con(" ARR_DATE = '",dat(ilSearch2.ARR_DATE,'CY-M-D'),"' ")
+	Else If not(isnull(ilSearch2.ARR_DAYNO))
+		Calculate lcStatusCriteria as con(" ARR_DAYNO = ",ilSearch2.ARR_DAYNO)
+		
+	Else If ilSearch2.PSN_SEQ>0
+		# a speaker has been selected
+		Calculate lcStatusCriteria as con(" ARR_PSN_REF = ",ilSearch2.PSN_SEQ)
+		
+	Else If ilSearch2.ARR_LEADER<>''
+		# a speaker has been selected
+		Calculate lcStatusCriteria as con(" ARR_LEADER = '",ilSearch2.ARR_LEADER,"' ") ## ;;# this does not accommodate when ARR_LEADER is in use
+		
+	End If
+	
+Else If ilSearch2.ARR_STARTTIME=tim('09:00') ## AM
+	If ilSearch2.ARR_DATE>dat('1 JAN 2010')
+		Calculate lcStatusCriteria as con(" ARR_DATE = '",dat(ilSearch2.ARR_DATE,'CY-M-D'),"' and ARR_STARTTIME < '",tim('12:00'),"' ")
+	Else If not(isnull(ilSearch2.ARR_DAYNO))
+		Calculate lcStatusCriteria as con(" ARR_DAYNO = ",ilSearch2.ARR_DAYNO," and ARR_STARTTIME < '",tim('12:00'),"' ")
+	End If
+	
+Else If ilSearch2.ARR_STARTTIME=tim('14:00') ## PM
+	If ilSearch2.ARR_DATE>dat('1 JAN 2010')
+		Calculate lcStatusCriteria as con(" ARR_DATE = '",dat(ilSearch2.ARR_DATE,'CY-M-D'),"' and ARR_STARTTIME between '",tim('12:00'),"' and '",tim('17:00'),"' ")
+	Else If not(isnull(ilSearch2.ARR_DAYNO))
+		Calculate lcStatusCriteria as con(" ARR_DAYNO = ",ilSearch2.ARR_DAYNO," and ARR_STARTTIME between '",tim('12:00'),"' and '",tim('17:00'),"' ")
+	End If
+	
+Else If ilSearch2.ARR_STARTTIME=tim('19:00') ## EVE
+	If ilSearch2.ARR_DATE>dat('1 JAN 2010')
+		Calculate lcStatusCriteria as con(" ARR_DATE = '",dat(ilSearch2.ARR_DATE,'CY-M-D'),"' and ARR_STARTTIME > '",tim('17:00'),"' ")
+	Else If not(isnull(ilSearch2.ARR_DAYNO))
+		Calculate lcStatusCriteria as con(" ARR_DAYNO = ",ilSearch2.ARR_DAYNO," and ARR_STARTTIME > '",tim('17:00'),"' ")
+	End If
+	
+End If
+
+Do method $fetchDisplayList (lcStatusCriteria,,ilSearch2.DisplayDate)
+
+If ilSearch2.lnRatioFrom>0|ilSearch2.lnRatioTo>0
+	# sorry - this is not handled in SQL query
+	# reduce to ratio possibilities (ARR_MAX_BOOKINGS > 0)
+	Do ilDisplayRecords.$search($ref.countAttended>0&$ref.ARR_MAX_BOOKINGS>0,1,0,1,0)
+	Do ilDisplayRecords.$remove(kListKeepSelected)
+	Do ilDisplayRecords.$search(0)
+	# determine if ratio is within bounds
+	Do ilDisplayRecords.$search(int($ref.countAttended/$ref.ARR_MAX_BOOKINGS*100)>=ilSearch2.lnRatioFrom&int($ref.countAttended/$ref.ARR_MAX_BOOKINGS*100)<=ilSearch2.lnRatioTo,1,0,1,0)
+	Do ilDisplayRecords.$remove(kListKeepSelected)
+	Do ilDisplayRecords.$search(0)
+End If
+
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Do method ScheduleConflicts
+
+Do $cinst.$behaviour

@@ -1,0 +1,44 @@
+# these rules copied from $behaviour
+If inCurrentTab=cnConfInfo|inCurrentTab=cnConfPrices|inCurrentTab=cnConfTerms
+	If not(irUserRights.canInsert&icMode='')
+		Quit method
+	End If
+	
+Else If inCurrentTab=cnConfStats
+	Quit method
+	
+Else If inCurrentTab=cnConfPriceRules
+	If not(irUserRights.canInsertPriceRule&(icMode=''|icMode='EP'))
+		Quit method
+	End If
+	
+End If
+
+Calculate icDisplayMessage as ''
+If inCurrentTab=cnConfArrangements ## 4
+	Calculate icMode as 'IT' ## insert topic
+	Do irTopic.$clear()
+	Calculate $cinst.$objs.TabControl_CF.$objs.TabControl_TOPIC.$currenttab as 1
+	
+Else If inCurrentTab=cnConfPriceRules ## 7
+	Do method PricingRuleAdd
+	
+Else
+	Calculate icMode as 'IC' ## insert conference/event
+	
+	Do irCurrentRecord.$clear()
+	Do irCurrentRecord.$defaults()
+	
+	Do ilTopics.$clear()
+	Do ilArrangements.$clear()
+	Do ilPricingGrid.$clear()
+	Do ilPricingGridOrig.$clear()
+	Do irProductPriceRule.$clear()
+	Do irLogo.$clear()
+	
+	Calculate inCurrentTab as 1
+	Calculate $cinst.$objs.TabControl_CF.$currenttab as inCurrentTab
+	Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+End If
+
+Do $cinst.$behaviour()

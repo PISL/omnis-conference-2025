@@ -1,0 +1,26 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcCurrentYear",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10
+			},
+			{
+				"name": "lcNewYear",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10
+			}
+		]
+	}
+]

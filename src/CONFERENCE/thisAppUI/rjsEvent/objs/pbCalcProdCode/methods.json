@@ -1,0 +1,26 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llInvoiceDetails",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llPerson",
+				"order": 2,
+				"type": "kList",
+				"subtype": "sPerson",
+				"sublen": 0
+			}
+		]
+	}
+]

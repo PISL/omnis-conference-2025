@@ -1,0 +1,4 @@
+Do $cinst.$cols.$add('totNight',kInteger,kShortint)
+Do $cinst.$cols.$add('totBfast',kInteger,kShortint)
+Do $cinst.$cols.$add('totLunch',kInteger,kShortint)
+Do $cinst.$cols.$add('totDinner',kInteger,kShortint)

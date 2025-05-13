@@ -1,0 +1,51 @@
+{
+	"classtype": "kTable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 6,
+	"superclass": "infra.tMaster",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "___ROW1",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW2",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:15",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2019-06-07 10:46:43",
+		"showascheckedout": false,
+		"sqlclassname": "sDietRequests",
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.00"
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon"
+	]
+}

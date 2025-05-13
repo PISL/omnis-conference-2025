@@ -1,0 +1,11 @@
+On evClick
+	Calculate $cobj.$errortext as ''
+	Calculate icDisplayMessage as ''
+	Calculate icPricingTrace as ''
+	
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.inExtras as inExtras
+	End If
+	
+	Do method DisplayPrice2
+	Do $cinst.$behaviour()

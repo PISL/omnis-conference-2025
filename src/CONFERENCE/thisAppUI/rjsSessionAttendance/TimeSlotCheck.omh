@@ -1,0 +1,24 @@
+Calculate ibDelegateAlreadySpeakingInThisTimeSlot as kFalse
+Do ilDelegateSessions.$clear()
+Do ilDelegateSessions.$fetchDelegateSessions(irDelegate.DG_SEQ,ilDates.ARR_DATE,ilDates.ARR_DAYNO)
+If ilArrangements.$line>0
+	# a specific arrangement has been selected
+	# see if Delegate is either attending a session or presenting
+	
+	# see if attending first
+	Do ilDelegateSessions.$search($ref.ARR_STARTTIME=ilArrangements.ARR_STARTTIME,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Do ilDelegateSessions.$search($ref.ARR_SLOT=ilDates.ARR_SLOT,1,0,0,0) Returns lbFound
+		If not(lbFound)
+			# now see if presenting
+			Calculate llTemp as ilArrangements
+			Do llTemp.$search($ref.PSN_SURNAME=irDelegate.PSN_SURNAME&$ref.PSN_FIRST_NAME=irDelegate.PSN_FIRST_NAME&$ref.ARR_STARTTIME=ilArrangements.ARR_STARTTIME,1,0,0,0) Returns ibDelegateAlreadySpeakingInThisTimeSlot
+			If not(ibDelegateAlreadySpeakingInThisTimeSlot)&not(isnull(ilArrangements.ARR_SLOT))
+				# don't do this next search - ilArrangements.ARR_SLOT is never null and the time slots get out of sync
+				# Do llTemp.$search($ref.PSN_SURNAME=irDelegate.PSN_SURNAME&$ref.PSN_FIRST_NAME=irDelegate.PSN_FIRST_NAME&$ref.ARR_SLOT=ilArrangements.ARR_SLOT,1,0,0,0) Returns ibDelegateAlreadySpeakingInThisTimeSlot
+			End If
+		End If
+	End If
+End If
+# if a line is current then the user already has a session booked for this time
+# which means they cannot book another session for the same time

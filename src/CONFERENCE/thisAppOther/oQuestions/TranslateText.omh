@@ -1,0 +1,5 @@
+Calculate plList.$line as 0
+
+While $Loop(plList)
+	# apply translation text later
+End While

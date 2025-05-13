@@ -1,0 +1,17 @@
+Do method ClearWorkArea
+Calculate lcStatusCriteria as con(" DG_ROLE = '",'SPEAKER',"' and DG_STATUS <> 'CANCEL' ")
+
+Do ilDisplayRecords.$clear()
+Do ilDisplayRecords.$fetchForConference(ilSearch1.CF_SEQ,icSearch,lcStatusCriteria)
+
+Calculate inSearchCount as ilDisplayRecords.$linecount
+
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+Else
+	Do ilDisplayRecords.$sort($ref.SortName,0)
+End If
+
+# While $Loop(ilDisplayRecords)
+# Do ilDisplayRecords.$DisplayName()
+# End While

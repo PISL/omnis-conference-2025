@@ -1,0 +1,134 @@
+# Do toValues.$initGlobal('DG_ROLE') Returns ilRoles
+Do $ctask.toValues.$initInherited('DG_OCCUPANCY') Returns ilOccupancy
+
+Do $DefineList(llConferences,'CONFERENCE.tConference')
+Do llConferences.$addLinkedCols('VEN_NAME,VEN_COUNTRY,VEN_LOCALITY,VEN_TOWN')
+If plConference.$linecount>0
+	Calculate llConferences as plConference
+	If totc(llConferences,#LSEL)=0&llConferences.$line>0
+		# no selected lines ## but there is a current line - assume a single event
+		Calculate llConferences.[llConferences.$line].$selected as kTrue
+	Else If totc(llConferences,#LSEL)=0&llConferences.$line=0
+		# no selected lines ## and no current line
+		Do llConferences.$search(1) ## select all events
+	End If
+Else If pcEventGroup<>''
+	Do llConferences.$fetch_(con(" CF_TITLE_CODE = '",pcEventGroup,"' "))
+	Do llConferences.$search(1)
+Else
+	Do llConferences.$fetch_all()
+	Do llConferences.$search(1)
+End If
+Do llConferences.$sort($ref.CF_DATE_FROM,0)
+
+Calculate lnConferenceNo as 0
+Do $DefineList(lrDelegates,'tDelegates')
+Calculate llConferences.$line as 0
+While $Loop(llConferences,kTrue)
+	# fetch stats for each conference
+	Calculate lnConferenceNo as lnConferenceNo+1
+	Do lrDelegates.$statsConference(llConferences.CF_SEQ) Returns llStatsSingleConference
+	
+	# get a total count for the conference ## used to calculate percentages below
+	Calculate lcPrefix as llConferences.CF_TITLE_CODE
+	Calculate lcPrefix as trim(lcPrefix,kTrue,kTrue,'$')
+	Do lrTotals.$cols.$add(lcPrefix,kInteger,k32bitint)
+	
+	Calculate llTemp as llStatsSingleConference
+	Do llTemp.$search($ref.column_source='DG_OCCUPANCY',1,0,1,0)
+	Do llTemp.$remove(kListKeepSelected)
+	# OK message  {[llTemp.$cols.count.$total()]}
+	Calculate lrTotals.[lcPrefix] as llTemp.$cols.count.$total()
+	
+	If lnConferenceNo=1
+		Calculate ilData as llStatsSingleConference
+	Else
+		Do ilData.$merge(llStatsSingleConference)
+	End If
+	
+	Do lrLocations.$cols.$add(con('location',lnConferenceNo),kCharacter,kSimplechar,20)
+	Calculate lrLocations.[con('location',lnConferenceNo)] as llConferences.VEN_COUNTRY
+End While
+
+Do method determineLabels (llSummaryCountries,ilData,'DG_COUNTRY')
+Do method determineLabels (llSummaryMonths,ilData,'DG_REG_MO')
+Do method determineLabels (llSummaryOccupancy,ilData,'DG_OCCUPANCY')
+Do method determineLabels (llSummaryRoles,ilData,'DG_ROLE')
+Do method determineLabels (llSummaryProducts,ilData,'PRD_INT_PRODCODE')
+
+Calculate llMonthsOnly as llSummaryMonths
+Do llMonthsOnly.$cols.value2.$removeduplicates(kTrue)
+
+Do llStatistics.$cols.$add('groupCol',kCharacter,kSimplechar,100)
+Do llStatistics.$cols.$add('category',kCharacter,kSimplechar,100)
+Calculate llConferences.$line as 0
+While $Loop(llConferences,kTrue)
+	Calculate lcPrefix as llConferences.CF_TITLE_CODE
+	Calculate lcPrefix as trim(lcPrefix,kTrue,kTrue,'$')
+	
+	Do llStatistics.$cols.$add(con(lcPrefix,'_count'),kInteger,k32bitint)
+	Do llStatistics.$cols.$add(con(lcPrefix,'_cumcount'),kInteger,k32bitint)
+	Do llStatistics.$cols.$add(con(lcPrefix,'_percent'),kNumber,k0dp)
+	
+End While
+
+Do method addLabelsToSummary (llStatistics,llSummaryCountries,'Country')
+Do method addLabelsToSummary (llStatistics,llMonthsOnly,'Regn month')
+Do method addLabelsToSummary (llStatistics,llSummaryOccupancy,'Occupancy')
+Do method addLabelsToSummary (llStatistics,llSummaryRoles,'Roles')
+Do method addLabelsToSummary (llStatistics,llSummaryProducts,'Product')
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Calculate lbFound as kFalse
+	If ilData.column_source='DG_REG_MO'
+		Do llStatistics.$search($ref.category=jst(ilData.value2,'-2P0'),1,0,0,0) Returns lbFound
+	Else If ilData.column_source='DG_OCCUPANCY'
+		If isnull(ilData.value1)
+			Do llStatistics.$search($ref.groupCol=ilData.column_source&isnull($ref.category),1,0,0,0) Returns lbFound
+		Else
+			Do ilOccupancy.$search($ref.RFO_VALUE=ilData.value1,1,0,0,0) Returns lbFound
+			Do llStatistics.$search($ref.category=ilOccupancy.RFO_DESC,1,0,0,0) Returns lbFound
+			If not(lbFound)
+				Do llStatistics.$search($ref.category=ilData.value1,1,0,0,0) Returns lbFound
+			End If
+		End If
+	Else
+		If isnull(ilData.value1)
+			Do llStatistics.$search(isnull($ref.category),1,0,0,0) Returns lbFound
+		Else
+			Do llStatistics.$search($ref.category=ilData.value1,1,0,0,0) Returns lbFound
+		End If
+	End If
+	If lbFound
+		Calculate lcPrefix as ilData.conference
+		Calculate lcPrefix as trim(lcPrefix,kTrue,kTrue,'$')
+		Calculate llStatistics.[lcPrefix]_count as ilData.count
+		# Calculate llStatistics.[lcPrefix]_cumcount as llStatistics.[lcPrefix]_cumcount+ilData.count
+		Calculate llStatistics.[lcPrefix]_percent as llStatistics.[lcPrefix]_count/lrTotals.[lcPrefix]*100
+	Else
+		Breakpoint
+	End If
+End While
+
+# now set the cumulative count values
+Calculate llStatistics.$line as 0
+While $Loop(llStatistics)
+	While $Loop(llConferences,kTrue)
+		Calculate lcPrefix as llConferences.CF_TITLE_CODE
+		Calculate lcPrefix as trim(lcPrefix,kTrue,kTrue,'$')
+		
+		If llStatistics.$line=1
+			Calculate llStatistics.[lcPrefix]_cumcount as llStatistics.[lcPrefix]_count
+		Else If llStatistics.groupCol<>llStatistics.[llStatistics.$line-1].groupCol
+			Calculate llStatistics.[lcPrefix]_cumcount as llStatistics.[lcPrefix]_count
+		Else
+			Calculate llStatistics.[lcPrefix]_cumcount as llStatistics.[llStatistics.$line-1].[lcPrefix]_cumcount+llStatistics.[lcPrefix]_count
+		End If
+		
+	End While
+	
+End While
+
+Calculate pretLocations as lrLocations
+Quit method llStatistics

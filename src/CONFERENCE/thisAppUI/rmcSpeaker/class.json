@@ -1,0 +1,30 @@
+{
+	"classtype": "kRemoteMenu",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 3,
+	"nextident": 1004,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:12",
+		"defaulticoncolor": "RGB(0,0,0)",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"enabled": true,
+		"external": false,
+		"moddate": "2017-03-09 10:33:20",
+		"showascheckedout": false,
+		"title": {
+			"type": 0,
+			"calc": "Topics"
+		},
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

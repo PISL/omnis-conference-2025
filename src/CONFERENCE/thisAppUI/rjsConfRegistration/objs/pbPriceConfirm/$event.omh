@@ -1,0 +1,35 @@
+On evClick
+	Do $cinst.$validation() Returns lbProceed
+	If lbProceed
+		# change user name - in memory only ## this will be recorded in CBY & MBY columns
+		Calculate trCurrUser.USR_NAME as con('onl: ',irRegistration.PSN_SURNAME)
+		
+		# now create a logLogin record
+		If trLogAccess.ULA_SEQ>0
+			# login record already created
+		Else
+			Do $DefineList(trLogAccess,'infra.tuaLogAccess')
+			Calculate trLogAccess.ULA_USR_REF as trCurrUser.USR_SEQ
+			Calculate trLogAccess.ULA_LOGIN as $ServerTime()
+			Calculate trLogAccess.ULA_IP_ADDRESS as $ctask.$clientaddress()
+			Calculate trLogAccess.ULA_GO_NAME as trGroupOrg.GO_NAME_SHORT
+			Calculate trLogAccess.ULA_CONNECT_TIME as $ctask.$connectiontime
+			Calculate trLogAccess.ULA_FORMS_VISITED as $cinst.$class().$name
+			Do trLogAccess.$insert() Returns lbOK
+			If not(lbOK)
+				Breakpoint
+			End If
+		End If
+		If pos('<name_reg>',trLogAccess.ULA_COMMENT)=0
+			If ilPersons.$linecount>0
+				Calculate trLogAccess.ULA_COMMENT as con(trLogAccess.ULA_COMMENT,pick(trLogAccess.ULA_COMMENT<>'','',kCr),'<name_reg>',upp(ilPersons.1.PSN_SURNAME),', ',ilPersons.1.PSN_FIRST_NAME,'</name_reg>')
+			Else
+				Calculate trLogAccess.ULA_COMMENT as con(trLogAccess.ULA_COMMENT,pick(trLogAccess.ULA_COMMENT<>'','',kCr),'<name_reg>',upp(irRegistration.PSN_SURNAME),', ',irRegistration.PSN_FIRST_NAME,'</name_reg>')
+			End If
+		End If
+		
+		Do $LogEvent('CONF_REG','SUBMIT',irRegistration.PSN_EMAIL)
+		
+		Do method PrepareRegistration
+	End If
+	Do $cinst.$behaviour()

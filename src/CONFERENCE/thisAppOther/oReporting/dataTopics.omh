@@ -1,0 +1,4 @@
+Do $DefineList(lrSpeakers,'tTopicConferenceLink')
+Do lrSpeakers.$conferenceTopics(prConference.CF_SEQ) Returns ilData
+
+Do ilData.$sort($ref.SpeakerSort,0,$ref.TPC_TITLE,0)

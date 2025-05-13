@@ -1,0 +1,208 @@
+[
+	{
+		"name": "$event",
+		"order": 16384,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 9,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCLASS",
+				"order": 10,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcClipBoard",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lcColName",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcCreateSpouseEntry",
+				"order": 21,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcLastCLASS",
+				"order": 13,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcLastRowName",
+				"order": 12,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcLine",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "lcReal",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcRowName",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcToken",
+				"order": 18,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcUOM",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcVALUE",
+				"order": 11,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "llPAX",
+				"order": 19,
+				"type": "kList",
+				"subtype": "tPAX",
+				"sublen": 0
+			},
+			{
+				"name": "lnConferenceSEQ",
+				"order": 24,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnHeaderOrder",
+				"order": 14,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnIntOrgSEQ",
+				"order": 25,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnOrder",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"initval": "10"
+			},
+			{
+				"name": "lrCheckDelegate",
+				"order": 26,
+				"type": "kRow",
+				"subtype": "tDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrCheckPerson",
+				"order": 23,
+				"type": "kRow",
+				"subtype": "tPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 16,
+				"type": "kRow",
+				"subtype": "tDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrInfo",
+				"order": 15,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrMember",
+				"order": 22,
+				"type": "kRow",
+				"subtype": "tMembership",
+				"sublen": 0
+			},
+			{
+				"name": "lrPAX",
+				"order": 28,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrPayment",
+				"order": 20,
+				"type": "kRow",
+				"subtype": "tPaymentsIn",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 17,
+				"type": "kRow",
+				"subtype": "tPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrProduct",
+				"order": 27,
+				"type": "kRow",
+				"subtype": "tProducts",
+				"sublen": 0
+			},
+			{
+				"name": "lrRefGlobal",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "infra.tsysFeedback",
+				"sublen": 0
+			}
+		]
+	}
+]

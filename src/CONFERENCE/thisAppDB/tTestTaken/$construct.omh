@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TTK_'
+Calculate icPrimarykey as 'TTK_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TTK_TST_REF' ## also TTK_DG_REF
+
+Do inherited

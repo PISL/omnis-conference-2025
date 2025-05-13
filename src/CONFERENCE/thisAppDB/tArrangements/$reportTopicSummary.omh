@@ -1,0 +1,58 @@
+Do llData.$cols.$add($cinst.ARR_DATE)
+Do llData.$cols.$add($cinst.ARR_DAYNO)
+Do llData.$cols.$add($cinst.ARR_STARTTIME)
+Do llData.$cols.$add($cinst.ARR_MAX_BOOKINGS)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
+Do llData.$cols.$add(lrTopics.TPC_DESC)
+Do llData.$cols.$add(lrTopics.TPC_DURN_MINS)
+Do llData.$cols.$add(lrTopics.TPC_COMMENT)
+
+Do llData.$cols.$add('attended',kInteger,k32bitint)
+Do llData.$cols.$add('percent',kNumber,k0dp)
+Do llData.$cols.$add('time',kCharacter,kSimplechar,10)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  ARR_DATE, ARR_DAYNO, ARR_STARTTIME, ARR_MAX_BOOKINGS
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC, TPC_DURN_MINS, TPC_COMMENT
+Sta:, ( select count(*) from [lrAttendees.$servertablenames()] where ARA_ARR_REF = ARR_SEQ ) as attended
+Sta:from [$cinst.$servertablenames()]
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = ARR_CF_REF
+Sta:join [lrTopics.$servertablenames] on TPC_SEQ = ARR_TPC_REF
+If pnCF_SEQ<>0&pnTPC_SEQ<>0
+	Sta:where  ARR_TPC_REF = @[pnTPC_SEQ]
+	Sta:and      ARR_CF_REF = @[pnCF_SEQ]
+Else If pnTPC_SEQ<>0
+	Sta:where  ARR_TPC_REF = @[pnTPC_SEQ]
+Else If pnCF_SEQ<>0
+	Sta:where  ARR_CF_REF = @[pnCF_SEQ]
+End If
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.STARTTIME,0)
+
+Calculate llData.$line as 0
+While $Loop(llData)
+	Calculate llData.time as jst(llData.ARR_STARTTIME,'D:H:N')
+	If llData.ARR_MAX_BOOKINGS<>0
+		Calculate llData.percent as llData.attended/llData.ARR_MAX_BOOKINGS*100
+	End If
+End While
+
+Quit method llData

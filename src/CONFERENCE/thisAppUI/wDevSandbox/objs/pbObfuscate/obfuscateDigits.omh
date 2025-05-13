@@ -1,0 +1,23 @@
+# text string
+# If pcText<>''
+# Calculate lcTemp as pcText
+# Calculate lcTempOrig as lcTemp
+# While lcTemp<>''
+# Calculate lcToken as strtok(nam(lcTemp),pcDelimiter)
+#
+# Calculate lcTemp2 as $ctask.toStrings.$randomString(len(lcToken),lcDigitsFrom)
+# Calculate lcTempReturn as con(lcTempReturn,lcTemp2,pcDelimiter)
+# End While
+# End If
+
+# text string
+If pcText<>''
+	While pcText<>''
+		Calculate lcToken as strtok(nam(pcText),pcDelimiter)
+		
+		Calculate lcTemp as $cobj.$getRandString('digits',len(lcToken))
+		Calculate lcTempReturn as con(lcTempReturn,lcTemp,pcDelimiter)
+	End While
+End If
+
+Quit method lcTempReturn

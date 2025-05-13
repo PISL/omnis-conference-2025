@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 4,
+	"nextident": 32061,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:04",
+		"createinstancewhensubtype": true,
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2018-09-21 13:58:40",
+		"servertablename": "conf.pax",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.00"
+	}
+}

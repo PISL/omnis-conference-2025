@@ -1,0 +1,17 @@
+Calculate icDisplayMessage as ''
+Do toStrings.$HasRowBeenModified(irOriginalTravelInfo,irTravelDetails) Returns ibDataModified
+If not(ibDataModified)
+	Do toStrings.$HasRowBeenModified(irOriginalDietDG,irDietDG) Returns ibDataModified
+End If
+
+If not(ibDataModified)
+	Do toStrings.$HasRowBeenModified(irOriginalSpouse,irSpouse) Returns ibDataModified
+End If
+
+If not(ibDataModified)
+	Do toStrings.$HasRowBeenModified(irDelegateOrig,irDelegate) Returns ibDataModified
+End If
+
+If not(ibDataModified)
+	Do toStrings.$HasRowBeenModified(irOriginalDietSpouse,irDietSpouse) Returns ibDataModified
+End If

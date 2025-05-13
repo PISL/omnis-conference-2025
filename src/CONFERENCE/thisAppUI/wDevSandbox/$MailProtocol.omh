@@ -1,0 +1,4 @@
+If ilMailHandshake.$colcount=0
+	Do ilMailHandshake.$cols.$add('response',kCharacter,kSimplechar,255)
+End If
+Do ilMailHandshake.$add(#S1)

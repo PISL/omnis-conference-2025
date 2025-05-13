@@ -1,0 +1,29 @@
+{
+	"ident": 1065,
+	"order": 53,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "room count",
+		"align": "kRightJst",
+		"backcolor": "kColorWindow",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 5,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "kBlack",
+		"height": 0.351,
+		"left": 15.733,
+		"lineno": 27,
+		"lineoffset": 0.0,
+		"rowid": "word_roomcount",
+		"textcolor": "kColorWindowText",
+		"userinfo": "",
+		"width": 1.999
+	}
+}

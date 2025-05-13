@@ -1,0 +1,31 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TQR_TQO_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' option must be set')
+End If
+
+If $cinst.TQR_TITLE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' question text missing')
+End If
+
+If $cinst.TQR_SCORE_FROM>=0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' score from missing')
+End If
+If $cinst.TQR_SCORE_TO>=0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' score to missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

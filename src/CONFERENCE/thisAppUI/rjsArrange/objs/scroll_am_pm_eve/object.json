@@ -1,0 +1,116 @@
+{
+	"ident": 1101,
+	"order": 99,
+	"objtype": "kScrollbox",
+	"properties": {
+		"active": true,
+		"alpha": 255,
+		"arialabel": "",
+		"arialabelledby": "",
+		"autoscroll": true,
+		"backalpha": 255,
+		"backcolor": "kJSThemeColorSurface",
+		"bordercolor": "kJSThemeColorBorder",
+		"borderradius": "0",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disablesystemfocus": false,
+		"effect": "kJSborderNone",
+		"enabled": true,
+		"events": "",
+		"fieldstyle": "",
+		"font": 1,
+		"hasshadow": false,
+		"label": "",
+		"labelfontsize": 8,
+		"labeltextcolor": "kColorDefault",
+		"landmark": "kLandmarkNone",
+		"linestyle": 1,
+		"nexttabobject": "",
+		"objlink": 262145,
+		"preventlayoutanimation": false,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"tooltip": "",
+		"userinfo": "",
+		"visible": true
+	},
+	"layout": {
+		"320": {
+			"left": 0,
+			"top": 8,
+			"width": 168,
+			"height": 1448,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"375": {
+			"left": 0,
+			"top": 8,
+			"width": 144,
+			"height": 1448,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"480": {
+			"left": 0,
+			"top": 8,
+			"width": 176,
+			"height": 1448,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"667": {
+			"left": 0,
+			"top": 8,
+			"width": 304,
+			"height": 1448,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"768": {
+			"left": 8,
+			"top": 8,
+			"width": 440,
+			"height": 1448,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"1024": {
+			"left": 8,
+			"top": 8,
+			"width": 760,
+			"height": 512,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		},
+		"1700": {
+			"left": 8,
+			"top": 8,
+			"width": 784,
+			"height": 512,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

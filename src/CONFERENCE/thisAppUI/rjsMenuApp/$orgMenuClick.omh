@@ -1,0 +1,18 @@
+# we need to execute this on the server as the whole UI/UX may need to change
+# emulate the user logging in, as options will differ between organisations
+# clear user's data ready to be reloaded
+Calculate $cinst.$objs.SubForm.$classname as "infra.rfBlank" ## force reconstrauction of rjsDashboardApp
+Do tlAuthorisedForms.$clear()
+Do trGroupOrg.$clear()
+# fetch the new GroupOrg record and user's relevant forms/permissions
+Do $validUser(pLineIdent)
+
+Do method setCompanyImages
+Do $getFormColours()
+Do $cinst.$setFormColours()
+Do $buildNavMenu()
+Do $cinst.$createNavMenu()
+Do method buildMenus
+
+Calculate icSubFormClass as "rjsDashboardApp"
+Calculate $cinst.$objs.SubForm.$classname as "rjsDashboardApp"

@@ -1,0 +1,20 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform
+Calculate inTabCount as 1
+Do inherited
+
+Do method initTabControl
+Do method setTabColours
+
+# initialise the panes list to handle ToolsMenu switching
+Do ilBreadcrumbs.$cols.$add('pane',kInteger,kShortint)
+Do ilBreadcrumbs.$cols.$add('form',kCharacter,kSimplechar,50)
+Do ilPanes.$copydefinition(ilBreadcrumbs)
+Do ilPanes.$add(cnPageVenue,'rjsVenue')
+Do ilPanes.$add(cnPageEvent,'rjsEvent')
+Do ilPanes.$add(cnPagePerson,'rjsPerson')
+
+Set reference irefContainer to $cinst.$container
+# Breakpoint
+
+Do method TranslateText

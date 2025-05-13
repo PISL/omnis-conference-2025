@@ -1,0 +1,12 @@
+# callback method from clientmessage - Yes
+Do irCurrentRecord.$delete_pk() Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+Else
+	Do ilMembershipHistory.$remove(ilMembershipHistory.$line)
+	Calculate ilMembershipHistory.$line as 0
+	Do irCurrentRecord.$clear()
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

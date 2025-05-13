@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 4,
+	"nextident": 32153,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2018-10-15 15:47:04",
+		"createinstancewhensubtype": false,
+		"desc": "VIEW used for calculated column values in the UI",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2018-10-17 02:22:21",
+		"servertablename": "",
+		"showascheckedout": false,
+		"userinfo": "Copyright © 1999-2012 Platform Independent Systems Limited, registered company number 3155091, UK",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

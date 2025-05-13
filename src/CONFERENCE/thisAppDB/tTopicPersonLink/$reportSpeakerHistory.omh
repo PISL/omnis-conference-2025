@@ -1,0 +1,73 @@
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_EMAIL)
+Do llData.$cols.$add('SpeakerSort',kCharacter,kSimplechar,100)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
+Do llData.$cols.$add(lrTopics.TPC_DESC)
+
+Do llData.$cols.$add(lrConference.CF_SEQ)
+Do llData.$cols.$add(lrConference.CF_TITLE)
+Do llData.$cols.$add(lrConference.CF_TITLE_CODE)
+Do llData.$cols.$add(lrConference.CF_DATE_FROM)
+
+Do llData.$cols.$add('maxBookings',kInteger,k32bitint)
+Do llData.$cols.$add('attended',kInteger,kShortint)
+Do llData.$cols.$add('percent',kNumber,k1dp)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  PSN_SURNAME, PSN_FIRST_NAME, PSN_EMAIL, concat(PSN_SURNAME,', ',PSN_FIRST_NAME)
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC
+Sta:, CF_SEQ, CF_TITLE, CF_TITLE_CODE, CF_DATE_FROM
+
+Sta:, ( select sum(ARR_MAX_BOOKINGS)
+Sta:from [lrArrangement.$servertablenames()]
+Sta:where ARR_TPC_REF = TPC_SEQ
+Sta:and     ARR_CF_REF = CF_SEQ
+Sta:)
+Sta:, ( select count(*)
+Sta:from [lrArrangement.$servertablenames()]
+Sta:join [lrAttendee.$servertablenames()] on ARA_ARR_REF = ARR_SEQ
+Sta:where ARR_TPC_REF = TPC_SEQ
+Sta:)
+
+Sta:from [$cinst.$servertablenames()]
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+Sta:join [lrPerson.$servertablenames()] on PSN_SEQ = TPP_PSN_REF
+Sta:join [lrTopics.$servertablenames] on TPC_SEQ = TPP_TPC_REF
+If pbAllTopics
+	Sta:left outer join [lrTopicConference.$servertablenames] on TPC_SEQ = TPF_TPC_REF
+	Sta:left outer join [lrConference.$servertablenames] on TPF_CF_REF = CF_SEQ
+Else
+	Sta:join [lrTopicConference.$servertablenames] on TPC_SEQ = TPF_TPC_REF
+	Sta:join [lrConference.$servertablenames] on TPF_CF_REF = CF_SEQ
+End If
+Sta:where  TPC_GO_REF = @[trGroupOrg.GO_SEQ]
+Sta:and      PSN_SEQ = @[pnSpeakerSeq]
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+
+Calculate llData.$line as 0
+While $Loop(llData)
+	If llData.maxBookings<>0
+		Calculate llData.percent as llData.attended/llData.maxBookings*100
+	End If
+End While
+
+Do llData.$sort($ref.SpeakerSort,0)
+Quit method llData

@@ -1,0 +1,26 @@
+If irPerson.PSN_EMAIL<>''
+	Calculate lrCheck as irPerson
+	Do lrCheck.$fetchOnVarious(irPerson.PSN_FIRST_NAME,irPerson.PSN_SURNAME,irPerson.PSN_EMAIL) Returns lbOK
+	
+	If lbOK
+		# check person has been identified
+		If lrCheck.PSN_SEQ>0
+			Do irPerson.$assignrow(lrCheck)
+			Calculate ibModifiedPerson as kFalse
+			Do ilCountries.$search($ref.REF_VALUE=irPerson.PSN_COUNTRY,1,0,0,0) Returns lbFound
+			
+		Else
+			# leave irPerson as is for subsequent $insert()
+			Calculate irPerson.PSN_GO_REF as trGroupOrg.GO_SEQ
+			Calculate ibModifiedPerson as kTrue
+			# Do ilCountries.$search($ref.REF_VALUE=irPerson.PSN_COUNTRY,1,0,0,0)
+			
+		End If
+		Calculate irPersonOrig as irPerson
+		
+		Quit method kTrue
+	Else
+		# bad fetch
+		Quit method kFalse
+	End If
+End If

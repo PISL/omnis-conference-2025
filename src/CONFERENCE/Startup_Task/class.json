@@ -1,0 +1,77 @@
+{
+	"classtype": "kTask",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 57,
+	"superclass": "infra.tkSuper",
+	"tvardefs": [
+		{
+			"name": "tlDatabases",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"cvardefs": [
+		{
+			"name": "ccCommonLibs",
+			"order": 1,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'infra'",
+			"desc": "CSV string of required common libraries"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ilSysPrefs",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iorefSysPrefsHandler",
+			"order": 3,
+			"type": "kObjectref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irefCORETASK",
+			"order": 5,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irefTGSTASK",
+			"order": 2,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:03",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2025-05-07 10:51:43",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

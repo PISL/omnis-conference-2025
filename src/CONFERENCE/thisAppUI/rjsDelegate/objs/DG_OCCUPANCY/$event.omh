@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.DG_OCCUPANCY as ilOccupancy.RFO_VALUE

@@ -1,0 +1,77 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+# Enter your initialization code here
+Do $DefineList(ilDisplayRecords,'tCertificate')
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do $DefineList(ilDelegates,'tDelegates')
+Do ilDelegates.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME')
+Do ilDelegates.$addDisplayName()
+Do ilDelegates.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilDelegates.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilDelegates.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilDelegates.$cols.$findname('DisplayName') Returns liColRef
+# following line report s"When evaluating CSN_PSN_REF Unrecognised..." in v11 35659
+# Calculate $cinst.$objs.PagedPane.$objs.CSN_PSN_REF.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilCertAssigned,'tCertificateAssign')
+Do ilCertAssigned.$addLinkedCols('CRT_TITLE,CRT_DESC,CRT_TYPE')
+# Do ilCertAssigned.$addLinkedCols('CF_TITLE,CF_DATE_FROM,CF_DATE_TO')
+Do ilCertAssigned.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME')
+Do ilCertAssigned.$addDisplayName()
+Do ilCertAssigned.$cols.$findname('DisplayName') Returns liColRef
+# following line reports "Problem with notation ... When evaluating ilCertAssigned" v11 35659
+# Calculate $cinst.$objs.PagedPane.$objs.ilCertAssigned.$listcolumn as liColRef.$ident
+Calculate irAwardee as ilCertAssigned
+
+Do ilDelegates.$cols.$add('assigned',kBoolean)
+Do ilDelegates.$addSchemaColumns('sCertificateAssign')
+
+Do toValues.$initOrg('CRT_TYPE') Returns ilCertType
+Do ilCertType.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.CRT_TYPE.$listcolumn as liColRef.$ident
+
+Do method fetchSearch1List ## Conferences  ilSearch1  line 1 current
+Do method $Search1ListClick
+Do method fetchSearch2List
+
+Calculate ilStatus as $cinst.ilSearch2
+Do ilStatus.$cols.$findname('RFO_DESC') Returns liColRef
+# following line reports "Notation not supported ... When evaluating DG_STATUS" v11 35659
+# Calculate $cinst.$objs.PagedPane.$objs.DG_STATUS.$listcolumn as liColRef.$ident
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as con($cell(clLabels,'objName','DG_Heading','label'))
+Calculate icFormIntro as $cell(clLabels,'objName','DG_Intro','label')
+
+Do method UserPermissions
+
+Calculate $cinst.$objs.pbDelCascade.$visible as irUserRights.canDeleteCascade
+
+# hide tabs 2 & 3
+# Calculate $cinst.$objs.TabControl_DG.$selectedtab as 3
+# Calculate $cinst.$objs.TabControl_DG.$tabvisible as kFalse
+# Breakpoint
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Calculate inMinSearchString as 0
+
+Do $cinst.$superText(kTrue,'text search')
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE')
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_certs','label'),'DisplayName')
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_DG.$currenttab as inCurrentTab
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMenuID if this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do $cinst.$behaviour()

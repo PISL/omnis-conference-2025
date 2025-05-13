@@ -1,0 +1,31 @@
+{
+	"ident": 1139,
+	"order": 9,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kCenterJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "",
+		"floating": false,
+		"font": 4,
+		"fontextra": 0,
+		"fontsize": 9,
+		"fontstyle": "kPlain",
+		"height": -1,
+		"left": 15.25,
+		"lineno": 4,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "attendance",
+		"textcolor": "RGB(8,0,0)",
+		"userinfo": "",
+		"visible": true,
+		"width": 2.052
+	}
+}

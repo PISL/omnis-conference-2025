@@ -1,0 +1,17 @@
+Calculate $cinst.icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do method DropLists
+
+If inCurrentTab=cnTabDisplayPDF
+	Calculate inCurrentTab as cnTabCertificate
+	Do $cinst.$objs.PagedPane.$currentpage.$assign(inCurrentTab)
+End If
+
+If inCurrentTab=cnTabAwardedTo
+	Do method FetchAndPresentAttendees
+	Calculate trCurrentDelegate as irCurrentRecord
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

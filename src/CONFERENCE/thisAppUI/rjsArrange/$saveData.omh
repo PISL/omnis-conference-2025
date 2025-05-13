@@ -1,0 +1,39 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabArrangement
+	Begin reversible block
+		Calculate icMode as mid(icMode,1,1) ## just I or E for inherited method
+	End reversible block
+	Calculate  as
+	If icMode='I' ## insert  'IARR'
+		Calculate irCurrentRecord.ARR_CF_REF as ilSearch1.CF_SEQ
+	End If
+	Do inherited Returns lbOK
+	
+Else If inCurrentTab=cnTabAttendees
+	If icMode='IATT' ## insert
+		Calculate irAttendee.ARA_ARR_REF as irCurrentRecord.ARR_SEQ
+	End If
+	Do irAttendee.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irAttendee.icValidationMessage
+	Else
+		If icMode='IATT' ## insert
+			Do irAttendee.$insert() Returns lbOK
+		Else
+			Do irAttendee.$update() Returns lbOK
+		End If
+		If lbOK
+			# all good
+		Else
+			Calculate icDisplayMessage as irAttendee.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+	Quit method lbOK
+	
+End If
+
+If lbOK
+	Calculate icMode as ''
+End If

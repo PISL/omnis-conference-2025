@@ -1,0 +1,18 @@
+If pRow.$colcount
+	If isclear(pRow.ARR_DATE)
+		If pdConfFrom>dat('1 JAN 2010')
+			Calculate ldDate as dadd(kDay,pRow.ARR_DAYNO,pdConfFrom)
+		Else
+			Calculate ldDate as dadd(kDay,pRow.ARR_DAYNO,pRow.CF_DATE_FROM)
+		End If
+	End If
+	Quit method ldDate
+Else
+	If isclear($cinst.ARR_DATE)
+		If pdConfFrom>dat('1 JAN 2010')
+			Calculate $cinst.ARR_DATE as dadd(kDay,$cinst.ARR_DAYNO,pdConfFrom)
+		Else
+			Calculate $cinst.ARR_DATE as dadd(kDay,$cinst.ARR_DAYNO,$cinst.CF_DATE_FROM)
+		End If
+	End If
+End If

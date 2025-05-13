@@ -1,0 +1,14 @@
+If ilPersons.$linecount>1
+	If ilPersons.2.PSN_EMAIL<>''
+		Calculate lbMultipleDelegates as kTrue
+	Else If ilPersons.1.PSN_EMAIL<>irRegistration.PSN_EMAIL
+		Calculate lbMultipleDelegates as kTrue
+	End If
+	Calculate lbMultiplePrimaries as totc(ilPersons,ilPersons.DIL_PRIMARY>1)
+Else If ilPersons.$linecount=1
+	If irRegistration.PSN_EMAIL<>''&ilPersons.1.PSN_EMAIL<>irRegistration.PSN_EMAIL
+		Calculate lbMultipleDelegates as kTrue
+	End If
+End If
+
+Quit method lbMultipleDelegates

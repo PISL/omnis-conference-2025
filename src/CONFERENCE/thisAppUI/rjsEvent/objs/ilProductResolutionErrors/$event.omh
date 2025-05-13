@@ -1,0 +1,9 @@
+On evClick
+	Calculate ilProductResolutionErrors.$line as pVertCell
+	Do ilPricingGrid.$search($ref.CFP_NAME=ilProductResolutionErrors.ruleName,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate irProductPriceRule as ilPricingGrid
+		Calculate irOriginalRecord as irProductPriceRule
+	End If
+	
+	Do $cinst.$behaviour()

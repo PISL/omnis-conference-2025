@@ -1,0 +1,44 @@
+Do $cinst.$cols.$findname('VEN_NAME') Returns liColRef
+If liColRef
+	# already added
+Else
+	Do $cinst.$cols.$add(lrVenue.VEN_NAME)
+	Do $cinst.$cols.$add(lrVenue.VEN_COUNTRY)
+	Do $cinst.$cols.$add(lrVenue.VEN_POSTCODE)
+	Do $cinst.$cols.$add(lrVenue.VEN_TOWN)
+	Do $cinst.$cols.$add(lrVenue.VEN_STATE)
+	
+	Do $cinst.$cols.$add('countTopics',kInteger,k32bitint)
+	Do $cinst.$cols.$add('countArrangements',kInteger,k32bitint)
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, VEN_NAME, VEN_COUNTRY, VEN_POSTCODE, VEN_TOWN, VEN_STATE
+Sta:, (select count(*) from [lrTopics.$servertablenames()] where TPF_CF_REF = CF_SEQ )
+Sta:, (select count(*) from [lrArrangements.$servertablenames()] where ARR_CF_REF = CF_SEQ )
+
+Sta:from [$cinst.$servertablenames()]
+Sta:left outer join [lrVenue.$servertablenames()] on ven_seq = cf_ven_ref
+
+Sta:where CF_GO_REF = @[trGroupOrg.GO_SEQ]
+If not(pbIncludeInactive)
+	Sta:and     CF_ACTIVE = 1
+End If
+Sta:order by CF_DATE_FROM desc
+Sta:limit [lnLimit]
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

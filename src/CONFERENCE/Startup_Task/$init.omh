@@ -1,0 +1,9 @@
+# Called from START.Startup_Task
+Set reference irefCORETASK to $itasks.CONFERENCE
+
+Do inherited ## tConstants
+
+Do $menus.$findname(con('mApp',cap($clib().$name))) Returns lrefMenuExists
+If lrefMenuExists
+	Install menu [con('mApp',cap($clib().$name))]
+End If

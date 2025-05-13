@@ -1,0 +1,700 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$validation",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessage",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			}
+		]
+	},
+	{
+		"name": "$fetchConferenceSessionAttendees",
+		"order": 5,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopic",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetchDelegateSessions",
+		"order": 6,
+		"pvardefs": [
+			{
+				"name": "pnDG_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pdDate",
+				"order": 9,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0,
+				"param": 2,
+				"initval": "#NULL"
+			},
+			{
+				"name": "pnDay",
+				"order": 10,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0,
+				"param": 3,
+				"initval": "#NULL"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCriteria",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "lcTimeClause",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "loSession",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrangement",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sArrangements",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetchFeedback",
+		"order": 7,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcCriteria",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 2
+			},
+			{
+				"name": "pcTextSearch",
+				"order": 10,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcTextSearch",
+				"order": 11,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "loSession",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopic",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$reportFeedback",
+		"order": 8,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 11,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pnARR_SEQ",
+				"order": 16,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "liColRef",
+				"order": 18,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 5,
+				"type": "kList",
+				"subtype": "sArrAttendee",
+				"sublen": 0
+			},
+			{
+				"name": "lnColNo",
+				"order": 17,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrangements",
+				"order": 14,
+				"type": "kRow",
+				"subtype": "sArrangements",
+				"sublen": 0
+			},
+			{
+				"name": "lrAttendee",
+				"order": 19,
+				"type": "kRow",
+				"subtype": "sArrAttendee",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 15,
+				"type": "kRow",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrFacility",
+				"order": 13,
+				"type": "kRow",
+				"subtype": "sFacility",
+				"sublen": 0
+			},
+			{
+				"name": "lrLinkTopicToConference",
+				"order": 8,
+				"type": "kRow",
+				"subtype": "sTopicConferenceLink",
+				"sublen": 0
+			},
+			{
+				"name": "lrLinkTopicToPerson",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "sTopicPersonLink",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrRefFeedbackTitle",
+				"order": 20,
+				"type": "kRow",
+				"subtype": "infra.ssysReferenceOrg",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopics",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			},
+			{
+				"name": "lrVenue",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "sVenue",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$reportCounts",
+		"order": 9,
+		"pvardefs": [
+			{
+				"name": "pnARR_SEQ",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pnUSR_REF",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 2,
+				"initval": "trCurrUser.USR_SEQ"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 6,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lnCountAll",
+				"order": 13,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountThisUser",
+				"order": 14,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 4,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrangements",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "sArrangements",
+				"sublen": 0
+			},
+			{
+				"name": "lrData",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$reportAllSessionCounts",
+		"order": 10,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pnDG_SEQ",
+				"order": 9,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountAll",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountThisUser",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrangement",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sArrangements",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$ForeignKeys",
+		"order": 11,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llForeignKeyList",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrAttendee",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sArrAttendee",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$Links",
+		"order": 12,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llLinks",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrangements",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "sArrangements",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrAttendee",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sArrAttendee",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegates",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrentExtOrganisations",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "infra.sentExtOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrentGroupOrganisations",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "infra.sentGroupOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrFacility",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sFacility",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopics",
+				"order": 8,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			},
+			{
+				"name": "lrVenue",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sVenue",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 13,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

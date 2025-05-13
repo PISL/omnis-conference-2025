@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 5,
+	"nextident": 32064,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2019-10-29 20:11:59",
+		"createinstancewhensubtype": true,
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2019-10-30 11:26:49",
+		"servertablename": "conf.testquestionoptions",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.00"
+	}
+}

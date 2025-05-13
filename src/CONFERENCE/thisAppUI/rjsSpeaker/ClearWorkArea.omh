@@ -1,0 +1,16 @@
+If inCurrentTab=cnTabDelegate
+	Do irCurrentRecord.$clear()
+	
+	Calculate ilStatus.$line as 0
+	Calculate ilOccupancy.$line as 0
+	# Calculate ilPersons.$line as 0
+	Do ilPastTopics.$clear()
+	Do ilTopicSummary.$clear()
+Else If inCurrentTab=cnTabHistory
+	Do ilPastTopics.$clear()
+	Do ilTopicSummary.$clear()
+End If
+
+If inCurrentTab<=2
+	Do irTopic.$clear() ## NOT ilPax
+End If

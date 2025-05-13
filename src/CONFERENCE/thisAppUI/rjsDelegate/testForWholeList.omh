@@ -1,0 +1,18 @@
+Calculate lbWholeList as kFalse
+
+# If the whole list is on display then sending thank you letter will only go to single delegate.
+
+# test for known subsets
+If ilSearch2.RFO_VALUE='DG_SPECIAL' ## special guest
+	Calculate lbWholeList as kTrue
+Else If ilSearch2.RFO_VALUE='DG' ## regular delegate
+	Calculate lbWholeList as kTrue
+Else If ilSearch2.RFO_VALUE='SPEAKER'
+	Calculate lbWholeList as kTrue
+Else If icSearch<>''
+	# there is a subset of records of some sort
+	Calculate lbWholeList as kTrue
+End If
+
+# Calculate lbWholeList as kFalse
+Quit method lbWholeList

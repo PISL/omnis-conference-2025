@@ -1,0 +1,65 @@
+{
+	"classtype": "kTable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 18,
+	"superclass": "infra.tMaster",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "ioFormat",
+			"order": 4,
+			"type": "kObject",
+			"subtype": "infra.oFormatData",
+			"sublen": 0
+		},
+		{
+			"name": "irPerson",
+			"order": 3,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW1",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW2",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:16",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2020-01-04 15:58:23",
+		"showascheckedout": false,
+		"sqlclassname": "sPerson",
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon"
+	]
+}

@@ -1,0 +1,53 @@
+If icMode<>'' ## We are creating or editing a Delegate / PAX / Payment  record so override the defaults
+	Calculate lnlinestyle as 2
+	Calculate lrFieldAttributes as OJSON.$jsontolistorrow(trFormColours.FIELDCOLOURS)
+	Calculate lnbordercolour as eval(lrFieldAttributes.mandatory)
+	Calculate lneffect as kJSborderPlain
+	Calculate lnEnterable as eval(lrFieldAttributes.enterable)
+	Calculate lnUnique as eval(lrFieldAttributes.unique)
+End If
+
+If inCurrentTab=cnTabArrangement
+	# set attributes for Unique and Mandatory fields
+	Calculate $cinst.$objs.ARR_TPC_REF.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.ARR_TPC_REF.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.ARR_TPC_REF.$effect as lneffect
+	Calculate $cinst.$objs.ARR_TPC_REF.$backcolor as lnUnique
+	
+	Calculate $cinst.$objs.ARR_PSN_REF.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.ARR_PSN_REF.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.ARR_PSN_REF.$effect as lneffect
+	Calculate $cinst.$objs.ARR_PSN_REF.$backcolor as lnEnterable
+	
+	# now set Enterable on the remainder
+	Calculate $cinst.$objs.ARR_LEADER.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_FACILITY.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_FORMAT.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.box_date.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.box_date.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.box_date.$effect as lneffect
+	Calculate $cinst.$objs.box_date.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.ARR_DATE.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_DAYNO.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.box_time.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.box_time.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.box_time.$effect as lneffect
+	Calculate $cinst.$objs.box_time.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.ARR_STARTTIME.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_ENDTIME.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_BOOKING_REQD.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_MAX_BOOKINGS.$backcolor as lnEnterable
+	
+Else If inCurrentTab=cnTabComments
+	Calculate $cinst.$objs.ARR_ORDER.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_SPECIFIC_EQUIPT.$backcolor as lnEnterable
+	Calculate $cinst.$objs.ARR_COMMENT.$backcolor as lnEnterable
+	
+Else If inCurrentTab=cnTabAttendees
+	# everything is read only at the moment
+	
+End If

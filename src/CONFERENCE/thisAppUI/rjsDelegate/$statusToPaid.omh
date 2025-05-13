@@ -1,0 +1,26 @@
+# Do irCurrentRecord.$fetch_pk() ## latest copy from db     ;; however this also clears PSN_ , EO_ , Sort and DisplayName columns
+If irCurrentRecord.DG_SEQ>0
+	If irCurrentRecord.DG_STATUS<>'PAID'
+		Calculate irCurrentRecord.DG_STATUS as 'PAID'
+		Calculate irCurrentRecord.DG_STATUS_CHANGED as #D
+		Do irCurrentRecord.$update() Returns lbOK
+		If lbOK
+			# this is really the job of a trigger but I didn;t want to disturb Graham while he was busy
+			Do $DefineList(lrLog,'tDGstatusLog')
+			Calculate lrLog.DSL_DG_REF as irCurrentRecord.DG_SEQ
+			Calculate lrLog.DSL_STATUS_FROM as irOriginalRecord.DG_STATUS
+			Calculate lrLog.DSL_STATUS_TO as irCurrentRecord.DG_STATUS
+			Do lrLog.$insert() Returns lbLogOk
+			
+			Do irCurrentRecord.$DisplayName()
+			Do ilDisplayRecords.$assignrow(irCurrentRecord,kTrue)
+			Do method DropLists
+			
+			Do method FetchAndPresentPax
+			If ilPax.$linecount=0
+				Do method CreatePaxRecord
+				Do method FetchAndPresentPax
+			End If
+		End If
+	End If
+End If

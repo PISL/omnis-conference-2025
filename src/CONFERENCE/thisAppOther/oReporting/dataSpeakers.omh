@@ -1,0 +1,167 @@
+Do $DefineList(lrSpeakers,'tArrangements')
+Do lrSpeakers.$reportSpeakersAndTopics(prConference.CF_SEQ) Returns ilData
+
+Do ilData.$cols.$add('Section',kCharacter,kSimplechar,30)
+Do ilData.$sendall($ref.Section.$assign(ccSection1))
+
+Do ilData.$cols.$add('ROOM',kCharacter,kSimplechar,30)
+Do ilData.$cols.$add('DateSort',kDate,kDate2000)
+Do ilData.$cols.$add('DateDisplay',kCharacter,kSimplechar,30) ## for sorting
+Do ilData.$cols.$add('AM_WHAT',kCharacter,kSimplechar,30)
+Do ilData.$cols.$add('AM_WHO',kCharacter,kSimplechar,30)
+Do ilData.$cols.$add('PM_WHAT',kCharacter,kSimplechar,30)
+Do ilData.$cols.$add('PM_WHO',kCharacter,kSimplechar,30)
+Do ilData.$cols.$add('EVE_WHAT',kCharacter,kSimplechar,30)
+Do ilData.$cols.$add('EVE_WHO',kCharacter,kSimplechar,30)
+
+Do $DefineList(llSchedule,'tArrangements')
+Do llSchedule.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME',kTrue)
+Do llSchedule.$addLinkedCols('TPC_TITLE',kTrue)
+Do llSchedule.$addLinkedCols('FCY_NAME,FCY_LOCATION,FCY_ORDER,FCY_AREA,FCY_SEATING',kTrue)
+Do llSchedule.$AddDisplayName()
+Do llSchedule.$fetchConference(prConference.CF_SEQ)
+Do llSchedule.$cols.$add('DateSort',kDate,kDate2000)
+Do llSchedule.$cols.$add('DateDisplay',kCharacter,kSimplechar,30) ## for sorting
+Do llSchedule.$cols.$add('RoomDisplay',kCharacter,kSimplechar,30)
+Calculate llSchedule.$line as 0
+While $Loop(llSchedule)
+	If llSchedule.ARR_DATE>dat('1 JAN 2010')
+		Calculate llSchedule.DateSort as llSchedule.ARR_DATE
+		Calculate llSchedule.DateDisplay as llSchedule.ARR_DATE
+	Else
+		Calculate llSchedule.DateSort as dadd(kDay,llSchedule.ARR_DAYNO,prConference.CF_DATE_FROM)
+		Calculate llSchedule.DateDisplay as con('day ',llSchedule.ARR_DAYNO)
+	End If
+	
+	If isnull(llSchedule.PSN_SURNAME)&llSchedule.ARR_LEADER<>''
+		Calculate llSchedule.PSN_SURNAME as llSchedule.ARR_LEADER
+	End If
+	
+	If llSchedule.FCY_SEATING<>''
+		Calculate llSchedule.RoomDisplay as con(llSchedule.FCY_NAME,': ',llSchedule.FCY_SEATING)
+	Else If llSchedule.FCY_AREA<>''
+		Calculate llSchedule.RoomDisplay as con(llSchedule.FCY_NAME,': ',llSchedule.FCY_AREA,'m2')
+	Else If llSchedule.FCY_LOCATION<>''
+		Calculate llSchedule.RoomDisplay as con(llSchedule.FCY_NAME,': ',llSchedule.FCY_LOCATION)
+	Else
+		Calculate llSchedule.RoomDisplay as con(llSchedule.FCY_NAME)
+	End If
+End While
+Do llSchedule.$sort($ref.DateSort,0,$ref.FCY_ORDER,0,$ref.FCY_NAME,0,$ref.ARR_FACILITY,0,$ref.ARR_STARTTIME,0,$ref.ARR_SLOT,0)
+
+# columnar alignment for AM, PM, EVE
+# with a Speaker listed under each column and facility
+Calculate llSchedule.$line as 0
+While $Loop(llSchedule)
+	Calculate lbNewLine as kFalse
+	If llSchedule.PSN_SURNAME='Pistrang'
+		# Breakpoint
+	End If
+	If isnull(lcLastRoom)
+		Calculate lcLastRoom as ''
+	End If
+	
+	If llSchedule.$line=1
+		Calculate lbNewLine as kTrue
+	Else
+		If llSchedule.DateSort<>llSchedule.[llSchedule.$line-1].DateSort
+			Calculate lbNewLine as kTrue
+		End If
+	End If
+	If llSchedule.FCY_NAME<>lcLastRoom
+		Calculate lbNewLine as kTrue
+	End If
+	If lbNewLine
+		# eveything goes to a new line when the room changes
+		Do method newLine (llSchedule)
+		Calculate lnLineNoAM as ilData.$line
+		Calculate lnLineNoPM as ilData.$line
+		Calculate lnLineNoEVE as ilData.$line
+	End If
+	
+	# morning slot?
+	Calculate lbThisSlot as kFalse
+	If llSchedule.ARR_STARTTIME<tim('12:00')
+		Calculate lbThisSlot as kTrue
+	End If
+	If llSchedule.ARR_SLOT=1
+		Calculate lbThisSlot as kTrue
+	End If
+	If lbThisSlot
+		If ilData.[lnLineNoAM].AM_WHAT<>''
+			# something is already there so add another row to list
+			Do method newLine (llSchedule)
+			Calculate lnLineNoAM as lnLineNoAM+1
+		End If
+		If llSchedule.ARR_MAX_BOOKINGS>0
+			Calculate ilData.[lnLineNoEVE].AM_WHO as con(llSchedule.PSN_SURNAME,'  <',llSchedule.ARR_MAX_BOOKINGS,'>')
+		Else
+			Calculate ilData.[lnLineNoAM].AM_WHO as llSchedule.PSN_SURNAME
+		End If
+		# if PSN_SURNAME begins with _ or . then it is a GROUP event ## superceded by PSN_SEX = 'O'
+		# In which case show the TPC_TITLE, not the speaker.
+		# If (left(llSchedule.PSN_SURNAME,1)='_'|left(llSchedule.PSN_SURNAME,1)='.')&not(ibShowWhat)
+		If (llSchedule.PSN_SEX='O')&not(ibShowWhat)
+			Calculate ilData.[lnLineNoAM].AM_WHO as llSchedule.TPC_TITLE
+		End If
+		Calculate ilData.[lnLineNoAM].AM_WHAT as llSchedule.TPC_TITLE
+	End If
+	
+	# afternoon slot?
+	Calculate lbThisSlot as kFalse
+	If llSchedule.ARR_STARTTIME>=tim('12:00')&llSchedule.ARR_STARTTIME<tim('17:00')
+		Calculate lbThisSlot as kTrue
+	End If
+	If llSchedule.ARR_SLOT=2
+		Calculate lbThisSlot as kTrue
+	End If
+	If lbThisSlot
+		If ilData.[lnLineNoPM].PM_WHAT<>''
+			# something is already there so add another row to list
+			Do method newLine (llSchedule)
+			Calculate lnLineNoPM as lnLineNoPM+1
+		End If
+		If llSchedule.ARR_MAX_BOOKINGS>0
+			Calculate ilData.[lnLineNoEVE].PM_WHO as con(llSchedule.PSN_SURNAME,'  <',llSchedule.ARR_MAX_BOOKINGS,'>')
+		Else
+			Calculate ilData.[lnLineNoPM].PM_WHO as llSchedule.PSN_SURNAME
+		End If
+		# if PSN_SURNAME begins with _ or . then it is a GROUP event ## superceded by PSN_SEX = 'O'
+		# In which case show the TPC_TITLE, not the speaker.
+		# If (left(llSchedule.PSN_SURNAME,1)='_'|left(llSchedule.PSN_SURNAME,1)='.')&not(ibShowWhat)
+		If (llSchedule.PSN_SEX='O')&not(ibShowWhat)
+			Calculate ilData.[lnLineNoPM].PM_WHO as llSchedule.TPC_TITLE
+		End If
+		Calculate ilData.[lnLineNoPM].PM_WHAT as llSchedule.TPC_TITLE
+	End If
+	
+	# evening slot ?
+	Calculate lbThisSlot as kFalse
+	If llSchedule.ARR_STARTTIME>=tim('17:00')
+		Calculate lbThisSlot as kTrue
+	End If
+	If llSchedule.ARR_SLOT=3
+		Calculate lbThisSlot as kTrue
+	End If
+	If lbThisSlot
+		If ilData.[lnLineNoEVE].EVE_WHAT<>''
+			# something is already there so add another row to list
+			Do method newLine (llSchedule)
+			Calculate lnLineNoEVE as lnLineNoEVE+1
+		End If
+		If llSchedule.ARR_MAX_BOOKINGS>0
+			Calculate ilData.[lnLineNoEVE].EVE_WHO as con(llSchedule.PSN_SURNAME,'  <',llSchedule.ARR_MAX_BOOKINGS,'>')
+		Else
+			Calculate ilData.[lnLineNoEVE].EVE_WHO as llSchedule.PSN_SURNAME
+		End If
+		# if PSN_SURNAME begins with _ or . then it is a GROUP event ## superceded by PSN_SEX = 'O'
+		# In which case show the TPC_TITLE, not the speaker.
+		# If (left(llSchedule.PSN_SURNAME,1)='_'|left(llSchedule.PSN_SURNAME,1)='.')&not(ibShowWhat)
+		If (llSchedule.PSN_SEX='O')&not(ibShowWhat)
+			Calculate ilData.[lnLineNoEVE].EVE_WHO as llSchedule.TPC_TITLE
+		End If
+		Calculate ilData.[lnLineNoEVE].EVE_WHAT as llSchedule.TPC_TITLE
+	End If
+	
+	Calculate lcLastRoom as llSchedule.FCY_NAME
+End While

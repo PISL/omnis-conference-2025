@@ -1,0 +1,61 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+Calculate $cinst.$objs.PagedPane.$currentpage as 1 ## login
+
+# get the exit/cancel URL
+Do toValues.$initInherited('URL','EXIT') Returns lrReference
+If not(isclear(lrReference.RFO_CHAR))
+	Calculate icURLexit as lrReference.RFO_CHAR
+End If
+
+Calculate irCompany as trGroupOrg
+
+Do $DefineList(ilVenues,'CONFERENCE.tVenue')
+Do ilVenues.$fetchOurVenues(tlOpenConferences)
+Do ilVenues.$search($ref.VEN_NAME=tlOpenConferences.VEN_NAME,1,0,0,0)
+
+Do toStrings.$AddressToString(ilVenues.VEN_BUILDING,ilVenues.VEN_STREET,ilVenues.VEN_LOCALITY,ilVenues.VEN_TOWN,ilVenues.VEN_STATE,ilVenues.VEN_POSTCODE,ilVenues.VEN_COUNTRY) Returns icAddress
+
+Begin text block
+Line:Venue information
+End text block
+Get text block icFormHeading
+
+Begin text block
+Line:  Contact details and shuttle bus instructions.
+End text block
+Get text block icFormIntro
+
+Do method TranslateText
+
+# prepare the .ics file contents
+Do loWorkerObj.$getCalendarStructure() Returns irCalendar
+Calculate irCalendar.Title as tlOpenConferences.CF_TITLE
+Calculate irCalendar.Location as icAddress
+Calculate irCalendar.Start as tlOpenConferences.CF_DATE_FROM
+# Calculate irCalendar.StartTimezone as ilVenues.VEN_TIMEZONE
+Calculate irCalendar.End as tlOpenConferences.CF_DATE_TO
+# Calculate irCalendar.EndTimezone as ilVenues.VEN_TIMEZONE
+Calculate irCalendar.Description as con('Venue name:  ',ilVenues.VEN_NAME,kCr,kCr)
+Calculate irCalendar.Description as con(irCalendar.Description,'Phone number:  ',ilVenues.VEN_PHONE,kCr,kCr)
+If ilVenues.VEN_TRANSFERS<>''
+	Calculate irCalendar.Description as con(irCalendar.Description,'Pickup instructions:  ',ilVenues.VEN_TRANSFERS)
+End If
+Do loWorkerObj.$attachCalendar(irCalendar)
+Calculate icIcsFileContents as loWorkerObj.icEventSpec
+
+
+# if we're developing, set the timeout to a reasonable value - 2 hours
+If sys(2)=17
+	Do $setTimeout(120)
+Else
+	Do $setTimeout(10)
+End If
+
+Calculate inCurrentPane as 1
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

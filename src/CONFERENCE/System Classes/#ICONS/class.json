@@ -1,0 +1,68 @@
+{
+	"classtype": "kSystemtable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 3,
+	"iconversion": 10,
+	"nextident": 2,
+	"properties": {
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:01",
+		"desc": "",
+		"external": false,
+		"moddate": "2015-04-27 12:03:53",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.00"
+	},
+	"iconids": [
+		{
+			"iconid": 5000,
+			"pageid": 1,
+			"iconpos": 1,
+			"defaultsize": 1,
+			"flags": 0
+		},
+		{
+			"iconid": 5001,
+			"pageid": 1,
+			"iconpos": 2,
+			"defaultsize": 1,
+			"flags": 0
+		},
+		{
+			"iconid": 5002,
+			"pageid": 1,
+			"iconpos": 3,
+			"defaultsize": 1,
+			"flags": 0
+		},
+		{
+			"iconid": 5003,
+			"pageid": 1,
+			"iconpos": 4,
+			"defaultsize": 1,
+			"flags": 0
+		}
+	],
+	"pages": [
+		{
+			"pageid": 1,
+			"name": "myEcoCost",
+			"bitmapid": 1,
+			"flags": 1806
+		}
+	],
+	"bitmaps": [
+		{
+			"bitmapid": 1,
+			"solid": {
+				"$png": "solid1.png"
+			},
+			"alpha": {
+				"$png": "alpha1.png"
+			}
+		}
+	]
+}

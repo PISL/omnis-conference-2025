@@ -1,0 +1,13 @@
+# after introducing this object to share code between jsClient and fat client,
+# printing to PDF stopped working due to $ctask getting lost
+# within this object.
+
+# The method $printReport would get invoked but all task variables within it were undefined.
+# Very consistent here but very difficult to report to TL without all code and data behind it.
+
+Set reference irefTask to prefTask
+If $ctask.$DefineList.$cando
+	# everything is working
+Else
+	Breakpoint
+End If

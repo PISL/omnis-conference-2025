@@ -1,0 +1,366 @@
+[
+	{
+		"name": "PRD_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k64bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "primary key",
+			"nonull": true,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_CWHEN",
+		"ident": 32048,
+		"order": 2,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "created timestamp",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_CBY",
+		"ident": 32049,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "created by",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_MWHEN",
+		"ident": 32050,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "modified timestamp",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_MBY",
+		"ident": 32051,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "modified by",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_MCOUNT",
+		"ident": 32057,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "no. of times record has been modified; part of optimistic locking",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_GO_REF",
+		"ident": 32058,
+		"order": 7,
+		"type": "kInteger",
+		"subtype": "k64bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to GroupOrganisations",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_EO_REF",
+		"ident": 32059,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "k64bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to entExtOrganisations",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_SUPP_PRODCODE",
+		"ident": 32060,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "supplier's product code",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_INT_PRODCODE",
+		"ident": 32061,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "internal product code",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_BRAND",
+		"ident": 32027,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "brand identifier",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_NAME",
+		"ident": 32029,
+		"order": 12,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "product name",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_DESC",
+		"ident": 32019,
+		"order": 13,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "full description",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_SIZE",
+		"ident": 32020,
+		"order": 14,
+		"type": "kNumber",
+		"subtype": "kFloatdp",
+		"sublen": 0,
+		"properties": {
+			"desc": "package size",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_UOS_CODE",
+		"ident": 32064,
+		"order": 15,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "taken from sysunitsynonyms",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_UNIT_DIVISOR",
+		"ident": 32065,
+		"order": 16,
+		"type": "kNumber",
+		"subtype": "kFloatdp",
+		"sublen": 0,
+		"properties": {
+			"desc": "divisor to use to equate PRD_SIZE to eco invoice units",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_ECOCOST_UOS_CODE",
+		"ident": 32066,
+		"order": 17,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "taken from sysunitsynonyms for the eco cost record",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_DISCONTINUED",
+		"ident": 32067,
+		"order": 18,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "date when the product will be excluded from overhead forecasts",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_SERVICE_UNIT",
+		"ident": 32068,
+		"order": 19,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "service unit",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_BARCODE",
+		"ident": 32069,
+		"order": 20,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 128,
+		"properties": {
+			"desc": "barcode alphanumeric translation",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_MFR_FBACK_SERVICE",
+		"ident": 32070,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_META",
+		"ident": 32071,
+		"order": 22,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_MICRO_PRD_REF",
+		"ident": 32072,
+		"order": 23,
+		"type": "kInteger",
+		"subtype": "k64bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_MASS_FACTOR",
+		"ident": 32075,
+		"order": 24,
+		"type": "kNumber",
+		"subtype": "kFloatdp",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_UNIT_PRICE",
+		"ident": 32076,
+		"order": 25,
+		"type": "kNumber",
+		"subtype": "k0dp",
+		"sublen": 0,
+		"properties": {
+			"desc": "price per unit of this product (excluding tax)",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "PRD_TAX_BAND",
+		"ident": 32074,
+		"order": 26,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1,
+		"properties": {
+			"desc": "for tiered tax banding",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

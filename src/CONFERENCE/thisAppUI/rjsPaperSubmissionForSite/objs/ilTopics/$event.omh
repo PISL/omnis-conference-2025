@@ -1,0 +1,4 @@
+On evClick
+	Calculate ilTopics.$line as pVertCell
+	Do method topicClicked
+	Do $cinst.$behaviour()

@@ -1,0 +1,16 @@
+# If right(upp($cinst.ilSearch2.DisplayDate),3)=' AM'|right(upp($cinst.ilSearch2.DisplayDate),3)=' PM'
+# Do method reduceFacilityList
+# Else
+Calculate ilFacilityAssign as ilFacilities
+Do ilFacilityAssign.$search($ref.FCY_TYPE='EXCLUDE',1,0,1,0)
+Do ilFacilityAssign.$remove(kListDeleteSelected)
+# End If
+
+Do ilFacilities.$search($ref.FCY_SEQ=irCurrentRecord.ARR_FCY_REF,1,0,0,0)
+
+Do ilFacilityAssign.$search($ref.FCY_SEQ=irCurrentRecord.ARR_FCY_REF,1,0,0,0)
+Do ilPersons.$search($ref.PSN_SEQ=irCurrentRecord.ARR_PSN_REF,1,0,0,0)
+Do ilTopics.$search($ref.TPC_SEQ=irCurrentRecord.ARR_TPC_REF,1,0,0,0)
+If ilFormat.$colcount
+	Do ilFormat.$search($ref.RFO_VALUE=irCurrentRecord.ARR_FORMAT,1,0,0,0)
+End If

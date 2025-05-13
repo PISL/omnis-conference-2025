@@ -1,0 +1,44 @@
+# If clLabels.$linecount=0
+# prepare list of super class objects
+Do llSuperLabels.$cols.$add('objName',kCharacter,kSimplechar,50)
+Calculate llGroupOrgExceptionLabels as llSuperLabels
+
+Do llSuperLabels.$add('disp_events')
+Do llSuperLabels.$add('disp_del_canc')
+Do llSuperLabels.$add('disp_child_nodelete')
+Do llSuperLabels.$add('disp_respond')
+Do llSuperLabels.$add('disp_delete')
+Do llSuperLabels.$add('disp_dupArrangements')
+# Do llSuperLabels.$add('disp_dupPriceRule')
+Do llSuperLabels.$add('disp_confirm')
+Do llSuperLabels.$add('EVENT_Heading')
+Do llSuperLabels.$add('EVENT_Intro')
+Do llSuperLabels.$add('disp_warnDupMayBeBetterText')
+Do llSuperLabels.$add('disp_warnDupMayBeBetterTitle')
+
+# some clients may want to label Conferences differently ## e.g. Events, Courses instead of Conference
+# a row in ReferenceOrg will also have to be set to mark "search for a possible exception"
+Do llGroupOrgExceptionLabels.$add('CF_TITLE')
+Do llGroupOrgExceptionLabels.$add('TabControl_CF')
+
+Do $cinst.$objs.$makelist($ref.$name,$ref) Returns llLabels
+Do llLabels.$sendall($sendallref.C1.$assign(mid($sendallref.C1,1,len($sendallref.C1)-2)),isnumber(right($sendallref.C1,1))&left(right($sendallref.C1,2),1)='_') ## remove the "_digit" from the end of duplicated object names
+# now we have to identify field objects with labels so we can add the tooltip to them in $assigntext
+Calculate llEntryFields as llLabels
+Do llEntryFields.$search(0)
+For llLabels.$line from 1 to llLabels.$linecount step 1
+	If left(llLabels.C1,6)='label_'
+		Do llEntryFields.$search($ref.C1=mid(llLabels.C1,7),1,0,1,0)
+	End If
+End For
+Do llEntryFields.$remove(kListKeepSelected)
+Do $cinst.$translateLabels(llLabels,llSuperLabels,llGroupOrgExceptionLabels)
+Calculate clLabels as llLabels
+# End If
+
+Do $cinst.$assignText(llEntryFields) ## get the super class to set the objects' properties
+
+# RSM  2023-03-03  Using $cell() in execute on client methods creates errors!
+# So create instance vars with exceptional text content
+Calculate icWarnDuplicateText as $cell(clLabels,'objName','disp_warnDupMayBeBetterText','label')
+Calculate icWarnDuplicateTitle as $cell(clLabels,'objName','disp_warnDupMayBeBetterTitle','label')

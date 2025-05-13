@@ -1,0 +1,88 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabTestDesc
+	Begin reversible block
+		Calculate icMode as mid(icMode,1,1) ## just I or E for inherited method
+	End reversible block
+	If icMode='I' ## insert  'IT'
+		If ilSearch2.ARR_SEQ>0
+			Calculate irCurrentRecord.TST_ARR_REF as ilSearch2.ARR_SEQ
+		Else
+			Calculate irCurrentRecord.TST_CF_REF as ilSearch1.CF_SEQ
+		End If
+	End If
+	Do inherited Returns lbOK
+	
+Else If inCurrentTab=cnTabQuestions
+	If icMode='IQ' ## insert question
+		Calculate irQuestion.TSQ_TST_REF as irCurrentRecord.TST_SEQ
+	End If
+	# Do method FormatMC ('T')
+	Do ioArrangements.$prepareMultipleChoice('T',#NULL,ilMultipleChoiceOptions) Returns irQuestion.TSQ_MC_OPTIONS
+	
+	Do irQuestion.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irQuestion.icValidationMessage
+	Else
+		If icMode='IQ' ## insert question
+			Do irQuestion.$insert() Returns lbOK
+			If lbOK
+				Do ilQuestions.$add()
+				Calculate ilQuestions.$line as ilQuestions.$linecount
+			End If
+		Else
+			Do $ctask.toStrings.$HasRowBeenModified(irQuestionOrig,irQuestion) Returns lbModified
+			If lbModified
+				Do irQuestion.$update() Returns lbOK
+			Else
+				Calculate lbOK as kTrue
+			End If
+		End If
+		If lbOK
+			# all good
+			If isnull(irQuestionOrig.TSQ_ORDER)
+				# a new row
+				Do ilQuestions.$assignrow(irQuestion)
+				
+			Else If irQuestion.TSQ_ORDER<>irQuestionOrig.TSQ_ORDER
+				# question order has changed
+				If irQuestion.TSQ_ORDER>irQuestionOrig.TSQ_ORDER
+					# shuffle the TSQ_ORDER down
+					Calculate lnStart as irQuestionOrig.TSQ_ORDER+1
+					Calculate lnEnd as irQuestion.TSQ_ORDER
+					For lnLineNo from lnStart to lnEnd step 1
+						Calculate ilQuestions.$line as lnLineNo
+						Calculate irQuestion as ilQuestions
+						Calculate irQuestion.TSQ_ORDER as irQuestion.TSQ_ORDER-1
+						Do irQuestion.$update() Returns lbOK
+					End For
+					
+				Else If irQuestion.TSQ_ORDER<irQuestionOrig.TSQ_ORDER
+					# shuffle the TSQ_ORDER up
+					Calculate lnStart as irQuestion.TSQ_ORDER
+					Calculate lnEnd as irQuestionOrig.TSQ_ORDER-1
+					For lnLineNo from lnStart to lnEnd step 1
+						Calculate ilQuestions.$line as lnLineNo
+						Calculate irQuestion as ilQuestions
+						Calculate irQuestion.TSQ_ORDER as irQuestion.TSQ_ORDER+1
+						Do irQuestion.$update() Returns lbOK
+					End For
+					
+				End If
+				Do method FetchAndPresentQuestions
+			Else If lbModified
+				Do ilQuestions.$assignrow(irQuestion)
+				Calculate irQuestionOrig as irQuestion
+			End If
+		Else ## lbOK is not kTrue
+			Calculate icDisplayMessage as irQuestion.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+	Quit method lbOK
+	
+End If
+
+If lbOK
+	Calculate icMode as ''
+End If

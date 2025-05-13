@@ -1,0 +1,26 @@
+
+Do ilTopicsWithSpeakers.$fetchConferenceTopics(ilConferences.CF_SEQ)
+Do ilTopicsWithSpeakers.$sort($ref.PSN_SURNAME,0)
+# remove internal conference events such as Gala Dinner by removing names starting with _
+Do ilTopicsWithSpeakers.$search(left($ref.PSN_SURNAME,1)='_',1,0,1,0)
+Do ilTopicsWithSpeakers.$remove(kListDeleteSelected)
+
+# positioned after fetch because fetch method adds extra columns from PSN table automatically
+Do ilTopicsWithSpeakers.$cols.$findname('PSN_ImageLink') Returns liColRef
+If liColRef
+	# extra column already added
+Else
+	Do ilTopicsWithSpeakers.$cols.$add('PSN_ImageLink',kCharacter,kSimplechar,1000)
+End If
+
+Do iTileList.$clear()
+Calculate ilTopicsWithSpeakers.$line as 0
+While $Loop(ilTopicsWithSpeakers)
+	Calculate ilTopicsWithSpeakers.PSN_ImageLink as con(icImageHtmlPre,kDq,ilTopicsWithSpeakers.PSN_IMAGE_LINK,kDq,icImageHtmlPost)
+	
+	# Do iTileList.$add('ImagePath','Text1','Text2','ButtonPath','ButtonDescription','BackgroundColor')
+	# Do iTileList.$add("images/webshop/BuffaloWings.jpg","Chicken","Buffalo wings",iconurl("info"),"Info",kJSThemeColorPrimary)
+	Do iTileList.$add(ilTopicsWithSpeakers.PSN_IMAGE_LINK,con(ilTopicsWithSpeakers.PSN_FIRST_NAME,kSp,ilTopicsWithSpeakers.PSN_SURNAME),ilTopicsWithSpeakers.TPC_TITLE,iconurl("info"),"more",kJSThemeColorPrimary)
+End While
+
+# Do method setGridExceptions

@@ -1,0 +1,29 @@
+{
+	"ident": 1068,
+	"order": 34,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "end of report",
+		"align": "kLeftJst",
+		"backcolor": "kColorDefault",
+		"backpattern": 15,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.493,
+		"left": 0.485,
+		"lineno": 21,
+		"lineoffset": 0.0,
+		"rowid": "endOfReport",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 3.564
+	}
+}

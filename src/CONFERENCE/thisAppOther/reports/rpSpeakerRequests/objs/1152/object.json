@@ -1,0 +1,29 @@
+{
+	"ident": 1152,
+	"order": 8,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "topic",
+		"align": "kLeftJst",
+		"backcolor": "RGB(80,0,0)",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 5,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 13.198,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"rowid": "TPC_TITLE",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 3.045
+	}
+}

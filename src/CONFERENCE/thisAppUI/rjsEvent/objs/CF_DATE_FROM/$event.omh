@@ -1,0 +1,21 @@
+On evAfter
+	Calculate ldDate as irCurrentRecord.CF_DATE_FROM
+	If ldDate>dat('1 JAN 2010')
+		# good
+		Calculate $cinst.$objs.CF_DATE_FROM.$errortext as ''
+		Calculate $cinst.$objs.CF_DATE_TO.$errortext as ''
+		
+		If irCurrentRecord.CF_DATE_TO>dat('1 JAN 2010')
+			If irCurrentRecord.CF_DATE_FROM<=irCurrentRecord.CF_DATE_TO
+				# good
+			Else
+				Calculate $cinst.$objs.CF_DATE_FROM.$errortext as 'from & to date invalid'
+				Calculate $cinst.$objs.CF_DATE_TO.$errortext as ''
+			End If
+		Else
+			# ignore
+		End If
+	Else
+		Calculate $cinst.$objs.CF_DATE_FROM.$errortext as 'bad format'
+		Calculate $cinst.$objs.CF_DATE_TO.$errortext as ''
+	End If

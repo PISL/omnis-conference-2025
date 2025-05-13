@@ -1,0 +1,3 @@
+CGIEncode (prDelegate.PSN_SURNAME) Returns lcEncoded ## if someone has spaces in their name like De Roover
+Calculate lcTravelLink as con(irTravelInfoLink.RFO_CHAR,'?id=',prDelegate.DG_SEQ,'&name=',lcEncoded)
+Quit method lcTravelLink

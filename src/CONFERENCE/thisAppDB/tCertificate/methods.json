@@ -1,0 +1,114 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$validation",
+		"order": 4,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessage",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			}
+		]
+	},
+	{
+		"name": "$Links",
+		"order": 9,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llLinks",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrGroupOrg",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "infra.sentGroupOrganisations",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$ForeignKeys",
+		"order": 10,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llForeignKeyList",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$displayName",
+		"order": 12,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "liColRef",
+				"order": 1,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 13,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

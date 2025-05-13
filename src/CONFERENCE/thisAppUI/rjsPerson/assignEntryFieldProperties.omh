@@ -1,0 +1,76 @@
+If icMode<>'' ## We are creating or editing a User record so override the defaults
+	Calculate lnlinestyle as 2
+	Calculate lrFieldAttributes as OJSON.$jsontolistorrow(trFormColours.FIELDCOLOURS)
+	Calculate lnbordercolour as eval(lrFieldAttributes.mandatory)
+	Calculate lneffect as kJSborderPlain
+	Calculate lnEnterable as eval(lrFieldAttributes.enterable)
+	Calculate lnUnique as eval(lrFieldAttributes.unique)
+End If
+
+If icMode=''|pos('P',icMode)
+	# PSN_SURNAME: mandatory = border + linestyle + effect, enterable = backcolor
+	Calculate $cinst.$objs.PSN_SURNAME.$linestyle as lnlinestyle ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_SURNAME.$bordercolor as lnbordercolour ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_SURNAME.$effect as lneffect ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_SURNAME.$backcolor as lnEnterable ## ;;# JSON export
+	
+	# PSN_FIRST_NAME: mandatory = border + linestyle + effect, enterable = backcolor
+	Calculate $cinst.$objs.PSN_FIRST_NAME.$linestyle as lnlinestyle ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_FIRST_NAME.$bordercolor as lnbordercolour ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_FIRST_NAME.$effect as lneffect ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_FIRST_NAME.$backcolor as lnEnterable ## ;;# JSON export
+	
+	# PSN_COMPANY: mandatory = border + linestyle + effect, enterable = backcolor
+	Calculate $cinst.$objs.PSN_COMPANY.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.PSN_COMPANY.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.PSN_COMPANY.$effect as lneffect
+	Calculate $cinst.$objs.PSN_COMPANY.$backcolor as lnEnterable
+	
+	# PSN_EMAIL: mandatory = border + linestyle + effect, enterable = backcolor
+	Calculate $cinst.$objs.PSN_EMAIL.$linestyle as lnlinestyle ## ;;# JSON export
+	# Calculate $cinst.$objs.PSN_EMAIL.$bordercolor as lnbordercolour ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_EMAIL.$effect as lneffect ## ;;# JSON export
+	Calculate $cinst.$objs.PSN_EMAIL.$backcolor as lnEnterable ## ;;# JSON export
+	
+	# PSN_PHONE: mandatory = border + linestyle + effect, enterable = backcolor
+	Calculate $cinst.$objs.PSN_PHONE.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.PSN_PHONE.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.PSN_PHONE.$effect as lneffect
+	Calculate $cinst.$objs.PSN_PHONE.$backcolor as lnEnterable
+	
+	# PSN_COUNTRY: mandatory = border + linestyle + effect, enterable = backcolor
+	Calculate $cinst.$objs.PSN_COUNTRY.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.PSN_COUNTRY.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.PSN_COUNTRY.$effect as lneffect
+	Calculate $cinst.$objs.PSN_COUNTRY.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.PSN_SPOUSE_NAME.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.PSN_SPOUSE_NAME.$effect as lneffect
+	Calculate $cinst.$objs.PSN_SPOUSE_NAME.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.PSN_SPEAKER_BIO.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.PSN_SPEAKER_BIO.$effect as lneffect
+	Calculate $cinst.$objs.PSN_SPEAKER_BIO.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.PSN_IMAGE_LINK.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.PSN_IMAGE_LINK.$effect as lneffect
+	Calculate $cinst.$objs.PSN_IMAGE_LINK.$backcolor as lnEnterable
+	
+	# PSN_ACTIVE: mandatory = border + linestyle + effect, enterable = backcolor ## checkbox
+	Calculate $cinst.$objs.PSN_ACTIVE.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.PSN_ACTIVE.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.PSN_ACTIVE.$effect as lneffect
+	Calculate $cinst.$objs.PSN_ACTIVE.$backcolor as lnEnterable
+	
+End If
+
+If icMode=''|pos('T',icMode)
+	Calculate $cinst.$objs.TPC_TITLE.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_TITLE.$bordercolor as lnbordercolour
+	
+	Calculate $cinst.$objs.TPC_ABSTRACT.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_DESC.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_REQUESTS.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_DURN_MINS.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_COMMENT.$backcolor as lnEnterable
+End If

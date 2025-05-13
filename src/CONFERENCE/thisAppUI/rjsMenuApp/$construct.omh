@@ -1,0 +1,25 @@
+Do inherited
+
+Do ilFormMenuOptions.$cols.$add('formCode',kCharacter,kSimplechar,100)
+# content columns
+Do ilFormMenuOptions.$cols.$add('action',kList)
+Do ilFormMenuOptions.$cols.$add('notification',kList)
+Do ilFormMenuOptions.$cols.$add('search',kList)
+Do ilFormMenuOptions.$cols.$add('help',kList)
+# attribute columns
+Do ilFormMenuOptions.$cols.$add('iconAction',kCharacter,kSimplechar,2)
+Do ilFormMenuOptions.$cols.$add('iconNotification',kCharacter,kSimplechar,2)
+Do ilFormMenuOptions.$cols.$add('iconSearch',kCharacter,kSimplechar,2)
+Do ilFormMenuOptions.$cols.$add('iconHelp',kCharacter,kSimplechar,2)
+Do ilFormMenuOptions.$cols.$add('identAction',kInteger,k32bitint)
+Do ilFormMenuOptions.$cols.$add('identNotification',kInteger,k32bitint)
+Do ilFormMenuOptions.$cols.$add('identSearch',kInteger,k32bitint)
+Do ilFormMenuOptions.$cols.$add('identHelp',kInteger,k32bitint)
+
+Do $getVar(nam(irKeyPress)) Returns irKeyPress ## get key press values for insert/edit/delete
+Do $getVar(nam(irKeyTranslations)) Returns irKeyTranslations ## get key press translation values
+
+Do method buildMenus
+
+Calculate icSubFormClass as "rjsDashboardApp"
+Calculate $cinst.$objs.SubForm.$classname as "rjsDashboardApp"

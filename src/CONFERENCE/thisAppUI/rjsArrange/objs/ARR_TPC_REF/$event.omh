@@ -1,0 +1,12 @@
+On evClick
+	Calculate irCurrentRecord.ARR_TPC_REF as ilTopics.TPC_SEQ
+	
+	If irCurrentRecord.ARR_PSN_REF>0
+		# do not override previous setting
+	Else
+		Calculate irCurrentRecord.ARR_PSN_REF as ilTopics.PSN_SEQ
+		Do ilPersons.$search($ref.PSN_SEQ=ilTopics.PSN_SEQ,1,0,0,0)
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

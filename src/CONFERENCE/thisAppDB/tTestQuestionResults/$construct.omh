@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TQR_'
+Calculate icPrimarykey as 'TQR_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TQR_TQO_REF'
+
+Do inherited

@@ -1,0 +1,11 @@
+# callback method from clientmessage - Yes
+Do irFacility.$delete_pk() Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as irFacility.irErrorSQL.NativeErrorText
+Else
+	Do ilFacilities.$remove(ilFacilities.$line)
+	Calculate irFacility as ilFacilities
+	Do ilFacilityType.$search($ref.RFO_VALUE=irFacility.FCY_TYPE,1,0,0,0)
+End If
+
+Do $cinst.$behaviour()

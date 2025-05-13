@@ -1,0 +1,11 @@
+On evClick
+	# sort cycle so other sort orders can be added
+	If inCurrentTopicSort>=1
+		Calculate inCurrentTopicSort as 0
+	Else
+		Calculate inCurrentTopicSort as inCurrentTopicSort+1
+	End If
+	
+	Do method SortTopics
+	
+	Do ilTopics.$search($ref.TPC_SEQ=irCurrentRecord.ARR_TPC_REF,1,0,0,0)

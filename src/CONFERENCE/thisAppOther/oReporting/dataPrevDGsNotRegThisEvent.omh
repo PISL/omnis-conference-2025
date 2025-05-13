@@ -1,0 +1,38 @@
+Do $DefineList(llDelegates,'tDelegates')
+Do llDelegates.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_EMAIL')
+Do llDelegates.$addLinkedCols('EO_NAME')
+Do llDelegates.$reportNotForConference(prConference.CF_SEQ) Returns ilData
+# the above call does an accurate job of returning previous delegates
+# however it does not take into account duplicate PERSON entries that can occur when different email addresses are used to register
+Do llDelegates.$fetchForConference(prConference.CF_SEQ)
+
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$sort($ref.PSN_SEQ,0)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If ilData.$line>1
+		If ilData.PSN_SEQ=ilData.[ilData.$line-1].PSN_SEQ
+			Calculate ilData.PreviousConferences as con(ilData.PreviousConferences,', ',ilData.[ilData.$line-1].PreviousConferences)
+			Calculate ilData.[ilData.$line-1].$selected as kTrue
+		End If
+	End If
+	Calculate ilData.SortName as con(upp(ilData.PSN_SURNAME),', ',upp(ilData.PSN_FIRST_NAME))
+End While
+Do ilData.$remove(kListDeleteSelected)
+
+Calculate llDelegates.$line as 0
+While $Loop(llDelegates)
+	# check full surname and first name match
+	Do ilData.$search(upp($ref.PSN_SURNAME)=upp(llDelegates.PSN_SURNAME)&upp($ref.PSN_FIRST_NAME)=upp(llDelegates.PSN_FIRST_NAME),1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate ilData.$selected as kTrue ## to be removed
+	Else
+		# check surname and first letter of first name ## for spelling mistake possibility
+		Do ilData.$search(upp($ref.PSN_SURNAME)=upp(llDelegates.PSN_SURNAME)&upp(left($ref.PSN_FIRST_NAME,1))=upp(left(llDelegates.PSN_FIRST_NAME,1)),1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate ilData.PSN_FIRST_NAME as con(ilData.PSN_FIRST_NAME,' **') ## to denote BEWARE of possible duplicate record
+		End If
+	End If
+End While
+Do ilData.$remove(kListDeleteSelected)

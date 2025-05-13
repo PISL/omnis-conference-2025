@@ -1,0 +1,43 @@
+If icMode<>'' ## We are creating or editing a Delegate / PAX / Payment  record so override the defaults
+	Calculate lnlinestyle as 2
+	Calculate lrFieldAttributes as OJSON.$jsontolistorrow(trFormColours.FIELDCOLOURS)
+	Calculate lnbordercolour as eval(lrFieldAttributes.mandatory)
+	Calculate lneffect as kJSborderPlain
+	Calculate lnEnterable as eval(lrFieldAttributes.enterable)
+	Calculate lnUnique as eval(lrFieldAttributes.unique)
+End If
+
+If inCurrentTab=cnTabTestDesc
+	# set attributes for Unique and Mandatory fields
+	Calculate $cinst.$objs.TST_TITLE.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.TST_TITLE.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.TST_TITLE.$effect as lneffect
+	Calculate $cinst.$objs.TST_TITLE.$backcolor as lnUnique
+	
+	# now set Enterable on the remainder
+	Calculate $cinst.$objs.TST_DESC.$backcolor as lnEnterable
+	
+Else If inCurrentTab=cnTabTestRules
+	Calculate $cinst.$objs.TST_CRITERIA.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TST_PASS_COUNT.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TST_RULES.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TST_DURN_MINS.$backcolor as lnEnterable
+	
+Else If inCurrentTab=cnTabQuestions
+	# everything is read only at the moment
+	Calculate $cinst.$objs.TSQ_QUESTION.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.TSQ_QUESTION.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.TSQ_QUESTION.$effect as lneffect
+	Calculate $cinst.$objs.TSQ_QUESTION.$backcolor as lnUnique
+	
+	Calculate $cinst.$objs.TSQ_FORMAT.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TSQ_FORMAT.$bordercolor as lnbordercolour
+	
+	Calculate $cinst.$objs.TSQ_CORRECT.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TSQ_CORRECT.$bordercolor as lnbordercolour
+	
+	Calculate $cinst.$objs.TSQ_ORDER.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TSQ_MC_OPTIONS.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TSQ_RULE.$backcolor as lnEnterable
+	
+End If

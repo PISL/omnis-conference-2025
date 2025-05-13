@@ -1,0 +1,12 @@
+If inCurrentTab=cnTabTestDesc
+	Do irCurrentRecord.$clear()
+	
+End If
+
+If inCurrentTab=cnTabQuestions
+	Do irQuestion.$clear() ## NOT ilPax
+	Calculate irQuestionOrig as irQuestion
+	
+	Calculate ilQuestionType.$line as 0
+	Do ilMultipleChoiceOptions.$clear()
+End If

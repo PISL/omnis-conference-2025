@@ -1,0 +1,21 @@
+If ilData.$line>0
+	Calculate inSubTotalLine as ilData.$line-1
+Else
+	Calculate inSubTotalLine as ilData.$linecount
+End If
+Calculate lnCount as ilData.[inSubTotalLine].level1count
+Calculate icPrintSubtotal1 as pick(lnCount>1,'','x')
+
+If icBreakCol1='invoiceMonth'
+	Calculate lnMonth as mid(ilData.[inSubTotalLine].invoiceMonth,5,2)
+	Calculate icBreakValue1 as pick(lnMonth,'','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
+Else
+	Calculate icBreakValue1 as ilData.[inSubTotalLine].[icBreakCol1]
+End If
+
+# Send to trace log
+# Send to trace log {level1count = [lnCount]}
+# Send to trace log {ibPrintSubtotal1 = [icPrintSubtotal1]}
+# Send to trace log {icBreakCol1 = [icBreakCol1] with value [icBreakValue1],}
+
+Do default

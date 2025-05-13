@@ -1,0 +1,6 @@
+On evClick
+	Do $cinst.$validation() Returns lbProceed
+	If lbProceed
+		Do method SaveRegistration
+	End If
+	Do $cinst.$behaviour()

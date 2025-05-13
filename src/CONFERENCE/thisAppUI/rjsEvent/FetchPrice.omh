@@ -1,0 +1,7 @@
+Do irProduct.$clear()
+Do irProduct.$fetchIntCode(irCurrentRecord.[pcColName])
+If irProduct.PRD_SEQ>0
+	# Calculate irPrices.[pcColName] as irProduct.PRD_UNIT_PRICE
+	Calculate lcPriceName as replaceall(pcColName,'RATE','PRICE')
+	Calculate irCurrentRecord.[lcPriceName] as irProduct.PID_UNIT_PRICE
+End If

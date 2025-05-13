@@ -1,0 +1,1 @@
+Do ilVenues.$search($ref.VEN_SEQ=irCurrentRecord.CF_VEN_REF,1,0,0,0)

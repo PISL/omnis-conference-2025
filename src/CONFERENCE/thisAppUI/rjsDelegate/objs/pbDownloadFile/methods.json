@@ -1,0 +1,76 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcMessage",
+				"order": 19,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 15,
+				"param": 1
+			},
+			{
+				"name": "plGenericContent",
+				"order": 20,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "llDelegates",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llInvDetail",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrAttributes",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrefAsyncPdf",
+				"order": 21,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrefPdfWorker",
+				"order": 18,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrInvHeader",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	}
+]

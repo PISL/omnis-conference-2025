@@ -1,0 +1,307 @@
+{
+	"classtype": "kObjectclass",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 191,
+	"superclass": "infra.oReportingSuper",
+	"designtaskname": "rtSuper",
+	"cvardefs": [
+		{
+			"name": "ccSection1",
+			"order": 1,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20,
+			"initval": "'a_topics'"
+		},
+		{
+			"name": "ccSection3",
+			"order": 2,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 20,
+			"initval": "'c_schedule'"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "iAuthor",
+			"order": 10,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Software'"
+		},
+		{
+			"name": "ibFileTechnique",
+			"order": 16,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ibPrintAsPDF",
+			"order": 15,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibShowWhat",
+			"order": 28,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icDisplayMessage",
+			"order": 14,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icEmailFromEmail",
+			"order": 32,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icEmailFromName",
+			"order": 33,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icEmailSubject",
+			"order": 34,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icEmailTextAfter",
+			"order": 25,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "icEmailTextBefore",
+			"order": 23,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "icFilePath",
+			"order": 17,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 1000
+		},
+		{
+			"name": "icSummary",
+			"order": 26,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 1000
+		},
+		{
+			"name": "icTextOutput",
+			"order": 19,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "ilConferences",
+			"order": 8,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilConferenceSelect",
+			"order": 13,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilData",
+			"order": 21,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilDisplayRecords",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilFeedback",
+			"order": 20,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilFeedbackScores",
+			"order": 36,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilFeedbackValues",
+			"order": 24,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilFilterOptions",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilGroupByOptions",
+			"order": 35,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOccupancy",
+			"order": 4,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOrganisations",
+			"order": 7,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilRatings",
+			"order": 27,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilRoles",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSchedule",
+			"order": 31,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSortOptions",
+			"order": 5,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inMinutesBreak",
+			"order": 29,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "0"
+		},
+		{
+			"name": "irefTask",
+			"order": 18,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iReportText",
+			"order": 12,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "irOtherValues",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTopFive",
+			"order": 30,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTotal",
+			"order": 22,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iSubject",
+			"order": 11,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'PDF Device'"
+		},
+		{
+			"name": "iTitle",
+			"order": 9,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'Omnis Studio JS Client'"
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:08",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2023-11-16 15:09:20",
+		"selfcontained": false,
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

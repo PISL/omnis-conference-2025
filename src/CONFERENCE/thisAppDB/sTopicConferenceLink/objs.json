@@ -1,0 +1,128 @@
+[
+	{
+		"name": "TPF_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>record ID</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_CWHEN",
+		"ident": 32004,
+		"order": 2,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>created when</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_CBY",
+		"ident": 32005,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>created by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_MWHEN",
+		"ident": 32006,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>last modified</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_MBY",
+		"ident": 32007,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>last modified by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_MCOUNT",
+		"ident": 32011,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>mod. count</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_CF_REF",
+		"ident": 32010,
+		"order": 7,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>conference</lbl><tt>Link to Conference this topic is being assigned to.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_TPC_REF",
+		"ident": 32009,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>topic</lbl><tt>Link to the Topic that is being assigned.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPF_STATUS",
+		"ident": 32012,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>status</lbl><tt>If a topic is assigned and then subsequently withdrawn, instead of deleting the record a status can be used to keep the record and describe the fate of the topic.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

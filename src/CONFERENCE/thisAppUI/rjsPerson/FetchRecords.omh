@@ -1,0 +1,18 @@
+Calculate icDisplayMessage as ''
+Do $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$html.$assign(#NULL)
+
+If icSearch<>''
+	Do ilDisplayRecords.$fetchOnString(icSearch)
+Else
+	Do ilDisplayRecords.$fetch_all()
+End If
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+End If
+
+Do ilDisplayRecords.$sort($ref.SortName,0)
+
+Calculate ilDisplayRecords.$line as 0
+# While $Loop(ilDisplayRecords)
+# Do ilDisplayRecords.$DisplayName()
+# End While

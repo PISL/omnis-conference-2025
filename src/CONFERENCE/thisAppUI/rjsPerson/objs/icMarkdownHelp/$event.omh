@@ -1,0 +1,19 @@
+On evAfter
+	
+On evKeyPress
+	# systemkey=30=backspace
+	If pKeyList.1.systemKey=0 ## printabe character
+		# continue
+	Else
+		# modifiers = 1  SHIFT
+		# modifiers = 5  OPTION SHIFT
+		If pKeyList.1.systemkey=27&pKeyList.1.modifiers=0 ## tab
+			Calculate $cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$currenttab as 4
+			# Do $cinst.$setcurfield($cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$objs.TPC_REQUESTS)
+			Do $cinst.$setcurfield('TPC_REQUESTS')
+		Else If pKeyList.1.systemkey=27&pKeyList.1.modifiers=1 ## shift tab
+			Calculate $cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$currenttab as 1
+			# Do $cinst.$setcurfield($cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$objs.TPC_ABSTRACT)
+			Do $cinst.$setcurfield('TPC_ABSTRACT')
+		End If
+	End If

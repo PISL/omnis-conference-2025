@@ -1,0 +1,18 @@
+Calculate icDisplayMessage as ''
+
+If icDGreference<>''
+	# good
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'Delegate reference missing')
+End If
+If icSurname<>''
+	# good
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'Surname missing')
+End If
+
+If icDisplayMessage<>''
+	Quit method kFalse
+End If
+
+Quit method kTrue

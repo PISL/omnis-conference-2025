@@ -1,0 +1,43 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Breakpoint
+	
+	Do $DefineList(trGroupOrg,'tentGroupOrganisations')
+	Do trGroupOrg.$fetch_pk(20) ## 20 = OmnisWorld
+	If trGroupOrg.GO_SEQ>0
+		Do method obfuscatePersons ## ilData
+		Do method obfuscateDelegates
+		Do method obfuscateExtOrg
+		Do method obfuscatePax
+		Do method obfuscateDiets
+		Do method obfuscateFinInvH
+		Do $DefineList(lrUpdate,'tCertificate') ## table class is immaterial
+		Do lrUpdate.$beginTransaction(,loSession,loStatement) Returns lbOK
+		If lbOK
+			Do lrUpdate.$executesqldirect("update conf.arrattendee set ara_cby = 'console', ara_mby ='console'") Returns lbOK
+			If lbOK
+				Do lrUpdate.$executesqldirect("update conf.attendeefeedback set afb_cby = 'console', afb_mby ='console'") Returns lbOK
+			End If
+			If lbOK
+				Do lrUpdate.$executesqldirect("update conf.delegateinvoicelinks set dil_cby = 'console', dil_mby ='console'") Returns lbOK
+			End If
+			If lbOK
+				Do lrUpdate.$executesqldirect("update conf.travelplans set tp_cby = 'console', tp_mby ='console'") Returns lbOK
+			End If
+			If lbOK
+				Do lrUpdate.$executesqldirect("update infra.fininvoiceoutd set fod_cby = 'onl:' where fod_cby like 'onl:%' ") Returns lbOK
+			End If
+			If lbOK
+				Do lrUpdate.$executesqldirect("update infra.fininvoiceoutd set fod_mby = 'onl:' where fod_mby like 'onl:%' ") Returns lbOK
+			End If
+			If lbOK
+				Do lrUpdate.$commitTransaction(,loSession,loStatement)
+			Else
+				Do lrUpdate.$rollbackTransaction(,loSession,loStatement)
+			End If
+		End If
+	End If
+	If lbOK
+		OK message Success {Obfuscation completed.}
+	Else
+		OK message Failure {Obfuscation failed.}
+	End If

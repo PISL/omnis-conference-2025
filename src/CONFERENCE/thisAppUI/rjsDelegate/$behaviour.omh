@@ -1,0 +1,138 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Calculate $cinst.$objs.ilSearch1.$enabled as icMode=''
+Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+Calculate $cinst.$objs.pbDelCascade.$enabled as kFalse
+# Calculate $cinst.$objs.TabControl_DG.$enabled as icMode='' ## we need this permanently enabled as we have more than 1 tab with enrty fields
+If inCurrentTab=cnTabDelegate ## Delegate
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&ibActiveConference
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.DG_SEQ>0&icMode=''&ibActiveConference
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.DG_SEQ>0&icMode=''&ibActiveConference
+	Calculate $cinst.$objs.pbDelCascade.$enabled as irUserRights.canDeleteCascade&irCurrentRecord.DG_SEQ>0&icMode=''&ibActiveConference
+	
+Else If inCurrentTab=cnTabPAX ## PAX
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsertChild&icMode=''&irCurrentRecord.DG_SEQ>0&ibActiveConference
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEditChild&irPax.PX_SEQ>0&icMode=''&ibActiveConference
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDeleteChild&irPax.PX_SEQ>0&icMode=''&ibActiveConference
+	
+Else If inCurrentTab=cnTabReceipts ## Payments
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsertChild&icMode=''&irCurrentRecord.DG_SEQ>0&ibActiveConference
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEditChild&irPayment.PY_SEQ>0&icMode=''&ibActiveConference
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDeleteChild&irPayment.PY_SEQ>0&icMode=''&ibActiveConference
+	
+Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsertChild&icMode=''&irCurrentRecord.DG_SEQ>0&ibActiveConference
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEditChild&irTravelPlan.TP_SEQ>0&icMode=''&ibActiveConference
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDeleteChild&irTravelPlan.TP_SEQ>0&icMode=''&ibActiveConference
+	
+End If
+
+If irCurrentRecord.DG_STATUS='CANCEL'
+	Calculate $cinst.$objs.PagedPane.$backcolor as rgb(255,204,255)
+Else If irCurrentRecord.DG_STATUS='SPEAKER'|irCurrentRecord.DG_ROLE='SPEAKER'
+	Calculate $cinst.$objs.PagedPane.$backcolor as rgb(245,223,165)
+Else If irCurrentRecord.DG_ROLE='DG_SPECIAL'
+	Calculate $cinst.$objs.PagedPane.$backcolor as rgb(80,174,246)
+Else
+	Calculate $cinst.$objs.PagedPane.$backcolor as rgb(238,238,238)
+End If
+
+Calculate $cinst.$objs.PagedPane.$objs.pbEmailInvoice.$enabled as irCurrentRecord.DG_SEQ>0&irCurrentRecord.DG_STATUS<>'CANCEL'&ibActiveConference&irUserRights.canEmailInvoice&ilMultipleDelegatesOnOneInvoice.DIL_PRIMARY
+Calculate $cinst.$objs.PagedPane.$objs.pbEmailTravelForm.$enabled as irCurrentRecord.DG_SEQ>0&irCurrentRecord.DG_STATUS<>'CANCEL'&ibActiveConference&irUserRights.canEmailTravel
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+Calculate $cinst.$objs.pbPrintDelegates.$visible as (icSearch<>''|ilSearch2.$line>1)&ilDisplayRecords.$linecount>0
+
+Calculate $cinst.$objs.PagedPane.$objs.idPseudoInvoiceEmailed.$visible as not(isclear(idPseudoInvoiceEmailed))
+Calculate lbSufficientPaid as inTotalAmountDue>0&(inTotalOutstanding<=(inTotalAmountDue*0.05)) ## 5% tolerance to accommodate PayPal charges etc
+Calculate lbAdequateArrangement as irCurrentRecord.DG_ROLE='SPEAKER'&inTotalAmountDue>0 ## speakers often have their membership amount deductaed from their stipend
+If not(lbAdequateArrangement)
+	Calculate lbAdequateArrangement as irCurrentRecord.DG_STATUS='CC_HOTEL'&inTotalAmountDue>0 ## ilStatus
+End If
+Calculate $cinst.$objs.PagedPane.$objs.pbMemberRecord.$enabled as irCurrentRecord.DG_PSN_REF>0&(lbSufficientPaid|lbAdequateArrangement)&ibActiveConference&irUserRights.canEdit
+# Calculate $cinst.$objs.PagedPane.$objs.MB_FROM.$textcolor as pick(ibCurrentMember,kBlue,kBlack)
+Calculate $cinst.$objs.PagedPane.$objs.MB_TO.$textcolor as pick(ibCurrentMember,kBlue,kBlack)
+
+If inCurrentTab=cnTabDelegate
+	Calculate $cinst.$objs.DG_PSN_REF.$enabled as icMode<>''
+	Calculate $cinst.$objs.DG_REG_DATE.$enabled as icMode<>''
+	Calculate $cinst.$objs.DG_OCCUPANCY.$enabled as icMode<>''
+	Calculate $cinst.$objs.DG_ROLE.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.DG_GROUP.$enabled as icMode<>''
+	Calculate $cinst.$objs.DG_ROOM_ASSIGNMENT.$enabled as icMode<>''
+	Calculate $cinst.$objs.DG_STATUS.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.DG_COMMENT.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.DG_EO_REF.$enabled as icMode<>'' ## list ilWhoIsPaying
+	Calculate $cinst.$objs.DG_INV_TO_EO_ONLY.$active as icMode<>''
+	
+	Calculate $cinst.$objs.pbPayee.$enabled as irCurrentRecord.DG_SEQ>0&ilWhoIsPaying.$line=0&icMode=''&irUserRights.canEdit
+	Calculate $cinst.$objs.pbRaiseInvoice.$enabled as ilInvoices.$linecount=0&irCurrentRecord.DG_EO_REF>0&icMode=''&irUserRights.canEdit
+	Calculate $cinst.$objs.pbPrintInvoice.$enabled as ilInvoices.$linecount>0&icMode=''
+	
+	If ilInvoices.$line>0
+		Calculate $cinst.$objs.pbPrintInvoice.$text as con('print inv. ',ilInvoices.FOH_INV_NO,': ',ilInvoices.FOH_CURRENCY,ilInvoiceDetails.$cols.Total.$total())
+	Else
+		Calculate $cinst.$objs.pbPrintInvoice.$text as con('no invoice')
+	End If
+	
+	
+Else If inCurrentTab=cnTabPAX
+	Calculate $cinst.$objs.PX_ROLE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PX_NAME.$visible as irPax.PX_ROLE<>''&irPax.PX_ROLE<>'DELEGATE'&irPax.PX_ROLE<>'DG' ## visible when PAX records belongs to someone other than the delegate
+	Calculate $cinst.$objs.PX_NAME.$enabled as icMode<>''
+	# Calculate $cinst.$objs.PX_INT_PRODCODE.$enabled as icMode<>''
+	For lnCount from 0 to 5 step 1
+		Calculate $cinst.$objs.PX_[lnCount]_NIGHT.$enabled as icMode<>''
+		Calculate $cinst.$objs.PX_[lnCount]_BFAST.$enabled as icMode<>''
+		Calculate $cinst.$objs.PX_[lnCount]_LUNCH.$enabled as icMode<>''
+		Calculate $cinst.$objs.PX_[lnCount]_DINNER.$enabled as icMode<>''
+	End For
+	
+	Calculate $cinst.$objs.DR_REQUEST.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.ilPax.$enabled as icMode='' ## so user doesn't jump between multiple PAX records while editing
+	
+Else If inCurrentTab=cnTabReceipts
+	Calculate $cinst.$objs.PY_DATE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PY_AMOUNT.$enabled as icMode<>''
+	Calculate $cinst.$objs.PY_METHOD.$enabled as icMode<>''
+	Calculate $cinst.$objs.PY_CHARGES.$enabled as icMode<>''
+	Calculate $cinst.$objs.PY_STMT.$enabled as icMode<>''
+	Calculate $cinst.$objs.PY_COMMENT.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.pbPrintReceipt.$enabled as inTotalAmountPaid>0
+	
+Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart
+	Calculate $cinst.$objs.TP_ARR_POINT.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_CARRIER.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_FLIGHT_NO.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_ARR_DATE.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_ARR_TIME.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_EARLY_PLANS.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.TP_CONNECT_HOW.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_LOCAL_ARR_WHERE.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_LOCAL_ARR_TIME.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_COMMENT.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.TP_DEP_POINT.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_DEP_FLIGHT_CODE.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_DEP_FLIGHT_TIME.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_DEP_VENUE.$enabled as icMode<>''
+	Calculate $cinst.$objs.TP_DEP_METHOD.$enabled as icMode<>''
+End If
+
+Calculate $cinst.$objs.TabControl_DG.$enabled as icMode=''
+Calculate $cinst.$objs.PagedPane.$objs.ilGroupInvoices.$visible as ilGroupInvoices.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.DIL_PRIMARY.$visible as ilMultipleDelegatesOnOneInvoice.$linecount>1
+
+Do method assignEntryFieldProperties
+
+Do inherited ## handle objects in the navigation and results panes

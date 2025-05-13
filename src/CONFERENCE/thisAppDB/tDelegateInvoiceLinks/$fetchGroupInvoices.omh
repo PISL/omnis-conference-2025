@@ -1,0 +1,40 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Calculate ldtStart as #D
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pnCF_SEQ,pcGroupCode),$cinst.$type,0,ilRESTextensions))
+	Calculate inServiceMS as ddiff(kCentiSecond,ldtStart,#D)*10
+	Calculate inRESTserverMS as toWeb.inServerTime
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()], [lrInvoices.$selectnames()], [lrDelegates.$selectnames()], [lrPerson.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+Sta:join [lrInvoices.$servertablenames] on DIL_FOH_REF = FOH_SEQ
+Sta:join [lrDelegates.$servertablenames] on DIL_DG_REF = DG_SEQ
+Sta:join [lrPerson.$servertablenames] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and DG_GROUP = @[pcGroupCode]
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

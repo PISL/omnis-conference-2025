@@ -1,0 +1,23 @@
+# find all topics that have been submitted for this year's conference
+Do $DefineList(llTopics,'tTopics')
+Do llTopics.$addLinkedCols('PSN_SEQ,PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL')
+Do llTopics.$addLinkedCols('TAG_VALUE')
+
+# Do ioTags.$setParent(irTopic)
+# Do ioTags.$fetchRecordsWithTag(ilSearch1.CF_TITLE_CODE) Returns ilSubmittedTopics
+
+# Calculate llTopics as ilTopics
+# Do llTopics.$addLinkedCols('TAG_VALUE')
+Do llTopics.$fetch_tag(ilSearch1.CF_TITLE_CODE)
+
+Do ilTopics.$clear()
+Do ilTopics.$merge(llTopics,kTrue)
+
+Do ilDisplayRecords.$clear()
+Do ilDisplayRecords.$merge(llTopics,kTrue)
+Calculate ilDisplayRecords.$line as 0
+While $Loop(ilDisplayRecords)
+	Calculate ilDisplayRecords.DG_PSN_REF as llTopics.[ilDisplayRecords.$line].PSN_SEQ
+	Do ilDisplayRecords.$displayName()
+End While
+Do ilDisplayRecords.$cols.DG_PSN_REF.$removeduplicates(kTrue)

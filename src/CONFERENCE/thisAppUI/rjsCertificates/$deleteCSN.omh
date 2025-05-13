@@ -1,0 +1,9 @@
+Do irAwardee.$delete_pk() Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as irAwardee.irErrorSQL.NativeErrorText
+Else
+	Do ilCertAssigned.$remove(ilCertAssigned.$line)
+	Calculate ilCertAssigned.$line as 0
+	Do irAwardee.$clear()
+	
+End If

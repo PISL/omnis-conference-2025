@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.FCY_VEN_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' venue reference missing')
+End If
+
+If $cinst.FCY_NAME<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' name missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

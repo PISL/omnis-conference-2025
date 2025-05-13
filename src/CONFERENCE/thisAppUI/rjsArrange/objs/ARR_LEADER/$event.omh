@@ -1,0 +1,7 @@
+On evBefore
+	
+On evAfter
+	If irCurrentRecord.ARR_LEADER<>''
+		Calculate irCurrentRecord.ARR_PSN_REF as #NULL
+		Calculate ilPersons.$line as 1 ## not set
+	End If

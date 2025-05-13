@@ -1,0 +1,4 @@
+Do $DefineList(lrConference,'tConference')
+Do lrConference.$ticketBreakdown(prConference.CF_SEQ) Returns ilData
+
+# Do ilData.$sort($ref.CF_TITLE_CODE,0,$ref.PRD_SIZE,0,$ref.PRD_INT_PRODCODE,0)

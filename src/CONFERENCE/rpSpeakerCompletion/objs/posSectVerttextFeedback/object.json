@@ -1,0 +1,58 @@
+{
+	"ident": 1184,
+	"order": 26,
+	"objtype": "kSection",
+	"sectiontype": "kPositioning",
+	"properties": {
+		"backcolor": "RGB(0,0,0)",
+		"backpattern": 15,
+		"bordercolor": "RGB(0,0,0)",
+		"bottommargin": 0.0,
+		"componentinfo": {
+			"type": [
+				{
+					"name": "group",
+					"order": 1,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "iconid",
+					"order": 2,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "default",
+					"order": 3,
+					"type": "kBoolean",
+					"subtype": 0,
+					"sublen": 0
+				}
+			],
+			"data": {
+				"group": "Sections",
+				"iconid": "reportpositioningbar1+16x16",
+				"default": false
+			}
+		},
+		"effect": "kBorderNone",
+		"firstpage": false,
+		"forecolor": "RGB(0,0,0)",
+		"leftmargin": 0.0,
+		"lineno": 24,
+		"linestyle": 1,
+		"pagemode": "kNobreak",
+		"pagespacing": 0.0,
+		"printheight": 0.0,
+		"printif": "",
+		"rightmargin": 0.0,
+		"startmode": "kFollow",
+		"startspacing": 0.0,
+		"topmargin": 0.0,
+		"userecspacing": false,
+		"userinfo": ""
+	}
+}

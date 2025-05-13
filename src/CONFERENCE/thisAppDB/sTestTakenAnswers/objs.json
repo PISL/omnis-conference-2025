@@ -1,0 +1,128 @@
+[
+	{
+		"name": "TTA_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>record ID</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_CWHEN",
+		"ident": 32009,
+		"order": 2,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>created when</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_CBY",
+		"ident": 32010,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>created by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_MWHEN",
+		"ident": 32011,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>last modified</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_MBY",
+		"ident": 32012,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>last modified by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_MCOUNT",
+		"ident": 32013,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>mod. count</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_TTK_REF",
+		"ident": 32022,
+		"order": 7,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>test taken</lbl><tt>Reference to the test taken header record.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_TSQ_REF",
+		"ident": 32018,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>question</lbl><tt>Reference to the question in the test.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TTA_ANSWER",
+		"ident": 32020,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "<lbl>response</lbl><tt>The actual response to the question.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

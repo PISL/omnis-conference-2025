@@ -1,0 +1,16 @@
+On evClick
+	If iFiles.$linecount>0
+		If iFiles.$line>0
+			Do iFiles.$loadcols()
+			Calculate $ctask.tJSFileBinData as iFileBinary
+			
+			Do iJSFileRow.$define(iJSFileName,iJSMediaType,iJSVariableName)
+			Do iJSFileRow.$assigncols(iFileName,'application/octet-stream','tJSFileBinData')
+			
+			Do $cinst.$objs.PagedPane.$objs.JSFormFile.$action.$assign(kJSFileActionDownload) Returns #F
+		Else
+			Breakpoint
+		End If
+	Else
+		Breakpoint
+	End If

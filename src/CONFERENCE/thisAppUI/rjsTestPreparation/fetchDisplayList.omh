@@ -1,0 +1,20 @@
+Do method ClearWorkArea
+
+Do ilDisplayRecords.$clear()
+If ilSearch2.ARR_SEQ>0
+	Do ilDisplayRecords.$fetch_fk(ilSearch2.ARR_SEQ,'TST_ARR_REF',pcSearch2,pcTextSearch)
+Else If ilSearch1.CF_SEQ>0
+	Do ilDisplayRecords.$fetch_fk(ilSearch1.CF_SEQ,'TST_CF_REF',pcSearch2,pcTextSearch)
+End If
+
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+Else
+	# Do ilDisplayRecords.$sort($ref.SortName,0)
+	Do ilDisplayRecords.$sort($ref.TST_TITLE,0)
+End If
+
+Calculate ilDisplayRecords.$line as 0
+While $Loop(ilDisplayRecords)
+	Do ilDisplayRecords.$DisplayName()
+End While

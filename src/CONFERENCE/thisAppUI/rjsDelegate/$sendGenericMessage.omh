@@ -1,0 +1,40 @@
+
+Calculate icWorkerAction as pcMessageCode
+
+Calculate iPdfFilePath as ''
+
+If prDelegate.DG_SEQ>0
+	Calculate ibGetFileForEmail as kTrue
+	Do $tasks.tkWorkerApp.$open('*',tcCurrentLibrary,$cinst.$task(),"PDF") Returns lrefPdfWorker
+	Do lrefPdfWorker.$setCaller($cinst,row(pcMessageCode,prDelegate.DG_SEQ)) ## second parameter, optional row() to be passed back to $pdfcomplete, the DG_SEQ is needed to pass on to the email completion method to update the correct record
+	
+	# RSM outlining an alternative interface to tkWorker architecture - TO BE CONSIDERED LATER
+	# Do lrefPdfWorker.$jobDefinition() Returns llStepsInJob
+	# instruction , omnisClass , completionMethod , callbackMethod , json , timeout
+	# Do llStepsInJob.$add('PDF','rpGenericContent','','')
+	# Do llStepsInJob.$add('SMTP','','$delegateEmail','')
+	
+	Begin reversible block
+		Calculate iAuthor as 'Platform Independent Systems Ltd'
+		Calculate iTitle as 'Message to delegate'
+		Calculate iSubject as ''
+		# Calculate ilInvoices.$line as 1
+	End reversible block
+	
+	If pcReportClass<>''
+		Set reference lrefReport to $reports.[pcReportClass]
+		If lrefReport
+			Do lrefPdfWorker.$printPDf(iAuthor,iTitle,iSubject,kTrue,2,lrefReport,row(pcMessageCode,ilSearch1,prDelegate),kTrue) ## Params: author, title, subject, bUseTempDir, timeout, reportReference, row(reportParams), bSaveOnError
+		Else
+			Breakpoint
+		End If
+		
+		# Do lrefPdfWorker.$jobStart(prDelegate,llStepsInJob,$cinst) ## RSM outlining an alternative interface to tkWorker architecture - TO BE CONSIDERED LATER
+		
+		If pbOpenPush
+			Do $cinst.$clientcommand("openpush",row()) ## the worker will call back to $pdfcomplete which will "push" the results to the client
+		End If
+	End If
+End If
+# instance variable iPdfFilePath will have the contents of the pdf file
+Quit method

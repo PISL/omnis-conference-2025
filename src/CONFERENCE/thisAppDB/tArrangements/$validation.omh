@@ -1,0 +1,44 @@
+Calculate icValidationMessage as ''
+
+If $cinst.ARR_CF_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' conference missing')
+End If
+
+If $cinst.ARR_TPC_REF>0
+	# good
+Else
+	# this may or may not be required ## depends on user experience and expectations
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' topic reference missing')
+End If
+
+If $cinst.ARR_FCY_REF>0
+	# good
+Else
+	# the venue's facility may not be known at time of data entry
+	# Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' facility reference missing')
+End If
+
+If isnull($cinst.ARR_DAYNO) ## can be 0 - 8
+	If $cinst.ARR_DATE>dat('1 JAN 2010')
+		# sweet
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' day number missing')
+	End If
+End If
+
+If isnull($cinst.ARR_SLOT)
+	If $cinst.ARR_STARTTIME>tim('00:00')
+		# good
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' slot missing')
+	End If
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

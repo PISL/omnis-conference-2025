@@ -1,0 +1,33 @@
+# may be called from pbEdit or handleMenuCall
+
+Calculate icDisplayMessage as ''
+# Calculate lcPrefix as $cinst.irCurrentRecord.icPrefix
+# Calculate lnKey as $cinst.irCurrentRecord.DG_SEQ
+Do irSemaphore.$obtainSemaphore($cinst.irCurrentRecord.icPrefix,$cinst.irCurrentRecord.DG_SEQ) Returns ibUserHasSemaphore
+If not(ibUserHasSemaphore)
+	Calculate icDisplayMessage as con('This delegate record is currently being worked on by ',irSemaphore.SMH_OWNER,' who has had the lock since ',irSemaphore.SMH_CWHEN)
+	Quit method
+End If
+
+If inCurrentTab=cnTabDelegate
+	If irUserRights.canEdit&irCurrentRecord.DG_SEQ>0&icMode='' ## copied from $behaviour
+		Calculate icMode as 'ED' ## edit delegate
+	End If
+	
+Else If inCurrentTab=cnTabTopics
+	If irUserRights.canEdit&irTopic.TPC_SEQ>0&icMode='' ## copied from $behaviour
+		Calculate icMode as 'EP' ## edit PAX
+	End If
+	
+Else If inCurrentTab=cnTabTextForClipboard
+	# no equvalent in $behaviour
+	Calculate icMode as 'EY' ## edit payment
+	
+End If
+
+# refresh record from db to ensure latest copy
+Do irCurrentRecord.$fetch_pk()
+Calculate irOriginalRecord as irCurrentRecord
+Do method DropLists
+
+Do $cinst.$behaviour()

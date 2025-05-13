@@ -1,0 +1,41 @@
+# Do ilDisplayRecords.$add('EVENTS_STATS','Multi event statistics','Sumary statistics across multiple events','checkbox1,outputText,<selectlist1>ilConferencesSelect</selectlist1><displayColumn1>CF_TITLE</displayColumn1>','<checkbox1>add graphs</checkbox1>')
+
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "EVENTS_STATS"
+
+Text:, "title" : "Multi event statistics"
+Text:, "description" : "Sumary statistics across multiple events."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+Text:, "checkbox1_lbl" : "add graphs"
+Text:, "checkbox1_tt" : "You can add a graph for each set of statistics by clicking here."
+# use 0 or 1, not no / yes
+Text:, "checkbox1_default" : "0"
+
+Text:, "selectlist_lbl" : "which conference['(']s)"
+Text:, "selectlist_tt" : "Select which events you want statistics for - up to 5 events."
+Text:, "selectlist_column" : "CF_TITLE"
+# integer
+Text:, "selectlist_min" : "1"
+# integer
+Text:, "selectlist_max" : "5"
+# use 1 or 0, not yes or no
+Text:, "selectlist_ischecklist" : "1"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('ADMINISTRATION',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

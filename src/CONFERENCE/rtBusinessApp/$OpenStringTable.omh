@@ -1,0 +1,13 @@
+Do StringTable.$unloadstringtable(pcFile) Returns #F
+Do StringTable.$loadstringtable(low(pcFile),con(pHostDirectory,pcFile,'.stb')) Returns #F
+If flag false
+	Breakpoint
+End If
+
+Do StringTable.$setcolumn(con(low(pcFile),'.',tConstants.LanguageCode)) Returns #F
+If flag false
+	Breakpoint
+End If
+Do StringTable.$getcolumnnumber() Returns lnColNoCheck
+
+Quit method #F

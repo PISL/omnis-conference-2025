@@ -1,0 +1,55 @@
+# initialise the TabControl $enabled and select first enabled tab
+Calculate inTabCount as 1
+
+Calculate llAllowed as tlPermissions
+Do llAllowed.$search(low($ref.FormPrefix)='dg',1,0,0,0) Returns lbDelegateTab
+Do llAllowed.$search(low($ref.FormPrefix)='arr',1,0,0,0) Returns lbSpeakerTab
+Do llAllowed.$search(low($ref.FormPrefix)='arr',1,0,0,0) Returns lbArrangementTab
+Do llAllowed.$search(low($ref.FormPrefix)='mem',1,0,0,0) Returns lbMemberTab
+
+Calculate $cinst.$objs.TabControl_Participants.$selectedtab as 1
+Calculate $cinst.$objs.TabControl_Participants.$tabvisible as lbDelegateTab
+Do ilTabShortcuts.$add()
+If lbDelegateTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Participants.$selectedtab as 2
+Calculate $cinst.$objs.TabControl_Participants.$tabvisible as lbSpeakerTab
+Do ilTabShortcuts.$add()
+If lbSpeakerTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Participants.$selectedtab as 3
+Calculate $cinst.$objs.TabControl_Participants.$tabvisible as lbArrangementTab
+Do ilTabShortcuts.$add()
+If lbArrangementTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Participants.$selectedtab as 4
+Calculate $cinst.$objs.TabControl_Participants.$tabvisible as lbMemberTab
+Do ilTabShortcuts.$add()
+If lbMemberTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+If lbDelegateTab
+	Calculate inCurrentTab as 1
+	Do $ctask.$setCurrentForm('code','FORM_DG')
+Else If lbSpeakerTab
+	Calculate inCurrentTab as 2
+	Do $ctask.$setCurrentForm('code','FORM_SPKR')
+Else If lbArrangementTab
+	Calculate inCurrentTab as 3
+	Do $ctask.$setCurrentForm('code','FORM_ARR')
+Else If lbMemberTab
+	Calculate inCurrentTab as 4
+	Do $ctask.$setCurrentForm('code','FORM_MEM')
+End If
+Calculate $cinst.$objs.TabControl_Participants.$currenttab as inCurrentTab

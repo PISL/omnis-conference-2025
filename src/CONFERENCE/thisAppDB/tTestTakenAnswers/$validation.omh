@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TTA_TTK_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' test taken missing')
+End If
+
+If $cinst.TTA_TSQ_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' reference to question missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TPC_'
+Calculate icPrimarykey as 'TPC_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TPC_GO_REF'
+
+Do inherited

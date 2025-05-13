@@ -1,0 +1,4 @@
+# Do ilFeedback.$search($ref.RFO_VALUE=ilData.AFB_RFO_VALUE,1,0,0,0)
+# Do ilFeedbackValues.$search($ref.score=ilData.AFB_SCORE,1,0,0,0)
+Calculate icComments as ilData.ARA_COMMENTS
+Do default

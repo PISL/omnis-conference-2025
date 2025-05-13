@@ -1,0 +1,5 @@
+On evClick
+	Calculate ilDayDisplay as ilDay5
+	Calculate inDayHighlight as 5
+	Do method setDayHighlight
+	Do method setGridExceptions

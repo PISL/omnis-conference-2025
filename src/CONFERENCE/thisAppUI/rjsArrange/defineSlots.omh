@@ -1,0 +1,36 @@
+Do $DefineList(ilDay1AM,'tArrangements')
+Do ilDay1AM.$AddLinkedCols("TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS",kTrue)
+Do ilDay1AM.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL",kTrue)
+Do ilDay1AM.$AddLinkedCols("FCY_NAME,FCY_LOCATION",kTrue)
+Do ilDay1AM.$addDisplayName("FCY_NAME,FCY_LOCATION",kTrue)
+
+Do ilDay1AM.$cols.$findname('DisplayName') Returns liColRef
+Calculate ilDay1PM as ilDay1AM
+Calculate ilDay1EVE as ilDay1AM
+Calculate ilDay2AM as ilDay1AM
+Calculate ilDay2PM as ilDay1AM
+Calculate ilDay2EVE as ilDay1AM
+Calculate ilDay3AM as ilDay1AM
+Calculate ilDay3PM as ilDay1AM
+Calculate ilDay3EVE as ilDay1AM
+Calculate ilDay4AM as ilDay1AM
+Calculate ilDay4PM as ilDay1AM
+Calculate ilDay4EVE as ilDay1AM
+Calculate ilDay5AM as ilDay1AM
+Calculate ilDay5PM as ilDay1AM
+Calculate ilDay5EVE as ilDay1AM
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1AM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1PM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1EVE.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2AM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2PM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2EVE.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3AM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3PM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3EVE.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4AM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4PM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4EVE.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5AM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5PM.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5EVE.$listcolumn as liColRef.$ident

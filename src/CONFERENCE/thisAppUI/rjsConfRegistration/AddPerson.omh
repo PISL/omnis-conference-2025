@@ -1,0 +1,47 @@
+Calculate icDisplayMessage as ''
+Do method cosmetics
+
+# is the person in working area referring to current line in ilPersons?
+If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+	# we won't add line to list but we will preserve their details ## later
+Else
+	# before adding person, see that the email address is not already in the list
+	Do ilPersons.$search($ref.PSN_EMAIL=irRegistration.PSN_EMAIL,1,0,0,0) Returns lbFound ## changing line number doesn't matter - see ilPersons.$add below
+	If lbFound
+		Calculate icDisplayMessage as 'this email address already exists in the list of people to register'
+		Quit method
+	End If
+End If
+
+If inMembership=ikMembershipCorporate
+	Do ilPersons.$search($ref.inMembership=ikMembershipCorporate&$ref.PSN_EMAIL<>irRegistration.PSN_EMAIL,1,0,0,0) Returns lbFound ## changing line number doesn't matter - see ilPersons.$add below
+	If lbFound
+		Calculate icDisplayMessage as 'you cannot have two corporate memberships in the same application'
+		Quit method
+	End If
+End If
+
+Do method CheckMaxDays Returns lbProceed
+If not(lbProceed)
+	Quit method
+End If
+
+If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+	# we won't add line to list but we will preserve their details ## now
+	Do method RegistrationToPersonList
+	If not(pbKeepRegistrationOnScreen)
+		Do method ClearRegistration
+	End If
+	Calculate ilPersons.$line as 0
+Else
+	Do ilPersons.$add()
+	Calculate ilPersons.$line as ilPersons.$linecount
+	
+	Do method RegistrationToPersonList
+	If not(pbKeepRegistrationOnScreen)
+		Do method ClearRegistration
+	End If
+End If
+
+
+Calculate ilPhotoIdTypes.$line as 0

@@ -1,0 +1,6 @@
+# GRS 5/8/14 added call to $validation and replaced $NextSeqNo with $executesqlandfetchinto to get the primary key from the db sequence
+# ## copied code from CORE.tMaster.$insert and dropped call to $insert__
+If isnull($cinst.PSN_SEX)
+	Calculate $cinst.PSN_SEX as '?'
+End If
+Do inherited

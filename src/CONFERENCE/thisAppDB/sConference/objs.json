@@ -1,0 +1,450 @@
+[
+	{
+		"name": "CF_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "Primary key",
+			"nonull": true,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_GO_REF",
+		"ident": 32103,
+		"order": 2,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_TITLE",
+		"ident": 32015,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "country where presentation is being held",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_DATE_FROM",
+		"ident": 32016,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "start date of event",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_DATE_TO",
+		"ident": 32017,
+		"order": 5,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "end date of event",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_VEN_REF",
+		"ident": 32018,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "Name of venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_CONTACT_NAME",
+		"ident": 32090,
+		"order": 7,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 40,
+		"properties": {
+			"desc": "Contact name at venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_COMMENT",
+		"ident": 32012,
+		"order": 8,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 500,
+		"properties": {
+			"desc": "Comment about event",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_FEATURE",
+		"ident": 32022,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "Any feature to display on website",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_LANG",
+		"ident": 32025,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 3,
+		"properties": {
+			"desc": "Language of presentation",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_CURRENCY",
+		"ident": 32050,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 3,
+		"properties": {
+			"desc": "Currency of pricing",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_NON_MEMBER_DELTA",
+		"ident": 32088,
+		"order": 12,
+		"type": "kNumber",
+		"subtype": "k2dpShortnum",
+		"sublen": 0,
+		"properties": {
+			"desc": "amount added to each of the above for a non member rate",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_CWHEN",
+		"ident": 32083,
+		"order": 13,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_CBY",
+		"ident": 32082,
+		"order": 14,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_MWHEN",
+		"ident": 32084,
+		"order": 15,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_MBY",
+		"ident": 32085,
+		"order": 16,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_FILTER_BRAND",
+		"ident": 32113,
+		"order": 17,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_FILTER_NAME",
+		"ident": 32114,
+		"order": 18,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_FILTER_DESC",
+		"ident": 32115,
+		"order": 19,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_SIGNIFICANT_TERMS",
+		"ident": 32145,
+		"order": 20,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1500,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_TITLE_CODE",
+		"ident": 32146,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_PROD_FAMILY",
+		"ident": 32147,
+		"order": 22,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 30,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_ACTIVE",
+		"ident": 32148,
+		"order": 23,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_LOGO_RFO_VALUE",
+		"ident": 32149,
+		"order": 24,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "lookup IMAGES / cf_logo_rfo_value in sysreferenceorg for logo",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_ADMIN_DATE_TO",
+		"ident": 32150,
+		"order": 25,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_MAX_SPEAKERS",
+		"ident": 32151,
+		"order": 26,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_MAX_DELEGATES",
+		"ident": 32152,
+		"order": 27,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_PRODCODE_FULL",
+		"ident": 32153,
+		"order": 28,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "product code for full price - excluding trailing currency code",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_PRODCODE_SPKR",
+		"ident": 32154,
+		"order": 29,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "product code for speakers",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_PRODCODE_MEMC",
+		"ident": 32155,
+		"order": 30,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "corporate membership",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_PRODCODE_MEMP",
+		"ident": 32156,
+		"order": 31,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "personal membership code",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_PRODCODE_SPOUSE",
+		"ident": 32157,
+		"order": 32,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "product code for spouse",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

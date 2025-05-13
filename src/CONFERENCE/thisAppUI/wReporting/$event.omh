@@ -1,0 +1,9 @@
+On evOK
+	Calculate oReporting.iAuthor as ilOrganisations.GON_NAME_FULL
+	Do oReporting.$printReport(ilDisplayRecords,ilConferences,ilSortOptions,ilFilterOptions,idFrom,idTo,ibCheckbox1,ibCheckbox2,ibCheckbox3,ilOrganisations,inPrintDestination)
+	If oReporting.icDisplayMessage<>''
+		OK message Report error ! (Icon) {[oReporting.icDisplayMessage]}
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

@@ -1,0 +1,17 @@
+# Calculate lcTemp as pcEmail
+# Calculate lcTemp2 as strtok(nam(lcTemp),'@')
+# Calculate lcPart1 as low($ctask.toStrings.$randomString(len(lcTemp2),lcCharsFrom))
+# Calculate lcTemp2 as strtok(nam(lcTemp),'@')
+# Calculate lcPart2 as low($ctask.toStrings.$randomString(len(lcTemp2),lcCharsFrom))
+
+# Quit method con(lcPart1,'@',lcPart2)
+
+# Breakpoint
+If len(pcEmail)
+	Calculate lcTemp as strtok(nam(pcEmail),'@')
+	Calculate lcReplacement as con($cobj.$getRandString('lower',len(lcTemp)),"@")
+	Calculate lcTemp as strtok(nam(pcEmail),".")
+	Calculate lcTemp2 as con(lcReplacement,$cobj.$getRandString('lower',len(lcTemp)+3))
+	Calculate lcReplacement as con(left(lcTemp2,len(lcTemp2)-3),".",right(lcTemp2,3))
+End If
+Quit method lcReplacement

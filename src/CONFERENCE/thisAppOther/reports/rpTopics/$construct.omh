@@ -1,0 +1,14 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+
+Calculate icReportTitle as con('List of Topics as at ',jst(#D,'D:D m Y'),' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

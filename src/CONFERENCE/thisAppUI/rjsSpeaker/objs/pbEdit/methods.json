@@ -1,0 +1,33 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": true,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcPrefix",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10
+			},
+			{
+				"name": "lnKey",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "k64bitint",
+				"sublen": 0
+			}
+		]
+	}
+]

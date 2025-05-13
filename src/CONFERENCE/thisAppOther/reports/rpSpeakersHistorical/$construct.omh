@@ -1,0 +1,18 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate icReportTitle as con('List of Historical Speakers')
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+If ilData.$linecount=0
+	Do ilData.$add('no records found')
+End If
+
+# columnar alignment for AM, PM, EVE
+# with a Speaker listed under each column and facility
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

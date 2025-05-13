@@ -1,0 +1,9 @@
+Calculate lcScriptPath as "/Users/gs/Documents/Python/WIP/scramble.py"
+# Calculate lcExecString as con("do shell script ",kSq,lcScriptPath,kSp,pcStrType,kSp,pnStrLen,kSq)
+Calculate lcExecString as con("do shell script ",kDq,lcScriptPath,kSp,kSq,pcStrType,kSq,kSp,pnStrLen,kDq)
+Do $runapplescript(lcExecString,lcResult,lcErr) Returns lnResult
+If lnResult=0
+	Quit method lcResult
+Else
+	Quit method ""
+End If

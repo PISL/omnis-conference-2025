@@ -1,0 +1,4 @@
+On evClick
+	Calculate irRegistration.PSN_COUNTRY as ilCountriesPSN.REF_VALUE
+	Do ilConferences.$countSpeakers() Returns inCountSpeakers
+	Do ilConferences.$countDelegates() Returns inCountDelegates

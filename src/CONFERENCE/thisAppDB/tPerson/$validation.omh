@@ -1,0 +1,37 @@
+Calculate icValidationMessage as ''
+
+If $cinst.PSN_SURNAME<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' surname missing')
+End If
+
+If $cinst.PSN_FIRST_NAME<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' first name missing')
+End If
+
+If $cinst.PSN_EMAIL<>''
+	# good - now check the format
+	Do ioFormat.$FormatEmail($cinst.PSN_EMAIL) Returns lcFormatError
+	
+	If lcFormatError<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),lcFormatError)
+	End If
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' email missing')
+End If
+
+If $cinst.PSN_GO_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' foreign key to current organisation missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

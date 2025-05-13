@@ -1,0 +1,30 @@
+Calculate icDisplayMessage as ''
+# Calculate lcPrefix as $cinst.irCurrentRecord.icPrefix
+# Calculate lnKey as $cinst.irCurrentRecord.CRT_SEQ
+
+If inCurrentTab=cnTabTestDesc
+	If irUserRights.canEdit&irCurrentRecord.TST_SEQ>0&icMode='' ## copied from $behaviour
+		Calculate icMode as 'ET' ## test
+	End If
+	
+Else If inCurrentTab=cnTabTestRules
+	If irUserRights.canEdit&irCurrentRecord.TST_SEQ>0&icMode='' ## copied from $behaviour
+		Calculate icMode as 'ET' ## test criteria & rules
+	End If
+	
+Else If inCurrentTab=cnTabQuestions
+	If irUserRights.canEdit&irQuestion.TSQ_SEQ>0&icMode='' ## copied from $behaviour()
+		Calculate icMode as 'EQ' ## question
+	End If
+	
+End If
+
+If icMode<>''
+	# refresh record from db to ensure latest copy
+	Do irCurrentRecord.$fetch_pk()
+	Do irCurrentRecord.$DisplayName()
+	Calculate irOriginalRecord as irCurrentRecord
+	Do method DropLists
+End If
+
+Do $cinst.$behaviour()

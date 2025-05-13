@@ -1,0 +1,29 @@
+{
+	"ident": 1151,
+	"order": 7,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "surname",
+		"align": "kLeftJst",
+		"backcolor": "kColorWindow",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "kBlack",
+		"height": 0.422,
+		"left": 9.67,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"rowid": "PSN_SURNAME",
+		"textcolor": "kColorWindowText",
+		"userinfo": "",
+		"width": 3.045
+	}
+}

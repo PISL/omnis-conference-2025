@@ -1,0 +1,35 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabTestDesc
+	If irUserRights.canDelete&irCurrentRecord.TST_SEQ>0&icMode='' ## copied from $behaviour()
+		Do irCurrentRecord.$checkChildren() Returns lnCountChildren
+		If lnCountChildren=0
+			If
+				Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con('"',irCurrentRecord.DisplayName,'"',' from ',ilSearch2.DisplayName),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteTST')
+			Else
+				Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con('"',irCurrentRecord.DisplayName,'"',' from ',ilSearch1.CF_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteTST')
+			End If
+		Else
+			Do irCurrentRecord.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+			Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+			Do $cinst.$behaviour()
+			Do $cinst.$redraw()
+		End If
+	End If
+	
+Else If inCurrentTab=cnTabQuestions
+	If irUserRights.canEdit&irQuestion.TSQ_SEQ>0&icMode='' ## canEdit a TEST (not question)   -- copied from $behaviour()
+		# the PAX record may have a dietRequest record associated within it
+		Do irQuestion.$checkChildren(lrDietRequest.$servertablenames()) Returns lnCountChildren
+		If lnCountChildren=0
+			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con(irQuestion.DisplayName,' from ',irCurrentRecord.TST_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteTSQ')
+		Else
+			Do irQuestion.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+			Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+			Do $cinst.$behaviour()
+		End If
+	End If
+	
+Else
+	Breakpoint
+End If

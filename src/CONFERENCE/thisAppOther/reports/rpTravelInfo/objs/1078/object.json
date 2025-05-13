@@ -1,0 +1,29 @@
+{
+	"ident": 1078,
+	"order": 6,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "time",
+		"align": "kRightJst",
+		"backcolor": "kColorUser16",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 10.165,
+		"lineno": 6,
+		"lineoffset": 0.0,
+		"rowid": "time",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 2.047
+	}
+}

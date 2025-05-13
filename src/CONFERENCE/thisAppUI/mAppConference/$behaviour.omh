@@ -1,0 +1,1 @@
+Calculate $cinst.$objs.ToggleDebugMode.$text as con('toggle debug mode - currently ',pick(tConstants.debugMode,'off','on'))

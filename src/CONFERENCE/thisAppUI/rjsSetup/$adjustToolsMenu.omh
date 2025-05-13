@@ -1,0 +1,14 @@
+
+If inCurrentTab=1
+	Do $cinst.$container().$adjustToolsMenu('PRD')
+	
+Else If inCurrentTab=2
+	Do $cinst.$container().$adjustToolsMenu('CUSTOMER')
+	
+Else If inCurrentTab=3
+	Do $cinst.$container().$adjustToolsMenu('SUPPLIER')
+	
+Else If inCurrentTab=4
+	Do $cinst.$container().$adjustToolsMenu('finInvOut')
+	
+End If

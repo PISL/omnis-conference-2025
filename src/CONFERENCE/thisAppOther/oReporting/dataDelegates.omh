@@ -1,0 +1,212 @@
+Do $ctask.toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy
+
+Do $DefineList(ilData,'tDelegates')
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_SEX') ## SEX used to determine conference organiser ( 'O' )
+Do ilData.$addLinkedCols('EO_NAME',kTrue) ## who is paying
+Do ilData.$cols.$add('PY_DATE',kDate,kDate2000)
+Do ilData.$AddFunction(con(" ( select max(PY_DATE) from ",llPaymentsIn.$servertablenames," where PY_DG_REF = DG_SEQ ) as PY_DATE"))
+Do ilData.$cols.$add('PY_AMOUNT',kNumber,k2dp)
+Do ilData.$AddFunction(con(" ( select sum(PY_AMOUNT) from ",llPaymentsIn.$servertablenames," where PY_DG_REF = DG_SEQ ) as PY_AMOUNT"))
+Do ilData.$cols.$add('PY_VAT',kNumber,k2dp)
+Do ilData.$AddFunction(con(" ( select sum(PY_VAT) from ",llPaymentsIn.$servertablenames," where PY_DG_REF = DG_SEQ ) as PY_VAT"))
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+If plExternalDelegates.$linecount>0
+	Do ilData.$fetchForConference(prConference.CF_SEQ)
+Else If pbExcludeCancel
+	Do ilData.$fetchForConference(prConference.CF_SEQ,#NULL," DG_STATUS <> 'CANCEL' ")
+Else
+	Do ilData.$fetchForConference(prConference.CF_SEQ)
+End If
+# If pbExcludeCancel
+# Do ilData.$fetchForConference(prConference.CF_SEQ,#NULL," DG_STATUS <> 'CANCEL' ")
+# Else
+# Do ilData.$fetchForConference(prConference.CF_SEQ)
+# End If
+If plExternalDelegates.$linecount>0
+	Calculate plExternalDelegates.$line as 0
+	While $Loop(plExternalDelegates)
+		Do ilData.$search($ref.DG_SEQ=plExternalDelegates.DG_SEQ,1,0,1,0)
+	End While
+	Do ilData.$remove(kListKeepSelected)
+	Do ilData.$search(0)
+End If
+
+Do ilData.$cols.$add('month',kInteger,k32bitint)
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Calculate ilData.month as (dtcy(ilData.DG_REG_DATE)*100)+dtm(ilData.DG_REG_DATE)
+	If pbSuppressComments
+		Calculate ilData.DG_COMMENT as ''
+	End If
+End While
+
+Do ilData.$cols.$add('TotalAmountDue',kNumber,k2dp)
+Do ilData.$cols.$add('TotalVATDue',kNumber,k2dp)
+Do ilData.$cols.$add('TotalNettDue',kNumber,k2dp)
+Do ilData.$cols.$add('TotalReceived',kNumber,k2dp)
+Do ilData.$cols.$add('FOH_INV_NO',kInteger,k32bitint)
+Do ilData.$cols.$add('RepeatInvoiceRef',kCharacter,kSimplechar,100)
+
+Do ilData.$cols.$add('countMembPersonal',kInteger,kShortint)
+Do ilData.$cols.$add('countMembCorporate',kInteger,kShortint)
+Do ilData.$cols.$add('countSpouse',kInteger,kShortint)
+
+Do ilData.$cols.$add('primaryDelegate',kInteger,kShortint)
+Do ilData.$cols.$add('RoomRequirement',kNumber,k1dp)
+
+Do $DefineList(llPAX,'tPAX')
+Do llPAX.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_SPOUSE_NAME')
+
+Do $DefineList(lrInvoice,'infra.tfinInvoiceOutH')
+Do $DefineList(llInvoiceLink,'tDelegateInvoiceLinks')
+
+# for each delegate get the invoice total
+# however an invoice could cover more than one delegate and we don't want to count figures twice
+Calculate lcInvoiceNumbers as ',' ## each distinct InvoiceNo will be appended to this
+
+# the other complication is when two delegates register separately, generating two invoices
+# and both invoices are paid by the same entity in a single payment.  1300 + 1300 with single payment of 2600.
+# There is no way to resolve this in this report... the person doing data entry must apportion each delegate.
+While $Loop(ilData)
+	# receipts
+	# Do llPaymentsIn.$fetch_fk(ilData.DG_SEQ)
+	# If ilData.DG_STATUS='CANCEL'
+	# we could suppress TotalReceived for presentation convenience but if they have paid something then we need to know about it.
+	# Calculate ilData.TotalReceived as llPaymentsIn.$cols.PY_AMOUNT.$total()
+	# Else
+	# Calculate ilData.TotalReceived as llPaymentsIn.$cols.PY_AMOUNT.$total()
+	# End If
+	# If ilData.TotalReceived>0
+	# Breakpoint
+	# End If
+	
+	# RSM 25 SEP 18 added PY_AMOUNT as a subselect
+	Calculate ilData.TotalReceived as ilData.PY_AMOUNT
+	
+	# total charges
+	Do lrTotalInvoice.$clear()
+	Do lrInvoice.$fetchInvoiceTotal(#NULL,ilData.DG_SEQ,lrInvoiceSummary) Returns lrTotalInvoice ## untested - RSM 6 NOV 15 from TRACKER work
+	Calculate ilData.TotalAmountDue as lrTotalInvoice.FOD_UNIT_PRICE+lrTotalInvoice.FOD_UNIT_TAX
+	Calculate ilData.TotalVATDue as lrTotalInvoice.FOD_UNIT_TAX
+	Calculate ilData.TotalNettDue as lrTotalInvoice.FOD_UNIT_PRICE
+	If ilData.DG_STATUS='CANCEL'
+		# if someone has cancelled and they haven't paid us anything we will ignore them oweing us money.
+		If ilData.TotalReceived=0
+			Calculate ilData.TotalAmountDue as 0 ## ignore
+			Calculate ilData.TotalNettDue as 0
+			Calculate ilData.TotalVATDue as 0
+		End If
+	End If
+	Calculate ilData.countMembPersonal as lrTotalInvoice.countMembershipP
+	Calculate ilData.countMembCorporate as lrTotalInvoice.countMembershipC
+	Calculate ilData.countSpouse as lrTotalInvoice.countSpouse
+	
+	If lrTotalInvoice.FOH_INV_NO>0
+		If pos(con(',',lrTotalInvoice.FOH_INV_NO,','),lcInvoiceNumbers)
+			# this has already been counted
+			Calculate ilData.TotalAmountDue as 0 ## no double counting
+			Calculate ilData.TotalVATDue as 0
+			Calculate ilData.TotalNettDue as 0
+			Calculate llTemp as ilData
+			Do llTemp.$search($ref.FOH_INV_NO=lrTotalInvoice.FOH_INV_NO,1,0,0,0)
+			# the payment received covers more than one delegate and the full amount has been credited against first delegate
+			# This is entry will be changed to "refer to first deegate" so change the TotalReceived from this to other delegate
+			If ilData.TotalReceived>0
+				Calculate ilData.[llTemp.$line].TotalReceived as ilData.[llTemp.$line].TotalReceived+ilData.TotalReceived ## continue to add in case invoice spans more than 2 people
+				Calculate ilData.TotalReceived as 0
+			End If
+			
+			Calculate ilData.RepeatInvoiceRef as con('* * see DG',llTemp.DG_SEQ,' / ',llTemp.PSN_SURNAME)
+			Calculate ilData.FOH_INV_NO as lrTotalInvoice.FOH_INV_NO
+			If ilData.countSpouse>0
+				Calculate ilData.countSpouse as ilData.countSpouse-1
+			End If
+		Else
+			Calculate ilData.FOH_INV_NO as lrTotalInvoice.FOH_INV_NO
+			Calculate lcInvoiceNumbers as con(lcInvoiceNumbers,lrTotalInvoice.FOH_INV_NO,',')
+		End If
+	End If
+	
+	Do llInvoiceLink.$clear()
+	Do llInvoiceLink.$groupPayment(ilData.DG_SEQ) ## method also sets current line to DG_SEQ line
+	If llInvoiceLink.$linecount>0
+		Calculate ilData.primaryDelegate as llInvoiceLink.DIL_PRIMARY
+		If ilData.primaryDelegate&llInvoiceLink.$linecount>1
+			# only highlight primary delegate if there are multiple DGs associated with invoice
+			Calculate ilData.DisplayName as con(ilData.DisplayName,' (P)')
+		End If
+	End If
+	
+	If ilData.DG_STATUS='CANCEL'
+		Calculate ilData.RoomRequirement as 0
+	Else If ilData.DG_OCCUPANCY='H' ## shared
+		Calculate ilData.RoomRequirement as 0.5
+	Else If ilData.DG_OCCUPANCY='N' ## no accommodation
+		Calculate ilData.RoomRequirement as 0
+	Else ## single, family, single(+spouse), speaker
+		Calculate ilData.RoomRequirement as 1
+	End If
+	
+End While
+
+Do $ctask.toStrings.$summariseList(ilData,'DG_OCCUPANCY,DG_COUNTRY,DG_STATUS,month',kTrue,kTrue) Returns llSummary
+
+# icSummary uses a monospace font and is approximately 40 characters wide.
+# reuse lcTemp here as a line variable
+Calculate lcTemp as ''
+Calculate lcGroup as ''
+Calculate lnSpaceGroup as 2
+Calculate lnSpaceValue as 1
+Calculate lnSpaceBetweenCols as 3
+Calculate icSummary as ''
+Calculate lnMaxWidthHeading as llSummary.$cols.widthGroup.$maximum()
+
+Calculate llSummary.$line as 0
+While $Loop(llSummary)
+	If llSummary.$line=1
+		# no check
+	Else
+		If llSummary.group<>llSummary.[llSummary.$line-1].group
+			# new group ## in the summary
+			If lcTemp<>''
+				Calculate lcGroup as con(lcGroup,pick(lcGroup<>'','',kCr),lcTemp)
+				Calculate lcTemp as ''
+			End If
+			Calculate icSummary as con(icSummary,pick(icSummary<>'','',con(kCr,kCr)),lcGroup) ## new line in text
+			Calculate lcGroup as ''
+		End If
+	End If
+	
+	If lcTemp=''
+		# then put in name of group
+		If lcGroup=''
+			Calculate lcTemp as jst(llSummary.group,con(lnMaxWidthHeading)) ## include name of group
+		Else
+			# even though the field on the report is monospace, the PDF Writer seems to be losing this...???
+			Calculate lcTemp as jst(' ',con(int(lnMaxWidthHeading*1.9))) ## do not repeat name of group but put in spaces so columns align
+		End If
+	End If
+	If isclear(llSummary.value)
+		Calculate lcTemp as con(lcTemp,pick(lcTemp<>'','',jst('',lnSpaceBetweenCols)),jst("''",con(llSummary.widthValue+lnSpaceValue)),jst(llSummary.count,-llSummary.widthCount)) ## two single quotes to represent empty
+	Else
+		Calculate lcTemp as con(lcTemp,pick(lcTemp<>'','',jst('',lnSpaceBetweenCols)),jst(llSummary.value,con(llSummary.widthValue+lnSpaceValue)),jst(llSummary.count,-llSummary.widthCount))
+	End If
+	
+	# add proportion
+	Calculate lcTemp as con(lcTemp,jst(con(' (',rnd(llSummary.proportion,0),'%)'),'6')) ## max width is 6 chars with initial space  e.g. " (23%)"
+	
+	If len(lcTemp)>=90
+		Calculate lcGroup as con(lcGroup,pick(lcGroup<>'','',kCr),lcTemp)
+		Calculate lcTemp as ''
+	End If
+	
+End While
+# add final group
+If lcTemp<>''
+	Calculate lcGroup as con(lcGroup,pick(lcGroup<>'','',kCr),lcTemp)
+	Calculate lcTemp as '' ## just being tidy - not actually necessary
+End If
+Calculate icSummary as con(icSummary,pick(icSummary<>'','',con(kCr,kCr)),lcGroup) ## new line in text

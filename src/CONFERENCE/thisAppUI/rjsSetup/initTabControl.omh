@@ -1,0 +1,55 @@
+# initialise the TabControl $enabled and select first enabled tab
+Calculate inTabCount as 1
+
+Calculate llAllowed as tlPermissions
+Do llAllowed.$search(low($ref.FormPrefix)='prd',1,0,0,0) Returns lbProductTab
+Do llAllowed.$search(low($ref.FormPrefix)='eo',1,0,0,0) Returns lbCustomerTab
+Do llAllowed.$search(low($ref.FormPrefix)='eo',1,0,0,0) Returns lbSupplierTab
+Do llAllowed.$search(low($ref.FormPrefix)='foh',1,0,0,0) Returns lbInvoiceTab
+
+Calculate $cinst.$objs.TabControl_Setup.$selectedtab as 1
+Calculate $cinst.$objs.TabControl_Setup.$tabvisible as lbProductTab
+Do ilTabShortcuts.$add()
+If lbProductTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Setup.$selectedtab as 2
+Calculate $cinst.$objs.TabControl_Setup.$tabvisible as lbCustomerTab
+Do ilTabShortcuts.$add()
+If lbCustomerTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Setup.$selectedtab as 3
+Calculate $cinst.$objs.TabControl_Setup.$tabvisible as lbSupplierTab
+Do ilTabShortcuts.$add()
+If lbSupplierTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+Calculate $cinst.$objs.TabControl_Setup.$selectedtab as 4
+Calculate $cinst.$objs.TabControl_Setup.$tabvisible as lbInvoiceTab
+Do ilTabShortcuts.$add()
+If lbInvoiceTab
+	Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+	Calculate inTabCount as inTabCount+1
+End If
+
+If lbProductTab
+	Calculate inCurrentTab as 1
+	Do $ctask.$setCurrentForm('code','FORM_PRD')
+Else If lbCustomerTab
+	Calculate inCurrentTab as 2
+	Do $ctask.$setCurrentForm('code','FORM_CUST')
+Else If lbSupplierTab
+	Calculate inCurrentTab as 3
+	Do $ctask.$setCurrentForm('code','FORM_SUPP')
+Else If lbInvoiceTab
+	Calculate inCurrentTab as 4
+	Do $ctask.$setCurrentForm('code','FORM_FOH')
+End If
+Calculate $cinst.$objs.TabControl_Setup.$currenttab as inCurrentTab

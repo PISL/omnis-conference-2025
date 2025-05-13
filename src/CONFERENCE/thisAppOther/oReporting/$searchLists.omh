@@ -1,0 +1,17 @@
+Do $DefineList(llConferences,'CONFERENCE.tConference')
+Do llConferences.$addLinkedCols('VEN_NAME,VEN_COUNTRY,VEN_LOCALITY,VEN_TOWN')
+Do llConferences.$fetch_all()
+Do llConferences.$sort($ref.CF_DATE_FROM,1) ## most recent events at top of list
+
+Do llConferences.$addDisplayName()
+Calculate llConferences.$line as 0
+While $Loop(llConferences)
+	Do llConferences.$DisplayName()
+End While
+# the most recent conference
+Calculate llConferences.$line as 1
+
+Do llConferences.$cols.$findname('DisplayName') Returns liColRef1
+
+Calculate pretSearch1 as llConferences
+# Calculate pretSearch2 as #NULL

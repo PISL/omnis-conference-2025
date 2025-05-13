@@ -1,0 +1,136 @@
+# Most forms have 3 action comments: insert, edit and delete. ## These are the "standard" actions that appear on every form.
+# Some forms have additional options to initiate business processes, a data import, print a report etc.
+# If a form has additional options they are communicated and stored here for use by the $adjustToolsMenu method.
+# See of the form has already had extra menu options sent.
+Do ilFormMenuOptions.$search($ref.formCode=pcClass,1,0,0,0) Returns lbFound
+If lbFound
+	# It's not neccessary to overwrite these entries as, although they might change from user to user, they wont change for the same user.
+Else
+	# Add these additional menu options to the list.
+	Do ilFormMenuOptions.$add(pcClass)
+	Calculate ilFormMenuOptions.$line as ilFormMenuOptions.$linecount
+End If
+
+Do ilToolsMenu.$copydefinition(ilNavMenu)
+Do llCascade.$copydefinition(ilNavMenu)
+# ACTIONS
+If lbFound
+	If plActions.$linecount
+		Calculate llCascade as plActions ## specific entries
+	Else
+		Calculate llCascade as ilFormMenuOptions.action ## default entries
+	End If
+Else
+	# First time through creating these entries - the default entries are prepared here.
+	If plActions.$linecount=0
+		Do llCascade.$add(kNavMenuTypeEntry,'Actions','Currently unavailable',0,1001)
+	Else
+		Calculate plActions.$line as 0
+		While $Loop(plActions)
+			Do toStrings.$StringTableEntry(plActions.code,lcHeading,plActions.code)
+			Do toStrings.$StringTableEntry(con(plActions.code,'_D'),lcDesc,con(plActions.code,'_D'))
+			# certain actions have a consistent keypress applied
+			If plActions.code='FACT_INSR'
+				If irKeyPress.$cols.$findname('insert')
+					Calculate plActions.keypress as irKeyPress.insert
+				End If
+			Else If plActions.code='FACT_UPDR'
+				If irKeyPress.$cols.$findname('edit')
+					Calculate plActions.keypress as irKeyPress.edit
+				End If
+			Else If plActions.code='FACT_DELR'
+				If irKeyPress.$cols.$findname('delete')
+					Calculate plActions.keypress as irKeyPress.delete
+				End If
+			End If
+			Do llCascade.$add(kNavMenuTypeEntry,lcHeading,con(lcDesc,pick(plActions.keypress<>'','',con('    Ctrl-Shift-',plActions.keypress))),0,plActions.ident)
+		End While
+	End If
+	Calculate ilFormMenuOptions.action as llCascade
+	Calculate ilFormMenuOptions.identAction as 1000
+	Calculate ilFormMenuOptions.iconAction as unichr('U+1F6E0')
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconAction,'',1,ilFormMenuOptions.identAction,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+# NOTIFICATIONS
+Do llCascade.$clear()
+If lbFound
+	If plNotifications.$linecount
+		Calculate llCascade as plNotifications ## specific entries
+	Else
+		Calculate llCascade as ilFormMenuOptions.notification ## default entries
+	End If
+Else
+	# First time through creating these entries - the default entries are prepared here.
+	If plNotifications.$linecount=0
+		Do llCascade.$add(kNavMenuTypeEntry,'Notifications','Currently unavailable',0,2001)
+	Else
+		Calculate plNotifications.$line as 0
+		While $Loop(plNotifications)
+			Do toStrings.$StringTableEntry(plNotifications.code,lcHeading,plNotifications.code)
+			Do toStrings.$StringTableEntry(con(plNotifications.code,'_D'),lcDesc,con(plNotifications.code,'_D'))
+			
+			Do llCascade.$add(kNavMenuTypeEntry,lcHeading,con(lcDesc,pick(plNotifications.keypress<>'','',con('    Ctrl-Shift-',plNotifications.keypress))),0,plNotifications.ident)
+		End While
+	End If
+	Calculate ilFormMenuOptions.notification as llCascade
+	Calculate ilFormMenuOptions.identNotification as 2000
+	Calculate ilFormMenuOptions.iconNotification as unichr('U+1F4E8')
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconNotification,'',1,ilFormMenuOptions.identNotification,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+# SEARCH
+Do llCascade.$clear()
+If lbFound
+	If plSearch.$linecount
+		Calculate llCascade as plSearch ## specific entries
+	Else
+		Calculate llCascade as ilFormMenuOptions.search ## default entries
+	End If
+Else
+	# First time through creating these entries - the default entries are prepared here.
+	If plSearch.$linecount=0
+		Do llCascade.$add(kNavMenuTypeEntry,'Search','Currently unavailable',0,3001)
+	Else
+		Calculate plSearch.$line as 0
+		While $Loop(plSearch)
+			Do toStrings.$StringTableEntry(plSearch.code,lcHeading,plSearch.code)
+			Do toStrings.$StringTableEntry(con(plSearch.code,'_D'),lcDesc,con(plSearch.code,'_D'))
+			
+			Do llCascade.$add(kNavMenuTypeEntry,lcHeading,con(lcDesc,pick(plSearch.keypress<>'','',con('    Ctrl-Shift-',plSearch.keypress))),0,plSearch.ident)
+		End While
+	End If
+	Calculate ilFormMenuOptions.search as llCascade
+	Calculate ilFormMenuOptions.identSearch as 3000
+	Calculate ilFormMenuOptions.iconSearch as unichr('U+1f50D')
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconSearch,'',1,ilFormMenuOptions.identSearch,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+# HELP
+Do llCascade.$clear()
+If lbFound
+	If plHelp.$linecount
+		Calculate llCascade as plHelp ## specific entries
+	Else
+		Calculate llCascade as ilFormMenuOptions.help ## default entries
+	End If
+Else
+	# First time through creating these entries - the default entries are prepared here.
+	If plHelp.$linecount=0
+		Do llCascade.$add(kNavMenuTypeEntry,'Help','Currently unavailable',0,4001)
+		Do toStrings.$StringTableEntry('FORM_USERINPUT',lcTranslation,'Send feedback')
+		Do llCascade.$add(kNavMenuTypeEntry,lcTranslation,con('send comments or suggestions',kCr,' to the developers'),0,4002,'infra.rjsDevFeedback')
+	Else
+		Calculate plHelp.$line as 0
+		While $Loop(plHelp)
+			Do toStrings.$StringTableEntry(plHelp.code,lcHeading,plHelp.code)
+			Do toStrings.$StringTableEntry(con(plHelp.code,'_D'),lcDesc,con(plHelp.code,'_D'))
+			
+			Do llCascade.$add(kNavMenuTypeEntry,lcHeading,con(lcDesc,pick(plHelp.keypress<>'','',con('    Ctrl-Shift-',plHelp.keypress))),0,plHelp.ident)
+		End While
+	End If
+	Calculate ilFormMenuOptions.help as llCascade
+	Calculate ilFormMenuOptions.identHelp as 4000
+	Calculate ilFormMenuOptions.iconHelp as '?'
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconHelp,'',1,ilFormMenuOptions.identHelp,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))

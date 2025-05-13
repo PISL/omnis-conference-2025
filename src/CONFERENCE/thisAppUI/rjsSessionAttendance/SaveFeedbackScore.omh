@@ -1,0 +1,40 @@
+# pnScore represents the line number to lookup in ilFeedbackValues
+
+Do irFeedback.$clear() ## pnScore
+Do irFeedback.$fetch_pk(ilFeedback.AFB_SEQ)
+If irFeedback.AFB_SEQ>0
+	If ilFeedbackValues.[pnScore].score>0 ## ilFeedback.AFB_SCORE>0
+		Calculate irFeedback.AFB_SCORE as ilFeedbackValues.[pnScore].score ## ilFeedback.AFB_SCORE
+		Do irFeedback.$update() Returns lbOK
+	Else
+		Do irFeedback.$delete() Returns lbOK
+		If lbOK
+			Do irFeedback.$clear()
+		End If
+	End If
+Else
+	If ilFeedbackValues.[pnScore].score>0 ## ilFeedback.AFB_SCORE>0
+		Calculate irFeedback.AFB_ARA_REF as irAttendee.ARA_SEQ
+		Calculate irFeedback.AFB_RFO_VALUE as ilFeedback.RFO_VALUE
+		Calculate irFeedback.AFB_SCORE as ilFeedbackValues.[pnScore].score ## ilFeedback.AFB_SCORE
+		Do irFeedback.$insert() Returns lbOK
+	Else
+		# ignore
+	End If
+End If
+
+If lbOK
+	Calculate ilFeedback.AFB_SEQ as irFeedback.AFB_SEQ
+	Calculate ilFeedback.AFB_SCORE as irFeedback.AFB_SCORE
+	# Calculate ilFeedback.score as pick(ilFeedback.AFB_SCORE,'','poor','good','very good','excellent')
+	Calculate ilFeedback.score as ilFeedbackValues.[inFeedback].desc
+Else
+	Calculate ilFeedback.score as ''
+	If irFeedback.icValidationMessage<>''
+		Calculate icDisplayMessage as irFeedback.icValidationMessage
+	Else If irFeedback.irErrorSQL.NativeErrorText<>''
+		Calculate icDisplayMessage as irFeedback.irErrorSQL.NativeErrorText
+	End If
+End If
+
+Quit method lbOK

@@ -1,0 +1,5 @@
+If ibSFSexists
+	# remove the subform set does not exist
+	Do $cinst.$clientcommand("subformset_remove",row("SubformSet"))
+	Calculate ibSFSexists as kFalse
+End If

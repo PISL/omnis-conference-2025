@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TQO_TSQ_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' question must be set')
+End If
+
+If $cinst.TQO_TITLE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' title missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

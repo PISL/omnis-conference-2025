@@ -1,0 +1,27 @@
+# following permissions copied from $behaviour
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabCertificate|inCurrentTab=cnTabComments
+	If irUserRights.canInsert&icMode='' ## copied from $behaviour
+		Do method ClearWorkArea
+		Calculate icMode as 'IC' ## insert certificate, tab 1
+		Calculate irCurrentRecord.CRT_CF_REF as ilSearch1.CF_SEQ
+		If inCurrentTab=cnTabComments
+			Calculate inCurrentTab as cnTabCertificate
+			Calculate $cinst.$objs.TabControl_CRT.$currentpage as inCurrentTab
+			Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+		End If
+	Else
+		Quit method
+	End If
+Else If inCurrentTab=cnTabAwardedTo
+	If irUserRights.canInsert&icMode=''&irCurrentRecord.CRT_SEQ>0 ## copied from $behaviour
+		Do method ClearWorkArea
+		Calculate icMode as 'IAW' ## insert Awardee
+		Do irAwardee.$assignrow(ilDelegates,kTrue) ## to get PSN_NAME etc.  The sCertificateAssign columns will be empty
+	Else
+		Quit method
+	End If
+End If
+
+Do $cinst.$behaviour()

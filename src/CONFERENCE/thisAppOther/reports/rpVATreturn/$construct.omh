@@ -1,0 +1,152 @@
+Calculate idFrom as pdFrom
+Calculate idTo as pdTo
+Calculate ilData as plData
+Calculate ibShowDetail as pbIncludeDetail
+
+Do inherited
+# be sure to set "loadpagesetup" class property to kTrue
+
+Calculate icReportTitle as con('VAT Data ')
+Calculate icReportSubTitle as con('Invoices ',dat(idFrom,'D-M-Y'),' to ',dat(idTo,'D-M-Y'),kCr,'Sorted by ',plSort.sortName)
+
+Do toValues.$initOrg('IMAGES','LOGO_INV_JPEG') Returns irLogo
+Calculate lcType as pictformat(irLogo.RFO_BIN)
+If lcType='GIF'
+	# because the control in the report is GIF
+	Calculate $cinst.$objs.RFO_BIN_jpeg.$visible as kFalse
+	# Calculate $cinst.$objs.RFO_BIN_gif.$visible as kTrue
+	Breakpoint GIF no longer supported
+Else If lcType='JPEG'
+	# because the control in the report is JPEG
+	# Calculate $cinst.$objs.RFO_BIN_gif.$visible as kFalse
+	Calculate $cinst.$objs.RFO_BIN_jpeg.$visible as kTrue
+Else
+	# gif would be better but there is a licencing issue with gifs that produces an OK message so we can't use it.
+	# so we convert to JPEG
+	Calculate lbinTemp as irLogo.RFO_BIN
+	Calculate irLogo.RFO_BIN as pictconvto(lcType,lbinTemp,'JPEG')
+	# Calculate $cinst.$objs.RFO_BIN_gif.$visible as kFalse
+	Calculate $cinst.$objs.RFO_BIN_jpeg.$visible as kTrue
+End If
+
+# list to be sorted according to FOH_INV_NO for adding a header row to ilData ## for sub totals
+Do ilData.$sort($ref.FOH_INV_NO,0)
+
+Do ilData.$cols.$add('invoiceMonth',kInteger,k32bitint)
+Do ilData.$cols.$add('invoiceHeader',kInteger,kShortint)
+Do ilData.$cols.$add('invoiceTotalPrice',kNumber,k2dp)
+Do ilData.$cols.$add('invoiceTotalTax',kNumber,k2dp)
+Do ilData.$cols.$add('invoiceTotal',kNumber,k2dp)
+Do ilData.$cols.$add('level1count',kInteger,kShortint)
+Do ilData.$cols.$add('level2count',kInteger,kShortint)
+
+# ilData has a row for each detail line
+# This report offers an option to display each detail line or just show a total.
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Calculate ilData.invoiceHeader as 2 ## detail line
+	Calculate ilData.invoiceMonth as dpart(kYear,ilData.FOH_DATE)*100+dpart(kMonth,ilData.FOH_DATE)
+	
+	If ilData.$line=1
+		Calculate lnTotalPrice as 0
+		Calculate lnTotalTax as 0
+		Calculate lnFirstInvoiceLine as 1
+	Else
+		If ilData.FOH_INV_NO<>ilData.[ilData.$line-1].FOH_INV_NO
+			# first line of a subsequent invoice
+			Do ilData.$addbefore(lnFirstInvoiceLine)
+			Calculate ilData.[lnFirstInvoiceLine].invoiceHeader as 1
+			Calculate ilData.[lnFirstInvoiceLine].invoiceTotalPrice as lnTotalPrice
+			Calculate ilData.[lnFirstInvoiceLine].invoiceTotalTax as lnTotalTax
+			Calculate ilData.[lnFirstInvoiceLine].invoiceTotal as lnTotalPrice+lnTotalTax
+			# the next lines are placing columns used in a subsequent sort to keep header and detail lines together
+			# with the $addbefore above, $line is pointing to "wrong" line ## i.e. not the one that triggered the new invoice code
+			Calculate ilData.[lnFirstInvoiceLine].EO_NAME as ilData.EO_NAME
+			Calculate ilData.[lnFirstInvoiceLine].invoiceMonth as ilData.invoiceMonth
+			Calculate ilData.[lnFirstInvoiceLine].FOH_INV_NO as ilData.FOH_INV_NO
+			Calculate ilData.[lnFirstInvoiceLine].FOH_DATE as ilData.FOH_DATE
+			Calculate ilData.[lnFirstInvoiceLine].EO_CO_ISO3_REF as ilData.EO_CO_ISO3_REF
+			Calculate ilData.[lnFirstInvoiceLine].FOH_CURRENCY as ilData.FOH_CURRENCY
+			# set $line back to the line we were pointing to at top of loop
+			Calculate ilData.$line as ilData.$line+1
+			# reset totals
+			Calculate lnTotalPrice as 0
+			Calculate lnTotalTax as 0
+			Calculate lnFirstInvoiceLine as ilData.$line
+			# Else
+			# If not(ibShowDetail)
+			# Calculate ilData.[ilData.$line].$selected as kTrue
+			# End If
+		End If
+	End If
+	
+	Calculate lnTotalPrice as lnTotalPrice+ilData.Price
+	Calculate lnTotalTax as lnTotalTax+ilData.Tax
+	
+End While
+# apply additional line for last invoice in the list
+Calculate ilData.[lnFirstInvoiceLine].invoiceHeader as 1
+Calculate ilData.[lnFirstInvoiceLine].invoiceTotalPrice as lnTotalPrice
+Calculate ilData.[lnFirstInvoiceLine].invoiceTotalTax as lnTotalTax
+Calculate ilData.[lnFirstInvoiceLine].invoiceTotal as lnTotalPrice+lnTotalTax
+# with the $addbefore above, $line is pointing to "wrong" line ## i.e. not the one that triggered the new invoice code
+Calculate ilData.[lnFirstInvoiceLine].EO_NAME as ilData.[ilData.$linecount].EO_NAME
+Calculate ilData.[lnFirstInvoiceLine].invoiceMonth as ilData.[ilData.$linecount].invoiceMonth
+Calculate ilData.[lnFirstInvoiceLine].FOH_INV_NO as ilData.[ilData.$linecount].FOH_INV_NO
+Calculate ilData.[lnFirstInvoiceLine].FOH_DATE as ilData.[ilData.$linecount].FOH_DATE
+Calculate ilData.[lnFirstInvoiceLine].EO_CO_ISO3_REF as ilData.[ilData.$linecount].EO_CO_ISO3_REF
+Calculate ilData.[lnFirstInvoiceLine].FOH_CURRENCY as ilData.[ilData.$linecount].FOH_CURRENCY
+
+If not(pbIncludeDetail)
+	Do ilData.$search($ref.invoiceHeader=2,1,0,1,0)
+	Do ilData.$remove(kListDeleteSelected)
+End If
+
+# list to be sorted according to sort columns in report class ## for sub totals
+If plSort.sortCode='MONTH'
+	Calculate icBreakCol1 as 'invoiceMonth'
+	# Calculate icBreakCol2 as 'EO_CO_ISO3_REF'
+	Calculate $cinst.$sorts.1.$dataname as 'ilData.invoiceMonth'
+	# Calculate $cinst.$sorts.2.$dataname as 'ilData.EO_CO_ISO3_REF'
+	
+	Do ilData.$sort($ref.invoiceMonth,0,$ref.FOH_DATE,0,$ref.FOH_INV_NO,0,$ref.FOD_SEQ,0)
+	
+Else If plSort.sortCode='COUNTRY'
+	Calculate icBreakCol1 as 'EO_CO_ISO3_REF'
+	# Calculate icBreakCol2 as 'invoiceMonth'
+	Calculate $cinst.$sorts.1.$dataname as 'ilData.EO_CO_ISO3_REF'
+	# Calculate $cinst.$sorts.2.$dataname as 'ilData.invoiceMonth'
+	
+	Do ilData.$sort($ref.EO_CO_ISO3_REF,0,$ref.FOH_DATE,0,$ref.FOH_INV_NO,0,$ref.FOD_SEQ,0)
+End If
+# to trigger sub totals for countries only when there are multiple invoices for that country
+# implement a "countCountry" within the list structure.
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If ilData.invoiceHeader=1
+		If ilData.$line=1
+			Calculate ilData.level1count as 1
+			# Calculate ilData.level2count as 1
+			
+		Else If ilData.[icBreakCol1]=ilData.[lnLastHeaderLine].[icBreakCol1]
+			Calculate ilData.level1count as ilData.[lnLastHeaderLine].level1count+1
+			
+			# Else If ilData.[icBreakCol2]=ilData.[lnLastHeaderLine].[icBreakCol2]
+			# Calculate ilData.level2count as ilData.[lnLastHeaderLine].level2count+1
+			
+		Else
+			Calculate ilData.level1count as 1
+			# Calculate ilData.level2count as 1
+		End If
+		
+		Calculate lnLastHeaderLine as ilData.$line
+	Else
+		Calculate ilData.level1count as ilData.[ilData.$line-1].level1count
+		# Calculate ilData.level2count as ilData.[ilData.$line-1].level2count
+	End If
+End While
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

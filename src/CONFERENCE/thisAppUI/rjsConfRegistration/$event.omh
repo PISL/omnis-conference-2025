@@ -1,0 +1,25 @@
+On evLayoutChanged
+	Do inherited ## sets inBreakpoint
+	
+	Switch inBreakpoint
+		Case 320
+			Calculate $cinst.$objs.PagedPane.$objs.rg_inExtras.$columncount as 1
+			Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$columncount as 2
+			Calculate $cinst.$objs.PagedPane.$objs.PSN_SEX.$columncount as 2
+			
+		Case 480
+			Calculate $cinst.$objs.PagedPane.$objs.rg_inExtras.$columncount as 2
+			Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$columncount as 2
+			Calculate $cinst.$objs.PagedPane.$objs.PSN_SEX.$columncount as 1
+			
+		Case 768
+			Calculate $cinst.$objs.PagedPane.$objs.rg_inExtras.$columncount as 3
+			Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$columncount as 2
+			Calculate $cinst.$objs.PagedPane.$objs.PSN_SEX.$columncount as 1
+			
+		Default
+			Calculate $cinst.$objs.PagedPane.$objs.rg_inExtras.$columncount as 3
+			Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$columncount as 3
+			Calculate $cinst.$objs.PagedPane.$objs.PSN_SEX.$columncount as 1
+			
+	End Switch

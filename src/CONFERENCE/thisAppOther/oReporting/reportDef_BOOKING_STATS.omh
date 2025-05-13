@@ -1,0 +1,29 @@
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "BOOKING_STATS"
+
+Text:, "title" : "Booking stats"
+Text:, "description" : "Booking statistics for each session."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+Text:, "filterlist_lbl" : "filter options"
+Text:, "filterlist_tt" : "Reduce a large list to a smaller list using a filter."
+# mandatory
+Text:, "filterlist_column" : "name of column to display"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('POST_CONF',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

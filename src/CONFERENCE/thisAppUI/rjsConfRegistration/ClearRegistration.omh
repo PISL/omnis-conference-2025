@@ -1,0 +1,16 @@
+Calculate irRegistration.PSN_SURNAME as ''
+Calculate irRegistration.PSN_FIRST_NAME as ''
+Calculate irRegistration.PSN_EMAIL as ''
+Calculate irRegistration.PSN_PHOTOID_TYPE as ''
+Calculate irRegistration.PSN_PHOTOID_NO as ''
+Calculate irRegistration.PSN_SPOUSE_NAME as ''
+Calculate irRegistration.DR_REQUEST as ''
+If ilPersons.$linecount=0
+	Calculate irRegistration.DIL_PRIMARY as 1
+Else
+	If tot(ilPersons,ilPersons.DIL_PRIMARY)>0
+		Calculate irRegistration.DIL_PRIMARY as 0
+	Else
+		Calculate irRegistration.DIL_PRIMARY as 1
+	End If
+End If

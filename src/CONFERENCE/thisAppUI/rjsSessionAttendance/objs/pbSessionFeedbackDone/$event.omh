@@ -1,0 +1,6 @@
+On evClick
+	If ibFeedbackModified
+		Do method SaveRating
+	End If
+	Calculate $cinst.$objs.PagedPane.$currentpage as cnPageSession
+	Do $cinst.$behaviour()

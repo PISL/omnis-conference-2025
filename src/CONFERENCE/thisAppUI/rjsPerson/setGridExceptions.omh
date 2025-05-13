@@ -1,0 +1,2 @@
+# Do $cinst.$objs.ilTopicsWithSpeakers.$clearexceptions()
+# Do $cinst.$objs.ilTopicsWithSpeakers.$sendall($cinst.$objs.PSN_ImageLink.[ilTopicsWithSpeakers.$line].$html.$assign(not(isclear(ilTopicsWithSpeakers.PSN_ImageLink))))

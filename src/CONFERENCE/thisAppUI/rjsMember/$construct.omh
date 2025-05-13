@@ -1,0 +1,46 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+
+Do $DefineList(ilDisplayRecords,'tPerson')
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilDisplayRecords.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+
+Do $DefineList(irCurrentRecord,'tMembership')
+Calculate ilMembershipHistory as irCurrentRecord
+
+# Calculate $cinst.$objs.PagedPane.$objs.ilUserRoles.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilPersons,'tPerson')
+Do ilPersons.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilPersons.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilPersons.$fetchActive()
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','MB_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','MB_Intro','label')
+
+Do method UserPermissions
+
+Do toValues.$initInherited('MB_TYPE') Returns ilType
+
+# find correct column number to display in list
+# Do ilDisplayRecords.$cols.$findname('VEN_NAME') Returns liColRef
+Do ilDisplayRecords.$cols.$findname('DisplayName') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+
+Do method FetchRecords
+# no drop lists needed for this small group of records
+Do $cinst.$superText(kTrue,'name search')
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_members','label'),"DisplayName")
+
+Do ilDisplayRecords.$sort($ref.SortName,0)
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMenuID if this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do $cinst.$behaviour()

@@ -1,0 +1,324 @@
+[
+	{
+		"name": "VEN_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "primary key",
+			"nonull": true,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_NAME",
+		"ident": 32002,
+		"order": 2,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "Name of venue",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_SEARCH",
+		"ident": 32006,
+		"order": 3,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "Upper caseer case copy of VEN_NAME without accented characters for searching",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_COUNTRY",
+		"ident": 32003,
+		"order": 4,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "Country of venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_POSTCODE",
+		"ident": 32004,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 12,
+		"properties": {
+			"desc": "Postcode of venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_BUILDING",
+		"ident": 32007,
+		"order": 6,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "address - building name",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_STREET",
+		"ident": 32008,
+		"order": 7,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 40,
+		"properties": {
+			"desc": "address - street",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_LOCALITY",
+		"ident": 32009,
+		"order": 8,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 30,
+		"properties": {
+			"desc": "address - locality",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_TOWN",
+		"ident": 32010,
+		"order": 9,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 30,
+		"properties": {
+			"desc": "address - town",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_STATE",
+		"ident": 32011,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 10,
+		"properties": {
+			"desc": "address - state/county",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_INSTRUCTIONS",
+		"ident": 32012,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1500,
+		"properties": {
+			"desc": "comment or note about venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_STATUS",
+		"ident": 32013,
+		"order": 12,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "venue status - it could be a disaster",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_ROOM",
+		"ident": 32014,
+		"order": 13,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 30,
+		"properties": {
+			"desc": "name of room in building",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_PHONE",
+		"ident": 32015,
+		"order": 14,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "phone number of venue",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_COMMENT_INTERNAL",
+		"ident": 32026,
+		"order": 15,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1500,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_CBY",
+		"ident": 32017,
+		"order": 16,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_CWHEN",
+		"ident": 32018,
+		"order": 17,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_MBY",
+		"ident": 32019,
+		"order": 18,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_MWHEN",
+		"ident": 32020,
+		"order": 19,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_GO_REF",
+		"ident": 32027,
+		"order": 20,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to VENUE",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_WEBSITE",
+		"ident": 32028,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 200,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_TIMEZONE",
+		"ident": 32029,
+		"order": 22,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "VEN_TRANSFERS",
+		"ident": 32030,
+		"order": 23,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1500,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

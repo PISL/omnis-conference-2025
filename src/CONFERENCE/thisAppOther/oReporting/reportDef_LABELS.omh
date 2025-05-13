@@ -1,0 +1,41 @@
+# Do ilDisplayRecords.$add('LABELS','Delegate name tags','','sortOrder,real1','<real1>label spacing</real1>','<saveParam>real1</saveParam>')
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "LABELS"
+
+Text:, "title" : "Delegate name tags"
+Text:, "description" : "Prints out delegate name tags."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "0"
+
+Text:, "sortlist_lbl" : "sort options"
+Text:, "sortlist_tt" : "You can determine the sort order of your report here."
+# line number
+Text:, "sortlist_default" : "0"
+# mandatory
+Text:, "sortlist_column" : "name of column to display"
+
+Text:, "real1_lbl" : "label spacing"
+Text:, "real1_tt" : "Labels are tricky things to get right with spacing between labels being the critical factor.  You can manage the spacing here precisely.  This value will be saved for next time."
+Text:, "real1_min" : "0"
+Text:, "real1_max" : "0"
+Text:, "real1_default" : "0"
+
+# all params are saved for all users
+Text:, "saveParams" : "1"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('VENUE',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

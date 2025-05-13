@@ -1,0 +1,35 @@
+{
+	"ident": 1132,
+	"order": 16,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": true,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 5.08,
+		"left": 0.0,
+		"lineno": 59,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "*   From your computer go to    [irSessionURL.RFO_CHAR] \r     and login with your delegate number and surname, \u001B\u000200000001#or scan the QR code at the top of \r     the front page that includes your session booking credentials\u001B\u000200000000#, then bookmark the page.\r\r*   You can view all sessions for the week using this facility and register for specific\r     sessions.   \u001B\u000200000001#And now, provide feedback\u001B\u000200000000#.\r\r*   Please be patient while Omnis’ javascript code downloads for the first time."
+		},
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 18.273
+	}
+}

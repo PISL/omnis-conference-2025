@@ -1,0 +1,21 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabContact|inCurrentTab=cnTabSpeakerBio|inCurrentTab=cnTabTechnical
+	If irUserRights.canUpdatePerson&icMode=''
+		Calculate icMode as 'EP' ## edit person
+		Do irCurrentRecord.$fetch_pk()
+		Calculate irOriginalRecord as irCurrentRecord
+	End If
+Else If inCurrentTab=cnTabTopics
+	If irUserRights.canUpdateTopic&irTopic.TPC_SEQ>0&icMode=''
+		Calculate icMode as 'ET' ## edit topic
+	End If
+Else If inCurrentTab=cnTabConferences
+	# read only on this form, leave as is
+Else If inCurrentTab=cnTabMembership
+	# read only on this form, leave as is
+Else
+	Breakpoint
+End If
+
+Do $cinst.$behaviour()

@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.CRT_TYPE as ilCertType.RFO_VALUE

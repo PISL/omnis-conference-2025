@@ -1,0 +1,102 @@
+On evClick
+	# Breakpoint
+	# 1. pTo ## Field ref - char or list
+	# 2. pSubj ## char(255)
+	# 3. pBody ## char(10,000,000)
+	# 4. pCC ## Field ref - char or list
+	# 5. pBCC ## Field ref - char or list
+	# 6. pEnclosure ## Field ref - list, 2 cols: filename , full file path
+	# 7. pHTML ## char(10,000,000)
+	# 8. pSendAsync ## boolean, default kTrue
+	# 9. pVhostRow ## row, optional, used when called from $ServerMessage
+	# 10. pbLogProtocolExchange
+	# 11. pFromAddress ## Field ref - char
+	# 12. pFromName ## Field ref - char
+	
+	Calculate lcSubject as con('Request for travel information to ',ilSearch1.CF_TITLE)
+	Calculate lcFromAddress as irEmailTravelFromAddress.RFO_DESC
+	Calculate lcFromName as irEmailTravelFromName.RFO_DESC
+	# Calculate lcTravelLink as con('omnisworld.onlineapps.uk.com/travelinfo.htm?id=',irCurrentRecord.DG_SEQ,'&name=',irCurrentRecord.PSN_SURNAME)
+	Do method generateTravelLink (ilDisplayRecords) Returns icTravelLink
+	Calculate icDisplayMessage as icTravelLink ## so user can copy/paste link if desired
+	# parse the content of irEmailTravelMessage.RFO_CHAR to inject data values
+	Calculate lcTextToParse as irEmailTravelMessage.RFO_CHAR
+	
+	Do ioNewOw3SendEmail.$primeConfig('TRAVEL_DEETS',ilDisplayRecords.PSN_EMAIL)
+	Calculate lrNewEmailConfig as ioNewOw3SendEmail.irConfigEmail
+	# We are mixing old and new paradigms here.
+	# Old code refers to irEmailTravelMessage, determined in $construct
+	# New code refers to irEmailTravelConfig also determined in $construct
+	If lrNewEmailConfig.elt_msg_text<>''
+		# if elt_msg_text exists then this text takes precedence
+		Do ioNewOw3SendEmail.$messageSubstitute(lrNewEmailConfig.elt_msg_text,row(irCurrentRecord,ilSearch1,row(icTravelLink)))
+		# lrNewEmailConfig.elt_msg_text has the combined text
+	Else
+		While lcTextToParse<>''
+			Calculate lcChunk as ''
+			Calculate lcExpression as ''
+			
+			If pos('[[',lcTextToParse)
+				Calculate lcChunk as mid(lcTextToParse,1,pos('[[',lcTextToParse)-1)
+				Calculate lcTextToParse as mid(lcTextToParse,pos('[[',lcTextToParse),kFetchAll)
+				Calculate lcExpression as mid(lcTextToParse,3,pos(']]',lcTextToParse)-1-2)
+				Calculate lcTextToParse as mid(lcTextToParse,pos(']]',lcTextToParse)+2,kFetchAll)
+			Else
+				Calculate lcChunk as lcTextToParse
+				Calculate lcTextToParse as ''
+			End If
+			
+			If lcExpression<>''
+				Test for valid calculation [lcExpression]
+				If flag true
+					Calculate lcMessage as con(lcMessage,lcChunk,eval(lcExpression))
+				Else
+					Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+				End If
+			Else
+				Calculate lcMessage as con(lcMessage,lcChunk)
+			End If
+		End While
+	End If
+	
+	Calculate ibSendEmailAsWorker as kTrue
+	
+	# store the worker object attributes so user can drift to other records and correct record is updated when sent
+	#  irJobAttributes.instruction  is used by a buttons on Email text tab.
+	If ibManualWorkflow
+		Calculate irJobAttributes.instruction as 'MANUAL_TRAVEL'
+	Else
+		Calculate irJobAttributes.instruction as 'EMAIL_TRAVEL'
+	End If
+	Calculate irEmailWorker.DG_SEQ as irCurrentRecord.DG_SEQ
+	Calculate irEmailWorker.PSN_EMAIL as irCurrentRecord.PSN_EMAIL
+	Calculate irEmailWorker.PSN_SURNAME as irCurrentRecord.PSN_SURNAME
+	Calculate irEmailWorker.EO_EMAIL as #NULL
+	
+	If ibManualWorkflow
+		# we won't actually send the email.  Put everything into a string variable so it can be copy/pasted outside of Omnis.
+		# Breakpoint
+		Calculate icTextForClipboard as con('email to: ',irEmailWorker.PSN_EMAIL)
+		Calculate icTextForClipboard as con(icTextForClipboard,kCr,'name: ',irEmailWorker.PSN_SURNAME,', ',irCurrentRecord.PSN_FIRST_NAME)
+		Calculate icTextForClipboard as con(icTextForClipboard,kCr,'subject: ',lrNewEmailConfig.elt_subject)
+		If lrNewEmailConfig.elt_msg_text<>''
+			Calculate icTextForClipboard as con(icTextForClipboard,kCr,kCr,lrNewEmailConfig.elt_msg_text)
+		Else
+			Calculate icTextForClipboard as con(icTextForClipboard,kCr,kCr,lcMessage)
+		End If
+		
+	Else
+		Do $cinst.$emailInitialise()
+		Calculate lcTo as irCurrentRecord.PSN_EMAIL
+		# Calculate lcTo as 'robertmostyn99@gmail.com' ## debugging override
+		Do $cinst.$emailSend(lcTo,lcCC,,lcSubject,lcMessage)
+		Do $cinst.$clientcommand("openpush",row()) ## the worker will call back to $emailCompleted which will "push" the results to the client
+	End If
+	
+	If ibManualWorkflow
+		Calculate inCurrentTab as cnTabText
+		Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab ## download and text to clipboard
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

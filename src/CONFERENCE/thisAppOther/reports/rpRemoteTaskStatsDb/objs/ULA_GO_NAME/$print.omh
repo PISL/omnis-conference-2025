@@ -1,0 +1,9 @@
+If left(pData,1)=':'
+	Calculate pData as mid(pData,2,99)
+	# print the minutes column
+	Do default
+Else If pData<>''
+	Do default
+Else
+	# an hourly presentation, do not print this column
+End If

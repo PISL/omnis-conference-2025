@@ -1,0 +1,29 @@
+{
+	"ident": 1074,
+	"order": 6,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "paid",
+		"align": "kRightJst",
+		"backcolor": "RGB(80,0,0)",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 13.211,
+		"lineno": 6,
+		"lineoffset": 0.0,
+		"rowid": "word_paid",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 2.04
+	}
+}

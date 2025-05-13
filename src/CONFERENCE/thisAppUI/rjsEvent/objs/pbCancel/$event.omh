@@ -1,0 +1,20 @@
+On evClick
+	# Do irCurrentRecord.$clear()
+	# Do ilRolePermissions.$clear()
+	Calculate icDisplayMessage as ''
+	Calculate icMode as ''
+	Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+	
+	If inCurrentTab=cnConfPriceRules
+		Calculate ilPricingGrid as ilPricingGridOrig
+	Else If inCurrentTab=cnConfArrangements
+		Breakpoint
+	Else If inCurrentTab=cnConfPrices|inCurrentTab=cnConfStats|inCurrentTab=cnConfPrices
+		# not applicable
+	Else
+		Calculate irCurrentRecord as irOriginalRecord
+	End If
+	
+	# Do $cinst.$displayListClick
+	Do $cinst.$behaviour()
+	# Do $cinst.$redraw()

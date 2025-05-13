@@ -1,0 +1,56 @@
+Do $ctask.toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy
+
+Do $DefineList(ilData,'tDelegates')
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY')
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilData.$fetchForConference(prConference.CF_SEQ,''," ( DG_OCCUPANCY <> 'N' and DG_STATUS <> 'CANCEL' and PSN_SEX <> 'O' ) ") ## excludes "No Accom" but also excludes NULL which is convenient for _CONFERENCE Committee
+
+Do ilData.$cols.$add('SectionHeading',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('Arriving',kDate,kDate2000)
+Do ilData.$cols.$add('Departing',kDate,kDate2000)
+Do ilData.$cols.$add('RoomCount',kInteger,k32bitint)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If len(ilData.DG_ROOM_ASSIGNMENT)=0
+		Calculate ilData.DG_ROOM_ASSIGNMENT as ''
+	End If
+	
+	If left(ilData.DG_ROOM_ASSIGNMENT,3)='TW_'
+		Calculate ilData.SectionHeading as 'TWIN rooms'
+		
+	Else If left(ilData.DG_ROOM_ASSIGNMENT,3)='SH_'
+		Calculate ilData.SectionHeading as 'SHARED rooms'
+		
+	Else
+		Calculate ilData.SectionHeading as 'SINGLE rooms'
+	End If
+	
+End While
+Do ilData.$remove(kListDeleteSelected)
+
+Do method ArrivalAndDeparture (prConference)
+
+Do ilData.$sort($ref.Arriving,0,$ref.DG_ROOM_ASSIGNMENT,1,$ref.SortName,0) ## ROOM_ASSIGNMENT desceding is important
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If ilData.$line=1
+		Calculate lnRoomCount as 1
+	Else If ilData.DG_ROOM_ASSIGNMENT<>''
+		If ilData.DG_ROOM_ASSIGNMENT=ilData.[ilData.$line-1].DG_ROOM_ASSIGNMENT
+			# sharing a room - leave room count as is
+		Else
+			Calculate lnRoomCount as lnRoomCount+1
+		End If
+	Else If ilData.DG_STATUS='SPOUSE'
+		# sharing a room - leave room count as is
+	Else
+		Calculate lnRoomCount as lnRoomCount+1
+	End If
+	
+	Calculate ilData.RoomCount as lnRoomCount
+End While

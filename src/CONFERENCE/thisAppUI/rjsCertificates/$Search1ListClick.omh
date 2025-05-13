@@ -1,0 +1,6 @@
+Do method fetchDisplayList
+Calculate ilDisplayRecords.$line as 1
+
+Do method $displayListClick
+
+Do $cinst.$behaviour

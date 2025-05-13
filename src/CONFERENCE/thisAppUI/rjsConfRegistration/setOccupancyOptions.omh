@@ -1,0 +1,81 @@
+Do toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy ## uses FIXED entries as well as refer to db table
+# exclude spouse & family from options ## these are handled under the inExtras radio button
+Do ilOccupancy.$search($ref.RFO_VALUE='U',1,0,1,0) ## spouse
+Do ilOccupancy.$search($ref.RFO_VALUE='F',1,0,1,0) ## family
+# don't offer this if the speaker slots are already full
+If ilConferences.CF_MAX_SPEAKERS>0
+	If inCountSpeakers>=ilConferences.CF_MAX_SPEAKERS
+		Do ilOccupancy.$search($ref.RFO_VALUE='P',1,0,1,0) ## sPeaker
+	End If
+End If
+If ilConferences.CF_MAX_DELEGATES>0
+	If inCountDelegates>=ilConferences.CF_MAX_DELEGATES
+		# if max delegates has a value then we apply some logic
+		Do ilOccupancy.$search(1) ## conference is full - no one is being registered
+		# except some options may be left
+		Do ilOccupancy.$search($ref.RFO_VALUE='N',1,0,0,0) Returns lbFound ## No accommodation
+		If lbFound
+			Calculate ilOccupancy.[ilOccupancy.$line].$selected as kFalse
+		End If
+		Do ilOccupancy.$search($ref.RFO_VALUE='W',1,0,0,0) Returns lbFound ## Wait list
+		If lbFound
+			Calculate ilOccupancy.[ilOccupancy.$line].$selected as kFalse
+		End If
+	Else
+		# wait list is irrelevant
+		Do ilOccupancy.$search($ref.RFO_VALUE='W',1,0,1,0) Returns lbFound ## Wait list will be removed
+	End If
+End If
+Do ilOccupancy.$remove(kListDeleteSelected)
+
+# build up the text in the radio group from the list entries
+Calculate ilOccupancy.$line as 0
+While $Loop(ilOccupancy)
+	# Calculate lcTemp as con(lcTemp,pick(lcTemp<>'','',','),mid(ilOccupancy.RFO_DESC,1,10)) ## truncated descriptions because "No accommodation" is too long and affects whole radio group
+	Calculate lcTemp as con(lcTemp,pick(lcTemp<>'','',','),ilOccupancy.RFO_DESC) ## makes long radio group entries
+End While
+Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$maxvalue as ilOccupancy.$linecount-1
+# Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$columncount as 6
+Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$text as lcTemp
+# locate some specific values where business logic applies
+# These values are now determined by a fetch on reference table
+# which means they may or may not be present in the list.
+Calculate ikOccupancySingle as 99
+Calculate ikOccupancyShared as 99
+Calculate ikOccupancyNoAccomm as 99
+Calculate ikOccupancyDailyRate as 99
+Calculate ikOccupancySponsored as 99
+Calculate ikOccupancySpeaker as 99
+Calculate ikOccupancyWaitlist as 99
+
+Do ilOccupancy.$search($ref.RFO_VALUE='I',1,0,0,0) Returns lbFound ## I = sIngle
+If lbFound
+	Calculate ikOccupancySingle as ilOccupancy.$line-1
+End If
+Do ilOccupancy.$search($ref.RFO_VALUE='H',1,0,0,0) Returns lbFound ## H=shared
+If lbFound
+	Calculate ikOccupancyShared as ilOccupancy.$line-1
+End If
+Do ilOccupancy.$search($ref.RFO_VALUE='N',1,0,0,0) Returns lbFound ## N=No Accommodation
+If lbFound
+	Calculate ikOccupancyNoAccomm as ilOccupancy.$line-1
+End If
+Do ilOccupancy.$search($ref.RFO_VALUE='D',1,0,0,0) Returns lbFound ## D = Daily rate - 24hr rate
+If lbFound
+	Calculate ikOccupancyDailyRate as ilOccupancy.$line-1
+End If
+Do ilOccupancy.$search($ref.RFO_VALUE='E',1,0,0,0) Returns lbFound ## full time Education
+If lbFound
+	Calculate ikOccupancySponsored as ilOccupancy.$line-1
+End If
+Do ilOccupancy.$search($ref.RFO_VALUE='P',1,0,0,0) Returns lbFound ## P = sPeaker
+If lbFound
+	Calculate ikOccupancySpeaker as ilOccupancy.$line-1
+End If
+Do ilOccupancy.$search($ref.RFO_VALUE='W',1,0,0,0) Returns lbFound ## waitlist
+If lbFound
+	Calculate ikOccupancyWaitlist as ilOccupancy.$line-1
+End If
+
+Calculate inDG_OCCUPANCY as 0
+Do ioResolve.$setOccupancyOptions(ilOccupancy)

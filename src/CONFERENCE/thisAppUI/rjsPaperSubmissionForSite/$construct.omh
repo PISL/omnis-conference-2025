@@ -1,0 +1,75 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+Calculate $cinst.$objs.PagedPane.$currentpage as cnPageLogin ## login
+
+If #D<tlOpenConferences.CF_DATE_FROM
+	Calculate icConferenceTag as tlOpenConferences.CF_TITLE_CODE
+End If
+Calculate irCompany as trGroupOrg
+
+# get the exit/cancel URL
+Do toValues.$initInherited('URL','EXIT') Returns lrReference
+If not(isclear(lrReference.RFO_CHAR))
+	Calculate icURLexit as lrReference.RFO_CHAR
+End If
+
+# get the keywords for topics
+Do ioTags.$getTagsMaster('TPC_TAGS') Returns ilTagsDisplay
+Do ilTagsDisplay.$cols.$findname('RFO_DESC') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.ilTagsDisplay.$listcolumn as liColRef.$ident
+End If
+Do toValues.$initInherited('TPC_DURATION') Returns ilDurations
+Do ilDurations.$cols.$findname('RFO_DESC') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.TPC_DURN_MINS.$listcolumn as liColRef.$ident
+End If
+
+Do $DefineList(irPerson,'tPerson') Returns lbOK
+
+Do $DefineList(ilTopics,'tTopics')
+Do ilTopics.$addLinkedCols('PSN_SEQ,PSN_FIRST_NAME,PSN_SURNAME')
+Do ilTopics.$addDisplayName()
+Calculate irTopic as ilTopics
+Calculate irTopicOrig as irTopic
+
+Do ilTopics.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.ilTopics.$listcolumn as liColRef.$ident
+
+Do $DefineList(irTopicPersonLink,'tTopicPersonLink')
+
+Do toValues.$ReturnCountries() Returns ilCountries
+Do ilCountries.$cols.$findname('REF_DESC') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_COUNTRY.$listcolumn as liColRef.$ident
+End If
+
+Begin text block
+Line:Use this form to submit a paper to be presented at the Euromnis Conference.  
+End text block
+Get text block icFormHeading
+
+Begin text block
+Line:  Full 2.5 hour presentations, half (1.25 hr) presentations and 10 minute micro sessions can be submitted for consideration.
+Line:  All fields are mandatory.  The email address will be used as your primary identifier.
+Line:  If you have given presentations to earlier conferences you can review and revise those entries.
+End text block
+Get text block icFormIntro
+
+Do method TranslateText
+
+# if we're developing, set the timeout to a reasonable value - 2 hours
+If sys(2)=17
+	Do $setTimeout(120)
+Else
+	Do $setTimeout(10)
+End If
+
+Calculate inCurrentPane as 1
+Do $cinst.$setcurfield('PSN_FIRST_NAME_LOGIN')
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

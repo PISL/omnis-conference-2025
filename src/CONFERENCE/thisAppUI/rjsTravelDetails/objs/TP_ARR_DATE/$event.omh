@@ -1,0 +1,31 @@
+On evBefore
+	
+On evAfter
+	If tConstants.debugMode
+		Send to trace log (Always log) TP_ARR_DATE = "[irTravelDetails.TP_ARR_DATE]"
+	End If
+	If irTravelDetails.TP_ARR_DATE=''
+		Calculate irTravelDetails.TP_ARR_DATE as #NULL
+		Calculate irTravelDetails.dayOfWeek as ''
+	Else If irTravelDetails.TP_ARR_DATE>ilConferences.CF_DATE_TO
+		# icDisplayMessage gets cleared in DataModified
+		Calculate lcMessage as con('Arrival date ',irTravelDetails.TP_ARR_DATE,' cannot be after conference end date of ',ilConferences.CF_DATE_TO)
+		Calculate irTravelDetails.TP_ARR_DATE as #NULL
+		Calculate irTravelDetails.dayOfWeek as ''
+		
+	Else If irTravelDetails.TP_ARR_DATE<dim(ilConferences.CF_DATE_FROM,-1)
+		# icDisplayMessage gets cleared in DataModified
+		Calculate lcMessage as con('Arrival date ',irTravelDetails.TP_ARR_DATE,' cannot be earlier than one month before conference from date date of ',ilConferences.CF_DATE_FROM)
+		Calculate irTravelDetails.TP_ARR_DATE as #NULL
+		Calculate irTravelDetails.dayOfWeek as ''
+		
+	Else
+		Calculate irTravelDetails.dayOfWeek as jst(irTravelDetails.TP_ARR_DATE,'D:V')
+	End If
+	
+	Do method DataModified
+	If lcMessage<>''&icDisplayMessage=''
+		Calculate icDisplayMessage as lcMessage
+	End If
+	
+	Do $cinst.$behaviour()

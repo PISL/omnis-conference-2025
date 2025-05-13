@@ -1,0 +1,32 @@
+On evBefore
+	
+On evAfter
+	Calculate icDisplayMessage as ''
+	Calculate $cobj.$errortext as ''
+	
+	If irRegistration.PSN_EMAIL<>''
+		Do ioFormat.$FormatEmail(irRegistration.PSN_EMAIL) Returns icValidationText
+		If icValidationText<>''
+			Calculate icDisplayMessage as icValidationText
+			Calculate $cobj.$errortext as icValidationText
+		Else ## all good
+			Do method FetchPerson (kTrue)
+			Do method DisplayPrice2 ## will add irRegistration to ilPersons via PrepareRegistration when trying to find a price to display
+			
+			# RSM  2024-12-10  When a second person is being registered, it is not obvious they are being added until the row is added to ilPersons
+			# This is not just important visually but also for more accurate processing when going to next screen that includes preparing the pro forma invoice.
+			If ilPersons.$linecount>=1
+				Do ilPersons.$search($ref.PSN_EMAIL=irRegistration.PSN_EMAIL,1,0,0,0) Returns lbFound
+				If not(lbFound)
+					Do method AddPerson (kTrue)
+				End If
+			End If
+			
+			If not(ibFormHasBeenUsed)&irRegistration.PSN_EMAIL<>''
+				Do $LogEvent('CONF_REG','START',irRegistration.PSN_EMAIL)
+				Calculate ibFormHasBeenUsed as kTrue
+			End If
+		End If
+	End If
+	
+	Do $cinst.$behaviour()

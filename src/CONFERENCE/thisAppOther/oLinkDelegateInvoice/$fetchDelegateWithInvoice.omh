@@ -1,0 +1,22 @@
+Do irDelegate.$clear()
+Do irDelegate.$fetch_pk(pnDG_SEQ)
+Calculate irOrigDelegate as irDelegate
+
+Do irLinkDelegateInvoice.$clear()
+Do irLinkDelegateInvoice.$fetch_fk(pnDG_SEQ)
+Calculate irOrigLinkDelegateInvoice as irLinkDelegateInvoice
+
+Do irInvoiceHeader.$fetch_pk(irLinkDelegateInvoice.DIL_FOH_REF)
+Do ilInvoiceDetail.$fetch_fk(irInvoiceHeader.FOH_SEQ)
+Do ilInvoiceDetail.$sendall($ref.ItemTotal.$assign(ilInvoiceDetail.FOD_QTY*(ilInvoiceDetail.FOD_UNIT_PRICE+ilInvoiceDetail.FOD_UNIT_TAX)))
+Calculate ilInvoiceDetail.$line as 0
+While $loop(ilInvoiceDetail)
+	Do ilInvoiceDetail.$calculatedValues()
+End While
+
+Do prDelegate.$assignrow(irDelegate) ## return result to calling object
+Do prInvHeader.$assignrow(irInvoiceHeader)
+Do plInvDetail.$clear()
+Do plInvDetail.$merge(ilInvoiceDetail)
+
+Do prLink.$assignrow(irLinkDelegateInvoice) ## return result to calling object

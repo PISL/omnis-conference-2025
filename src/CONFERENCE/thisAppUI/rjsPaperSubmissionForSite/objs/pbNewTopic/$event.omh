@@ -1,0 +1,4 @@
+On evClick
+	Calculate icMode as 'I'
+	Do method clearTopic
+	Do $cinst.$behaviour()

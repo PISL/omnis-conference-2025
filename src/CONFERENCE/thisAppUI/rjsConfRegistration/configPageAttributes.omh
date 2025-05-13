@@ -1,0 +1,147 @@
+# 2025-05-12  RSM  getting trFormColours is good for performance but its only set once per startup.
+#  Meaning if we change the config it doesn't become effective until app is re-started.
+# So instead of memory copy we will get config from database.
+
+# Do $itasks.[tcCurrentLibrary].$GetVar(nam(trFormColours)) Returns trFormColours
+Do toValues.$initInherited("FORMCOLOURS") Returns llFormColours
+Do toStrings.$ListToRow(llFormColours,'RFO_VALUE','RFO_JSON') Returns trFormColours
+
+# trFormColours.
+#   ANAVAREA  {"backalpha": 0, "backcolor": "rgb(255,255,238)"}
+#   ANAVLABELS  {"backalpha": "0", "backcolor": "rgb(255,255,238)", "textcolor": "kColorDefault"}
+#   FIELDCOLOURS  {"unique": "rgb(200,255,255)", "disabled": "rgb(238,238,238)", "enterable": "rgb(255,255,255)", "mandatory": "kMagenta"}
+#   WORKAREA  {"alpha": "25", "forecolor": "rgb(51,153,204)"}      ** do not use  - everything is blank  **
+#   ZC_FS_PRICENOW  {"backcolor": "rgb(153,153,153)"}
+#   ZC_FS_PRICING  {"backcolor": "rgb(153,153,153)"}
+#   ZC_FS_SESSIONS  {"backcolor": "rgb(153,153,153)"}
+
+# configurable object attributes
+# RSM 2025-05-05  I tried introducing REGFORM_LBL  REGFORM_ENTRY  REGFORM_PANE  but they are not being picked up
+#  defined in REG_ORG
+Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.REGFORM_PANE)
+If lrAttributes.$colcount=0
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.REGFORM_LBL)
+	If lrAttributes.$colcount=0
+		Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ZC_FS_SESSIONS)
+	End If
+End If
+For lnCount from 1 to lrAttributes.$colcount step 1
+	Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+	Calculate $cinst.$objs.PagedPane.$[lcProperty] as eval(lrAttributes.[lcProperty])
+End For
+
+Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.REGFORM_LBL)
+If lrAttributes.$colcount=0
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVAREA)
+End If
+For lnCount from 1 to lrAttributes.$colcount step 1
+	Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+	# although entry fields, they appear as labels
+	Calculate $cinst.$objs.PagedPane.$objs.GO_NAME_FULL1.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.GO_NAME_FULL2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.icDisplayMessage.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.icDisplayMessage2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.icDisplayMessage5.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	# entry fields
+	Calculate $cinst.$objs.PagedPane.$objs.label_DelegateNames.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_DG_OCCUPANCY.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_DR_REQUEST.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_COMPANY_NO.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_ADDR_BILL.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_COMPANY_NO.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_CONTACT.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_EMAIL.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_NAME.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_VAT_NO.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EO_CO_ISO3_REF.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_FOH_CUST_PO.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_FOD_DESC.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_FOD_QTY.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_FOD_UNIT_PRICE.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_FOD_UNIT_TAX.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_COUNTRY.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_EMAIL.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_EMAIL2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_EMAIL.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_FIRST_NAME.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_FIRST_NAME2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_SEX.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_SPOUSE_NAME.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_SURNAME.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_Requirements.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_WhoIsPaying.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_WhichDays.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EarlyBirdTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_EarlyBirdVAT.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_equals_Extras.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_Charges.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_ConfirmDetails.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_TaxTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_PriceTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_InvoiceTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_ThankYou.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_Total.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_BankTransfer.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.label_Reference.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.icRegistrationReference.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+End For
+
+#  defined in RFG_ORG
+Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.REGFORM_CALC)
+If lrAttributes.$colcount=0
+	Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVLABELS)
+End If
+For lnCount from 1 to lrAttributes.$colcount step 1
+	Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+	If lcProperty='textcolor'
+		# Breakpoint
+	End If
+	
+	# early bird objects
+	Calculate $cinst.$objs.PagedPane.$objs.icPriceEarlyBirdCategory.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_1.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.EarlyBird_PID_UNIT_PRICE.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_EarlyBirdVAT.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_2.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.EarlyBirdTax.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_EarlyBirdTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_3.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.EarlyBirdTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	# full price objects
+	Calculate $cinst.$objs.PagedPane.$objs.label_FullPrice.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_4.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.FullPrice_PID_UNIT_PRICE.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_FullVAT.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_5.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.FullPriceTax.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	Calculate $cinst.$objs.PagedPane.$objs.label_FullTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_6.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.FullPriceTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	# extras
+	Calculate $cinst.$objs.PagedPane.$objs.PID_UNIT_PRICE_Extras.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.PriceExtrasTax.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.PriceExtrasTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	# membership calculations
+	Calculate $cinst.$objs.PagedPane.$objs.PID_UNIT_PRICE_Member.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.MembershipTax.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	Calculate $cinst.$objs.PagedPane.$objs.MembershipTotal.$[lcProperty] as eval(lrAttributes.[lcProperty])
+	
+	
+End For

@@ -1,0 +1,14 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate ilData as plData
+
+Calculate icReportTitle as con('Session subset date/time ',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+# print loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

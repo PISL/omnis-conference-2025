@@ -1,0 +1,40 @@
+Do $defineList(llData,'CONFERENCE.tDelegates') ## table class required for $DisplayName in $Loop()
+Do llData.$addSchemaColumns('CONFERENCE.sPerson')
+Do llData.$addSchemaColumns('CONFERENCE.sPAX')
+Do llData.$addDisplayName()
+Do llData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:, [lrPerson.$selectnames()]
+Sta:, [lrPax.$selectnames()]
+
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on  PSN_SEQ = DG_PSN_REF
+Sta:left outer join [lrPax.$servertablenames()] on PX_DG_REF = DG_SEQ
+
+Sta:where DG_CF_REF  = @[pnCF_SEQ]
+If pcExtraCriteria<>''
+	Sta:and  [pcExtraCriteria]
+End If
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+While $Loop(llData)
+	Do llData.$DisplayName()
+	Calculate llData.SortName as upp(llData.DisplayName)
+End While
+Do llData.$sort($ref.SortName,0)
+
+Quit method llData

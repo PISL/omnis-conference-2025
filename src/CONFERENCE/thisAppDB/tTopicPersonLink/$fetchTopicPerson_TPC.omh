@@ -1,0 +1,46 @@
+Do $cinst.$cols.$findname('TPC_SEQ') Returns liColRef
+If liColRef
+	# don't add extra cols
+Else
+	Do $cinst.$addSchemaColumns(lrTopics.$sqlclassname)
+End If
+
+Do $cinst.$cols.$findname('PSN_SEQ') Returns liColRef
+If liColRef
+	# don't add extra cols
+Else
+	Do $cinst.$addSchemaColumns(lrPerson.$sqlclassname)
+End If
+
+# Do $cinst.$cols.$findname('TPF_SEQ') Returns liColRef
+# If liColRef
+# don't add extra cols
+# Else
+# Do $cinst.$cols.$add(lrTopicConference.TPF_SEQ) ## the basis of a checkbox in the user interface
+# End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  [$cinst.$selectnames()]
+Sta:, [lrTopics.$selectnames()]
+Sta:, [lrPerson.$selectnames()]
+
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrTopics.$servertablenames()] on TPP_TPC_REF = TPC_SEQ
+Sta:join [lrPerson.$servertablenames()] on TPP_PSN_REF = PSN_SEQ
+
+Sta:where TPC_SEQ = @[pnTPC_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method

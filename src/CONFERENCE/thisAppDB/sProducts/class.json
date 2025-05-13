@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 4,
+	"nextident": 32077,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-11-01 16:36:25",
+		"createinstancewhensubtype": true,
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2018-03-27 12:40:17",
+		"servertablename": "infra.products",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.00"
+	}
+}

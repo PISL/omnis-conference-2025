@@ -1,0 +1,105 @@
+Calculate icDisplayMessage as ''
+
+Do ilSortOptions.$clear()
+Do ilFilterOptions.$clear()
+Do ilGroupByOptions.$clear()
+Do ilSortOptions.$clear()
+
+Calculate lrAttributes as plDisplayList.reportAttributes
+If lrAttributes.$colcount=0
+	Quit method
+End If
+
+Do lrAttributes.$cols.$findname('sortlist_lbl') Returns liColRef
+If liColRef
+	If plDisplayList.reportCode='DELEGATES'|plDisplayList.reportCode='DG_SIMPLE'
+		Do ilSortOptions.$add('','status, occupancy, surname')
+		Do ilSortOptions.$add('PSN_SURNAME','surname, first name')
+		Do ilSortOptions.$add('DG_REG_DATE','registration date')
+		
+	Else If plDisplayList.reportCode='NOT_THIS_CONF'
+		Do ilSortOptions.$add('PSN_SURNAME','surname, first name')
+		Do ilSortOptions.$add('PSN_COUNTRY','country, surname, firstname')
+		
+	Else If plDisplayList.reportCode='LABELS'
+		Do ilSortOptions.$add('INTERNAL','Internal format')
+		Do ilSortOptions.$add('L4727','Avery 4727')
+		Do ilSortOptions.$add('L7418','Avery 7418')
+		
+	Else If plDisplayList.reportCode='ATTENDEE_COUNT'
+		Do ilSortOptions.$add('SPEAKER','Speaker')
+		Do ilSortOptions.$add('BOOKINGS','Booking ratio')
+		
+	Else If plDisplayList.reportCode='VAT_RETURN'
+		Do ilSortOptions.$add('MONTH','Month')
+		Do ilSortOptions.$add('COUNTRY','Country')
+		
+	End If
+	
+	Do lrAttributes.$cols.$findname('sortlist_default') Returns liColRef
+	If liColRef
+		Calculate ilSortOptions.$line as lrAttributes.sortlist_default
+	Else
+		Calculate ilSortOptions.$line as 1 ## default
+	End If
+End If
+
+Do lrAttributes.$cols.$findname('filterlist_lbl') Returns liColRef
+If liColRef
+	If plDisplayList.reportCode='BOOKING_STATS'
+		Do ilFilterOptions.$add('60','hourly')
+		Do ilFilterOptions.$add('30','half hourly')
+		Do ilFilterOptions.$add('15','quarter hourly')
+		Do ilFilterOptions.$add('10','every 10 minutes')
+		Do ilFilterOptions.$add('5','every 5 minutes')
+		Do ilFilterOptions.$add('1','every minute')
+		Do ilFilterOptions.$add('1>1','every minute with count > 1')
+		Do ilFilterOptions.$add('1>2','every minute with count > 2')
+		Do ilFilterOptions.$add('1>3','every minute with count > 3')
+		Do ilFilterOptions.$add('1>4','every minute with count > 4')
+		
+	Else If plDisplayList.reportCode='TASK_STATS'|plDisplayList.reportCode='TASK_STATS_DB'
+		Do ilFilterOptions.$add('start>1','start count > 1')
+		Do ilFilterOptions.$add('end>1','end count > 1')
+		Do ilFilterOptions.$add('start>1&end>1','start & end count > 1')
+		Do ilFilterOptions.$add('start>4','start count > 4')
+		Do ilFilterOptions.$add('end>4','end count > 4')
+		Do ilFilterOptions.$add('start>4&end>4','start & end count > 4')
+		Do ilFilterOptions.$add('start>9','start count > 9')
+		Do ilFilterOptions.$add('end>9','end count > 9')
+		Do ilFilterOptions.$add('start>9&end>9','start & end count > 9')
+		Do ilFilterOptions.$add('start>19','start count > 19')
+		Do ilFilterOptions.$add('end>19','end count > 19')
+		Do ilFilterOptions.$add('start>19&end>19','start & end count > 19')
+		Do ilFilterOptions.$add('start>29','start count > 29')
+		Do ilFilterOptions.$add('end>29','end count > 29')
+		Do ilFilterOptions.$add('start>29&end>29','start & end count > 29')
+		Do ilFilterOptions.$add('start>49','start count > 49')
+		Do ilFilterOptions.$add('end>49','end count > 49')
+		Do ilFilterOptions.$add('start>49&end>49','start & end count > 49')
+	End If
+	
+	Do lrAttributes.$cols.$findname('filterlist_default') Returns liColRef
+	If liColRef
+		Calculate ilFilterOptions.$line as lrAttributes.filterlist_default
+	Else
+		Calculate ilFilterOptions.$line as 1 ## default
+	End If
+End If
+
+Do lrAttributes.$cols.$findname('selectlist_lbl') Returns liColRef
+If liColRef
+	If plDisplayList.reportCode='EVENTS_STATS'
+		Do $DefineList(ilGroupByOptions,'tConference','CF_SEQ,CF_GO_REF,CF_TITLE,CF_DATE_FROM,CF_DATE_TO,CF_LANG,CF_CURRENCY,CF_TITLE_CODE,CF_PROD_FAMILY,CF_ACTIVE,CF_LOGO_RFO_VALUE,CF_ADMIN_DATE_TO,CF_MAX_SPEAKERS,CF_MAX_DELEGATES')
+		Do ilGroupByOptions.$addLinkedCols('VEN_NAME,VEN_COUNTRY,VEN_LOCALITY,VEN_TOWN')
+		Do ilGroupByOptions.$fetch_all()
+		Do ilGroupByOptions.$sort($ref.CF_DATE_FROM,1)
+		
+	End If
+End If
+
+Calculate pretFilters as ilFilterOptions
+Calculate pretSorts as ilSortOptions
+Calculate pretSelects as ilGroupByOptions ## this is a bit kludgy - added for MEC reporting and group by option
+
+Quit method lrAttributes

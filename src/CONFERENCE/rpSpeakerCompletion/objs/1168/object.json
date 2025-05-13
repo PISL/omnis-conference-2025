@@ -1,0 +1,62 @@
+{
+	"ident": 1168,
+	"order": 15,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+			"type": [
+				{
+					"name": "group",
+					"order": 1,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "iconid",
+					"order": 2,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "default",
+					"order": 3,
+					"type": "kBoolean",
+					"subtype": 0,
+					"sublen": 0
+				}
+			],
+			"data": {
+				"group": "Labels",
+				"iconid": "textstringlabel1+16x16",
+				"default": false
+			}
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportSmall",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 10,
+		"fontstyle": "kPlain",
+		"height": 0.493,
+		"left": 0.503,
+		"lineno": 18,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "attendance statistics:"
+		},
+		"textcolor": "RGB(8,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 3.566
+	}
+}

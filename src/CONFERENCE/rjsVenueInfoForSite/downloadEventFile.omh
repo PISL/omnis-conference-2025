@@ -1,0 +1,8 @@
+# ready contents of .ics file to be downloaded
+Calculate tJSFileBinData as chartoutf8(icIcsFileContents)
+Do iJSFileRow.$define(iJSFileName,iJSMediaType,iJSVariableName)
+Calculate iJSFileName as con('EuromnisConference',tlOpenConferences.CF_TITLE_CODE,'.ics')
+Do iJSFileRow.$assigncols(iJSFileName,'text/text','tJSFileBinData')
+
+
+Do $cinst.$objs.PagedPane.$objs.fileDownload.$action.$assign(kJSFileActionDownload) Returns lbDone

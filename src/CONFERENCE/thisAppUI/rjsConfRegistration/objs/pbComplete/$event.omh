@@ -1,0 +1,2 @@
+On evClick
+	JavaScript:document.location.href=lcMECurl;

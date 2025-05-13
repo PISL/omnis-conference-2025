@@ -1,0 +1,18 @@
+{
+	"ident": 1005,
+	"order": 4,
+	"properties": {
+		"cascade": "",
+		"checked": false,
+		"commandid": 1005,
+		"enabled": true,
+		"iconcolor": "RGB(0,0,0)",
+		"iconid": 0,
+		"ischeckable": false,
+		"text": {
+			"type": 0,
+			"calc": "very good"
+		},
+		"userinfo": ""
+	}
+}

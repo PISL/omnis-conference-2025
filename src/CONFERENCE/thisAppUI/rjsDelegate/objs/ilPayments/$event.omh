@@ -1,0 +1,4 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate irPayment as ilPayments
+	Do $cinst.$behaviour()

@@ -1,0 +1,53 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+If pcEmail<>''
+	Begin statement
+	Sta:select count(*)
+	Sta:from [$cinst.$servertablenames]
+	Sta:where PSN_EMAIL ilike @[pcEmail]
+	Sta:and    PSN_GO_REF = @[pnGO_SEQ]
+	End statement
+	Do $cinst.$executesqlandfetchinto(lnCount) Returns lbOK
+	If lnCount>0
+		Calculate lbFetchOnEmail as kTrue
+	End If
+End If
+If lnCount=0
+	Begin statement
+	Sta:select count(*)
+	Sta:from [$cinst.$servertablenames]
+	Sta:where PSN_FIRST_NAME ilike @[pcFirstname]
+	Sta:and     PSN_SURNAME ilike @[pcSurname]
+	Sta:and    PSN_GO_REF = @[pnGO_SEQ]
+	End statement
+	Do $cinst.$executesqlandfetchinto(lnCount) Returns lbOK
+	If lnCount=1
+		Calculate lbFetchOnName as kTrue
+	End If
+End If
+
+If lbFetchOnEmail|lbFetchOnName
+	Begin statement
+	Sta:select [$cinst.$selectnames()]
+	Sta:from [$cinst.$servertablenames]
+	If lbFetchOnEmail
+		Sta:where PSN_EMAIL ilike @[pcEmail]
+	Else If lbFetchOnName
+		Sta:where PSN_FIRST_NAME ilike @[pcFirstname]
+		Sta:and     PSN_SURNAME ilike @[pcSurname]
+	End If
+	Sta:and    PSN_GO_REF = @[pnGO_SEQ]
+	End statement
+	Do $cinst.$executesqlandfetch() Returns lbOK
+End If
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

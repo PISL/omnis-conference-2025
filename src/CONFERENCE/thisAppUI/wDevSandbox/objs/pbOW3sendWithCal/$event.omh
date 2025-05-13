@@ -1,0 +1,73 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# prepare some data for the message text
+	Calculate lcTo as 'mostyn@platformis.net'
+	Do $defineList(llConferences,'CONFERENCE.tConference')
+	Do llConferences.$fetchIncomplete()
+	Calculate llConferences.$line as 1
+	
+	Do $defineList(llDelegates,'CONFERENCE.tDelegates')
+	Do llDelegates.$addLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL,PSN_COUNTRY')
+	Do llDelegates.$fetchForConference(llConferences.CF_SEQ)
+	Do llDelegates.$search($ref.PSN_SURNAME='Mostyn',1,0,0,0) Returns lbFound
+	
+	Breakpoint
+	# prime the worker with a configuration
+	Do ioSmtpWorker.$primeConfig('TEST1',lcTo,lcText) Returns lbOK
+	If lbOK
+		# assuming the message has text to substitute
+		Do ioSmtpWorker.$messageSubstitute(#NULL,row(llConferences,trGroupOrg,llDelegates)) Returns lbOK
+		If lbOK
+			# use the conference details for .ics file
+			Do ioSmtpWorker.$getCalendarStructure() Returns lrCalendar
+			
+			Calculate lrCalendar.Title as llConferences.CF_TITLE
+			Calculate lrCalendar.Location as "Via Giuseppe Mazzini 10, 10123, Torino, Italy"
+			
+			Calculate lrCalendar.Start as llConferences.CF_DATE_FROM
+			If tim(llConferences.CF_DATE_FROM)>tim('00:00')
+				# the start is a date and time therefore timezone may be relevant
+				# Calculate lrCalendar.StartTimezone as
+				
+			End If
+			
+			Calculate lrCalendar.End as llConferences.CF_DATE_TO
+			If tim(llConferences.CF_DATE_TO)>tim('00:00')
+				# the start is a date and time therefore timezone may be relevant
+				# Calculate lrCalendar.EndTimezone as
+			End If
+			
+			# Calculate lrCalendar.DurationMinutes as
+			Calculate lrCalendar.Description as 'The Best Conference Ever'
+			Calculate lrCalendar.URL as "https://us02web.zoom.us/j/85452653431?pwd=dzNMM1BERjh5d005TWRRajFsdllCZz09"
+			Calculate lrCalendar.AlarmMinutes as (60*24*3) ## 3 days before
+			
+			Do ioSmtpWorker.$attachCalendar(lrCalendar) Returns lbOK
+			If lbOK
+				# when email completes we will want to process result here, not in the worker object
+				# 3rd parameter is a fingerprint record that will be passed back to callback method
+				Do ioSmtpWorker.$setCallback($cinst,'$workerEmailCompleted',llDelegates) ## $completed is the default method name to callback on
+				
+				# prepare for lift off
+				Do ioSmtpWorker.$initialise() Returns lbOK
+				
+				If not(lbOK)
+					Breakpoint
+				End If
+				
+				# fire the worker off
+				Calculate lbRunOnCurrentThread as kFalse
+				If lbRunOnCurrentThread
+					Do ioSmtpWorker.$run() Returns lbOK
+				Else
+					Do ioSmtpWorker.$start() Returns lbOK
+				End If
+			End If
+			# End If
+		End If
+	Else
+		Breakpoint
+	End If
+	
+	If ioSmtpWorker.icErrors<>''
+		Breakpoint
+	End If

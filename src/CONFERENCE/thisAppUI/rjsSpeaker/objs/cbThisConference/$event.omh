@@ -1,0 +1,3 @@
+On evClick
+	Do method MarkTopicForThisConference
+	Do $cinst.$behaviour()

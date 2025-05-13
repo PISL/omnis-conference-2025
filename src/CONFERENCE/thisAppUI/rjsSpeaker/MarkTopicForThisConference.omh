@@ -1,0 +1,18 @@
+# Breakpoint
+If irTopic.checked&not(ilTopics.checked)
+	Calculate lbChangeState as kTrue
+Else If not(irTopic.checked)&ilTopics.checked
+	Calculate lbChangeState as kTrue
+Else
+	# no change of state
+End If
+
+Do lrTopic.$assignrow(ilTopics,kTrue)
+Do lrConference.$assignrow(ilSearch1,kTrue)
+Do irLinkConference.$assignrow(ilTopics,kTrue)
+
+Do ioTopicConference.$setOriginals(lrTopic,lrConference,irLinkConference,ilTopics.checked) Returns lbOK
+
+Do ioTopicConference.$save(lrTopic,lrConference,irLinkConference,irTopic.checked) Returns lbOK
+
+Calculate ilTopics.checked as irTopic.checked

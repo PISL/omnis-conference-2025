@@ -1,0 +1,70 @@
+# OmnisWorld conference CF_DATE_FROM is arrival day and CF_DATE_TO is departure day. ## e.g. Sunday to Friday
+# The days of the conference run between these days. ## e.g. Mon-Thu
+Calculate lnNoOfDays as (ddiff(kDay,ilSearch1.CF_DATE_FROM,ilSearch1.CF_DATE_TO)+1)-2
+Calculate llSpeakers as ilPersons
+Do llSpeakers.$search(isnull($ref.PSN_SEQ),1,0,0,0) Returns lbFound
+If lbFound
+	Do llSpeakers.$remove(llSpeakers.$line) ## remove blank entry
+End If
+If llSpeakers.$linecount=0
+	Do $cinst.$clientOkCancelMsg("Auto arrangement failed because no speakers were detected.")
+	Quit method
+End If
+Do llSpeakers.$cols.$add('lastTopic',kInteger,kShortint)
+
+Calculate llRooms as ilFacilities
+Do llRooms.$search($ref.FCY_TYPE='SESSION',1,0,1,0) ## session rooms
+Do llRooms.$remove(kListKeepSelected)
+If llRooms.$linecount=0
+	Do $cinst.$clientOkCancelMsg("Auto arrangement failed because Facility Type SESSION produced no rooms to assign to.")
+	Quit method
+End If
+
+# Breakpoint
+# Calculate ilPersons.$line as 0
+# While $Loop(ilPersons)
+For lnWhichDay from 1 to lnNoOfDays step 1 ## mon, tue, wed, thu
+	For lnAmPm from 1 to 2 step 1 ## am  pm
+		Calculate llRooms.$line as 0
+		While $Loop(llRooms)
+			If lnSpeaker<llSpeakers.$linecount
+				Calculate lnSpeaker as lnSpeaker+1
+			Else
+				Calculate lnSpeaker as 1
+			End If
+			
+			Calculate llSpeakerTopics as ilTopics
+			Do llSpeakerTopics.$search($ref.PSN_SEQ=llSpeakers.[lnSpeaker].PSN_SEQ,1,0,1,0)
+			Do llSpeakerTopics.$remove(kListKeepSelected)
+			
+			If llSpeakers.[lnSpeaker].lastTopic<llSpeakerTopics.$linecount
+				Calculate lnThisTopic as llSpeakers.[lnSpeaker].lastTopic+1
+			Else
+				Calculate lnThisTopic as 1
+			End If
+			
+			Do irCurrentRecord.$clear()
+			Calculate irCurrentRecord.ARR_CF_REF as ilSearch1.CF_SEQ
+			Calculate irCurrentRecord.ARR_TPC_REF as llSpeakerTopics.[lnThisTopic].TPC_SEQ
+			Calculate irCurrentRecord.ARR_PSN_REF as llSpeakers.[lnSpeaker].PSN_SEQ
+			# Calculate irCurrentRecord.ARR_FCY_REF as llRooms.FCY_SEQ ## random really - will be adjusted later
+			Calculate irCurrentRecord.ARR_FORMAT as 'SESSION'
+			Calculate irCurrentRecord.ARR_DAYNO as lnWhichDay
+			Calculate irCurrentRecord.ARR_DAYNO as lnWhichDay
+			Calculate irCurrentRecord.ARR_STARTTIME as pick(lnAmPm,'',tim('09:00'),tim('14:00'))
+			Calculate irCurrentRecord.ARR_ENDTIME as dadd(kHour,3,irCurrentRecord.ARR_STARTTIME)
+			Calculate irCurrentRecord.ARR_MAX_BOOKINGS as 6
+			
+			Do irCurrentRecord.$insert() Returns lbOK
+			If lbOK
+				
+			Else
+				
+			End If
+			
+			Calculate llSpeakers.[lnSpeaker].lastTopic as lnThisTopic
+		End While
+	End For
+End For
+# End While
+Do method $fetchDisplayList

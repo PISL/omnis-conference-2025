@@ -1,0 +1,72 @@
+Do inherited
+# be sure to set "loadpagesetup" class property to kTrue
+
+# whoever the delegate is, the payments must relate / refer to an invoice.
+# And an invoice can relate to several delegates.
+Do $DefineList(ilInvoices,'tDelegateInvoiceLinks')
+Do ilInvoices.$addLinkedCols("FOH_SEQ,FOH_GO_REF,FOH_EO_REF,FOH_INV_NO,FOH_ADDR_SHIP,FOH_ADDR_BILL,FOH_CUST_NAME,FOH_DATE,FOH_INSTRUCTIONS,FOH_STATUS,FOH_CURRENCY")
+Do ilInvoices.$addLinkedCols("EO_NAME")
+# if several delegates are covered by one invoice then this invoice is it.
+# In theory though, there could be multiple invoices if there is a refund or credit note. ## We'll cross that bridge later.
+Do ilInvoices.$fetchInvoicesFromDelegate(prDelegate.DG_SEQ)
+Do ilInvoices.$sort($ref.FOH_SEQ,0) ## original invoice at top
+
+# Now we need to gather any receipts against any of the associated delegates in case the user is sloppy with which delegate gets the payment In record.
+Do $DefineList(ilDelegates,'tDelegateInvoiceLinks')
+Do ilDelegates.$addLinkedCols("DG_SEQ,DG_PSN_REF,DG_REG_DATE,DG_OCCUPANCY,DG_STATUS,PSN_FIRST_NAME,PSN_SURNAME")
+Do ilDelegates.$fetchDelegatesFromInvoice(ilInvoices.1.FOH_SEQ)
+
+If ilDelegates.$linecount>1
+	Calculate $cinst.$objs.1303.$text as 'Delegates:'
+Else
+	Calculate $cinst.$objs.1303.$text as 'Delegate:'
+End If
+
+# header record
+Calculate irHeader as ilInvoices.1
+Calculate icReportTitle as con('RECEIPT')
+Calculate icReportSubTitle as ''
+
+# fetch all payments in for all delegates associated with this invoice
+Do $DefineList($cinst.ilData,'tPaymentsIn')
+Do ilData.$addLinkedCols('DG_REG_DATE,DG_COMPANY_NAME,PSN_FIRST_NAME,PSN_SURNAME')
+
+Calculate ilDelegates.$line as 0
+While $Loop(ilDelegates)
+	Calculate icDelegates as con(icDelegates,pick(icDelegates<>'','',kCr),ilDelegates.PSN_FIRST_NAME,' ',ilDelegates.PSN_SURNAME)
+	
+	Do ilData.$fetch_fk(ilDelegates.DG_SEQ)
+	If ilDelegates.$line=1 ## 1
+		Calculate llAllReceipts as ilData
+	Else
+		Do llAllReceipts.$merge(ilData)
+	End If
+End While
+Calculate ilData as llAllReceipts
+
+Do irTotal.$cols.$add('total',kNumber,k2dp)
+Calculate irTotal.total as ilData.$cols.PY_AMOUNT.$total()
+
+Do toValues.$initOrg('IMAGES','LOGO_INV_JPEG') Returns irLogo
+Calculate lcType as pictformat(irLogo.RFO_BIN)
+If lcType='GIF'
+	# because the control in the report is GIF
+	Calculate $cinst.$objs.RFO_BIN_jpeg.$visible as kFalse
+	# Calculate $cinst.$objs.RFO_BIN_gif.$visible as kTrue
+	Breakpoint GIF no longer supported
+Else If lcType='JPEG'
+	# because the control in the report is JPEG
+	# Calculate $cinst.$objs.RFO_BIN_gif.$visible as kFalse
+	Calculate $cinst.$objs.RFO_BIN_jpeg.$visible as kTrue
+Else
+	# gif would be better but there is a licencing issue with gifs that produces an OK message so we can't use it.
+	# so we convert to JPEG
+	Calculate lbinTemp as irLogo.RFO_BIN
+	Calculate irLogo.RFO_BIN as pictconvto(lcType,lbinTemp,'JPEG')
+	# Calculate $cinst.$objs.RFO_BIN_gif.$visible as kFalse
+	Calculate $cinst.$objs.RFO_BIN_jpeg.$visible as kTrue
+End If
+
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

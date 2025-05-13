@@ -1,0 +1,13 @@
+On evClick
+	If not(ibSeenDietTab)
+		Calculate $cinst.$objs.PagedPane.$objs.ppTravelDietMusic.$currentpage as 2
+		Calculate icDisplayMessage as 'Before saving, please check the second tab for dietary requests and jamming options.'
+		Calculate ibSeenDietTab as kTrue
+	Else If not(ibSeenDepartureTab)
+		Calculate $cinst.$objs.PagedPane.$objs.ppTravelDietMusic.$currentpage as 3
+		Calculate icDisplayMessage as 'Before saving, please check the third tab for departure details.'
+		Calculate ibSeenDepartureTab as kTrue
+	Else
+		Do method saveTravelDetails Returns lbOK
+	End If
+	Do $cinst.$behaviour()

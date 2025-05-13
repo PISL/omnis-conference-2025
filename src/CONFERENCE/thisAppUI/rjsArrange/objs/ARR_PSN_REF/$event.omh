@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.ARR_PSN_REF as ilPersons.PSN_SEQ

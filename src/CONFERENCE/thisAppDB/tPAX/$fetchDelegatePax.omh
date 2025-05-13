@@ -1,0 +1,20 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+Sta:where PX_DG_REF = @[pnDG_SEQ]
+Sta:and    ( PX_ROLE = 'DELEGATE' or PX_ROLE = 'DG' )
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

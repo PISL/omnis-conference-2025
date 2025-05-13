@@ -1,0 +1,33 @@
+If pbKeepOpen ## requesting user input then returning to original form
+	Do $cinst.$openform(tlAuthorisedForms.class)
+	Do $ctask.$iremoteforms.[tlAuthorisedForms.class].$init
+Else If tlAuthorisedForms.active=kTrue ## user is returning to previous form so destruct the current form
+	Calculate tlAuthorisedForms.active as kFalse
+	Do $cinst.$openform(tlAuthorisedForms.class)
+	Do $cinst.$closeform(pcFormToClose)
+Else
+	Do ilRemoteFormsOpen.$search($ref.classname=tlAuthorisedForms.class,1,0,0,0) Returns lbFound
+	If lbFound
+		Do $cinst.$changeform(tlAuthorisedForms.class)
+	Else
+		Do $cinst.$openform(tlAuthorisedForms.class) Returns lbFound
+		Do ilRemoteFormsOpen.$add(tlAuthorisedForms.class)
+	End If
+End If
+
+# $openform 2nd parameter for iOS only
+# Calculate  as kFormTransTypeCurlDown
+# Calculate  as kFormTransTypeCurlUp
+# Calculate  as kFormTransTypeFade
+# Calculate  as kFormTransTypeFlipLeft
+# Calculate  as kFormTransTypeFlipRight
+# Calculate  as kFormTransTypeMoveIn
+# Calculate  as kFormTransTypePush
+# Calculate  as kFormTransTypeReveal
+
+# $openform 3rd parameter for iOS only
+# Calculate  as kFormTransDirMoveToBottom
+# Calculate  as kFormTransDirMoveToLeft
+# Calculate  as kFormTransDirMoveToRight
+# Calculate  as kFormTransDirMoveToTop
+# Calculate  as kFormTransDirNone

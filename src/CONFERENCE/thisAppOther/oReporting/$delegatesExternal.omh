@@ -1,0 +1,13 @@
+Do method setPrintDestination (pnPrintDestination) Returns lnDevice
+
+Do method dataDelegates (plConference,plSorts,pbCheckBox1,plDelegatesFromForm)
+If pnPrintDestination=0|pnPrintDestination=1
+	Do $clib.$reports.rpDelegates.$open('*',plConference,plSorts,ilData,icSummary,ilOccupancy) Returns lReportInst
+	Do lReportInst.$endprint()
+Else
+	Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SortName,DG_REG_DATE,DG_OCCUPANCY,DG_GROUP,DG_STATUS,DG_EMAIL_INVOICE_SENT,DG_EMAIL_TRAVEL_SENT,DG_ROOM_ASSIGNMENT,TotalDue,TotalReceived,FOH_INV_NO,countSpouse,RoomRequirement') Returns iReportText
+End If
+
+Do $cdevice.$assign(lnDevice) ## restore print destination
+
+Quit method lReportInst

@@ -1,0 +1,6 @@
+On evClick
+	Do irCurrentRecord.$clear()
+	Do irCurrentSpeaker.$clear()
+	Do method fetchSpeakers
+	Do method fetchTopics
+	Do $cinst.$behaviour()

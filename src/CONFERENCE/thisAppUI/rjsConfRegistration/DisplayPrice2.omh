@@ -1,0 +1,125 @@
+Calculate icPriceFull as ''
+
+If ilPersons.$linecount=0
+	Calculate lrPerson as ilPersons
+	
+	If irRegistration.PSN_EMAIL<>''
+		Calculate lrPerson.inDG_OCCUPANCY as inDG_OCCUPANCY
+		Calculate lrPerson.inMembership as inMembership
+	Else
+		# form is initiating from $construct - default values
+		Calculate lrPerson.inDG_OCCUPANCY as ikOccupancySingle
+		Calculate lrPerson.inMembership as ikMembershipPersonal
+	End If
+	
+	Calculate lrPerson.inExtras as inExtras
+	Calculate lrPerson.inNoDays as inNoDays
+	Calculate lrPerson.inPSN_SEX as inPSN_SEX
+	Calculate lrPerson.icWhichDays as icWhichDays
+	
+	Do ioResolve.$productResolution(ilConferences,lrPerson) Returns ilInvDetails
+	
+Else
+	Do ioResolve.$productResolution(ilConferences,ilPersons) Returns ilInvDetails
+	
+End If
+
+# we will display irEaryBird and irFullPrice
+Do method priceTrace (con(' ilInvDetails returns ',ilInvDetails.$linecount,' lines ',kDq,ilInvDetails.1.PRD_INT_PRODCODE,kDq,', ',kDq,ilInvDetails.2.PRD_INT_PRODCODE,kDq,', ',kDq,ilInvDetails.3.PRD_INT_PRODCODE,kDq))
+
+If right(ilInvDetails.1.PRD_INT_PRODCODE,1)=ilConferences.CF_CURRENCY
+	Calculate lcAddCurrency as ''
+Else
+	Calculate lcAddCurrency as ilConferences.CF_CURRENCY
+End If
+
+# 2025-05-06  RSM  comparing price paid now to full price is getting too complicated without referencing very old columns that aren't being maintained.
+# So commenting out full price product
+
+# If irFullPrice.PRD_INT_PRODCODE=con(ilInvDetails.1.PRD_INT_PRODCODE,lcAddCurrency)
+# do not fetch again
+# Do method priceTrace (con(' full price already fetched '))
+# Else
+# Do irFullPrice.$fetch_linked(con("where PRD_INT_PRODCODE= ",kSq,ilInvDetails.1.PRD_INT_PRODCODE,lcAddCurrency,kSq))
+# Do irFullPrice.$calculatedValues()
+# Calculate icPriceFull as con(ilConferences.CF_CURRENCY,' ',irFullPrice.PID_UNIT_PRICE)
+# If irFullPrice.PRD_SEQ>0
+# Do method priceTrace (con(' fetched full price on ',irFullPrice.PRD_INT_PRODCODE))
+# Else
+# Do method priceTrace (con(' FAILED to fetch full price on ',con(ilInvDetails.1.PRD_INT_PRODCODE,lcAddCurrency)))
+# End If
+# End If
+
+# the fetched product (first row in list) may or may not be an early bird price
+If ilInvDetails.1.PRD_SEQ=irEarlyBirdPrice.PRD_SEQ
+	# do not fetch again
+	Do method priceTrace (con(' early bird price already fetched '))
+Else
+	# 2025-05-06  RSM  There is some weird shit going on here.
+	# First call to $fetch_linked returns nothing but when stepping through and forcing a second time, it returns values correctly!
+	Do irEarlyBirdPrice.$fetch_linked(con("where PRD_SEQ = ",ilInvDetails.1.PRD_SEQ))
+	If isclear(irEarlyBirdPrice.PRD_SEQ)
+		Do irEarlyBirdPrice.$fetch_linked(con("where PRD_SEQ = ",ilInvDetails.1.PRD_SEQ))
+		Calculate lbFetchTwice as kTrue
+	End If
+	Do irEarlyBirdPrice.$calculatedValues()
+	If irEarlyBirdPrice.PRD_SEQ>0
+		Do method priceTrace (con(' fetched early bird on ',irEarlyBirdPrice.PRD_INT_PRODCODE,'with fetch twice = ',lbFetchTwice))
+	Else
+		Do method priceTrace (con(' FAILED to fetch early bird on ',ilInvDetails.1.PRD_INT_PRODCODE,'with fetch twice = ',lbFetchTwice))
+	End If
+End If
+
+# we use the early bird row to display price to user whether its an actual early bird record or not
+If pos('_EB',ilInvDetails.1.PRD_INT_PRODCODE)
+	# all good
+Else
+	# not an early bird offering
+	# Do irFullPrice.$clear()
+End If
+
+Do ilInvDetails.$search(pos(ilConferences.CF_PRODCODE_MEMP,$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+If not(lbFound)
+	Do ilInvDetails.$search(pos(ilConferences.CF_PRODCODE_MEMC,$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+End If
+If lbFound
+	If ilInvDetails.PRD_SEQ=irPriceMembership.PRD_SEQ
+		# do not fetch again
+		Do method priceTrace (con(' membership already fetched '))
+	Else
+		Do irPriceMembership.$fetch_linked(con("where PRD_SEQ = ",ilInvDetails.PRD_SEQ))
+		If isclear(irPriceMembership.PRD_SEQ)
+			# as above... fetching records that I know exist but not showing up on first request      Grrrrrr
+			Do irPriceMembership.$fetch_linked(con("where PRD_SEQ = ",ilInvDetails.PRD_SEQ))
+		End If
+		Do irPriceMembership.$calculatedValues()
+		If irPriceMembership.PRD_SEQ>0
+			Do method priceTrace (con(' fetched membership on ',irPriceMembership.PRD_INT_PRODCODE))
+		Else
+			Do method priceTrace (con(' FAILED to fetch membership on ',ilInvDetails.PRD_INT_PRODCODE))
+		End If
+	End If
+Else
+	# no membership indicated
+End If
+
+Do ilInvDetails.$search(pos(ilConferences.CF_PRODCODE_SPOUSE,$ref.PRD_INT_PRODCODE)&pos(irRegistration.PSN_SURNAME,$ref.FOD_DESC),1,0,0,0) Returns lbFound
+If not(lbFound)
+	Do ilInvDetails.$search(pos(ilConferences.CF_PRODCODE_SPOUSE,$ref.PRD_INT_PRODCODE),1,0,0,0) Returns lbFound
+End If
+If lbFound
+	If ilInvDetails.PRD_INT_PRODCODE=irPriceExtras.PRD_INT_PRODCODE
+		# do not fetch again
+		Do method priceTrace (con(' extras already fetched '))
+	Else
+		Do irPriceExtras.$fetch_linked(con("where PRD_SEQ = ",ilInvDetails.PRD_SEQ))
+		Do irPriceExtras.$calculatedValues()
+		If irPriceExtras.PRD_SEQ>0
+			Do method priceTrace (con(' fetched full price on ',irPriceExtras.PRD_INT_PRODCODE))
+		Else
+			Do method priceTrace (con(' FAILED to fetch full price on ',ilInvDetails.PRD_INT_PRODCODE))
+		End If
+	End If
+Else
+	Do irPriceExtras.$clear()
+End If

@@ -1,0 +1,62 @@
+[
+	{
+		"name": "$print",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "pData",
+				"order": 2,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbHighlight",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbLowlight",
+				"order": 6,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lcString",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			},
+			{
+				"name": "lnDiff",
+				"order": 4,
+				"type": "kNumber",
+				"subtype": "k2dpShortnum",
+				"sublen": 0
+			},
+			{
+				"name": "lnHighlight",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnThreshold",
+				"order": 5,
+				"type": "kNumber",
+				"subtype": "k2dpShortnum",
+				"sublen": 0
+			}
+		]
+	}
+]

@@ -1,0 +1,67 @@
+Do llData.$cols.$add('group',kCharacter,kSimplechar,255)
+Do llData.$cols.$add('code',kCharacter,kSimplechar,255)
+# Do llData.$cols.$add('description',kCharacter,kSimplechar,100)
+Do llData.$cols.$add('count',kInteger,k32bitint)
+Do llData.$cols.$add('proportion',kNumber,k2dpShortnum)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select group_col, code_col, count, count*100/sum(count)  over () as proportion from
+Sta:( select 'DG_OCCUPANCY' as group_col, DG_OCCUPANCY as code_col, count(*) as count
+Sta:from [lrDelegate.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_REG_DATE is not null
+Sta:group by group_col, code_col ) subset
+Sta:
+Sta:union
+Sta:
+Sta:select group_col, code_col, count, count*100/sum(count) over () as proportion from
+Sta:( select 'DG_STATUS' as group_col, DG_STATUS as code_col, count(*) as count
+Sta:from [lrDelegate.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_REG_DATE is not null
+Sta:group by group_col, code_col ) subset
+Sta:
+Sta:union
+Sta:
+Sta:select group_col, code_col, count, count*100/sum(count) over () as proportion from
+Sta:( select 'DG_REG_MONTH' as group_col, CAST (date_part('month',DG_REG_DATE)  AS CHAR)  as code_col, count(*) as count
+Sta:from [lrDelegate.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_REG_DATE is not null
+Sta:group by group_col, code_col ) subset
+Sta:
+Sta:union
+Sta:
+Sta:select group_col, code_col, count, count*100/sum(count) over () as proportion from
+Sta:( select 'DG_COUNTRY'  as group_col, DG_COUNTRY  as code_col, count(*) as count
+Sta:from [lrDelegate.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_REG_DATE is not null
+Sta:group by group_col, code_col ) subset
+Sta:
+Sta:union
+Sta:
+Sta:select group_col, code_col, count, count*100/sum(count) over () as proportion from
+Sta:( select 'TOPICS'  as group_col, concat(PSN_SURNAME,' / ',TPC_TITLE)  as code_col, count(*) as count
+Sta:from [lrArrangements.$servertablenames()]
+Sta:left outer join [lrPerson.$servertablenames()] on ARR_PSN_REF = PSN_SEQ
+Sta:left outer join [lrTopics.$servertablenames()] on ARR_TPC_REF = TPC_SEQ
+Sta:join [lrAttendance.$servertablenames()] on ARA_ARR_REF = ARR_SEQ
+Sta:where ARR_CF_REF = @[pnCF_SEQ]
+Sta:group by group_col, code_col ) subset
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.group,0,$ref.count,1,$ref.code,0)
+Quit method llData

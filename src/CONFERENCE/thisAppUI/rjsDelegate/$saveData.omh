@@ -1,0 +1,143 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabDelegate
+	Begin reversible block
+		Calculate icMode as mid(icMode,1,1) ## just I or E for inherited method
+	End reversible block
+	Calculate  as
+	If icMode='ID' ## insert
+		Calculate irCurrentRecord.DG_CF_REF as ilSearch1.CF_SEQ
+	End If
+	If irCurrentRecord.DG_SEQ<>0
+		If irCurrentRecord.DG_STATUS<>irOriginalRecord.DG_STATUS
+			Calculate irCurrentRecord.DG_STATUS_CHANGED as #D
+			Calculate lbLogStatusChange as kTrue
+		End If
+	End If
+	Do inherited Returns lbOK
+	If lbOK
+		If lbLogStatusChange
+			# this is really the job of a trigger but I didn;t want to disturb Graham while he was busy
+			Do $DefineList(lrLog,'tDGstatusLog')
+			Calculate lrLog.DSL_DG_REF as irCurrentRecord.DG_SEQ
+			Calculate lrLog.DSL_STATUS_FROM as irOriginalRecord.DG_STATUS
+			Calculate lrLog.DSL_STATUS_TO as irCurrentRecord.DG_STATUS
+			Do lrLog.$insert() Returns lbLogOk
+		End If
+		# do we create PAX record automatically?
+		# for now it is only when DG_STATUS is set to PAID does the PAX record get created automatically
+		# this can always be manually overwritten on the PAX page
+		If irCurrentRecord.DG_STATUS='PAID'
+			Do irPax.$clear()
+			Do irPax.$fetchDelegatePax(irCurrentRecord.DG_SEQ)
+			If irPax.PX_SEQ>0
+				# already exists
+			Else
+				If isclear(irOriginalRecord.DG_SEQ)
+					# delegate record created and gone straight to PAID
+					Calculate lbCreatePAX as kTrue
+				Else If irOriginalRecord.DG_SEQ>0&irOriginalRecord.DG_STATUS<>'PAID'
+					# status has been changed to PAID
+					Calculate lbCreatePAX as kTrue
+				End If
+				If lbCreatePAX
+					Do method CreatePaxRecord
+				End If
+			End If
+		End If
+		
+		Calculate irOriginalRecord as irCurrentRecord
+	End If
+	
+Else If inCurrentTab=cnTabPAX
+	If icMode='IP' ## insert
+		Calculate irPax.PX_DG_REF as irCurrentRecord.DG_SEQ
+	End If
+	Do irPax.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irPax.icValidationMessage
+	Else
+		If icMode='IP' ## insert
+			Do irPax.$insert() Returns lbOK
+		Else
+			Do irPax.$update() Returns lbOK
+		End If
+		If lbOK
+			# update llists in calling method
+			If irDiet.DR_REQUEST<>''
+				If irDiet.DR_SEQ>0
+					# have there been any changes?
+					If irDiet.DR_REQUEST=icDietComment
+						# no changes
+					Else
+						Do irDiet.$update() Returns lbOK
+					End If
+				Else
+					Calculate irDiet.DR_PX_REF as irPax.PX_SEQ
+					Do irDiet.$insert() Returns lbOK
+					If not(lbOK)
+						Calculate icDisplayMessage as irDiet.irErrorSQL.NativeErrorText
+					End If
+					
+				End If
+			Else
+				If irDiet.DR_SEQ>0
+					Do irDiet.$delete_pk() Returns lbOK
+					If lbOK
+						Do irDiet.$clear()
+					End If
+				End If
+			End If
+		Else
+			Calculate icDisplayMessage as irPax.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+	Quit method lbOK
+	
+Else If inCurrentTab=cnTabReceipts
+	If icMode='IY' ## insert
+		Calculate irPayment.PY_DG_REF as irCurrentRecord.DG_SEQ
+	End If
+	Do irPayment.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irPayment.icValidationMessage
+	Else
+		If icMode='IY' ## insert
+			Do irPayment.$insert() Returns lbOK
+		Else
+			Do irPayment.$update() Returns lbOK
+		End If
+		If lbOK
+			# update llists in calling method
+		Else
+			Calculate icDisplayMessage as irPayment.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+	Quit method lbOK
+	
+Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+	If irTravelPlan.TP_SEQ>0
+		Do irTravelPlan.$validation() Returns lbProceed
+		If lbProceed
+			Do irTravelPlan.$update() Returns lbOK
+		End If
+	Else
+		Calculate irTravelPlan.TP_DG_REF as irCurrentRecord.DG_SEQ
+		Do irTravelPlan.$validation() Returns lbProceed
+		If lbProceed
+			Do irTravelPlan.$insert() Returns lbOK
+		End If
+	End If
+	If not(lbOK)
+		Calculate icDisplayMessage as irTravelPlan.irErrorSQL.NativeErrorText
+	End If
+	
+	Quit method lbOK
+	
+End If
+
+If lbOK
+	Calculate icMode as ''
+End If

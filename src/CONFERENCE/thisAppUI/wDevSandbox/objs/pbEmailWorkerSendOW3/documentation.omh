@@ -1,0 +1,8 @@
+# protocol log                               value  usesHTML
+# No logging                                     0     kFalse
+# Basic logging (HTML)                   9     kTrue
+# Basic and data logging (HTML)   11    kTrue
+# Full logging (HTML)                      15    kTrue
+# Basic logging                                  1    kFalse
+# Basic and data logging                  3    kFalse
+# Full logging                                     7    kFalse

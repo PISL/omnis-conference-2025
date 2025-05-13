@@ -1,0 +1,14 @@
+# called from $pushed after an email is sent
+Calculate lnDGseq as irCurrentRecord.DG_SEQ
+
+Do method fetchDisplayList
+
+Do ilDisplayRecords.$search($ref.DG_SEQ=lnDGseq,1,0,0,0)
+
+If lnDGseq=pRow.DG_SEQ&icMode='' ## still viewing the original record
+	Calculate icDisplayMessage as con(pRow.instruction,': ',pRow.icDisplayMessage,kCr,pRow.lnSeconds,' seconds')
+	Do $cinst.$displayListClick()
+Else
+	# the updated record may no longer be the current record viewed by user
+	# or the user is editing, in which case they will get an error when they try to save as the mwhen/mcount will have changed
+End If

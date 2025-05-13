@@ -1,0 +1,7 @@
+If ilData.ARR_SEQ=ilData.[ilData.$line+1].ARR_SEQ
+	# the next line refers to same arrangement therefore there is some feedback following
+	Calculate pData as 'feedback'
+Else
+	Calculate pData as 'no feedback'
+End If
+Do default

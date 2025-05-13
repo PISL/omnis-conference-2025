@@ -1,0 +1,25 @@
+# may be called from pbInsert or hanndleMenuCall
+Calculate icDisplayMessage as ''
+Do method ClearWorkArea
+
+If inCurrentTab=cnTabArrangement|inCurrentTab=cnTabComments
+	If irUserRights.canInsert&icMode='' ## copied from $behaviour()
+		Calculate icMode as 'IARR' ## insert arrangement
+		Calculate irCurrentRecord.ARR_CF_REF as ilSearch1.CF_SEQ
+		Calculate irCurrentRecord.ARR_BOOKING_REQD as 0 ## no need to book
+		Calculate irCurrentRecord.ARR_MAX_BOOKINGS as 0 ## no maximum
+		If inCurrentTab=cnTabComments
+			Calculate inCurrentTab as cnTabArrangement
+			Calculate $cinst.$objs.TabControl_ARR.$currentpage as inCurrentTab
+			Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+		End If
+	End If
+	
+Else If inCurrentTab=cnTabAttendees
+	If irUserRights.canInsert&icMode=''&irCurrentRecord.ARR_SEQ>0 ## copied from $behaviour()
+		Calculate icMode as 'IATT' ## insert Attendee
+	End If
+	
+End If
+
+Do $cinst.$behaviour()

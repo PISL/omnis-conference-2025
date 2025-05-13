@@ -1,0 +1,40 @@
+Do $DefineList(ilData,'tPerson')
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$fetch_all()
+While $Loop(ilData)
+	Working message Obfuscating Persons.. (Cancel button) {[ilData.$line] of [ilData.$linecount] records}
+	Redraw working message
+	If ilData.PSN_SEX='O'
+		# _Conference Organiser ## O forms part of logic in some places
+	Else
+		Do method obfuscateText (ilData.PSN_FIRST_NAME) Returns lcTemp
+		Calculate ilData.PSN_FIRST_NAME as lcTemp
+		
+		Do method obfuscateText (ilData.PSN_SURNAME) Returns lcTemp
+		Calculate ilData.PSN_SURNAME as lcTemp
+		
+		Do method obfuscateEmail (ilData.PSN_EMAIL) Returns lcTemp
+		Calculate ilData.PSN_EMAIL as lcTemp
+		
+		Do method obfuscateText (ilData.PSN_SPEAKER_BIO) Returns lcTemp
+		Calculate ilData.PSN_SPEAKER_BIO as lcTemp
+		
+		If left(ilData.PSN_CBY,4)='onl:'
+			Calculate ilData.PSN_CBY as 'onl:'
+			Calculate ilData.PSN_MBY as 'onl:'
+		Else
+			# leave CBY as is - it will be one of the staff - not confidential
+		End If
+		
+		Calculate ilData.PSN_PHONE as ''
+		Calculate ilData.PSN_COMPANY as ''
+		Calculate ilData.PSN_SPOUSE_NAME as ''
+		
+		Calculate lrUpdate as ilData
+		Do lrUpdate.$update() Returns lbOK
+		If not(lbOK)
+			Breakpoint
+		End If
+	End If
+End While
+# Breakpoint

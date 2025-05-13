@@ -1,0 +1,17 @@
+Do ilSpeakers.$clear()
+Do ilSpeakers.$fetchForConference(ilConferences.CF_SEQ,''," DG_ROLE = 'SPEAKER' ")
+Do ilSpeakers.$search(left($ref.PSN_SURNAME,1)='_',1,0,1,0)
+Do ilSpeakers.$remove(kListDeleteSelected)
+
+Calculate ilSpeakers.$line as 0
+While $Loop(ilSpeakers)
+	Do ilSpeakers.$DisplayName()
+End While
+
+Do ilSpeakers.$sort($ref.DisplayName,0)
+
+Calculate lcTemp as $cell(clLabels,'objName','label_SpeakerName','label')
+If isclear(lcTemp)
+	Calculate lcTemp as 'Speakers'
+End If
+Calculate $cinst.$objs.label_SpeakerName.$text as con(ilSpeakers.$linecount,' ',lcTemp)

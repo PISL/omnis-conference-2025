@@ -1,0 +1,33 @@
+If irRegistration.PSN_EMAIL<>''
+	Calculate lbFetch as kTrue
+End If
+If irRegistration.PSN_FIRST_NAME<>''&irRegistration.PSN_SURNAME<>''
+	Calculate lbFetch as kTrue
+End If
+If lbFetch
+	Do $DefineList(lrPerson,'tPerson')
+	# its a bit annoying sometimes when you change the email address only to have it overwritten by the copy in the db from looking up first and surnames
+	# Do lrPerson.$fetchOnVarious(irRegistration.PSN_FIRST_NAME,irRegistration.PSN_SURNAME,irRegistration.PSN_EMAIL)
+	Do lrPerson.$fetchOnVarious(#NULL,#NULL,irRegistration.PSN_EMAIL) ## only email is used to search
+	If lrPerson.PSN_SEQ>0
+		Calculate irRegistration.PSN_EMAIL as lrPerson.PSN_EMAIL
+		Calculate irRegistration.PSN_FIRST_NAME as lrPerson.PSN_FIRST_NAME
+		Calculate irRegistration.PSN_SURNAME as lrPerson.PSN_SURNAME
+		Calculate irRegistration.PSN_COUNTRY as lrPerson.PSN_COUNTRY
+		Calculate irRegistration.PSN_SPOUSE_NAME as lrPerson.PSN_SPOUSE_NAME
+		
+		Calculate irRegistration.PSN_PHOTOID_TYPE as lrPerson.PSN_PHOTOID_TYPE
+		Calculate irRegistration.PSN_PHOTOID_NO as lrPerson.PSN_PHOTOID_NO
+		
+		Do ilCountriesPSN.$search($ref.REF_VALUE=irRegistration.PSN_COUNTRY,1,0,0,0)
+		Do ilPhotoIdTypes.$search($ref.RFO_VALUE=irRegistration.PSN_PHOTOID_TYPE,1,0,0,0)
+	Else
+		If not(pbAutoLookup) ## manual lookup instructed by user
+			Calculate icDisplayMessage as 'Attendee record not found using EMAIL'
+		End If
+	End If
+Else
+	If not(pbAutoLookup) ## manual lookup instructed by user
+		Calculate icDisplayMessage as 'email address or first and surnames must be provided'
+	End If
+End If

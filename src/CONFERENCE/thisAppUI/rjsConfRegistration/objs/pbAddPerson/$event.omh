@@ -1,0 +1,16 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL.$errortext as ''
+	
+	# this button is enabled only when there is something in irRegistration.PSN_SURNAME, PSN_FIRST_NAME and PSN_EMAIL
+	Do ioFormat.$FormatEmail(irRegistration.PSN_EMAIL) Returns icValidationText
+	If icValidationText=''
+		# good
+	Else
+		Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),icValidationText)
+		Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL.$errortext as icValidationText
+		Quit method
+	End If
+	
+	Do method AddPerson
+	Do $cinst.$behaviour()

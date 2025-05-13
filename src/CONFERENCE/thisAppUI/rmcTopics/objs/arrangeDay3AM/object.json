@@ -1,0 +1,18 @@
+{
+	"ident": 1009,
+	"order": 12,
+	"properties": {
+		"cascade": "",
+		"checked": false,
+		"commandid": 1009,
+		"enabled": true,
+		"iconcolor": "RGB(0,0,0)",
+		"iconid": 0,
+		"ischeckable": false,
+		"text": {
+			"type": 0,
+			"calc": "Arrange day 3 AM"
+		},
+		"userinfo": ""
+	}
+}

@@ -1,0 +1,31 @@
+Calculate $cinst.icDisplayMessage as ''
+
+Calculate llTemp as $cinst.ilDisplayRecords
+If irCurrentRecord.ARR_DATE>dat('1 JAN 2010')
+	Do llTemp.$search($ref.ARR_DATE=irCurrentRecord.ARR_DATE&$ref.ARR_STARTTIME=irCurrentRecord.ARR_STARTTIME,1,0,1,0)
+Else
+	Do llTemp.$search($ref.ARR_DAYNO=irCurrentRecord.ARR_DAYNO&$ref.ARR_STARTTIME=irCurrentRecord.ARR_STARTTIME,1,0,1,0)
+End If
+Do llTemp.$remove(kListKeepSelected)
+Do llTemp.$search(0)
+Calculate llRoomsNotTaken as ilFacilities
+
+If irCurrentRecord.ARR_FORMAT<>''
+	Do llRoomsNotTaken.$search($ref.FCY_TYPE=irCurrentRecord.ARR_FORMAT,1,0,1,0)
+	Do llRoomsNotTaken.$remove(kListKeepSelected)
+	Do llRoomsNotTaken.$search(0)
+End If
+
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	If llTemp.ARR_FCY_REF&llTemp.ARR_FCY_REF<>irCurrentRecord.ARR_FCY_REF
+		Do llRoomsNotTaken.$search($ref.FCY_SEQ=llTemp.ARR_FCY_REF,1,0,0,0)
+		Calculate $cinst.icDisplayMessage as con($cinst.icDisplayMessage,pick($cinst.icDisplayMessage<>'','',', '),llRoomsNotTaken.FCY_NAME)
+		Calculate llRoomsNotTaken.[llRoomsNotTaken.$line].$selected as kTrue
+	End If
+End While
+Do llRoomsNotTaken.$remove(kListDeleteSelected)
+Calculate ilFacilityAssign as llRoomsNotTaken
+If $cinst.icDisplayMessage<>''
+	Calculate $cinst.icDisplayMessage as con('rooms already used: ',$cinst.icDisplayMessage)
+End If

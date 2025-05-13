@@ -1,0 +1,204 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+# Enter your initialization code here
+Do $DefineList(ilDisplayRecords,'tDelegates')
+Do ilDisplayRecords.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SEX") ## PSN_SEX = 'O' used to hide non-human actor
+Do ilDisplayRecords.$AddLinkedCols("CF_TITLE,CF_DATE_FROM,CF_DATE_TO",kFalse,'conf_now') ## don't need these columns but do need conference joined with an alias for first time subquery option
+Do ilDisplayRecords.$AddLinkedCols("EO_NAME,EO_EMAIL",kTrue)
+Do ilDisplayRecords.$AddLinkedCols("FOH_INV_NO",kTrue)
+# Do ilDisplayRecords.$AddLinkedCols("PY_DATE",kTrue) ## this returned multiple rows when multiple payments were made
+Do ilDisplayRecords.$cols.$add('PY_DATE',kDate,kDate2000)
+Do ilDisplayRecords.$AddFunction(con(" ( select max(PY_DATE) from ",lrPayments.$servertablenames," where PY_DG_REF = DG_SEQ ) as PY_DATE"))
+Do ilDisplayRecords.$cols.$add('PY_AMOUNT',kNumber,k2dp)
+Do ilDisplayRecords.$AddFunction(con(" ( select sum(PY_AMOUNT) from ",lrPayments.$servertablenames," where PY_DG_REF = DG_SEQ ) as PY_AMOUNT"))
+If ilDisplayRecords.icErrorMessage<>''
+	# Breakpoint
+End If
+Do ilDisplayRecords.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy ## used in fetchSearchList2
+Do toValues.$initInherited('DG_ROLE') Returns ilRoles ## used in fetchSearchList2
+Do method fetchSearch1List ## Conferences  ilSearch1   ilSearch2  line 1 current
+Do method fetchSearch2List
+
+Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' ")
+Do method fetchDisplayList (lcStatusCriteria)
+# add Nationalities to ilSearch2 ## now that we have a list of all delegates
+Calculate llTemp as ilDisplayRecords
+Do llTemp.$cols.DG_COUNTRY.$removeduplicates(kTrue)
+Do ilSearch2.$add(#NULL,#NULL,#NULL,con('-----'),#NULL,#NULL,#NULL,lnCount)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilSearch2.$add(#NULL,'DG_COUNTRY',llTemp.DG_COUNTRY,con('country ',llTemp.DG_COUNTRY))
+End While
+# now match ilSearch2 line with lcStatusCriteria
+Do ilSearch2.$search($ref.RFO_CLASS='DG_STATUS'&$ref.RFO_VALUE='EX_CANCEL',1,0,0,0)
+
+Do $DefineList(ilPersons,'tPerson')
+Do ilPersons.$addDisplayName()
+Do ilPersons.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilPersons.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilPersons.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilPersons.$fetchActive()
+
+Do ilPersons.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.DG_PSN_REF.$listcolumn as liColRef.$ident
+
+Do $DefineList(irProduct,'infra.tProducts')
+Do irProduct.$addSchemaColumns('infra.tProductInternalData')
+Do irProduct.$addLinkedCols('RFL_VALUE,RFL_DESC,RFL_NUMBER') ## to add columns but not use $Sql
+Do irProduct.$addDisplayName()
+
+Do $DefineList(irSemaphore,'infra.tsysSemaphores')
+
+Do $DefineList(irInvoiceHeader,'infra.tfinInvoiceOutH')
+
+Do $DefineList(ilPax,'tPAX')
+Do ilPax.$addTotalColumns()
+
+Calculate irPax as ilPax
+Do $DefineList(ilPayments,'tPaymentsIn')
+Do ilPayments.$addDisplayName()
+Calculate irPayment as ilPayments
+Do $DefineList(irDiet,'tDietRequests')
+Do $DefineList(irTravelPlan,'tTravelPlans')
+
+Do $DefineList(ilWhoIsPaying,'infra.tentExtOrganisations')
+Do ilWhoIsPaying.$fetchOurCustomers()
+Do ilWhoIsPaying.$addbefore(1,#NULL,#NULL,'no one')
+
+Do $DefineList(ilInvoices,'tDelegateInvoiceLinks')
+Do ilInvoices.$addLinkedCols("FOH_SEQ,FOH_GO_REF,FOH_EO_REF,FOH_INV_NO,FOH_ADDR_SHIP,FOH_ADDR_BILL,FOH_CUST_NAME,FOH_DATE,FOH_INSTRUCTIONS,FOH_STATUS,FOH_CURRENCY,FOH_MWHEN")
+Do ilInvoices.$addLinkedCols("EO_NAME,EO_CONTACT,EO_EMAIL")
+Do ilInvoices.$cols.$add('detailLines',kList)
+
+Do $DefineList(ilMultipleDelegatesOnOneInvoice,'tDelegateInvoiceLinks')
+Do ilMultipleDelegatesOnOneInvoice.$addLinkedCols("DG_SEQ,DG_STATUS,DG_EMAIL_INVOICE_SENT,DG_EMAIL_TRAVEL_SENT,PSN_SURNAME,PSN_FIRST_NAME,FOH_INV_NO")
+
+Do $DefineList(ilGroupInvoices,'tDelegateInvoiceLinks')
+Do ilGroupInvoices.$addSchemaColumns('infra.sfinInvoiceOutH')
+Do ilGroupInvoices.$addSchemaColumns('sDelegates')
+Do ilGroupInvoices.$addSchemaColumns('sPerson')
+Do ilGroupInvoices.$addDisplayName()
+Do ilGroupInvoices.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilGroupInvoices.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilInvoiceDetails,'infra.tfinInvoiceOutD')
+Do ilInvoiceDetails.$addLinkedCols("FOH_SEQ,FOH_GO_REF,FOH_EO_REF,FOH_INV_NO,FOH_CUST_NAME,FOH_DATE,FOH_STATUS")
+Do ilInvoiceDetails.$addLinkedCols("EO_NAME,EOL_FINACCT_CUID")
+# Do ilInvoiceDetails.$addLinkedCols("PRD_INT_PRODCODE,PRD_BRAND,PRD_NAME,PRD_DESC,PRD_SIZE,PRD_UOS_CODE,PRD_UNIT_PRICE,PRD_TAX_BAND")
+Do ilInvoiceDetails.$addLinkedCols("PRD_INT_PRODCODE,PRD_BRAND,PRD_NAME,PRD_DESC,PRD_SIZE,PRD_UOS_CODE")
+Do ilInvoiceDetails.$addLinkedCols("PID_UNIT_PRICE,PID_TAX_BAND")
+Do ilInvoiceDetails.$addLinkedCols("RFL_NUMBER",kTrue)
+Do ilInvoiceDetails.$addCalculatedColumns()
+
+# iFiles copied from js upload sample provided by Omnis
+Do iFiles.$define(iFileName,iFileLen,iFileBinary)
+
+Do $DefineList(ilMembership,'tMembership')
+
+Do toValues.$initOrg('URL','TRAVELINFO') Returns irTravelInfoLink
+Do toValues.$initOrg('TP_MUSIC_PLAYER') Returns ilMusic
+
+Do toValues.$initOrg('DG_STATUS') Returns ilStatus
+# Calculate ilStatus as ilSearch2
+Do ilStatus.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.DG_STATUS.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.DG_STATUS2.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.DG_STATUS3.$listcolumn as liColRef.$ident
+
+Do ilRoles.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.DG_ROLE.$listcolumn as liColRef.$ident
+
+# Do ilOccupancy.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.DG_OCCUPANCY.$listcolumn as liColRef.$ident
+
+Do toValues.$initInherited('PX_ROLE') Returns ilSpouse
+# Do ilSpouse.$cols.$findname('RFO_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.PX_ROLE.$listcolumn as liColRef.$ident
+
+Do toValues.$ReturnCountries() Returns ilCountries ## hard coded
+
+Do ilWhoIsPaying.$cols.$findname('EO_NAME') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.DG_EO_REF.$listcolumn as liColRef.$ident
+Calculate $cinst.$objs.PagedPane.$objs.DG_EO_REF2.$listcolumn as liColRef.$ident
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as con($cell(clLabels,'objName','DG_Heading','label'))
+# icFormIntro has been hijacked for summary
+If icFormIntro=''
+	Calculate icFormIntro as $cell(clLabels,'objName','DG_Intro','label')
+End If
+
+Do method UserPermissions
+
+Calculate $cinst.$objs.pbDelCascade.$visible as irUserRights.canDeleteCascade
+
+Do toValues.$initInherited('EMAIL_INVOICE','MESSAGE') Returns irEmailInvoiceMessage
+Do toValues.$initInherited('EMAIL_CHASEPAY','MESSAGE') Returns irEmailChasePayment
+Do toValues.$initInherited('EMAIL_TRAVEL','MESSAGE') Returns irEmailTravelMessage
+
+Do $DefineList(ilDelegateLog,'tDGstatusLog')
+
+# hide tabs 2 & 3
+# Calculate $cinst.$objs.TabControl_DG.$selectedtab as 3
+# Calculate $cinst.$objs.TabControl_DG.$tabvisible as kFalse
+# Breakpoint
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Calculate inMinSearchString as 0
+
+Do $objects.oReporting.$newref() Returns orefReporting
+Do orefReporting.$setTask($ctask.$ref)
+Do orefReporting.$printAsPDF()
+
+Do $cinst.$superText(kTrue,'text search')
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE')
+Do $cinst.$superSearchList2($cell(clLabels,'objName','sel_variousCriteria','label'),'RFO_DESC')
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_values','label'),'DisplayName')
+
+Do $tasks.tkWorkerApp.$open('*',tcCurrentLibrary,$cinst.$task()) Returns lrefWorker
+Do lrefWorker.$getRowMessage() Returns irEmailMessageBody
+Do lrefWorker.$getRowAttributes() Returns irEmailMessageAttributes
+Do lrefWorker.$getRowServer() Returns irEmailMessageServer
+Do lrefWorker.$close()
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_DG.$currenttab as inCurrentTab
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults
+Do llNotifications.$copydefinition(llMenuCommands)
+Do llNotifications.$add('NTFY_CHASE_INV',2101,'')
+Do llNotifications.$add('PDF_THANKS_DG',2111,'')
+Do llNotifications.$add('PDF_THANKS_ALL',2112,'')
+# Do llNotifications.$add('PDF_THANKS_SPK',2113,'')
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands,llNotifications)
+
+# we are using irJobAttributes outside of using pdf generation
+Do $tasks.tkAsyncPdfApp.$open('*',tcCurrentLibrary,$cinst) Returns irefAsyncPdf
+If irefAsyncPdf
+	Do irefAsyncPdf.$getAttributes() Returns irJobAttributes
+	Do irefAsyncPdf.$close()
+End If
+
+# Do $cinst.$openpush()
+
+Do $cinst.$behaviour()
+
+Do irEmailWorker.$cols.$add('instruction',kCharacter,kSimplechar,15)
+Do irEmailWorker.$cols.$add('DG_SEQ',kInteger,k32bitint)
+Do irEmailWorker.$cols.$add('PSN_EMAIL',kCharacter,kSimplechar,255)
+Do irEmailWorker.$cols.$add('PSN_SURNAME',kCharacter,kSimplechar,30)
+Do irEmailWorker.$cols.$add('EO_EMAIL',kCharacter,kSimplechar,255)

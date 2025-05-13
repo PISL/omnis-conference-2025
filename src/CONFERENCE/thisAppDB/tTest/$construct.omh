@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TST_'
+Calculate icPrimarykey as 'TST_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as '' ## could be  'TST_CF_REF'  or  'TST_ARR_REF'
+
+Do inherited

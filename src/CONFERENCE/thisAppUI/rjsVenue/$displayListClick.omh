@@ -1,0 +1,24 @@
+Calculate icDisplayMessage as ''
+Do irFacility.$clear()
+Do ilFacilities.$clear()
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do irCurrentRecord.$fetch_pk() ## re-read from db - multi user application
+Do ilFacilities.$fetch_fk(irCurrentRecord.VEN_SEQ) Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as ilFacilities.irErrorSQL.NativeErrorText
+End If
+Do ilFacilities.$sort($ref.FCY_ORDER,0,$ref.FCY_NAME,0)
+
+If irCurrentRecord.VEN_TIMEZONE<>''
+	If ilTZregion.REGION=left(irCurrentRecord.VEN_TIMEZONE,len(ilTZregion.REGION))
+		# leave ilTZregion as is
+	Else
+		Calculate ilTZregion.$line as 0
+	End If
+Else
+	Calculate ilTZregion.$line as 0
+End If
+Do method DisplayTimezone
+
+Do $cinst.$behaviour()

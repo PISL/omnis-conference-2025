@@ -1,0 +1,14 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TP_DG_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' delegate reference missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

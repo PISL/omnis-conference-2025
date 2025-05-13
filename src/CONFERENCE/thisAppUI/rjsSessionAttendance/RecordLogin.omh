@@ -1,0 +1,19 @@
+# change user name - in memory only ## this will be recorded in CBY & MBY columns
+Calculate trCurrUser.USR_NAME as con(':',irDelegate.PSN_SURNAME,', ',irDelegate.PSN_FIRST_NAME)
+
+# now create a logLogin record
+If trLogAccess.ULA_SEQ>0
+	# login record already created
+Else
+	Do $DefineList(trLogAccess,'infra.tuaLogAccess')
+	Calculate trLogAccess.ULA_USR_REF as trCurrUser.USR_SEQ
+	Calculate trLogAccess.ULA_LOGIN as $ServerTime()
+	Calculate trLogAccess.ULA_IP_ADDRESS as $ctask.$clientaddress()
+	Calculate trLogAccess.ULA_GO_NAME as trCurrUser.USR_NAME
+	Calculate trLogAccess.ULA_CONNECT_TIME as $ctask.$connectiontime
+	Calculate trLogAccess.ULA_FORMS_VISITED as $cinst.$class().$name
+	Do trLogAccess.$insert() Returns lbOK
+	If not(lbOK)
+		Breakpoint
+	End If
+End If

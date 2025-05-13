@@ -1,0 +1,23 @@
+Calculate ibGetFileForEmail as pbGetFileForEmail
+Do $tasks.tkWorkerApp.$open('*',tcCurrentLibrary,$cinst.$task(),"PDF") Returns lrefPdfWorker
+Do lrefPdfWorker.$setCaller($cinst,row(pcMessage,irCurrentRecord,plGenericContent)) ## second parameter, optional row() to be passed back to $pdfcomplete/$emailCompleted
+Begin reversible block
+	Calculate iAuthor as 'Platform Independent Systems Ltd'
+	Calculate iTitle as 'Invoice'
+	Calculate iSubject as ''
+	Calculate ilInvoices.$line as 1
+End reversible block
+
+# Calculate inCurrentTab as cnTabDisplayPDF ## not sure why?
+
+If pcReportClass<>''
+	Set reference lrefReport to $reports.[pcReportClass]
+	If lrefReport
+		Do lrefPdfWorker.$printPDf(iAuthor,iTitle,iSubject,kTrue,2,lrefReport,row(irCurrentRecord,plGenericContent),kTrue) ## Params: author, title, subject, bUseTempDir, timeout, reportReference, row(reportParams), bSaveOnError
+	Else
+		Breakpoint
+	End If
+Else
+	Set reference lrefReport to $libs.infra.$reports.rpInvoice
+	Do lrefPdfWorker.$printPDf(iAuthor,iTitle,iSubject,kTrue,2,lrefReport,row(ilInvoices),kTrue) ## Params: author, title, subject, bUseTempDir, timeout, reportReference, row(reportParams), bSaveOnError
+End If

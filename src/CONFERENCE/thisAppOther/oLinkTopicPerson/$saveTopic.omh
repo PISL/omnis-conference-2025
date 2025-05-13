@@ -1,0 +1,65 @@
+Calculate icErrorMessage as ''
+
+Do irTopic.$clear()
+Do irTopic.$assignrow(prTopic)
+Do irTopic.$validation() Returns lbProceed
+If lbProceed
+	If irTopic.[irTopic.icPrimaryKey]>0
+		Do toStrings.$HasRowBeenModified(irOrigTopic,irTopic) Returns lbModified
+		If lbModified
+			Do irTopic.$update() Returns lbOK
+		Else
+			# no change
+			Calculate lbOK as kTrue
+		End If
+	Else
+		Do irTopic.$insert() Returns lbOK
+	End If
+	If lbOK
+		Do prTopic.$assignrow(irTopic) ## return result to calling object
+		Calculate irOrigTopic as irTopic
+		
+		Do irPerson.$assignrow(prPerson)
+		
+		# does the link record exist already?
+		# Not likely but here is belt n braces code.
+		Do irLinkRecord.$clear()
+		Calculate irLinkRecord.TPP_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+		Calculate irLinkRecord.TPP_PSN_REF as irPerson.[irPerson.icPrimaryKey]
+		Do irLinkRecord.$fetch_ck()
+		
+		# End If
+		
+		# insert or update
+		If irLinkRecord.[irLinkRecord.icPrimaryKey]>0
+			# link record already exists
+			Do toStrings.$HasRowBeenModified(irOrigLinkRecord,irLinkRecord) Returns lbModified
+			If lbModified
+				Do irLinkRecord.$update() Returns lbOK
+			Else
+				# no change
+				Calculate lbOK as kTrue
+			End If
+		Else
+			# link record to be created
+			Calculate irLinkRecord.TPP_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+			Calculate irLinkRecord.TPP_PSN_REF as irPerson.[irPerson.icPrimaryKey]
+			Do irLinkRecord.$insert() Returns lbOK
+		End If
+		If lbOK
+			Calculate irOrigLinkRecord as irLinkRecord
+		Else
+			Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
+			Quit method kFalse
+		End If
+		
+	Else ## not(lbOK) after irDelegate.$insert()
+		Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+Else
+	Calculate icErrorMessage as con('validation error: ',irTopic.icValidationMessage)
+	Quit method kFalse
+End If
+
+Quit method kTrue

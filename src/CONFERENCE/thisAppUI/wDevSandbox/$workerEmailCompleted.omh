@@ -1,0 +1,21 @@
+Calculate iResponse as pResults
+Calculate iErrorCode as pResults.errorCode
+Calculate iErrorText as pResults.errorInfo
+Calculate iFailedRecipients as pResults.failedRecipients
+# Calculate icSMTPlog as utf8tochar(pResults.log)
+# including the log is configurable so it may or may not be present
+Do pResults.$cols.$findname('log') Returns liColRef
+If liColRef
+	Calculate icSMTPlog as pResults.log
+End If
+
+If iErrorCode=0
+	# send email was successful
+	OK message SMTP worker Success {The email to [con(prFingerPrint.PSN_FIRST_NAME,' ',prFingerPrint.PSN_SURNAME,' delegate ',prFingerPrint.DG_SEQ)] was sent.}
+Else If iFailedRecipients.$linecount>0
+	OK message Bad Addressees {[iFailedRecipients.$linecount] addressees failed to send}
+Else
+	OK message SMTP worker Failure {error code [iErrorCode][kCr][iErrorText]}
+End If
+
+Breakpoint

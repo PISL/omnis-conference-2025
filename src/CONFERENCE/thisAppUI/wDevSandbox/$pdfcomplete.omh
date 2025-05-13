@@ -1,0 +1,29 @@
+# pdf file should exist at location  pcFilePath
+# the following applescript taken from     https://stackoverflow.com/questions/11261516/applescript-open-a-folder-in-finder
+# let user know file exists
+Calculate lcPathToFolder as mid(pcFilePath,1,pos(pcFile,pcFilePath)-1)
+If 1=1
+	Begin text block
+	Line:tell application "Finder"
+	Line:   activate
+	Line:   open ("[lcPathToFolder]" as POSIX file)
+	Line:end tell
+	End text block
+Else
+	# untested
+	Begin text block
+	Line:property the_path
+	Line:set the_folder to (POSIX file the_path) as alias
+	Line:tell application "Finder"
+	Line:   activate
+	Line:   if window 1 exists then
+	Line:      target of window 1 to the_folder
+	Line:   else
+	Line:      reveal the_folder
+	Line:   End If
+	Line:end tell
+	End text block
+End If
+
+Get text block lcRevealInFinder
+Do $runapplescript(lcRevealInFinder,lcResult,lcError)

@@ -1,0 +1,1 @@
+Calculate $cinst.DisplayName as con($cinst.CRT_TITLE,' to ',$cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)

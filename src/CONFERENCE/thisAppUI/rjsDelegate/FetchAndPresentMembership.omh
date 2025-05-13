@@ -1,0 +1,9 @@
+Do ilMembership.$clear()
+Do ilMembership.$fetch_fk(irCurrentRecord.DG_PSN_REF)
+If ilMembership.$linecount>0
+	Do ilMembership.$sort($ref.MB_TO,1) ## most recent at top
+	Do ilMembership.$search($ref.MB_FROM<=#D&$ref.MB_TO>=#D,1,0,0,0) Returns ibCurrentMember
+	If not(ibCurrentMember)
+		Calculate ilMembership.$line as 1
+	End If
+End If

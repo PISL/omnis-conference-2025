@@ -1,0 +1,55 @@
+Do $DefineList(lrSpeakers,'tArrangements')
+Do lrSpeakers.$reportArrangementCount(prConference.CF_SEQ) Returns $cinst.ilData
+
+# remove entries that do not require bookings ## _CONFERENCE Committee entries typically
+Do ilData.$search($ref.ARR_BOOKING_REQD=1,1,0,1,0)
+Do ilData.$remove(kListKeepSelected)
+Do ilData.$search(0)
+Do ilData.$cols.$add('percent',kNumber,k2dp)
+
+Do ilData.$sort($ref.SpeakerSort,0,$ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0)
+
+# calculate bookings ratio
+Calculate ilData.$line as 0
+While $Loop($cinst.ilData)
+	If ilData.ARR_MAX_BOOKINGS<>0
+		Calculate ilData.percent as ilData.count/ilData.ARR_MAX_BOOKINGS
+	End If
+End While
+
+If prSortOption.sortCode='SPEAKER'
+	# no additional sorting required
+Else If prSortOption.sortCode='BOOKINGS'
+	# sort according to decreasing average percent of bookings
+	# To see who were the most popular speakers / topics.
+	Calculate llSpeakers as $cinst.ilData
+	Do llSpeakers.$cols.SpeakerSort.$removeduplicates(kTrue)
+	
+	Do ilData.$cols.$add('averagePercent',kNumber,k2dp)
+	
+	# for each speaker, determine their average
+	Calculate llSpeakers.$line as 0
+	While $Loop(llSpeakers)
+		Do ilData.$search($ref.SpeakerSort=llSpeakers.SpeakerSort,1,0,1,0)
+		# initialise
+		Calculate lnCount as totc($cinst.ilData,#LSEL)
+		Calculate lnTotal as 0
+		Calculate lnAverage as 0
+		# total the averages
+		Calculate ilData.$line as 0
+		While $Loop($cinst.ilData,kTrue)
+			Calculate lnTotal as lnTotal+ilData.percent
+		End While
+		# calculate average
+		Calculate lnAverage as lnTotal/lnCount
+		# place average into the list
+		While $Loop($cinst.ilData,kTrue)
+			Calculate ilData.averagePercent as lnAverage
+		End While
+		# clear selected lines
+		Do ilData.$search(0)
+	End While
+	
+	# now sort
+	Do ilData.$sort($ref.averagePercent,1,$ref.SpeakerSort,0,$ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0)
+End If

@@ -1,0 +1,19 @@
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	If inCurrentTab=cnConfInfo|inCurrentTab=cnConfPrices|inCurrentTab=cnConfTerms|inCurrentTab=cnConfTechInfo
+		Calculate irCurrentRecord as ilDisplayRecords
+		Calculate irOriginalRecord as irCurrentRecord
+		
+	Else If inCurrentTab=cnConfArrangements
+		Calculate irTopic as ilTopics
+		Calculate irOriginalRecord as irTopic
+		
+	Else If inCurrentTab=cnConfStats
+		# everything stays in the ilDisplayStats list
+		
+	Else If inCurrentTab=cnConfPriceRules
+		Calculate irProductPriceRule as ilPricingGrid
+		Calculate irOriginalRecord as irProductPriceRule
+	End If
+	
+	Do $cinst.$behaviour()

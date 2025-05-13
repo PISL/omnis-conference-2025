@@ -1,0 +1,33 @@
+Breakpoint
+If prFingerPrint.DIL_DG_REF=irCurrentRecord.DG_SEQ
+	Calculate irCurrentRecord.DG_EMAIL_INVOICE_SENT as #D
+	Do irCurrentRecord.$update() Returns lbOK
+	If lbOK
+		Calculate irOriginalRecord as irCurrentRecord
+		Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+	End If
+Else
+	# the current record does not reflect the email send result being recevied.
+	# Update the email sent and restore the relevant line in ilDisplayList with result
+	Calculate lrTemp as irCurrentRecord
+	Do lrTemp.$clear()
+	Do lrTemp.$fetch_pk(prFingerPrint.DIL_DG_REF)
+	If lrTemp.DG_SEQ>0
+		Calculate lrTemp.DG_EMAIL_INVOICE_SENT as #D
+		Do lrTemp.$update() Returns lbOK
+		If lbOK
+			Calculate lnCurrentLine as ilDisplayRecords.$line
+			Do ilDisplayRecords.$search($ref.DG_SEQ=lrTemp.DG_SEQ,1,0,0,0) Returns lbFound
+			If lbFound
+				Do ilDisplayRecords.$assignrow(lrTemp,kTrue)
+			End If
+			Calculate ilDisplayRecords.$line as lnCurrentLine
+		End If
+	Else
+		Breakpoint Something needs looking into.
+	End If
+End If
+
+If lbOK
+	Do $LogEvent('EMAIL_SEND_INV','OK',con(prFingerPrint.PSN_FIRST_NAME,' ',prFingerPrint.PSN_SURNAME))
+End If

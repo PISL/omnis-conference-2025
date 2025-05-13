@@ -1,0 +1,4 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	Do method $displayListClick
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

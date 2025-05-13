@@ -1,0 +1,13 @@
+Do $DefineList(ilData,'tDietRequests')
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PX_ROLE')
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilData.$fetchForConference(prConference.CF_SEQ)
+
+If ilData.$linecount=0
+	Do ilData.$add()
+	Calculate ilData.$line as ilData.$linecount
+	Calculate ilData.DisplayName as 'there are no members'
+Else
+	Do ilData.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0,$ref.PX_SEQ,0)
+End If

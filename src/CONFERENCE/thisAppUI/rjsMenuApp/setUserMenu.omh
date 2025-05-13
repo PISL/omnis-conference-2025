@@ -1,0 +1,18 @@
+# initialise the user menu lists
+Do ilUserMenu.$copydefinition(ilNavMenu)
+Do llCascade.$copydefinition(ilNavMenu)
+
+# for each item to appear on the user menu, add a line to llCascade and tlAuthorisedForms
+# use numbers from 101 upwards to avoid conflict with NavMenu items
+
+Do toValues.$initInherited('GRAPH') Returns llGraphs
+If llGraphs.$linecount ## do not display the option if there are no graphs to display
+	Do llCascade.$add(kNavMenuTypeEntry,'View dashboard',,0,104) ## llMenuEntries.$add(kNavMenuTypeEntry,llGroups.code,,0,lnIdent,llGroups.container,#NULL)
+End If
+
+Do llCascade.$add(kNavMenuTypeEntry,'Change password',,0,101,'infra.rjsChangeUserPwd') ## llMenuEntries.$add(kNavMenuTypeEntry,llGroups.code,,0,lnIdent,llGroups.container,#NULL)
+Do tlAuthorisedForms.$add('FORM_CHANGEPWD','','infra.rjsChangeUserPwd','0','999',0,,101)
+Do llCascade.$add(kNavMenuTypeEntry,'Logout',,0,102,'') ## llMenuEntries.$add(kNavMenuTypeEntry,llGroups.code,,0,lnIdent,llGroups.container,#NULL)
+Do llCascade.$add(kNavMenuTypeEntry,'Quit',,0,103,'') ## llMenuEntries.$add(kNavMenuTypeEntry,llGroups.code,,0,lnIdent,llGroups.container,#NULL)
+
+Do ilUserMenu.$add(1,icCurrentUser,,0,1,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))

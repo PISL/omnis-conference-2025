@@ -1,0 +1,17 @@
+On evBefore
+	
+On evAfter
+	Do ioResolve.$clearErrors()
+	Do ioResolve.$productResolution(#NULL,#NULL,ilPricingGrid.CFP_CALC) Returns lbValid
+	If ioResolve.ilResolveErrors.$linecount>0
+		Breakpoint
+	End If
+	If not(lbValid)
+		If left(ilPricingGrid.CFP_PROD_CODE,1)='$'
+			Calculate icDisplayMessage as 'invalid method name for Calculation'
+		Else
+			Calculate icDisplayMessage as 'invalid calculation string for Calculation'
+		End If
+	Else
+		Do ioResolve.$calculationText() Returns icDisplayMessage
+	End If

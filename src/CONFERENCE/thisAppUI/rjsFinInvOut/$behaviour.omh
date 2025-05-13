@@ -1,0 +1,6 @@
+Do inherited
+
+Calculate $cinst.$objs.pbRecordMembership.$visible as kTrue
+Calculate $cinst.$objs.pbRecordMembership.$enabled as inCurrentTab=1&pos('MEMBERSHIP',upp(ilDetails.FOD_DESC))
+
+Calculate $cinst.$objs.ppDelegates.$visible as inCurrentTab=cnTabConference
