@@ -8,18 +8,20 @@ End If
 
 Begin statement (Carriage return)
 # first get the registrations by month for the current conference
-Sta:with dg as (select date_part('month',dg_reg_date) m, count(*) as regcount from conf.delegates
+# 2025-05-15 GRS modified for EurOmnis 2025 where we had registrations in Dec 2024
+Sta:with dg as (select date_trunc('month',dg_reg_date) m, count(*) as regcount from conf.delegates
 Sta:where DG_CF_REF = @[pConfSeq]
+Sta:and DG_REG_DATE is not null
 Sta:and  DG_STATUS <> 'CANCEL'
 Sta:group by 1)
-# generate the month numbers from the first registration to the latest
-Sta:, months as (select * from generate_series((select min(m)::int from dg),(select max(m)::int from dg))as m)
+# generate the year-month numbers from the first registration to the latest
+Sta:, months as (select * from generate_series((select min(m) from dg),(select max(m) from dg), interval '1 month') as m)
 # now outer join months to registrations
 Sta:, mcount as (select months.m, dg.regcount
 Sta:from months
 Sta:left join dg on dg.m = months.m)
 # put it all together with  a windowing function to get all onths complete with running total
-Sta:select to_char(('2000-' || m || '-01')::date, 'Mon') as mtxt
+Sta:select to_char(m, 'Mon') as mtxt
 Sta:, regcount, sum(regcount) over (order by m) as runtot
 Sta:from mcount;
 End statement
