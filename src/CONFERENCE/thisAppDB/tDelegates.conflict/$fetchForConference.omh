@@ -1,0 +1,52 @@
+If pcSearchText<>''
+	Calculate icSearchString as con('%',pcSearchText,'%')
+Else
+	Calculate icSearchString as ''
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+If icSearchString<>''
+	# if EO_NAME is in the structure then include it in string search
+	Do $cinst.$cols.$findname('EO_NAME') Returns liColRef
+	
+	Calculate lcCriteria as " ( PSN_FIRST_NAME ilike @[icSearchString]"
+	Calculate lcCriteria as con(lcCriteria,' or PSN_SURNAME ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_COMPANY ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_EMAIL ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_PHONE ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or PSN_COUNTRY ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or DG_GROUP ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or DG_COMMENT ilike @[icSearchString]')
+	Calculate lcCriteria as con(lcCriteria,' or DG_ROOM_ASSIGNMENT ilike @[icSearchString]')
+	If liColRef
+		Calculate lcCriteria as con(lcCriteria,' or EO_NAME ilike @[icSearchString]')
+	End If
+	Calculate lcCriteria as con(lcCriteria,' ) ')
+	
+	If pcExtraCriteria<>''
+		Calculate pcExtraCriteria as con(pcExtraCriteria,' and ',lcCriteria)
+	Else
+		Calculate pcExtraCriteria as lcCriteria
+	End If
+End If
+
+Calculate inID as pnCF_SEQ
+If pcExtraCriteria<>''
+	Do $cinst.$Sql(,con('where DG_CF_REF = @[inID] and ',pcExtraCriteria),0,0)
+Else
+	Do $cinst.$Sql(,con('where DG_CF_REF = @[inID]'),0,0)
+End If
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do $cinst.$sort($ref.DG_REG_DATE,0)
+Quit method lbOK

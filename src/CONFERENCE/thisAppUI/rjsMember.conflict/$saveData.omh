@@ -1,0 +1,41 @@
+If icMode='IM' ## insert user
+	Calculate irCurrentRecord.MB_PSN_REF as ilDisplayRecords.PSN_SEQ
+	Do irCurrentRecord.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+	Else
+		Do irCurrentRecord.$insert() Returns lbOK
+		If lbOK
+			# now add the new user to the current Group
+			Do ilMembershipHistory.$add()
+			Calculate ilMembershipHistory.$line as ilMembershipHistory.$linecount
+			Do ilMembershipHistory.$assignrow(irCurrentRecord)
+			
+			Do method FetchRecords
+			Do ilMembershipHistory.$search($ref.MB_SEQ=irCurrentRecord.MB_SEQ,1,0,0,0)
+			
+			Calculate icMode as ''
+		Else
+			# Calculate icMode as '' ## remain in insert mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='EM' ## edit user
+	Do irCurrentRecord.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+	Else
+		Do irCurrentRecord.$update() Returns lbOK
+		If lbOK
+			Calculate ilMembershipHistory.[ilMembershipHistory.$line] as irCurrentRecord
+			Calculate icMode as ''
+		Else
+			# Calculate icMode as '' ## remain in edit mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+End If
+
+Do $cinst.$behaviour()

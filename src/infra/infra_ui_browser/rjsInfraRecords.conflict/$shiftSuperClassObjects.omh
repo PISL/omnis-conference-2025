@@ -1,0 +1,13 @@
+If pnRecNavTop<>0
+	Calculate $cinst.$objs.ppRecordNavigation.$top as pnRecNavTop
+End If
+If pnRecNavHeight<>0
+	Calculate $cinst.$objs.ppRecordNavigation.$height as pnRecNavHeight
+End If
+
+If pnDisplayMessageTop<>0
+	Calculate $cinst.$objs.icDisplayMessage.$top as pnDisplayMessageTop
+End If
+If pnDisplayMessageHeight<>0
+	Calculate $cinst.$objs.icDisplayMessage.$height as pnDisplayMessageHeight
+End If

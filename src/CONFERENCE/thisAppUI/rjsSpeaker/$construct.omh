@@ -5,7 +5,7 @@ Do inherited
 Do method setTabColours
 
 Do $DefineList(ilDisplayRecords,'tDelegates')
-Do ilDisplayRecords.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SPEAKER_BIO,PSN_IMAGE_LINK")
+Do ilDisplayRecords.$AddLinkedCols("PSN_SEQ,PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SPEAKER_BIO,PSN_IMAGE_LINK")
 Do ilDisplayRecords.$cols.$add('SortName',kCharacter,kSimplechar,100)
 Do ilDisplayRecords.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
 Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
@@ -16,7 +16,10 @@ Calculate irCurrentRecord as ilDisplayRecords
 Do $DefineList(ilTopics,'tTopics')
 Do ilTopics.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SEQ",kTrue)
 Do ilTopics.$AddLinkedCols("TPF_SEQ,TPF_CF_REF,TPF_TPC_REF,TPF_STATUS",kTrue)
+Do ilTopics.$addDisplayName()
 Do ilTopics.$cols.$add('checked',kBoolean)
+Calculate irTopic as ilTopics
+Calculate irTopicOrig as irTopic
 
 Do ioTopicConference.$init(#NULL,#NULL,irLinkConference)
 
@@ -25,6 +28,9 @@ Do ilArrangements.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY',kTrue)
 Do ilArrangements.$AddLinkedCols('TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS,TPC_COMMENT,TPC_REQUESTS')
 Do ilArrangements.$addDisplayName()
 # Do ilArrangements.$cols.$findname('DisplayName') Returns liColRef
+
+Do $DefineList(irPerson,'tPerson')
+Calculate irPersonOrig as irPerson
 
 Do toValues.$initInherited('URL') Returns llUrlOptions
 
@@ -46,6 +52,7 @@ End If
 
 Do method fetchSearch1List ## Conferences  ilSearch1  line 1 current
 # Do method fetchSearch2List
+Calculate irConference as ilSearch1
 
 Do method fetchDisplayList
 
@@ -58,6 +65,9 @@ Do method UserPermissions
 
 Do $DefineList(ilHistory,'tTopicPersonLink')
 Do $DefineList(ilTopicDetail,'tArrangements')
+
+Do toValues.$initInherited('FORM_SESS_BACK') Returns ilColoursBackground
+Do toValues.$initInherited('FORM_SESS_TEXT') Returns ilColoursText
 
 If ilDisplayRecords.$linecount
 	Calculate ilDisplayRecords.$line as 1

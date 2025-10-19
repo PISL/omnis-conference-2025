@@ -1,0 +1,14 @@
+If isclear(pList.C2)
+	# There is no superclass - this is presumably tMaster
+	Calculate lbFetchMaxValue as kFalse
+Else If pos('super',low(pList.C1))>0
+	Calculate lbFetchMaxValue as kFalse
+Else If pos('tMaster',pList.C2)>0
+	Calculate lbFetchMaxValue as kTrue
+Else If pos('super',low(pList.C2))>0
+	Calculate lbFetchMaxValue as kFalse
+Else
+	Calculate lbFetchMaxValue as kTrue
+End If
+
+Quit method lbFetchMaxValue

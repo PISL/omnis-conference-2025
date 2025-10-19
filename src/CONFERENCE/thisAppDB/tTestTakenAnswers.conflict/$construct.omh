@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TTA_'
+Calculate icPrimarykey as 'TTA_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TTA_TTK_REF' ## also TTA_TSQ_REF
+
+Do inherited

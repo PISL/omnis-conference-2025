@@ -1,0 +1,38 @@
+Calculate lnDevice as $cdevice.$ident ## store current print destination
+If pnPrintDestination=0|pnPrintDestination=1
+	If ibPrintAsPDF
+		Do $cdevice.$assign(kDevOmnisPDF) Returns #F
+		Do $root.$cdevice.$assign($root.$devices.PDF) Returns #F
+		If flag false
+			Breakpoint
+			# OK message PDF Device Error {Report cancelled}
+			Quit method
+		End If
+		
+		Calculate ibFileTechnique as kFalse
+		If ibFileTechnique
+			Do Omnis PDF Device.$settemp(kTrue,1) Returns lID
+		Else
+			Calculate lcFileName as con('report_',#CT,'.pdf')
+			Calculate lcTempFolder as "/tmp/" ## HFS to posix
+			Calculate icFilePath as con(lcTempFolder,lcFileName)
+			Do $root.$prefs.$reportfile.$assign(icFilePath) Returns #F
+			Do Omnis PDF Device.$settemp(kFalse) Returns lID ## kFalse = use $reportfile to set where pdf prints
+		End If
+		Do Omnis PDF Device.$setdocinfo(iAuthor,iTitle,iSubject) Returns #F
+	Else
+		If lnDevice=kDevPrinter
+			# do nothing
+		Else If lnDevice=kDevPreview
+			Send to page preview (Do not wait for user) plDisplayList.reportName,/10/20/850/1000
+		Else If lnDevice=kDevScreen
+			Send to screen OBSOLETE COMMAND (Do not wait for user) plDisplayList.reportName,/10/20/850/1000
+		Else
+			Send to screen OBSOLETE COMMAND (Do not wait for user) plDisplayList.reportName,/10/20/850/1000
+		End If
+	End If
+Else If pnPrintDestination=2 ## output to text
+	Do $cdevice.$assign(kDevMemory) Returns #F
+End If
+
+Quit method lnDevice

@@ -1,0 +1,36 @@
+{
+	"ident": 1011,
+	"order": 16390,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(238,238,238,255)",
+		"backpattern": 1,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "wpText",
+		"font": 6,
+		"fontsize": 11,
+		"fontstyle": "kBold",
+		"forecolor": "RGBA(192,192,192,255)",
+		"height": 17,
+		"left": 16,
+		"linestyle": 1,
+		"objlink": 8,
+		"text": {
+			"type": 14,
+			"calc": "Password:"
+		},
+		"textcolor": "RGB(0,0,128)",
+		"top": 48,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 64
+	}
+}

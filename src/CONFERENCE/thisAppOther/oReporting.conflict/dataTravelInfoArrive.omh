@@ -1,0 +1,48 @@
+Do irOtherValues.$cols.$add('travelLinksSent',kInteger,k32bitint)
+Do irOtherValues.$cols.$add('delegateCount',kInteger,k32bitint)
+Do irOtherValues.$cols.$add('travelLinksSentPercent',kNumber,k0dp)
+Do irOtherValues.$cols.$add('travelResponsesPercent',kNumber,k0dp)
+
+Do $DefineList(lrStats,'tDelegates')
+Do lrStats.$countTravelLinksSent(prConference.CF_SEQ) Returns irOtherValues.travelLinksSent
+Do lrStats.$delegateCount(prConference.CF_SEQ,''," DG_STATUS <> '' ") Returns irOtherValues.delegateCount
+If irOtherValues.delegateCount<>0
+	Calculate irOtherValues.travelLinksSentPercent as irOtherValues.travelLinksSent/irOtherValues.delegateCount*100
+End If
+
+Do $DefineList(ilData,'tTravelPlans')
+Do ilData.$addLinkedCols('DG_GROUP,DG_STATUS,DG_ROOM_ASSIGNMENT,DG_CF_REF') Returns #F ## DG_CF_REF required for $fetch_fk to work
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY') Returns #F
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+# Do ilData.$fetch_fk(prConference.CF_SEQ,'DG_CF_REF','TP_SHUTTLE > 0')
+Do ilData.$fetch_fk(prConference.CF_SEQ,'DG_CF_REF'," DG_STATUS <> 'CANCEL' ")
+Do ilData.$cols.$add('SortDate',kDate,kDate2000)
+Do ilData.$cols.$add('SortTime',kDate,kTime)
+
+While $Loop(ilData)
+	If ilData.TP_SHUTTLE=2 ## local pickup
+		Calculate ilData.SortDate as ilData.TP_ARR_DATE ## we need a local arrival date
+		Calculate ilData.SortTime as ilData.TP_LOCAL_ARR_TIME
+	Else If ilData.TP_SHUTTLE=1 ## international pickup
+		Calculate ilData.SortDate as ilData.TP_ARR_DATE
+		Calculate ilData.SortTime as ilData.TP_ARR_TIME
+	Else ## no pickup
+		Calculate ilData.SortDate as ilData.TP_ARR_DATE
+		Calculate ilData.SortTime as #NULL
+	End If
+End While
+
+If irOtherValues.travelLinksSent<>0
+	Calculate irOtherValues.travelResponsesPercent as ilData.$linecount/irOtherValues.travelLinksSent*100
+End If
+
+If ilData.$linecount=0
+	Do ilData.$add()
+	Calculate ilData.$line as ilData.$linecount
+	Calculate ilData.DisplayName as 'no travel information provided'
+Else
+	Do ilData.$sort($ref.TP_SHUTTLE,0,$ref.SortDate,0,$ref.SortTime,0,$ref.TP_LOCAL_ARR_WHERE,0,$ref.TP_ARR_POINT,0,$ref.SortName,0)
+End If

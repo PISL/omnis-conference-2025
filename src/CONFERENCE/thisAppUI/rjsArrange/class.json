@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 948,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 1088,
 	"superclass": "infra.rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1103,
+	"nextident": 1111,
 	"lastgroupident": 0,
 	"cvardefs": [
 		{
@@ -66,12 +66,33 @@
 			"initval": "'Omnis Software'"
 		},
 		{
+			"name": "ibDragArrangementsOrTopics",
+			"order": 45,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
 			"name": "ibUserHasSemaphore",
 			"order": 8,
 			"type": "kBoolean",
 			"subtype": 0,
 			"sublen": 0,
 			"initval": "kFalse"
+		},
+		{
+			"name": "icDraggedFrom",
+			"order": 43,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 30
+		},
+		{
+			"name": "icPastedTextForBulkArrangements",
+			"order": 16,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
 		},
 		{
 			"name": "ilAttendees",
@@ -193,6 +214,13 @@
 			"sublen": 0
 		},
 		{
+			"name": "ilFacilitiesToDrag",
+			"order": 44,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
 			"name": "ilFacilityAssign",
 			"order": 14,
 			"type": "kList",
@@ -258,6 +286,13 @@
 		{
 			"name": "ilTopics",
 			"order": 10,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilTopicsToDrag",
+			"order": 23,
 			"type": "kList",
 			"subtype": "",
 			"sublen": 0
@@ -380,7 +415,7 @@
 		"layouttype": "kLayoutTypeResponsive",
 		"left": 182,
 		"menulineheight": 0,
-		"moddate": "2025-05-12 10:22:02",
+		"moddate": "2025-09-10 14:52:04",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -391,7 +426,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 108,
+		"top": 13,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "",

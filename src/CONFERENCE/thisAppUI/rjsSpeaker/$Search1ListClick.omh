@@ -9,5 +9,6 @@ Calculate ilDisplayRecords.$line as 1
 Do method $displayListClick
 
 Calculate trCurrentConference as ilSearch1
+Calculate irConference as ilSearch1
 
 Do $cinst.$behaviour

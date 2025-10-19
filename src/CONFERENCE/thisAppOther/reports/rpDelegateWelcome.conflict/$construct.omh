@@ -1,0 +1,40 @@
+
+Do inherited
+
+# Enter your initialization code here
+Do toValues.$initOrg('URL','SESSIONS') Returns irSessionURL
+
+Calculate irConference as prConference
+
+# Calculate icReportTitle as con('Welcome letter to delegates',' - ',irConference.CF_TITLE)
+# Calculate icReportSubTitle as ''
+
+Do $DefineList($cinst.ilData,'tDelegates')
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY')
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilData.$fetchForConference(irConference.CF_SEQ,," DG_STATUS <> 'CANCEL' and PSN_SEX <> 'O' ")
+
+Do ilData.$cols.$add('Country',kCharacter,kSimplechar,50)
+
+If prConference.CF_LOGO_RFO_VALUE<>''
+	Do toValues.$initOrg('IMAGES',prConference.CF_LOGO_RFO_VALUE) Returns irLogoConference
+Else
+	Do toValues.$initOrg('IMAGES','LOGO_EO2015_JPG') Returns irLogoConference
+End If
+Do toValues.$initOrg('IMAGES','LOGO_INV_JPEG') Returns irLogoCompany
+# Calculate lcType as pictformat(irLogoCompany.RFO_BIN)
+# Calculate lbinTemp as irLogoCompany.RFO_BIN
+# Calculate irLogoCompany.RFO_BIN as pictconvto(#NULL,lbinTemp,'JPEG')
+
+Do ilData.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0)
+
+# now convert ilPreparation to ilData
+
+# and now the printing loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

@@ -1,0 +1,6 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Do method DateShift (1)
+	Do method FetchData
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

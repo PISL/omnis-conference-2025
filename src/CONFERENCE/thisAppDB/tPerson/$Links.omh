@@ -11,5 +11,8 @@ Do llLinks.$cols.$add('TALIAS',kCharacter,kSimplechar,100) ## table alias for FT
 
 # there are no links to this table
 Do llLinks.$add($cinst.$servertablenames(),lrGroupOrg.$servertablenames(),'psn_go_ref=go_seq',1,1)
+Do llLinks.$add($cinst.$servertablenames(),lrDelegate.$servertablenames(),'psn_seq=dg_psn_ref',1,1)
+Do llLinks.$add($cinst.$servertablenames(),lrTopic.$servertablenames(),'psn_seq=tpp_psn_ref,tpp_tpc_ref=tpc_seq',2,1)
+Do llLinks.$add($cinst.$servertablenames(),lrConference.$servertablenames(),'psn_seq=dg_psn_ref,dg_cf_ref=cf_seq',2,1)
 
 Quit method llLinks

@@ -1,0 +1,48 @@
+{
+	"classtype": "kTable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 3,
+	"superclass": "infra.tMaster",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "___ROW1",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW2",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2019-11-05 13:24:56",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2019-11-06 16:04:42",
+		"showascheckedout": false,
+		"sqlclassname": "sCountryCurrencyLinks",
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

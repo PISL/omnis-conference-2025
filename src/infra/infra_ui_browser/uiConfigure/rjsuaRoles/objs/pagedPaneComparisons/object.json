@@ -35,6 +35,8 @@
 		"objlink": 196615,
 		"pagecount": 2,
 		"preventlayoutanimation": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"scrolltochangepage": false,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",

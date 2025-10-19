@@ -1,0 +1,11 @@
+If inDisplaySessionText=0
+	Calculate icSessionInfo as ilArrangements.TPC_ABSTRACT
+Else If inDisplaySessionText=1
+	If ilArrangements.TPC_DESC<>''
+		Calculate icSessionInfo as ilArrangements.TPC_DESC
+	Else
+		Calculate icSessionInfo as con('No description provided.  abstract:',kCr,ilArrangements.TPC_ABSTRACT)
+	End If
+Else If inDisplaySessionText=2
+	Calculate icSessionInfo as ilArrangements.PSN_SPEAKER_BIO
+End If

@@ -1,0 +1,6 @@
+Calculate icPrefix as 'PY_'
+Calculate icPrimarykey as 'PY_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'PY_DG_REF'
+
+Do inherited

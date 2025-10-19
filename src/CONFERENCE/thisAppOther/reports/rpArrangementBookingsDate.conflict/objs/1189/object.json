@@ -1,0 +1,58 @@
+{
+	"ident": 1189,
+	"order": 10,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+			"type": [
+				{
+					"name": "group",
+					"order": 1,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "iconid",
+					"order": 2,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "default",
+					"order": 3,
+					"type": "kBoolean",
+					"subtype": 0,
+					"sublen": 0
+				}
+			],
+			"data": {
+				"group": "Labels",
+				"iconid": "labelobject1+16x16",
+				"default": false
+			}
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "",
+		"floating": false,
+		"font": 4,
+		"fontextra": 0,
+		"fontsize": 9,
+		"fontstyle": "kPlain",
+		"height": 0.457,
+		"left": 5.08,
+		"lineno": 9,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "===========",
+		"textcolor": "kColorUser8",
+		"userinfo": "",
+		"visible": true,
+		"width": 1.547
+	}
+}

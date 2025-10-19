@@ -1,0 +1,77 @@
+# all remote forms using this task must do their own uaLogAccess insert as this will diable rtBusinessApp from doing it
+Calculate ibFormLogsAccess as kTrue
+
+Calculate tWebParameters as prParams
+Do inherited
+
+# Enter your initialization code here
+Do $DefineList(trCurrUser,'infra.tuaUsers')
+Do $DefineList(llGroupOrgs,'infra.tentGroupOrganisations')
+Do llGroupOrgs.$fetch_all()
+
+If tWebParameters.param1<>''
+	Calculate lcSearchCompany as tWebParameters.param1
+Else
+	Calculate lcSearchCompany as 'OmnisWorld' ## GO_NAME_SHORT
+End If
+
+Do llGroupOrgs.$search(upp($ref.GO_NAME_SHORT)=upp(lcSearchCompany),1,0,0,0) Returns lbFound
+If lbFound
+	Calculate trGroupOrg as llGroupOrgs
+Else
+	Breakpoint
+End If
+
+Do trCurrUser.$fetchOnNameAndPW('online','anythinggoes')
+If trCurrUser.USR_SEQ>0
+	# good
+Else
+	Breakpoint
+End If
+
+# to test language translations, set the value here
+# !!! reconcile tk v. tConstants - across all libraries
+Do tConstants.$cols.$findname('LanguageCode') Returns liColRef
+If liColRef
+	# column already exists
+Else
+	Do tConstants.$cols.$add('LanguageCode',kCharacter,kSimplechar,10)
+End If
+Calculate tConstants.LanguageCode as prParams.ClientLocale ## locale from users browser
+Calculate tConstants.LanguageCode as 'en_gb' ## we are presenting in english only
+# Calculate tk.LanguageCode as 'de_de'
+# Calculate tk.LanguageCode as 'sv'
+# Calculate tk.LanguageCode as 'ca_es'
+# Calculate tk.LanguageCode as 'es_es'
+# Calculate tk.LanguageCode as 'nl_nl'
+# Calculate tk.LanguageCode as 'zh_cn'
+
+# Do method $OpenStringTable ('schemas') ## already open
+# Do tstbSchemas.$tablename.$assign('schemas') Returns lbOK
+# Do tstbSchemas.$columnname.$assign(tConstants.LanguageCode) Returns lbOK
+# Do method $OpenStringTable ('labels') ## already open
+# Do tstbLabels.$tablename.$assign('labels') Returns lbOK
+# Do tstbLabels.$columnname.$assign(tConstants.LanguageCode) Returns lbOK
+# Do method $OpenStringTable ('messages') ## already open
+# Do tstbMessages.$tablename.$assign('messages') Returns lbOK
+# Do tstbMessages.$columnname.$assign(tConstants.LanguageCode) Returns lbOK
+
+Do $DefineList(tlOpenConferences,'CONFERENCE.tConference')
+Do tlOpenConferences.$fetchIncompleteWithVenue()
+If tlOpenConferences.$linecount=0
+	# belt n braces code during development
+	Do tlOpenConferences.$fetch_all()
+End If
+Do tlOpenConferences.$sort($ref.CF_DATE_FROM,1)
+Calculate tlOpenConferences.$line as 1
+
+Do toValues.$initInherited('SERVER','TIMEOUT_REG') Returns lrReference
+If lrReference.RFO_INT>0
+	Calculate $cinst.$timeout as lrReference.RFO_INT
+Else
+	# this will eventually die out
+	Do toValues.$initLocal('SERVER','TIMEOUT') Returns lrReference
+	If lrReference.RFL_INT>0
+		Calculate $cinst.$timeout as lrReference.RFL_INT
+	End If
+End If

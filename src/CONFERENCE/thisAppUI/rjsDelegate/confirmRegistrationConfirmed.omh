@@ -1,0 +1,5 @@
+If isclear(irCurrentRecord.DG_REGN_CONFIRMED)
+	Do $cinst.$clientNoYesMsg('Proceed to send confirmation of registration email?','CONFIRM ACTION','$sendEmailRegnConf')
+Else
+	Do $cinst.$clientNoYesMsg(con('Proceed to send confirmation of registration email, even though it was sent earlier on ',irCurrentRecord.DG_REGN_CONFIRMED,'?'),'CONFIRM ACTION','$sendEmailRegnConf')
+End If

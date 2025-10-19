@@ -1,0 +1,75 @@
+Calculate idtEmailError as #NULL
+Do irEmailError.$clear()
+Do ilAsyncEmailQueue.$clear()
+
+Calculate $cinst.$objs.irEmailError_ErrorCode.$visible as kFalse
+Calculate $cinst.$objs.irEmailError_errorinfo.$visible as kFalse
+Calculate $cinst.$objs.irEmailError_log.$visible as kFalse
+Calculate $cinst.$objs.irEmailError_timestamp.$visible as kFalse
+
+Calculate $cinst.$objs.ilAsyncEmailQueue.$visible as kFalse
+
+
+Do ilTestCriteriaToBeProvided.$search($ref.fieldname='ELC_TO',1,0,0,0) Returns lbFound
+If lbFound
+	Do ioNewOw3SendEmail.$primeConfig(irCurrentRecord.ELC_CODE,ilTestCriteriaToBeProvided.value) Returns lbOK
+	Calculate lcSendToAddress as ilTestCriteriaToBeProvided.value
+	
+Else
+	Breakpoint
+End If
+If lbOK
+	# irEmailConfig does not represent what is going inside the worker object.
+	# It is only a copy of the config record on the db.  e.g. the email addressees are contained within a list within the worker object.
+	# This is here for debugging only.
+	Calculate irEmailConfig as ioNewOw3SendEmail.irConfigEmail
+	
+	# Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord)) Returns lbOK
+	# If lbOK
+	# no need to attach a .ics file for the event
+	# Do ioNewOw3SendEmail.$getCalendarStructure() Returns lrCalendar
+	
+	# Do ioNewOw3SendEmail.$attachFileBinary(lbinContentPDF,con('OmnisWorld_invoice_',irCurrentRecord.DG_SEQ,'.pdf'),'application/pdf','','base64','attachment') Returns lbOK
+	# If lbOK
+	Do ioNewOw3SendEmail.$setCallback($cinst,'$emailSuccess','$emailSendError',irCurrentRecord) Returns lbOK
+	If lbOK
+		Do ioNewOw3SendEmail.$initialise() Returns lbOK
+		If lbOK
+			# fire the worker off
+			# Calculate lbRunOnCurrentThread as kFalse
+			If pnHereOrWorkerOrAsync=0
+				# run on this thread - synchronous
+				Do ioNewOw3SendEmail.$start() Returns lbOK
+				
+			Else If pnHereOrWorkerOrAsync=1
+				# run on other thread - asynchronous with result
+				Do ioNewOw3SendEmail.$run() Returns lbOK
+				
+			Else If pnHereOrWorkerOrAsync=2
+				# send to database for pick up from other service - asynchronous and no result
+				# For this to work there must be a reference record
+				Do $SendEmail(lcSendToAddress,ilLanguages.ELT_SUBJECT,ilLanguages.ELT_MSG_TEXT,#NULL,#NULL,#NULL,#NULL,#NULL,trGroupOrg,irCurrentRecord.ELC_SENDER_ADDR,irCurrentRecord.ELC_SENDER_NAME,'DEFAULT',#NULL) Returns lcStatus
+				If lcStatus=''
+					# display the async email queue
+					Do ilAsyncEmailQueue.$fetch_all()
+					
+					Calculate $cinst.$objs.ilAsyncEmailQueue.$visible as kTrue
+					
+				End If
+			End If
+		End If
+	End If
+	# End If
+	# End If
+	
+	If not(lbOK)
+		If ioNewOw3SendEmail.icErrors<>''
+			# show user what went wrong
+			Breakpoint
+			Calculate icDisplayMessage as ioNewOw3SendEmail.icErrors
+		End If
+	End If
+	
+Else
+	Breakpoint
+End If

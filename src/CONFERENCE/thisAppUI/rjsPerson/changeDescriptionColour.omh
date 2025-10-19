@@ -1,0 +1,12 @@
+# Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.TPC_DESC.$fieldstyle as ''
+
+# The values in TPC_BACKCOLOUR and TPC_TEXTCOLOUR are HEX values used in the display of sessions
+# In order to display an example here the HEX (2B3FA6) needs to be converted to rgb(()
+Calculate lnColourText as hexcolor(irTopic.TPC_TEXTCOLOR)
+Calculate lnColourBackground as hexcolor(irTopic.TPC_BACKCOLOR)
+
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.label_TPC_BACKCOLOR.$backcolor as lnColourBackground
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.label_TPC_BACKCOLOR.$textcolor as lnColourText
+
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.label_TPC_TEXTCOLOR.$backcolor as lnColourBackground
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.label_TPC_TEXTCOLOR.$textcolor as lnColourText

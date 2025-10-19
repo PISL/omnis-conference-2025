@@ -1,0 +1,32 @@
+[
+	{
+		"name": "$print",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "pData",
+				"order": 1,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcSuffix",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 2
+			},
+			{
+				"name": "lnColCount",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			}
+		]
+	}
+]

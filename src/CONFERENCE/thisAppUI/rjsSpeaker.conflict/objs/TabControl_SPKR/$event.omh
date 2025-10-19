@@ -1,0 +1,8 @@
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	
+	If inCurrentTab=cnTabTopics
+		Do method FetchAndPresentTopics
+	End If
+	
+	Do $cinst.$behaviour

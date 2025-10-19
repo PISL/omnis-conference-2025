@@ -1,0 +1,7 @@
+Do method populateGraph
+If ilData.groupCol='DG_REG_MO'
+	Calculate ilData.groupCol as 'Registration Month'
+Else
+	Calculate ilData.groupCol as cap(mid(ilData.groupCol,pos('_',ilData.groupCol)+1,99))
+End If
+Do default

@@ -1,0 +1,12 @@
+On evClick
+	Calculate lcMode as icMode
+	
+	Do irCurrentRecord.$clear()
+	Calculate ilUOM_GROUP.$line as 0
+	Calculate icDisplayMessage as ''
+	Calculate icMode as ''
+	
+	If lcMode="I"
+		Calculate ilDisplayRecords.$line as 1
+	End If
+	Do $cinst.$displayListClick()

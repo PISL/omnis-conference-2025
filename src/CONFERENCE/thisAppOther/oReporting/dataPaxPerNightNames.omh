@@ -1,0 +1,58 @@
+# this report used to be based on PAX only
+# but it was too easy to lose awareness of a delegate that had not paid in full
+
+# So now the report is based on DG table with outer join to PAX
+
+# Do $DefineList(ilData,'tDelegates')
+# Do ilData.$addLinkedCols('PSN_SEQ,PSN_FIRST_NAME,PSN_SURNAME')
+# Do ilData.$addDisplayName()
+
+Calculate ilData as ''
+Do ilData.$cols.$add('date',kDate,kDate2000)
+Do ilData.$cols.$add('DG_SEQ',kInteger,k32bitint)
+Do ilData.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('sameRoom',kBoolean)
+Do ilData.$cols.$add('Surname',kCharacter,kSimplechar,20)
+
+Do $DefineList(lrDelegate,'tDelegates')
+Do lrDelegate.$reportPaxForConference(prConference.CF_SEQ," DG_STATUS <> 'CANCEL' ") Returns llPAX
+
+While $Loop(llPAX)
+	# One could assume the DG PAX record would come before SPOUSE record but this isn't the case.
+	
+	Calculate lcDisplayName as con(llPAX.PSN_SURNAME,', ',llPAX.PSN_FIRST_NAME)
+	
+	If pos(llPAX.PX_ROLE,'SPOUSE')|pos(llPAX.PX_ROLE,'FAMILY')
+		If llPAX.PX_NAME<>''
+			Calculate lcDisplayName as con(llPAX.PSN_SURNAME,', ',llPAX.PX_NAME)
+			
+		Else If llPAX.PSN_SPOUSE_NAME<>''
+			Calculate lcDisplayName as con(llPAX.PSN_SURNAME,', ',llPAX.PSN_SPOUSE_NAME)
+			
+		Else
+			# Breakpoint This shouldn't happen.  It *did* happen when Caroline Mulrony attended, paying as a spouse but attending conference.
+			Calculate lcDisplayName as con(llPAX.PSN_SURNAME,', ?',llPAX.PSN_FIRST_NAME,'?')
+			
+		End If
+	Else If llPAX.PX_ROLE='DG'
+		# the first named in a Delegate/Spouse pair
+		Calculate lcDisplayName as con(llPAX.PSN_SURNAME,', ',llPAX.PSN_FIRST_NAME)
+	End If
+	
+	Calculate lbSameRoom as kFalse
+	
+	If llPAX.DG_SEQ=llPAX.[llPAX.$line+1].DG_SEQ
+		Calculate lbSameRoom as kTrue
+	Else If llPAX.$line>1&llPAX.DG_SEQ=llPAX.[llPAX.$line-1].DG_SEQ
+		Calculate lbSameRoom as kTrue
+	End If
+	
+	For lnNight from 0 to 6 step 1
+		If llPAX.PX_[lnNight]_NIGHT
+			Calculate ldDate as dadd(kDay,lnNight,prConference.CF_DATE_FROM)
+			Do ilData.$add(ldDate,llPAX.DG_SEQ,lcDisplayName,lbSameRoom,llPAX.PSN_SURNAME)
+		End If
+	End For
+End While
+
+Do ilData.$sort($ref.date,0,$ref.Surname,0,$ref.DG_SEQ,0)

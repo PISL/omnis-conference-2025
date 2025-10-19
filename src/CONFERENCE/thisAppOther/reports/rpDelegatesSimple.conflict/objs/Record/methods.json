@@ -1,0 +1,25 @@
+[
+	{
+		"name": "$print",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "pData",
+				"order": 2,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcString",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			}
+		]
+	}
+]

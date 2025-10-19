@@ -1,0 +1,28 @@
+Do $DefineList(llConferences,'CONFERENCE.tConference')
+# Do ilSearch1.$fetch_all() ## invalid for sysReferenceOrg
+Do llConferences.$fetch_all()
+Do llConferences.$sort($ref.CF_DATE_FROM,1) ## most recent events at top of list
+Calculate ilSearch1 as llConferences
+
+Calculate lnCFref as 0
+If ilSearch1.$linecount>0
+	If trCurrentConference.$colcount ## avoid notation error
+		If trCurrentConference.CF_SEQ>0
+			# user driven current conference takes precedence
+			Calculate lnCFref as trCurrentConference.CF_SEQ
+		End If
+	End If
+	If lnCFref=0&tlOpenConferences.$line>0
+		# oldest open conference comes next
+		Calculate lnCFref as tlOpenConferences.CF_SEQ
+	End If
+	
+	If lnCFref>0
+		Do ilSearch1.$search($ref.CF_SEQ=lnCFref,1,0,0,0)
+	Else
+		# finally first one in list - the latest conference
+		Calculate ilSearch1.$line as 1
+	End If
+End If
+
+Calculate ibActiveConference as #D<=ilSearch1.CF_ADMIN_DATE_TO

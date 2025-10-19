@@ -1,0 +1,5 @@
+If isclear(ilData.TP_CONNECT_HOW)&isclear(ilData.TP_LOCAL_ARR_TIME)&isclear(ilData.TP_LOCAL_ARR_WHERE)
+	# nothing to report within this section ## so suppress
+Else
+	Do default
+End If

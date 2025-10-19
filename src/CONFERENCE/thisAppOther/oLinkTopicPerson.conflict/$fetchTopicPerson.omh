@@ -1,0 +1,36 @@
+# Do ilJoinedFetch.$clear()
+
+Do irLinkRecord.$clear()
+Calculate irLinkRecord.TPP_TPC_REF as pnTPC_SEQ
+Calculate irLinkRecord.TPP_PSN_REF as pnPSN_SEQ
+Do irLinkRecord.$fetch_ck(pnPSN_SEQ,pnTPC_SEQ)
+# Calculate ilOrigJoinedFetch as ilJoinedFetch
+If irLinkRecord.TPP_SEQ>0
+	# Calculate ilJoinedFetch.$line as 1
+	
+	# Do irLinkRecord.$clear()
+	# Do irLinkRecord.$fetch_fk(pnPSN_SEQ,'TPP_PSN_REF')
+	# Do irLinkRecord.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigLinkRecord as irLinkRecord
+	
+	Do irTopic.$clear()
+	Do irTopic.$fetch_pk(irLinkRecord.TPP_TPC_REF)
+	# Do irTopic.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigTopic as irTopic
+	
+	Do irPerson.$clear()
+	Do irPerson.$fetch_pk(irLinkRecord.TPP_PSN_REF)
+	# Do irPerson.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigPerson as irPerson
+	
+	# Do prTopic.$assignrow(irTopic) ## return result to calling object
+	Calculate prTopic as irTopic
+	# Do prPerson.$assignrow(irPerson)
+	Calculate prPerson as irPerson
+	# Do prLink.$assignrow(irLinkRecord) ## return result to calling object
+	Calculate prLink as irLinkRecord
+Else
+	# Breakpoint
+End If
+
+# Quit method ilJoinedFetch

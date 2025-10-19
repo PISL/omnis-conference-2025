@@ -1,8 +1,16 @@
 Calculate $cinst.$objs.PagedPane.$objs.ilTopics.$errortext as ''
 Calculate $cinst.icDisplayMessage as ''
 Calculate irCurrentRecord as ilDisplayRecords
+# There is a little bit of memory shenanigans going on here.
+# ilDisplayRecords contains the visible PSN fields but we now support editing both Delegate and Person on the first tab of this form.
+# and the PSN fields are displayed using irPerson (in anticipation of editing Person record) not irCurrentRecord (this changed 2025-08-20 RSM)
+Do irPerson.$clear()
+Do irPerson.$assignrow(irCurrentRecord,kTrue)
+Do irPersonOrig.$clear() ## not relevant now; becomes relevant on Edit
+
 Do ilPastTopics.$clear()
 Do ilTopicSummary.$clear()
+Do irTopic.$clear()
 
 Do method DropLists
 
@@ -13,7 +21,10 @@ Do method DropLists
 # 2020-03-03 GRS changed this to highlight topics when a person is clicked
 If isclear(ilDisplayRecords.DG_SEQ)
 	# highlight this person's linked topics
-	Do ilTopics.$search($ref.PSN_SURNAME=ilDisplayRecords.PSN_SURNAME&$ref.PSN_FIRST_NAME=ilDisplayRecords.PSN_FIRST_NAME)
+	Do ilTopics.$search($ref.PSN_SURNAME=ilDisplayRecords.PSN_SURNAME&$ref.PSN_FIRST_NAME=ilDisplayRecords.PSN_FIRST_NAME) Returns lbFound
+	If lbFound
+		Calculate irTopic as ilTopics
+	End If
 Else
 	Do ilTopicDetail.$reportSpeakerSummary(irCurrentRecord.DG_PSN_REF) Returns ilPastTopics
 	Do ilPastTopics.$sort($ref.CF_DATE_FROM,1,$ref.CF_SEQ,0,$ref.TPC_TITLE,0)
@@ -29,11 +40,11 @@ Else
 	End While
 	
 	If inCurrentTab=cnTabDisplayPDF
-		Calculate inCurrentTab as cnTabDelegate
+		Calculate inCurrentTab as cnTabDGPerson
 		Do $cinst.$objs.PagedPane.$currentpage.$assign(inCurrentTab)
 	End If
 	
-	If inCurrentTab=cnTabTopics
+	If inCurrentTab=cnTabTopicsConf
 		Do method FetchAndPresentTopics (kTrue)
 	Else If inCurrentTab=cnTabHistory
 	End If
@@ -42,6 +53,7 @@ Else
 		Do method FetchAndPresentTopics
 		Do method TopicsToText
 	End If
+	
 End If
 
 Do $cinst.$behaviour()

@@ -1,0 +1,67 @@
+Do llData.$cols.$add(lrConference.CF_SEQ)
+Do llData.$cols.$add(lrConference.CF_TITLE)
+Do llData.$cols.$add(lrConference.CF_DATE_FROM)
+Do llData.$cols.$add(lrConference.CF_TITLE_CODE)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
+Do llData.$cols.$add(lrTopics.TPC_DESC)
+
+Do llData.$cols.$add($cinst.ARR_MAX_BOOKINGS)
+Do llData.$cols.$add('attended',kInteger,k32bitint)
+Do llData.$cols.$add('percent',kNumber,k0dp)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  CF_SEQ, CF_TITLE, CF_DATE_FROM, CF_TITLE_CODE
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC
+Sta:,  sum(ARR_MAX_BOOKINGS)
+Sta:, ( select count(*)
+Sta:from [lrAttendees.$servertablenames()]
+Sta:join [$cinst.$servertablenames()] on ARA_ARR_REF = ARR_SEQ
+Sta:where ARR_TPC_REF = TPC_SEQ and ARR_CF_REF = CF_SEQ
+Sta:)
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = ARR_CF_REF
+Sta:join [lrTopics.$servertablenames] on TPC_SEQ = ARR_TPC_REF
+If pnCF_SEQ<>0&pnPSN_SEQ<>0
+	# this neglects ARR_LEADER
+	Sta:where  ARR_PSN_REF = @[pnPSN_SEQ]
+	Sta:and      ARR_CF_REF = @[pnCF_SEQ]
+Else If pnPSN_SEQ<>0
+	# this neglects ARR_LEADER
+	Sta:where  ARR_PSN_REF = @[pnPSN_SEQ]
+Else If pnCF_SEQ<>0
+	Sta:where  ARR_CF_REF = @[pnCF_SEQ]
+Else
+	Sta:where  CF_GO_REF = @[trGroupOrg.GO_SEQ]
+Else
+	Breakpoint no parameters !
+End If
+Sta:group by CF_SEQ, CF_TITLE, CF_DATE_FROM, CF_TITLE_CODE
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.CF_DATE_FROM,1,$ref.CF_SEQ,0,$ref.TPC_TITLE,0)
+
+Calculate llData.$line as 0
+While $Loop(llData)
+	If llData.ARR_MAX_BOOKINGS<>0
+		Calculate llData.percent as llData.attended/llData.ARR_MAX_BOOKINGS*100
+	End If
+End While
+
+Quit method llData

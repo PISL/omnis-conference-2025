@@ -90,8 +90,8 @@
 			"visible": true
 		},
 		"667": {
-			"left": 280,
-			"top": 368,
+			"left": 336,
+			"top": 384,
 			"width": 30,
 			"height": 30,
 			"align": "kCenterJst",
@@ -102,7 +102,7 @@
 		},
 		"768": {
 			"left": 288,
-			"top": 368,
+			"top": 384,
 			"width": 30,
 			"height": 30,
 			"align": "kCenterJst",

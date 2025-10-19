@@ -1,0 +1,25 @@
+Calculate icDisplayMessage as ''
+# Calculate lcPrefix as $cinst.irCurrentRecord.icPrefix
+# Calculate lnKey as $cinst.irCurrentRecord.CRT_SEQ
+
+If inCurrentTab=cnTabCertificate|inCurrentTab=cnTabComments
+	If irUserRights.canEdit&irCurrentRecord.CRT_SEQ>0&icMode='' ## copied from $behaviour
+		Calculate icMode as 'EC' ## details
+	Else
+		Quit method
+	End If
+Else If inCurrentTab=cnTabAwardedTo
+	If irUserRights.canEdit&irAwardee.CSN_SEQ>0&icMode='' ## copied from $behaviour
+		Calculate icMode as 'EAW' ## awardee
+	Else
+		Quit method
+	End If
+End If
+
+# refresh record from db to ensure latest copy
+Do irCurrentRecord.$fetch_pk()
+Do irCurrentRecord.$DisplayName()
+Calculate irOriginalRecord as irCurrentRecord
+Do method DropLists
+
+Do $cinst.$behaviour()

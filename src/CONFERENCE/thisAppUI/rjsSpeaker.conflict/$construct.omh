@@ -1,0 +1,82 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+Do $DefineList(ilDisplayRecords,'tDelegates')
+Do ilDisplayRecords.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SPEAKER_BIO,PSN_IMAGE_LINK")
+Do ilDisplayRecords.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+
+Calculate irCurrentRecord as ilDisplayRecords
+
+Do $DefineList(ilTopics,'tTopics')
+Do ilTopics.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SEQ",kTrue)
+Do ilTopics.$AddLinkedCols("TPF_SEQ,TPF_CF_REF,TPF_TPC_REF,TPF_STATUS",kTrue)
+Do ilTopics.$cols.$add('checked',kBoolean)
+
+Do ioTopicConference.$init(#NULL,#NULL,irLinkConference)
+
+Do $DefineList(ilArrangements,'tArrangements')
+Do ilArrangements.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY',kTrue)
+Do ilArrangements.$AddLinkedCols('TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS,TPC_COMMENT,TPC_REQUESTS')
+Do ilArrangements.$addDisplayName()
+# Do ilArrangements.$cols.$findname('DisplayName') Returns liColRef
+
+Do toValues.$initInherited('URL') Returns llUrlOptions
+
+Calculate icImageHtmlPre as "<div><img src=" ## default
+Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_PRE',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icImageHtmlPre as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+Calculate icImageHtmlPost as "?w=1200&amp;ssl=1 </div>" ## default
+Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_POST',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icImageHtmlPost as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+Do method fetchSearch1List ## Conferences  ilSearch1  line 1 current
+# Do method fetchSearch2List
+
+Do method fetchDisplayList
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as con($cell(clLabels,'objName','SPKR_Heading','label'))
+Calculate icFormIntro as $cell(clLabels,'objName','SPKR_Intro','label')
+
+Do method UserPermissions
+
+Do $DefineList(ilHistory,'tTopicPersonLink')
+Do $DefineList(ilTopicDetail,'tArrangements')
+
+If ilDisplayRecords.$linecount
+	Calculate ilDisplayRecords.$line as 1
+	Do method $displayListClick
+End If
+
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE') ## ilSearch1
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_values','label'),'DisplayName') ## ilDisplayRecords
+Calculate ilNewPerson as ilDisplayRecords
+Do ilNewPerson.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilNewPerson.$listcolumn as liColRef.$ident
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_SPKR.$currenttab as inCurrentTab
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMenuID if this changes
+Do llMenuCommands.$add('''',1199) ## blank row
+Do llMenuCommands.$add('FACT_NOMTOP',1110) ## find all submitted topics for this years conference
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do $cinst.$behaviour()

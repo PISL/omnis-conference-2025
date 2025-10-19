@@ -1,0 +1,25 @@
+{
+	"ident": 1097,
+	"order": 10,
+	"objtype": "kLine",
+	"properties": {
+		"bordercolor": "RGBA(kColorUser9,255)",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"effect": "kBorderNone",
+		"fieldstyle": "",
+		"floating": true,
+		"height": 0.0,
+		"left": 0.371,
+		"lineno": 8,
+		"lineoffset": 0.175,
+		"linestyle": 1,
+		"printontop": false,
+		"userinfo": "",
+		"vertextend": false,
+		"width": 18.344
+	}
+}

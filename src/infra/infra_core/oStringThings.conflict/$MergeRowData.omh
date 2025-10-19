@@ -1,0 +1,112 @@
+# Calculate lcExpressionBegin as '^^'
+# Calculate lcExpressionEnd as '~~'
+Calculate lcExpressionBegin as '[%'
+Calculate lcExpressionEnd as '%]'
+
+If pbMultipleParses
+	# we need a list of components to re-construct the string
+	Do llUnresolved.$define(lnPosStart,lcBefore,lnPosEnd,lcCalculation)
+End If
+
+Calculate lcNewContent as ''
+Calculate lcTemp as pSource
+Calculate lnPosStart as pos(lcExpressionBegin,lcTemp)
+If lnPosStart>0
+	While lnPosStart
+		Calculate lbResolved as kTrue
+		
+		Calculate lcBefore as mid(lcTemp,1,lnPosStart-1)
+		Calculate lcTemp as mid(lcTemp,lnPosStart+2,kFetchAll)
+		Calculate lnPosEnd as pos(lcExpressionEnd,lcTemp)
+		# Calculate fMemDocs.MWFIELD as upp(mid(lcTemp,1,lnPosEnd-1))
+		Calculate lcCalculation as mid(lcTemp,1,lnPosEnd-1) ## if we convert to upper case, table prefixes get converted and Omnis cannot resolve
+		
+		# RSM 20-OCT-21  we have issue with multiple parses of email text with rows from different sources
+		# Test for valid calculation [lcCalculation]
+		Calculate lcTest as eval(lcCalculation)
+		Calculate lbResolved as not(isclear(lcTest))
+		# Test for valid calculation evalf(lcCalculation) ## #F
+		# Test for valid calculation eval(lcCalculation)
+		If pbMultipleParses&not(lbResolved)
+			# save the expression and position to re-construct for a subsequent parse
+			Do llUnresolved.$add(lnPosStart,lcBefore,lnPosEnd,lcCalculation)
+			Calculate lbResolved as kFalse
+		End If
+		
+		If len(lcNewContent)
+			If len(lcBefore)
+				If lbResolved
+					Calculate lcNewContent as con(lcNewContent,lcBefore,eval(lcCalculation))
+				Else
+					Calculate lcNewContent as con(lcNewContent,lcBefore,'@@@')
+				End If
+			Else
+				If lbResolved
+					Calculate lcNewContent as con(lcNewContent,eval(lcCalculation))
+				Else
+					Calculate lcNewContent as con(lcNewContent,'@@@')
+				End If
+			End If
+		Else
+			If len(lcBefore)
+				If lbResolved
+					Calculate lcNewContent as con(lcBefore,eval(lcCalculation))
+				Else
+					Calculate lcNewContent as con(lcBefore,'@@@')
+				End If
+			Else ## fMemCurrUser._CurrUserTeamPhone
+				If lbResolved
+					Calculate lcNewContent as eval(lcCalculation)
+				Else
+					Calculate lcNewContent as '@@@'
+				End If
+			End If
+		End If
+		Calculate lcTemp as mid(lcTemp,lnPosEnd+2,kFetchAll)
+		Calculate lnPosStart as pos(lcExpressionBegin,lcTemp)
+	End While
+	If lcTemp<>''
+		Calculate lcNewContent as con(lcNewContent,lcTemp)
+	End If
+	
+	If pbMultipleParses
+		Calculate lcTemp as lcNewContent
+		Calculate lcNewContent as ''
+		
+		Calculate lnPosStart as pos('@@@',lcTemp)
+		While lnPosStart
+			Calculate lnCountReconstruct as lnCountReconstruct+1
+			
+			Calculate lcBefore as mid(lcTemp,1,lnPosStart-1)
+			Calculate lcTemp as mid(lcTemp,lnPosStart+3,kFetchAll)
+			# Calculate lnPosEnd as lnPosStart+2
+			# Calculate fMemDocs.MWFIELD as upp(mid(lcTemp,1,lnPosEnd-1))
+			# Calculate lcCalculation as mid(lcTemp,1,lnPosEnd-1)
+			
+			If len(lcNewContent)
+				If len(lcBefore)
+					Calculate lcNewContent as con(lcNewContent,lcBefore,lcExpressionBegin,llUnresolved.[lnCountReconstruct].lcCalculation,lcExpressionEnd)
+				Else
+					Calculate lcNewContent as con(lcNewContent,lcExpressionBegin,llUnresolved.[lnCountReconstruct].lcCalculation,lcExpressionEnd)
+				End If
+			Else
+				If len(lcBefore)
+					Calculate lcNewContent as con(lcBefore,lcExpressionBegin,llUnresolved.[lnCountReconstruct].lcCalculation,lcExpressionEnd)
+				Else ## fMemCurrUser._CurrUserTeamPhone
+					Calculate lcNewContent as con(lcExpressionBegin,llUnresolved.[lnCountReconstruct].lcCalculation,lcExpressionEnd)
+				End If
+			End If
+			# Calculate lcTemp as mid(lcTemp,lnPosStart+3,kFetchAll)
+			
+			
+			Calculate lnPosStart as pos('@@@',lcTemp)
+		End While
+		If lcTemp<>''
+			Calculate lcNewContent as con(lcNewContent,lcTemp)
+		End If
+	End If
+Else
+	Calculate lcNewContent as pSource
+End If
+
+Quit method lcNewContent

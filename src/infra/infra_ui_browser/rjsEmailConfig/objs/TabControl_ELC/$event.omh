@@ -1,3 +1,34 @@
 On evTabSelected
-	Calculate inCurrentPane as pTabNumber
+	Calculate lnOldTab as inCurrentTab
+	Calculate inCurrentTab as pTabNumber
+	
+	If icMode='IM'|icMode='EM'
+		# This code ensures that when icMode is enabled on ELC, it excludes ELT pane
+		# and similarly if icMode is enabled on ELT, it excludes ELC panes.
+		If icMode=''
+			Calculate inCurrentTab as pTabNumber
+			If inCurrentTab=2
+				# moving into messages tab
+				Do $cinst.$clientcommand('openpush')
+			Else
+				If lnOldTab=2
+					# moving away from messages tab
+					Do $cinst.$clientcommand('closepush')
+				End If
+			End If
+		Else
+			# icMode has a value.  Deny certain actions
+			If lnOldTab=cnTabMessage
+				# remain on this tab
+				Calculate $cinst.$objs.TabControl_ELC.$currenttab as lnOldTab
+			Else
+				If lnOldTab<>2&pTabNumber=2
+					Calculate $cinst.$objs.TabControl_ELC.$currenttab as lnOldTab
+				Else
+					Calculate inCurrentTab as pTabNumber
+				End If
+			End If
+		End If
+	End If
+	
 	Do $cinst.$behaviour

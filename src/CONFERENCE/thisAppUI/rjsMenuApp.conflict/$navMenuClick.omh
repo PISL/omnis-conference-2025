@@ -1,0 +1,46 @@
+# this method will need reworking to "Execute on Client"
+# task variables tlNavParams and trCurrentForm not available on the client
+
+Calculate lnPrevID as left(icSubFormClass,pos(':',icSubFormClass)-1)
+Calculate lcPrevForm as mid(icSubFormClass,pos(':',icSubFormClass)+1)
+
+If pLineIdent=102|pLineIdent=103|pLineIdent=104 ## Dashboard
+	Quit method pLineIdent ## pass to the client
+Else If pLineIdent=-1
+	# then we are returning from the feedback form so set it to the previous value
+	Calculate pLineIdent as lnPrevID
+Else If pLineIdent>0&isclear(pLineTag)
+	# we need to find the previous form in tlAuthorisedForms
+	Do tlAuthorisedForms.$search($ref.menuIdent=pLineIdent,1,0,0,0)
+	Calculate pLineTag as tlAuthorisedForms.class
+End If
+
+If con(pLineIdent,':',pLineTag)=icSubFormClass&inCurrentPage=1
+	Quit event handler ## user has clicked on the current selection
+End If
+If pLineTag="infra.rjsDevFeedback"
+	Calculate inCurrentPage as 2
+	# Send to trace log {[icSubFormClass]}
+	Calculate $cinst.$objs.SubForm2.$classname as pLineTag
+Else
+	Calculate $cinst.inCurrentPage as 1
+	Calculate $cinst.$objs.SubForm2.$classname as "infra.rfBlank" ## destroy the rjsDevFeedback instance so it will reinstantiate next time it is called
+	If pLineTag=lcPrevForm&pLineIdent<>lnPrevID
+		# we are reopening the current form from a different menu item, eg. Suppliers to Customers
+		Calculate $cinst.$objs.SubForm.$classname as "infra.rfBlank" ## force the instance to close
+	End If
+	# check for parameters to pass to the new form
+	Do tlNavParams.$search($ref.ident=pLineIdent,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate trParameters as tlNavParams.params
+	Else
+		Calculate trParameters as #NULL
+	End If
+	Do $setCurrentForm('menuIdent',pLineIdent)
+	Calculate icSubFormClass as con(pLineIdent,':',pLineTag)
+	Calculate $cinst.$objs.SubForm.$classname as pLineTag
+	# $userinfo is used to pass parameters to the form's $init procedure
+	# in this case forms such as "change password" can use the lnPrevId to return the user to whence they came
+	Calculate $cinst.$objs.SubForm.$userinfo as lnPrevID
+End If
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentPage

@@ -44,6 +44,8 @@
 		"picturealign": "kPALtopLeft",
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"tile": false,

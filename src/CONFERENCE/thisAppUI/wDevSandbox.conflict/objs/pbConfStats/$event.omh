@@ -1,0 +1,6 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Breakpoint
+	
+	Do loReports.$devMethod()
+	Set report name rpStatsMultiEvent
+	Print report (#L1)

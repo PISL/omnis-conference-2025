@@ -43,25 +43,32 @@ If lbErrorDetected
 	Quit method kFalse
 End If
 
+Calculate lnLevel as 1
+
 # assumption here is level 1
 Calculate lcPart1 as mid(pcApplicationCode,1,pos('/',pcApplicationCode)-1)
 Calculate lcPart2 as mid(pcApplicationCode,pos('/',pcApplicationCode)+1,99)
-If pcEncoding<>''
-	If pcEncoding='base64'
-		Do OXML.$base64encode(prefBinary) Returns lcBinContentEncoded
-		Do ilMimeAppend.$add(1,lcPart1,lcPart2,pcFilename,lcBinContentEncoded,,pcCharset,pcEncoding,pcDisposition)
-	Else If pcEncoding='binary'
-		# same as no encoding below
-		Do ilMimeAppend.$add(1,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
-	Else
-		# Do iEncodingList.$add("quoted-printable")
-		# Do iEncodingList.$add("7bit")
-		# Do iEncodingList.$add("8bit")
-		Breakpoint
-	End If
-Else
-	Do ilMimeAppend.$add(1,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
-End If
+# If pcEncoding<>''
+# If pcEncoding='base64'
+# Do OXML.$base64encode(prefBinary) Returns lbinContentEncoded
+# Do ilMimeAppend.$add(lnLevel,lcPart1,lcPart2,pcFilename,,lbinContentEncoded,pcCharset,pcEncoding,pcDisposition)
+# Do not do the base64 encoding ourselves.  Omnis will take care of it for us by providing pcEncoding.
+# Do ilMimeAppend.$add(lnLevel,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
+
+# Else If pcEncoding='binary'
+# same as no encoding below
+# Do ilMimeAppend.$add(lnLevel,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
+
+# Else
+# Do iEncodingList.$add("quoted-printable")
+# Do iEncodingList.$add("7bit")
+# Do iEncodingList.$add("8bit")
+# Breakpoint
+# End If
+# Else
+# Do ilMimeAppend.$add(lnLevel,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
+# End If
+Do ilMimeAppend.$add(lnLevel,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
 
 # using MIMEis detected if there is either HTML involved or an attachment
 Calculate ibinPDF as prefBinary

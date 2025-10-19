@@ -1,0 +1,23 @@
+# may be called from pbEdit or handleMenuCall
+Calculate icDisplayMessage as ''
+# Calculate lcPrefix as $cinst.irCurrentRecord.icPrefix
+# Calculate lnKey as $cinst.irCurrentRecord.ARR_SEQ
+
+If inCurrentTab=cnTabArrangement|inCurrentTab=cnTabComments
+	If irUserRights.canEdit&irCurrentRecord.ARR_SEQ>0&icMode='' ## copied from $behaviour()
+		Calculate icMode as 'EARR' ## details
+	End If
+	
+Else If inCurrentTab=cnTabAttendees
+	If irUserRights.canEdit&irAttendee.ARA_SEQ>0&icMode='' ## copied from $behaviour()
+		Calculate icMode as 'EATT' ## attendee
+	End If
+	
+End If
+
+# refresh record from db to ensure latest copy
+Do irCurrentRecord.$fetch_pk()
+Calculate irOriginalRecord as irCurrentRecord
+Do method DropLists
+
+Do $cinst.$behaviour()

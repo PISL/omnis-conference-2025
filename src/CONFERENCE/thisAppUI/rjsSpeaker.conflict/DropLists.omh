@@ -1,0 +1,7 @@
+# Do ilPersons.$search($ref.PSN_SEQ=irCurrentRecord.DG_PSN_REF,1,0,0,0)
+If ilStatus.$colcount
+	Do ilStatus.$search($ref.RFO_VALUE=irCurrentRecord.DG_STATUS,1,0,0,0)
+End If
+If ilOccupancy.$colcount
+	Do ilOccupancy.$search($ref.RFO_VALUE=irCurrentRecord.DG_OCCUPANCY,1,0,0,0)
+End If

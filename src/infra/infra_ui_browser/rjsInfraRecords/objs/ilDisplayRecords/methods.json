@@ -2,7 +2,7 @@
 	{
 		"name": "$event",
 		"order": 1,
-		"clientexec": false,
+		"clientexec": true,
 		"pvardefs": [
 
 		],

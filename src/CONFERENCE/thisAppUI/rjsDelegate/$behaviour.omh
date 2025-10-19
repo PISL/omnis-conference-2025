@@ -136,3 +136,5 @@ Calculate $cinst.$objs.PagedPane.$objs.DIL_PRIMARY.$visible as ilMultipleDelegat
 Do method assignEntryFieldProperties
 
 Do inherited ## handle objects in the navigation and results panes
+
+Calculate $cinst.$objs.splitButtonWorkflow.$enabled as icMode=''&irCurrentRecord.DG_SEQ>0

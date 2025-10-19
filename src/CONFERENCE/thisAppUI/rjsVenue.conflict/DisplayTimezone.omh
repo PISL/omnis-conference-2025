@@ -1,0 +1,17 @@
+Do ilTZcity.$unfilter(0)
+If ilTZregion.REGION<>''
+	Do ilTZcity.$filter($ref.REGION=ilTZregion.REGION)
+	Do ilTZcity.$search($ref.TIMEZONE=irCurrentRecord.VEN_TIMEZONE,1,0,0,0)
+	
+Else If irCurrentRecord.VEN_TIMEZONE<>''
+	Calculate lcRegion as left(irCurrentRecord.VEN_TIMEZONE,pos('/',irCurrentRecord.VEN_TIMEZONE)-1)
+	
+	Do ilTZregion.$search($ref.REGION=lcRegion,1,0,0,0) Returns lbFound
+	If lbFound
+		Do ilTZcity.$filter($ref.REGION=ilTZregion.REGION)
+		Do ilTZcity.$search($ref.TIMEZONE=irCurrentRecord.VEN_TIMEZONE,1,0,0,0)
+	End If
+	
+Else
+	Do ilTZcity.$filter($ref.REGION='XXX') ## empty city list
+End If

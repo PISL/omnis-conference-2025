@@ -1,6 +1,6 @@
 {
 	"ident": 1109,
-	"order": 61,
+	"order": 62,
 	"objtype": "kComponent",
 	"componentlib": "jsCheckbox",
 	"componentctrl": "Checkbox Control",
@@ -20,7 +20,7 @@
 		"contextmenu": "",
 		"cssclassname": "",
 		"dataname": "irCurrentRecord.ELC_SECURE",
-		"defaultinactiveappearance": true,
+		"defaultinactiveappearance": false,
 		"desgroup": 0,
 		"designactive": true,
 		"deslock": false,
@@ -69,7 +69,7 @@
 			"visible": true
 		},
 		"480": {
-			"left": 168,
+			"left": 128,
 			"top": 72,
 			"width": 23,
 			"height": 25,

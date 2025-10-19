@@ -1,0 +1,56 @@
+# take the current server port and add 1000
+If pnServerport>0
+	# good
+Else
+	Calculate pnServerport as $prefs.$serverport
+End If
+
+Calculate lcConfigPath as con(sys(115),'clientserver/server/remotedebug/remote_debug_server_config.json')
+
+Do FileOps.$doesfileexist(lcConfigPath) Returns lbOK
+If not(lbOK)
+	Quit method kFalse
+End If
+
+Do loFileOps.$openfile(lcConfigPath) Returns lbOK
+If not(lbOK)
+	Quit method kFalse
+End If
+
+Do loFileOps.$readfile(lbinConfig) Returns lbOK
+If not(lbOK)
+	Quit method kFalse
+End If
+
+Calculate lrConfig as OJSON.$jsontolistorrow(lbinConfig,lcError)
+If len(lcError)
+	Quit method kFalse
+End If
+
+If lrConfig.debugPort<>pnServerport+1000
+	Calculate lrConfig.debugPort as pnServerport+1000
+	Do OJSON.$formatjson(OJSON.$listorrowtojson(lrConfig,kUniTypeCharacter,lcError)) Returns lcConfig
+	If len(lcError)
+		Quit method kFalse
+	End If
+	
+	Calculate lbinConfig as chartoutf8(lcConfig)
+	Do loFileOps.$setfilesize(0)
+	Do loFileOps.$writefile(lbinConfig) Returns lbOK
+	If not(lbOK)
+		Do loFileOps.$closefile()
+		Quit method kFalse
+	End If
+	
+	If sys(238) ## debug server is running
+		Do $modes.$dotoolmethod(kEnvToolBrowser,184) ## shut it down
+	End If
+	Do $modes.$dotoolmethod(kEnvToolBrowser,184) ## start it up
+	If not(sys(238))
+		Quit method kFalse
+	End If
+End If
+
+Do loFileOps.$closefile()
+
+Quit method kTrue

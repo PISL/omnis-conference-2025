@@ -1,0 +1,11 @@
+Calculate inTotalAmountDue as 0
+Calculate inTotalAmountPaid as 0
+Calculate inTotalOutstanding as 0
+
+If ilInvoiceDetails.$linecount>0
+	Calculate inTotalAmountDue as ilInvoiceDetails.$cols.Total.$total()
+End If
+If ilPayments.$linecount>0
+	Calculate inTotalAmountPaid as ilPayments.$cols.PY_AMOUNT.$total()
+End If
+Calculate inTotalOutstanding as inTotalAmountDue-inTotalAmountPaid

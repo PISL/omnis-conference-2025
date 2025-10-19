@@ -56,6 +56,10 @@ If icMode=''|pos('P',icMode)
 	Calculate $cinst.$objs.PSN_IMAGE_LINK.$effect as lneffect
 	Calculate $cinst.$objs.PSN_IMAGE_LINK.$backcolor as lnEnterable
 	
+	Calculate $cinst.$objs.PSN_WEBSITE_LINK.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.PSN_WEBSITE_LINK.$effect as lneffect
+	Calculate $cinst.$objs.PSN_WEBSITE_LINK.$backcolor as lnEnterable
+	
 	# PSN_ACTIVE: mandatory = border + linestyle + effect, enterable = backcolor ## checkbox
 	Calculate $cinst.$objs.PSN_ACTIVE.$linestyle as lnlinestyle
 	# Calculate $cinst.$objs.PSN_ACTIVE.$bordercolor as lnbordercolour
@@ -73,4 +77,11 @@ If icMode=''|pos('T',icMode)
 	Calculate $cinst.$objs.TPC_REQUESTS.$backcolor as lnEnterable
 	Calculate $cinst.$objs.TPC_DURN_MINS.$backcolor as lnEnterable
 	Calculate $cinst.$objs.TPC_COMMENT.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.TPC_BACKCOLOR.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_TEXTCOLOR.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.ilColoursBackground.$backcolor as lnEnterable
+	Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.ilColoursText.$backcolor as lnEnterable
+	
 End If

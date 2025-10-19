@@ -1,0 +1,128 @@
+[
+	{
+		"name": "DIL_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "primary key",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_DG_REF",
+		"ident": 32002,
+		"order": 2,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to DELEGATE",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_FOH_REF",
+		"ident": 32008,
+		"order": 3,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to FinInvoiceOutH",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_CWHEN",
+		"ident": 32011,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_CBY",
+		"ident": 32012,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_MWHEN",
+		"ident": 32022,
+		"order": 6,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "modification timestamp",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_MBY",
+		"ident": 32023,
+		"order": 7,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "Modified by",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_MCOUNT",
+		"ident": 32024,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "modification count",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DIL_PRIMARY",
+		"ident": 32025,
+		"order": 9,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "when multiple delegates paid for on single invoice, DIL_PRIMARY 1 is assigned to main delegate within the group",
+			"nonull": true,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

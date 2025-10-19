@@ -1,0 +1,8 @@
+On evAfter
+	Calculate $cobj as low($cobj)
+	If icMode='I'
+		# only one language record can be established on insert
+		# and any change of default should be reflected in that soon to be record
+		Calculate ilLanguages.ELT_LANG as irCurrentRecord.ELC_DEFAULT_LANG
+	End If
+	Do $cinst.$behaviour()

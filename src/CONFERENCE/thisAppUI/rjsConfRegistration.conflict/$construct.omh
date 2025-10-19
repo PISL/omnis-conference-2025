@@ -1,0 +1,157 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+Calculate $cinst.$objs.PagedPane.$currentpage as cnPageLogin ## login
+
+Do method configPageAttributes
+
+If tlOpenConferences.$linecount=1
+	Calculate trCurrentConference as tlOpenConferences.1
+Else If tlOpenConferences.$line>0
+	Calculate trCurrentConference as tlOpenConferences
+End If
+Calculate irCompany as trGroupOrg
+
+# get the exit/cancel URL
+Do toValues.$initInherited('URL','EXIT') Returns lrReference
+If not(isclear(lrReference.RFO_CHAR))
+	Calculate icURLexit as lrReference.RFO_CHAR
+End If
+
+Do $DefineList(irRegistration,'tPerson')
+Do irRegistration.$AddSchemaColumns('sDelegates')
+Do irRegistration.$AddSchemaColumns('infra.sentExtOrganisations')
+Do irRegistration.$AddSchemaColumns('infra.sfinInvoiceOutH')
+Do irRegistration.$AddSchemaColumns('sDietRequests')
+Do irRegistration.$AddSchemaColumns('sDelegateInvoiceLinks')
+# Do irRegistration.$cols.$add('pleaseSendInvoice',kBoolean)
+Do irRegistration.$cols.$add('requirements',kCharacter,kSimplechar,255)
+# Calculate irRegistration.pleaseSendInvoice as kTrue ## default
+
+Do $DefineList(ilPersons,'tPerson')
+Do ilPersons.$AddSchemaColumns('sDietRequests')
+Do ilPersons.$AddSchemaColumns('sDelegateInvoiceLinks')
+Do ilPersons.$cols.$add('modified',kBoolean)
+Do ilPersons.$cols.$add('original',kRow)
+Do ilPersons.$cols.$add(inDG_OCCUPANCY)
+Do ilPersons.$cols.$add(inExtras)
+Do ilPersons.$cols.$add(inMembership)
+Do ilPersons.$cols.$add(inNoDays)
+Do ilPersons.$cols.$add(icWhichDays)
+Do ilPersons.$cols.$add(inPSN_SEX)
+
+Do toValues.$ReturnCountries() Returns ilCountriesPSN
+Calculate ilCountriesEO as ilCountriesPSN
+
+# default country using locale?
+Do toValues.$ReturnLocales(tWebParameters.ClientLocale) Returns irLocales
+Calculate lcSearchCountry as upp(irLocales.langCountry)
+If lcSearchCountry<>''
+	# ilCountries has United States of America ## Locales has United States
+	Do ilCountriesPSN.$search(mid(upp($ref.REF_DESC),1,len(lcSearchCountry))=lcSearchCountry,1,0,0,0) Returns lbFound
+	Calculate irRegistration.PSN_COUNTRY as ilCountriesPSN.REF_VALUE
+End If
+
+# set default conference as this may affect contents of Occupancy options
+Calculate ilConferences as tlOpenConferences
+Do ilConferences.$addDisplayName()
+If ilConferences.$linecount>0
+	Calculate ilConferences.$line as 0
+	While $Loop(ilConferences)
+		Do ilConferences.$DisplayName(4)
+	End While
+	
+	Do ilConferences.$cols.$findname('DisplayName') Returns liColRef
+	If liColRef
+		Calculate $cinst.$objs.PagedPane.$objs.ilConferences.$listcolumn as liColRef.$ident
+	End If
+	
+	# we could use trCurrentConference to set default line
+	Calculate ilConferences.$line as 1
+	Do ilConferences.$countSpeakers() Returns inCountSpeakers
+	Do ilConferences.$countDelegates() Returns inCountDelegates
+End If
+
+Do method setOccupancyOptions
+
+Do toValues.$initOrg('PSN_PHOTOID_TYP') Returns ilPhotoIdTypes
+
+If ilConferences.$linecount>20
+	Calculate ilCities as ilConferences
+	Do ilCities.$cols.VEN_TOWN.$removeduplicates(kTrue)
+	If ilCities.$linecount>10
+		Calculate $cinst.$objs.PagedPane.$currentpage as 5 ## allows user to filter available conference choice by city
+	End If
+	Do ilCities.$cols.$findname('VEN_TOWN') Returns liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.ilCities.$listcolumn as liColRef.$ident
+End If
+
+Do $DefineList(irFullPrice,'infra.tProducts')
+Do irFullPrice.$addLinkedCols('PID_UNIT_PRICE,PID_TAX_BAND',kTrue)
+Do irFullPrice.$addLinkedCols('RFL_NUMBER',kTrue)
+Do irFullPrice.$addCalculatedColumns()
+Calculate irEarlyBirdPrice as irFullPrice
+Calculate irPriceExtras as irFullPrice
+Calculate irPriceMembership as irFullPrice
+
+Do method TranslateText
+
+Do ioDelegateInvoice.$init(irDelegate,irLinkDelegateToInvoice,irInvHeader,ilInvDetails)
+
+# radio button constants
+Calculate ikSexMale as 0
+Calculate ikSexFemale as 1
+Calculate ikExtraAlone as 0
+Calculate ikExtraSpouse as 1
+Calculate ikExtraFamily as 2
+Calculate ikMembershipPersonal as 0
+Calculate ikMembershipCorporate as 1
+Calculate ikMembershipNone as 2
+
+# default values
+Calculate inPSN_SEX as ikSexMale
+Calculate inExtras as ikExtraAlone
+Calculate inMembership as ikMembershipPersonal
+# initially DIL_PRIMARY is invisible ## assuming the one person registering is the primary delegate
+Calculate irRegistration.DIL_PRIMARY as 1
+
+# GTD exceptions
+If tWebParameters.jsScreenSize=kSSZDesktop
+	# Breakpoint
+End If
+If tWebParameters.param1='GTD'
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_PHOTOID_TYPE.$visible as kTrue
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_PHOTOID_TYPE.$visible as kTrue
+	Calculate $cinst.$objs.PagedPane.$objs.label_PSN_PHOTOID_NO.$visible as kTrue
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_PHOTOID_NO.$visible as kTrue
+	
+	Calculate $cinst.$objs.PagedPane.$objs.rg_Occupancy.$visible as kFalse
+	Calculate $cinst.$objs.PagedPane.$objs.label_DG_OCCUPANCY.$visible as kFalse
+	Calculate $cinst.$objs.PagedPane.$objs.borderOccupancy.$visible as kFalse
+	
+	Calculate $cinst.$objs.PagedPane.$objs.rg_inExtras.$visible as kFalse
+	Calculate $cinst.$objs.PagedPane.$objs.label_Extras.$visible as kFalse
+	Calculate $cinst.$objs.PagedPane.$objs.borderExtras.$visible as kFalse
+	
+	Calculate $cinst.$objs.PagedPane.$objs.inMembership.$visible as kFalse
+	Calculate $cinst.$objs.PagedPane.$objs.label_membership.$visible as kFalse
+	Calculate $cinst.$objs.PagedPane.$objs.borderMembership.$visible as kFalse
+End If
+
+Calculate $cinst.$objs.PagedPane.$objs.cg_ilPersons.$showhorzheader as kTrue
+Calculate $cinst.$objs.PagedPane.$objs.cg_ilInvDetails.$showhorzheader as kTrue
+
+# do not call $behaviour here because objects on js page to not yet exist
+Calculate incPageLogin as cnPageLogin ## because $behaviour cannot refer to class variables
+
+Do method DisplayPrice2
+
+# if we're developing, set the timeout to a reasonable value - 2 hours
+If sys(2)=17
+	Do $setTimeout(120)
+End If
+
+
+Do $cinst.$behaviour()

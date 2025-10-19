@@ -1,2 +1,6 @@
 Do irTopic.$assignrow(ilTopics,kTrue)
 Do ilTopicConferences.$fetch_fk(irTopic.TPC_SEQ)
+
+# It is unusual to select line using the RFO_CHAR column but this is not a mistake!
+Do ilColoursBackground.$search($ref.RFO_CHAR=ilTopics.TPC_BACKCOLOR,1,0,0,0)
+Do ilColoursText.$search($ref.RFO_CHAR=ilTopics.TPC_TEXTCOLOR,1,0,0,0)

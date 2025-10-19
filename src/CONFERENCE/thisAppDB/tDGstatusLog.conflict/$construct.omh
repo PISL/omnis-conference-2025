@@ -1,0 +1,6 @@
+Calculate icPrefix as 'DSL_'
+Calculate icPrimarykey as 'DSL_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'DSL_DG_REF'
+
+Do inherited

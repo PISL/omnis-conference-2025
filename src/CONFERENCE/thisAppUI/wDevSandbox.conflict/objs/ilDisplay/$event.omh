@@ -1,0 +1,9 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	# Do ioCFF.$returnCamelOptionList(ilDisplay.name) Returns ilDisplay
+	
+	# Do ioCFF.$checkForResult(icNameOfConstant,inValueOfConstant) Returns ibCompleteNavigation
+	If ibCompleteNavigation
+		
+	End If
+	
+	Do $cinst.$redraw()

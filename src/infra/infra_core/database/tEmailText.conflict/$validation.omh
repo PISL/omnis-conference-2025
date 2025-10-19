@@ -1,0 +1,57 @@
+Do ilValidation.$clear()
+# columns:  object   issue   default   severity   message
+If $cinst.ELT_ELC_REF>0
+	# good
+Else
+	Do ilValidation.$add('ELT_ELC_REF_LBL','VAL_MISSING','email config code missing',0)
+End If
+
+If $cinst.ELT_LANG<>''
+	# good
+Else
+	Do ilValidation.$add('ELC_LANG_LBL','VAL_MISSING','language code missing',0)
+End If
+
+If $cinst.ELT_MSG_HTML
+	Do toStrings.$TagContent($cinst.ELT_MSG_HTML,'<body>') Returns lcDisplayHTML
+	# there is some default content that may include some carriage returns and nothing else
+	# this must be assessed as empty
+	Calculate lcDisplayHTML as replaceall(lcDisplayHTML,kCr,'')
+	Calculate lcDisplayHTML as replaceall(lcDisplayHTML,kLf,'')
+	Calculate lcDisplayHTML as trim(lcDisplayHTML)
+End If
+If lcDisplayHTML=''&$cinst.ELT_MSG_PFIX_HTML<>''
+	Do toStrings.$TagContent($cinst.ELT_MSG_PFIX_HTML,'<body>') Returns lcDisplayHTML
+	# there is some default content that may include some carriage returns and nothing else
+	# this must be assessed as empty
+	Calculate lcDisplayHTML as replaceall(lcDisplayHTML,kCr,'')
+	Calculate lcDisplayHTML as replaceall(lcDisplayHTML,kLf,'')
+	Calculate lcDisplayHTML as trim(lcDisplayHTML)
+End If
+If lcDisplayHTML=''&$cinst.ELT_MSG_SFIX_HTML<>''
+	Do toStrings.$TagContent($cinst.ELT_MSG_SFIX_HTML,'<body>') Returns lcDisplayHTML
+	# there is some default content that may include some carriage returns and nothing else
+	# this must be assessed as empty
+	Calculate lcDisplayHTML as replaceall(lcDisplayHTML,kCr,'')
+	Calculate lcDisplayHTML as replaceall(lcDisplayHTML,kLf,'')
+	Calculate lcDisplayHTML as trim(lcDisplayHTML)
+End If
+
+If $cinst.ELT_MSG_TEXT<>''
+	# good
+Else If $cinst.ELT_MSG_PFIX_TEXT<>''
+	# good
+Else If $cinst.ELT_MSG_SFIX_HTML<>''
+	# good
+Else If lcDisplayHTML<>''
+	# something is visible within the HTML
+Else
+	Do ilValidation.$add('ELT_MSG_TEXT_LBL','VAL_MISSING',con('email message text missing ',$cinst.ELT_LANG),0,$cinst.ELT_LANG)
+End If
+
+If $cinst.ELT_SUBJECT<>''
+	# good
+Else
+	Do ilValidation.$add('ELT_SUBJECT_LBL','VAL_MISSING',con('email subject missing for ',$cinst.ELT_LANG),0,$cinst.ELT_LANG)
+End If
+Quit method ilValidation.$linecount=0

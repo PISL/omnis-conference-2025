@@ -1,0 +1,34 @@
+Do toValues.$initInherited('IMAGES','LOGO_TOP_LEFT') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Calculate tConstants.topLeft as lrReference.RFO_BIN
+Else
+	Calculate tConstants.topLeft as #NULL
+End If
+Calculate ipictTopLeft as tConstants.topLeft
+
+Do toValues.$initInherited('IMAGES','LOGO_TOP_RIGHT') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Calculate tConstants.topRight as lrReference.RFO_BIN
+Else
+	Calculate tConstants.topRight as #NULL
+End If
+Calculate ipictTopRight as tConstants.topRight
+
+Do toValues.$initInherited('FORMCOLOURS','TOP_BANNER') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Calculate tConstants.topBanner as lrReference.RFO_BIN
+Else
+	Calculate tConstants.topBanner as #NULL
+End If
+
+Calculate ipictBanner as tConstants.topBanner
+Calculate ipictLogo as tConstants.companyLogo
+
+Calculate ipictTopLeft as tConstants.topLeft
+Calculate ipictTopRight as tConstants.topRight
+Calculate $cinst.$objs.ipictTopLeft.$visible as binlength(ipictTopLeft)>0
+Calculate $cinst.$objs.ipictTopRight.$visible as binlength(ipictTopRight)>0
+
+Calculate $cinst.$objs.app_navigation_img.$visible as binlength(tConstants.topBanner)>0
+
+#

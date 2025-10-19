@@ -1,0 +1,5 @@
+On evClick
+	If ilOrgStructures.RFO_VALUE<>icCurrentStructure
+		Calculate icCurrentStructure as ilOrgStructures.RFO_VALUE
+		Do method fetchStructure
+	End If

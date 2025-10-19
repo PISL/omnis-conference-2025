@@ -1,0 +1,11 @@
+Calculate $cinst.$objs.ilDay.$dataname as con('ilDay',pnTab)
+
+Calculate $cinst.$objs.ilDay.$objs.AMspeaker.$dataname as con('ilDay',pnTab,'.AMspeaker')
+Calculate $cinst.$objs.ilDay.$objs.AMtime.$dataname as con('ilDay',pnTab,'.AMtime')
+Calculate $cinst.$objs.ilDay.$objs.AMtitle.$dataname as con('ilDay',pnTab,'.AMtitle')
+Calculate $cinst.$objs.ilDay.$objs.AMdesc.$dataname as con('ilDay',pnTab,'.AMdesc')
+
+Calculate $cinst.$objs.ilDay.$objs.PMspeaker.$dataname as con('ilDay',pnTab,'.PMspeaker')
+Calculate $cinst.$objs.ilDay.$objs.PMtime.$dataname as con('ilDay',pnTab,'.PMtime')
+Calculate $cinst.$objs.ilDay.$objs.PMtitle.$dataname as con('ilDay',pnTab,'.PMtitle')
+Calculate $cinst.$objs.ilDay.$objs.PMdesc.$dataname as con('ilDay',pnTab,'.PMdesc')

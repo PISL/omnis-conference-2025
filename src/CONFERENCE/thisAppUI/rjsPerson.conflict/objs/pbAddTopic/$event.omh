@@ -1,0 +1,8 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	Do irTopic.$clear()
+	Calculate icMode as 'IT' ## insert topic
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

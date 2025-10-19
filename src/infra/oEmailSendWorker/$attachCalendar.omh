@@ -184,4 +184,23 @@ Get text block icEventSpec
 # Breakpoint
 # you validate your content using     https://icalendar.org/validator.html
 
+If len(pcFilename)=0
+	# .ics or .vcs according to wiki below
+	Calculate pcFilename as con(tcCurrentLibrary,'.ics')
+End If
+
+# https://en.wikipedia.org/wiki/ICalendar
+Do ilMimeAppend.$add(1,'text','calendar',pcFilename,icEventSpec,,kUniTypeUTF8,,'attachment')
+# Do iMIMEtypeList.$add('text/x-vcalendar')
+
 Quit method kTrue
+
+# Do ilMIME.$cols.$add('Level',kInteger,kShortint)
+# Do ilMIME.$cols.$add('ContentType',kCharacter,kSimplechar,100)
+# Do ilMIME.$cols.$add('ContentSubType',kCharacter,kSimplechar,100)
+# Do ilMIME.$cols.$add('Filename',kCharacter,kSimplechar,255)
+# Do ilMIME.$cols.$add('CharacterData',kCharacter,kSimplechar,10000000)
+# Do ilMIME.$cols.$add('BinaryData',kBinary)
+# Do ilMIME.$cols.$add('CharacterSet',kCharacter,kSimplechar,40)
+# Do ilMIME.$cols.$add('Encoding',kCharacter,kSimplechar,40)
+# Do ilMIME.$cols.$add('ContentDisposition',kCharacter,kSimplechar,255)

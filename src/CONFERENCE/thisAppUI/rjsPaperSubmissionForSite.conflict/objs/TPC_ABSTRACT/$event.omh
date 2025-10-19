@@ -1,0 +1,3 @@
+On evAfter
+	Do $cinst.$anyModifications()
+	Do $cinst.$behaviour()

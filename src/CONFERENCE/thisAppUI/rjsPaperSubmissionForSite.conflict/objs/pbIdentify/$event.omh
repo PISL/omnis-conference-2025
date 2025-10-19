@@ -1,0 +1,50 @@
+On evClick
+	Calculate $cinst.$objs.PagedPane.$objs.pbIdentify.$errortext as ''
+	Calculate lcFirstname as irPerson.PSN_FIRST_NAME
+	Calculate lcSurname as irPerson.PSN_SURNAME
+	
+	Calculate irPerson.PSN_GO_REF as trGroupOrg.GO_SEQ ## required by $validation
+	Do method identifyPerson Returns lbProceed
+	If lbProceed
+		Do method logAccess
+		If upp(irPerson.PSN_FIRST_NAME)<>upp(lcFirstname)
+			Calculate irPerson.PSN_FIRST_NAME as lcFirstname
+			Calculate ibModifiedPerson as kTrue
+		End If
+		If upp(irPerson.PSN_SURNAME)<>upp(lcSurname)
+			Calculate irPerson.PSN_SURNAME as lcSurname
+			Calculate ibModifiedPerson as kTrue
+		End If
+		Do method fetchTopics ## ilTopics
+		
+		Calculate inCurrentPane as 2
+		Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentPane
+	Else
+		Do irPerson.$validation() Returns lbProceed
+		If lbProceed
+			# we have enough info to save a new Person record.
+			# Continue to new paper submission.
+			Do method logAccess
+			If upp(irPerson.PSN_FIRST_NAME)<>upp(lcFirstname)
+				Calculate irPerson.PSN_FIRST_NAME as lcFirstname
+				Calculate ibModifiedPerson as kTrue
+			End If
+			If upp(irPerson.PSN_SURNAME)<>upp(lcSurname)
+				Calculate irPerson.PSN_SURNAME as lcSurname
+				Calculate ibModifiedPerson as kTrue
+			End If
+			
+			Calculate inCurrentPane as 2
+			Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentPane
+		Else
+			# stay on login screen
+			Calculate $cinst.$objs.PagedPane.$objs.pbIdentify.$errortext as irPerson.icValidationMessage
+		End If
+	End If
+	If ibModifiedPerson
+		Do irPerson.$update() Returns lbOK
+		Calculate irOriginalPerson as irPerson
+		Calculate ibModifiedPerson as kFalse
+	End If
+	
+	Do $cinst.$behaviour()

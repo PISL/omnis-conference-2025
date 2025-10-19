@@ -1,0 +1,193 @@
+{
+	"classtype": "kWindow",
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 114,
+	"designtaskname": "Startup_Task",
+	"nextident": 1078,
+	"lastgroupident": 5,
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "ibListsAligned",
+			"order": 9,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icDbaResult",
+			"order": 11,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icFound",
+			"order": 10,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 1,
+			"initval": "'>'"
+		},
+		{
+			"name": "icLogin",
+			"order": 1,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 40
+		},
+		{
+			"name": "icPassword",
+			"order": 4,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 40
+		},
+		{
+			"name": "ilData",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMaxValues",
+			"order": 8,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOriginal",
+			"order": 25,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSequences",
+			"order": 7,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSortColumns",
+			"order": 14,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ioDBA",
+			"order": 3,
+			"type": "kObject",
+			"subtype": "oDBA",
+			"sublen": 0
+		},
+		{
+			"name": "ioSession",
+			"order": 5,
+			"type": "kObject",
+			"subtype": ".PGSQLDAM.PGSQLSESS",
+			"sublen": 0
+		},
+		{
+			"name": "ioStatement",
+			"order": 6,
+			"type": "kObject",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"backcolor": "kColor3DFace",
+		"backgroundskin": 0,
+		"backgroundskinalign": "kPALtopLeft",
+		"backgroundtheme": "kBGThemeWindow",
+		"backpattern": 0,
+		"bringinfront": false,
+		"canremotedebugwhenlocked": false,
+		"clickbehind": true,
+		"closebox": true,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2025-05-20 19:32:36",
+		"desc": "",
+		"designguides": "",
+		"dockingedge": "kBorderChisel",
+		"dropmode": "kAcceptNone",
+		"edgefloat": "kEFnone",
+		"editor": "",
+		"editordata": "",
+		"effect": "kBorderNone",
+		"enablemenuandtoolbars": true,
+		"external": true,
+		"forecolor": "kColor3DFace",
+		"growbox": true,
+		"hasmenus": false,
+		"hasstatusbar": false,
+		"height": 380,
+		"helpbutton": false,
+		"helpfile": 0,
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 0,
+		"issubwindow": false,
+		"issupercomponent": false,
+		"keepclicks": true,
+		"left": 586,
+		"menuedge": "kBorderChisel",
+		"menunames": "",
+		"minheight": 0,
+		"minimizebox": false,
+		"minimizeiconid": 2006,
+		"minwidth": 0,
+		"moddate": "2025-05-23 15:14:54",
+		"modelessdata": true,
+		"movebehind": true,
+		"osdropflags": "kOSDROPnone",
+		"showascheckedout": false,
+		"showcommands": false,
+		"showgrid": false,
+		"showtitle": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"statusbarpos": "kSBPosBottom",
+		"statusedge": "kBorderChisel",
+		"style": "kTitle",
+		"title": "",
+		"toolbarnames": "",
+		"toolbaroptions": "kTBOptionNone",
+		"toolbarpos": "kDockingAreaNone",
+		"top": 13,
+		"userinfo": "",
+		"usesheets": false,
+		"vcsrevision": 0,
+		"version": "2",
+		"vertgrid": 8,
+		"vertscroll": false,
+		"width": 799,
+		"zoombox": false
+	},
+	"statusbar": {
+		"inherited": false,
+		"properties": {
+			"fieldstyle": "",
+			"font": 1,
+			"fontsize": 0,
+			"helppane": 0
+		}
+	}
+}

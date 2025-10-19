@@ -1988,5 +1988,69 @@
 				"initval": "0"
 			}
 		]
+	},
+	{
+		"name": "$ArrangeAccessList",
+		"order": 53,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcGroupAdmin",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 15,
+				"initval": "'c_admin'",
+				"desc": "tends to 3rd party related"
+			},
+			{
+				"name": "lcGroupFrequent",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 15,
+				"initval": "'a_frequent'"
+			},
+			{
+				"name": "lcGroupGlobal",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 15,
+				"initval": "'q_global_fixed'"
+			},
+			{
+				"name": "lcGroupLowLevel",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 15,
+				"initval": "'u_low_level'"
+			},
+			{
+				"name": "lcGroupVeryLast",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 15,
+				"initval": "'zzz_last'"
+			},
+			{
+				"name": "lcUnassignedPrefixes",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			},
+			{
+				"name": "llPermissions",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
 	}
 ]

@@ -1,0 +1,24 @@
+# !!! STB the error code needs to be converted to string table entries
+Calculate plValidation.$line as 0
+While $Loop(plValidation)
+	Do method $StringTableEntry (plValidation.object,lcObject,plValidation.default) Returns lbOK
+	Do method $StringTableEntry (plValidation.issue,lcReason) Returns lbOK
+	If pos('OBJECT',upp(pcMessageContent))&pos('REASON',upp(pcMessageContent))
+		Calculate plValidation.message as con(lcObject,': ',lcReason)
+	Else If pos('OBJECT',upp(pcMessageContent))
+		Calculate plValidation.message as con(lcObject)
+	Else If pos('REASON',upp(pcMessageContent))
+		Calculate plValidation.message as con(lcReason)
+	Else
+		Calculate plValidation.message as con(lcObject,': ',lcReason)
+	End If
+	
+	If plValidation.severity=1
+		Calculate lcWarnings as con(lcWarnings,pick(lcWarnings<>'','','; '),plValidation.message)
+	Else
+		Calculate lcErrors as con(lcErrors,pick(lcErrors<>'','','; '),plValidation.message)
+	End If
+End While
+
+Calculate pretErrors as lcErrors
+Calculate pretWarnings as lcWarnings

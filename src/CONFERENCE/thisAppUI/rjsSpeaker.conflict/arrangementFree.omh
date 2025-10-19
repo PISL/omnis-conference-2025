@@ -1,0 +1,17 @@
+If trGroupOrg.GO_NAME_SHORT='OmnisWorld'
+	# The start and end dates of the conference are arrival and departure dates.
+	# Therefore there should be no arrangements made on day 0 or day 5.
+	If pnDayNo=0|pnDayNo=5
+		Quit method kFalse
+	End If
+End If
+Do ilArrangements.$search($ref.ARR_DAYNO=pnDayNo&$ref.ARR_STARTTIME=pdtStart,1,0,0,0) Returns lbFound
+If not(lbFound)
+	Calculate prArrangement.ARR_DAYNO as pnDayNo
+	Calculate prArrangement.ARR_STARTTIME as pdtStart
+	Calculate prArrangement.ARR_ENDTIME as pdtEnd
+	Calculate prArrangement.ARR_PSN_REF as ilDisplayRecords.DG_PSN_REF
+	Calculate lbInsert as kTrue
+End If
+
+Quit method lbInsert

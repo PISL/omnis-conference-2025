@@ -1,0 +1,54 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$errortext as ''
+	
+	Calculate ilTopics.$line as pLineNumber
+	# Calculate irTopic as ilTopics
+	Do method TopicSelected
+	# Calculate $cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$currenttab as 1
+	Do $cinst.$behaviour()
+	
+On evOpenContextMenu
+	Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$errortext as ''
+	If irLastPerson.PSN_SEQ>0
+		Calculate pContextMenu.$objs.MoveTopicToPerson.$text as con("move Topic to ",irLastPerson.PSN_EMAIL)
+		Calculate pContextMenu.$objs.CloneTopicToPerson.$text as con("clone Topic to ",irLastPerson.PSN_EMAIL)
+		
+	Else
+		Calculate pContextMenu.$objs.MoveTopicToPerson.$text as con("move Topic to (other person not selected")
+		Calculate pContextMenu.$objs.CloneTopicToPerson.$text as con("clone Topic to (other person not selected")
+		
+	End If
+	
+	Calculate pContextMenu.$objs.MoveTopicToPerson.$enabled as not(isclear(irLastPerson.PSN_SEQ))
+	Calculate pContextMenu.$objs.CloneTopicToPerson.$enabled as not(isclear(irLastPerson.PSN_SEQ))
+	
+	# all other objects on remote menu rmcTopics belong to form rjsSpeakers where assigning arrangements is done.
+	# We should probably have a separate remote menu for this class!
+	Calculate pContextMenu.$objs.arrangeDay1AM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay1PM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay1Evening.$enabled as kFalse
+	
+	Calculate pContextMenu.$objs.arrangeDay2AM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay2PM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay2Evening.$enabled as kFalse
+	
+	Calculate pContextMenu.$objs.arrangeDay3AM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay3PM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay3Evening.$enabled as kFalse
+	
+	Calculate pContextMenu.$objs.arrangeDay4AM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay4PM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay4Evening.$enabled as kFalse
+	
+	Calculate pContextMenu.$objs.arrangeDay5AM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay5PM.$enabled as kFalse
+	Calculate pContextMenu.$objs.arrangeDay5Evening.$enabled as kFalse
+	
+On evExecuteContextMenu
+	If pCommandID=1002 ## MoveTopicToPerson
+		# ilTopics
+		Do method transferTopic ('MT')
+	Else If pCommandID=1003 ## CloneTopicToPerson
+		Do method transferTopic ('CT')
+	End If

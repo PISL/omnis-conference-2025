@@ -1,0 +1,47 @@
+# Do ilDisplayRecords.$add('TASK_STATS','Concurrent remote tasks','List of concurrent remote task records.','filterOption,outputText')
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "VAT_RETURN"
+
+Text:, "title" : "VAT Return"
+Text:, "description" : "List of VAT receipts for period."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+Text:, "datefrom_lbl" : "invoice from date"
+Text:, "datefrom_tt" : "Date range must be provided - from and to dates."
+Text:, "datefrom_min" : "fday['(']kmonth,dim['(']#D,-60))"
+Text:, "datefrom_max" : "fday['(']kmonth,#D)"
+# e.g. lday(kMonth,#D)  fday(kYear,#D)  #D
+Text:, "datefrom_default" : "fday['(']kMonth,dim['(']#D,-3))"
+
+Text:, "dateto_lbl" : "invoice to date"
+Text:, "dateto_tt" : "Date range must be provided - from and to dates."
+Text:, "dateto_min" : "lday['(']kMonth,dim['(']#D,-60))"
+Text:, "dateto_max" : "lday['(']kMonth,#D)"
+Text:, "dateto_default" : "lday['(']kMonth,dim['(']#D,-1))"
+
+Text:, "checkbox1_lbl" : "show detail lines"
+Text:, "checkbox1_tt" : "If checked this will show the invoice detail lines."
+Text:, "checkbox1_default" : "0"
+
+Text:, "sortlist_lbl" : "sort options"
+Text:, "sortlist_tt" : "you can determine the sort order of your report here"
+Text:, "sortlist_default" : "1"
+Text:, "sortlist_column" : "sortName"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('ADMINISTRATION',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

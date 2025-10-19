@@ -1,0 +1,11 @@
+Do ilExtraHeaders.$merge(plExtraHeaders,kFalse,kFalse,kTrue)
+# Prepare extra headers
+If ilExtraHeaders.$linecount
+	# Remove empty lines
+	For lnLineNumber from ilExtraHeaders.$linecount to 1 step -1
+		Calculate ilExtraHeaders.$line as lnLineNumber
+		If len(trim(ilExtraHeaders.icExtraHeaderName))=0&len(trim(ilExtraHeaders.icExtraHeaderValue))=0
+			Do ilExtraHeaders.$remove(lnLineNumber)
+		End If
+	End For
+End If

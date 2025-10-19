@@ -1,0 +1,92 @@
+# Do $cinst.$showmessage('Button Clicked!','Split Button')
+# We can't use clearerrors in this form because we use errortext on PrintInv button to display who is covered with the invoice.
+# Do $cinst.$clientcommand('clearerrors')
+Calculate $cinst.$objs.splitButtonWorkflow.$errortext as ''
+
+# confirming online registration
+If isclear(irCurrentRecord.DG_REGN_CONFIRMED)
+	# send email confirming registration
+	Do method confirmRegistrationConfirmed
+	Calculate lbActionTriggered as kTrue
+End If
+
+# sending invoice
+If not(lbActionTriggered)
+	# email the invoice
+	If isclear(irCurrentRecord.DG_EMAIL_INVOICE_SENT)
+		# generate invoice pdf which is then emailed to customer
+		Do method confirmSendInvoice
+		Calculate lbActionTriggered as kTrue
+		
+	Else
+		# invoice has been sent
+	End If
+End If
+
+# confirm payment received  or  chase payment
+If not(lbActionTriggered)
+	# do we need to chase up late payment?
+	If irPayment.PY_SEQ>0
+		# a payment has been received - no chasing up even if only part paid
+		If isclear(irCurrentRecord.DG_PAYMENT_ACK)
+			# sned email acknowledging receipt of funds
+			Do method confirmPaymentReceivedFull
+			Calculate lbActionTriggered as kTrue
+		End If
+		
+	Else If ddiff(kDay,irCurrentRecord.DG_EMAIL_INVOICE_SENT,#D)>30
+		# no payment received in 30 days - time to chase up
+		Do method confirmChasePayment
+		Calculate lbActionTriggered as kTrue
+	End If
+End If
+
+# send the travel info request
+If not(lbActionTriggered)
+	# travel link
+	# Have we received the travel link response?
+	If irTravelPlan.TP_SEQ>0
+		# yes.  no further action
+	Else
+		# no.  Send or re-send the travel link?  Or do we assume the delegate is travelling by car?  Quite a few do.
+		If irCurrentRecord.DG_EMAIL_TRAVEL_SENT>dat('1 JAN 2010')
+			# Do we re-send the travel link or assume the delegate is travelling by car?  Quite a few do.
+			
+		Else
+			# email the travel link to get travel plans
+			Do method confirmSendTravelLink
+			Calculate lbActionTriggered as kTrue
+		End If
+	End If
+End If
+
+# speakers only:  check topics  or  email speaker instructions
+If not(lbActionTriggered)
+	If irCurrentRecord.DG_ROLE='SPEAKER'
+		# ask speaker to check topics or speaker instructions?
+		If isclear(irCurrentRecord.DG_SPKR_CHECKTOPICS)
+			# email the speaker to check their topics descriptions
+			Do method confirmSpeakerTopics
+			Calculate lbActionTriggered as kTrue
+			
+		Else
+			# speaker has been emailed re checking topics
+		End If
+		
+		If not(lbActionTriggered)
+			If isclear(irCurrentRecord.DG_SPKR_INSTRUCTIONS)
+				# email the speaker instructions to the speaker
+				Do method confirmSpeakerInstructions
+				Calculate lbActionTriggered as kTrue
+				
+			Else
+				# speaker has been emailed re sending speaker instructions
+			End If
+		End If
+	End If
+End If
+
+If not(lbActionTriggered)
+	Breakpoint
+	Do $cinst.$clientOkCancelMsg('Workflow appears complete.','CONFIRM ACTION','')
+End If

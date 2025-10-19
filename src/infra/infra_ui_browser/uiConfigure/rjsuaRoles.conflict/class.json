@@ -1,0 +1,316 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 2636,
+	"superclass": "rjsInfraRecords",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1083,
+	"lastgroupident": 0,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ibComparePermissions",
+			"order": 21,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibCompareUsers",
+			"order": 22,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibPermissionsFilteredOnPrefix",
+			"order": 27,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "icCheckPassword",
+			"order": 1,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icCommonPermissions",
+			"order": 17,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icCommonUsers",
+			"order": 20,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icDistinctPermissionsCurrent",
+			"order": 15,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icDistinctPermissionsPrevious",
+			"order": 16,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icDistinctUsersCurrent",
+			"order": 18,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icDistinctUsersPrevious",
+			"order": 19,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10000
+		},
+		{
+			"name": "icSearchPermission",
+			"order": 23,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10
+		},
+		{
+			"name": "ilChoiceOfPermissions",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilChoiceOfUsers",
+			"order": 7,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilMenuCommands",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPermissionPrefixes",
+			"order": 26,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPermissions",
+			"order": 12,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPreviousRolePermissions",
+			"order": 14,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilPreviousRoleUsers",
+			"order": 13,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilRolePermissions",
+			"order": 9,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilRoleUsers",
+			"order": 10,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilUserGroupOrgLinks",
+			"order": 4,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilUserRoles",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilUsers",
+			"order": 11,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inChoicePerm_linecount",
+			"order": 25,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inCurrentTab",
+			"order": 5,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
+			"name": "inMinSearchPermission",
+			"order": 24,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "0"
+		},
+		{
+			"name": "irPreviousRecord",
+			"order": 8,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"cancelkeyobject": "pbCancel",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2018-01-12 09:38:52",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"external": false,
+		"horzgrid": 8,
+		"inheritedorder": 0,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 7,
+		"menulineheight": 0,
+		"moddate": "2025-01-03 15:29:27",
+		"okkeyobject": "pbSave",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"title": {
+			"type": 0,
+			"calc": "rjsInfraRecords subclass"
+		},
+		"top": 382,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "",
+		"vertgrid": 8
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon",
+		"events",
+		"height",
+		"width",
+		"horzscroll",
+		"vertscroll",
+		"backcolor",
+		"backpattern",
+		"forecolor",
+		"backgroundtheme",
+		"effect",
+		"startfield",
+		"iconpages",
+		"alwaysenabledobject",
+		"backgroundskin",
+		"backgroundskinalign",
+		"openinwindow",
+		"designshowmobiletitle",
+		"backalpha",
+		"alpha",
+		"stringtabledata",
+		"stringtabledesignform",
+		"resizemode",
+		"layoutminheight",
+		"animatelayouttransitions"
+	],
+	"layout": {
+		"width": 1721,
+		"height": 807,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

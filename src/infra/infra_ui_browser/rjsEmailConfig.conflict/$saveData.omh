@@ -1,0 +1,114 @@
+Calculate lcMode as icMode ## savew the mode cos $saveData clears it on lbOK
+Calculate icDisplayMessage as ''
+Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+Do ilValidation.$clear()
+
+# first save the master record
+If icMode='I' ## add Model
+	Do irCurrentRecord.$validation() Returns lbProceedMain
+	If not(lbProceedMain)
+		Calculate ilValidation as irCurrentRecord.ilValidation
+	Else
+		Do irCurrentRecord.$insert() Returns lbOK
+		If lbOK
+			Do irCurrentRecord.$displayName()
+			# add new record to display list
+			Do ilDisplayRecords.$add()
+			Calculate ilDisplayRecords.$line as ilDisplayRecords.$linecount
+			Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+			# Do ilLanguages.$sendall($ref.ELT_ELC_REF.$assign(irCurrentRecord.ELC_SEQ),isnull($ref.ELT_ELC_REF))
+			Do ilLanguages.$sendall($ref.ELT_ELC_REF.$assign(irCurrentRecord.ELC_SEQ))
+		Else
+			# Calculate icMode as '' ## remain in insert mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='E'
+	Do irCurrentRecord.$validation() Returns lbProceedMain
+	If not(lbProceedMain)
+		Calculate ilValidation as irCurrentRecord.ilValidation
+	Else
+		Do toStrings.$HasRowBeenModified(irOriginalRecord,irCurrentRecord) Returns lbModified
+		If lbModified
+			Do irCurrentRecord.$update() Returns lbOK
+			If lbOK
+				Do irCurrentRecord.$displayName()
+				Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+				Calculate irOriginalRecord as irCurrentRecord
+			Else
+				# Calculate icMode as '' ## remain in edit mode
+				Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+			End If
+		End If ## lbModified
+		
+	End If
+End If
+
+# lets use $dowork to save results of Language entries
+# before we do it though, check the validity of each line
+# be sure to restore the current line after $dowork()
+Calculate lnCurrentLine as ilLanguages.$line
+Calculate ilLanguages.$line as 0
+While $loop(ilLanguages)
+	Do ilLanguages.$validation() Returns lbValid
+	If not(lbValid)
+		# there could be multiple lines offending, hence the loop and keeping details of each issue
+		Calculate lcOffender as con(lcOffender,pick(lcOffender<>'','',', '),ilLanguages.ELT_LANG)
+		If ilValidation.$linecount=0
+			Calculate ilValidation as ilLanguages.ilValidation
+		Else
+			Do ilValidation.$merge(ilLanguages.ilValidation)
+		End If
+	End If
+End While
+If ilValidation.$linecount>0
+	# report issues and leave screen in edit mode
+	# highlight first language line with issue
+	Do ilLanguages.$search($ref.ELT_LANG=ilValidation.1.message,1,0,0,0) Returns lbFound
+	Calculate ilValidation.$line as 0
+	While $Loop(ilValidation)
+		Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','','; '),ilValidation.default)
+	End While
+Else
+	# save the valid Language entries
+	# our roll your own dowork handles inserts and updates only, not deletes
+	Do ilLanguages.$dowork_() Returns lbOK
+	If not(lbOK)
+		Breakpoint
+		Calculate icDisplayMessage as ilLanguages.irErrorSql.NativeErrorText
+		Calculate ilValidation as ilLanguages.ilValidation
+	End If
+End If
+
+# restore previous current line
+Calculate ilLanguages.$line as lnCurrentLine
+
+# display any errors if they exist
+If ilValidation.$linecount
+	#  field specific errortext when things go wrong
+	Calculate llIssues as ilValidation
+	Calculate llIssues.$line as 0
+	Calculate $cinst.$objs.pbSave.$errortext as con(llIssues.$linecount,' issues to address') ## icDisplayMessage
+	While $Loop(llIssues)
+		# object name will typically have a suffix of LBL
+		Calculate lcObjectName as llIssues.object
+		# so remove suffix
+		Calculate lcObjectName as mid(lcObjectName,1,rpos('_',lcObjectName)-1)
+		
+		If llIssues.message<>''
+			Calculate $cinst.$objs.PagedPane.$objs.[lcObjectName].$errortext as llIssues.message
+		Else
+			Calculate $cinst.$objs.PagedPane.$objs.[lcObjectName].$errortext as llIssues.default
+		End If
+	End While
+End If
+
+If lbOK
+	Calculate icMode as ''
+End If
+
+Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+
+Do $cinst.$behaviour()
+Quit method lbOK

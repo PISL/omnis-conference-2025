@@ -1,0 +1,22 @@
+Do inherited ## populates delegate info into ilPreparation
+# Calculate iList as pList
+Calculate ilData as ilPreparation
+
+If pnRecordSpacing<>0
+	Calculate $cinst.$recordspacing as pnRecordSpacing
+End If
+
+# DG_ROLE has been cleared unless SPEAKER or TIGERLOGIC ## because other label options prefer this
+# we now have to restore all blanks to Delegate
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If isclear(ilData.DG_ROLE)
+		# Calculate ilData.DG_ROLE as 'Delegate'
+	End If
+End While
+
+# and now the printing loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

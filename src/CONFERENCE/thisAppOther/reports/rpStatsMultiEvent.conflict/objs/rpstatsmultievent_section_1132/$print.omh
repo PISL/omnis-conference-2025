@@ -1,0 +1,5 @@
+If ibIncludeGraphs
+	Do default
+Else
+	# omit graphs ## totals only
+End If

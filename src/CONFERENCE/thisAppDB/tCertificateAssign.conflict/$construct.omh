@@ -1,0 +1,6 @@
+Calculate icPrefix as 'CSN_'
+Calculate icPrimarykey as 'CSN_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'CSN_CRT_REF' ## also CRT_DG_REF
+
+Do inherited

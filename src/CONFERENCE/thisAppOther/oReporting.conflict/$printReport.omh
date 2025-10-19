@@ -1,0 +1,355 @@
+Begin reversible block
+	If iAuthor<>''
+		# set elsewhere - leave as is
+	Else If $ctask.trGroupOrg.GON_NAME_FULL<>''
+		Calculate iAuthor as $ctask.trGroupOrg.GON_NAME_FULL
+	Else
+		Calculate iAuthor as 'Platform Independent Systems Ltd'
+	End If
+	Calculate iTitle as plDisplayList.reportName
+	Calculate iSubject as plDisplayList.description
+End reversible block
+
+Calculate icDisplayMessage as ''
+Calculate iReportText as ''
+Calculate irOtherValues as ''
+
+Do method setPrintDestination (pnPrintDestination) Returns lnDevice
+
+# when invoking this code from a remote task, the current task seems to be lost, with task variables all undefined.
+# This means $DefineList and $Loop are out of scope and "lost".
+Calculate icTextOutput as ''
+Switch plDisplayList.reportCode
+	
+	Case 'DELEGATES'
+		Do method dataDelegates (plSearch1,plSorts,pbCheckBox1,#NULL,pbCheckbox2)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpDelegates.$open('*',plSearch1,plSorts,ilData,icSummary,ilOccupancy) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SortName,DG_REG_DATE,DG_OCCUPANCY,DG_GROUP,DG_STATUS,DG_EMAIL_INVOICE_SENT,DG_EMAIL_TRAVEL_SENT,DG_ROOM_ASSIGNMENT,TotalDue,TotalReceived,FOH_INV_NO,countSpouse,RoomRequirement') Returns iReportText
+		End If
+		
+	Case 'DG_SIMPLE'
+		Do method dataDelegates (plSearch1,plSorts,pbCheckBox1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpDelegatesSimple.$open('*',plSearch1,plSorts,ilData,icSummary,ilOccupancy) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SortName,DG_REG_DATE,DG_OCCUPANCY,DG_GROUP,DG_STATUS,DG_EMAIL_INVOICE_SENT,DG_EMAIL_TRAVEL_SENT,DG_ROOM_ASSIGNMENT') Returns iReportText
+		End If
+		
+	Case 'DG_NAMES'
+		Do method dataDelegates (plSearch1,plSorts,kTrue)
+		# remove the (P) for primary delegates
+		Calculate ilData.$line as 0
+		While $Loop(ilData)
+			If right(ilData.DisplayName,4)=' (P)'
+				Calculate ilData.DisplayName as mid(ilData.DisplayName,1,len(ilData.DisplayName)-4)
+			End If
+		End While
+		Do ilData.$sort($ref.SortName,0)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpDelegateNames.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,EO_NAME') Returns iReportText
+		End If
+		
+	Case 'PAX'
+		Do method dataPAX (plSearch1,ilData,irTotal)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpPAX.$open('*',plSearch1,ilData,irTotal) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,DG_SEQ,PX_ROLE,PX_NAME,PX_0_NIGHT,PX_0_BFAST,PX_0_LUNCH,PX_0_DINNER,PX_1_NIGHT,PX_1_BFAST,PX_1_LUNCH,PX_1_DINNER,PX_2_NIGHT,PX_2_BFAST,PX_2_LUNCH,PX_2_DINNER,PX_3_NIGHT,PX_3_BFAST,PX_3_LUNCH,PX_3_DINNER,PX_4_NIGHT,PX_4_BFAST,PX_4_LUNCH,PX_4_DINNER,PX_5_NIGHT,PX_5_BFAST,PX_5_LUNCH,PX_5_DINNER,PX_6_NIGHT,PX_6_BFAST,PX_6_LUNCH,PX_6_DINNER') Returns iReportText
+		End If
+		
+	Case 'DIETREQ'
+		Do method dataDietRequests (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpDietRequests.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,PX_ROLE,PX_NAME,DR_REQUEST') Returns iReportText
+		End If
+		
+	Case 'MEMBERS'
+		If pdFrom>dat('1 JAN 2010')
+			Do method dataMembers (pdFrom)
+			If pnPrintDestination=0|pnPrintDestination=1
+				Do $clib.$reports.rpMembers.$open('*',pdFrom,ilData) Returns lReportInst
+			Else
+				Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,MB_FROM,MB_TO,MB_TYPE,MB_CURRENCY,MB_AMOUNT') Returns iReportText
+			End If
+		Else
+			Calculate icDisplayMessage as 'you must provide a date'
+		End If
+		
+	Case 'SPEAKERS'
+		Do method dataSpeakers (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSpeakers.$open('*',plSearch1,pbCheckBox1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SpeakerSort,TPC_TITLE') Returns iReportText
+		End If
+		
+	Case 'SPEAKER_INVITE'
+		Do method dataSpeakersHistorical (kTrue) ## ilData
+		Do method dataEmailText ('SPKR_INVITE_TXT') ## icEmailTextBefore  icEmailTextAfter
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSpeakersInvite.$open('*',ilData,icEmailTextBefore,icEmailTextAfter) Returns lReportInst
+		Else
+			# Because we are integrating individual speaker info with a group of past topics,
+			# a conventional export from list will not work.
+			# Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SpeakerSort,PSN_EMAIL,attended,maxBookings') Returns iReportText
+			Do method textForEmail ## iReportText
+		End If
+		
+	Case 'TOPICS'
+		Do method dataTopics (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpTopics.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			# columns TPC_ABSTRACT and TPC_DESC will have CR's in the text to bugger up export
+			Calculate lcColumnsToExport as 'SpeakerSort,TPC_TITLE,Section,ROOM,DateSort,DateDisplay,AM_WHAT,AM_WHO,PM_WHAT,PM_WHO,EVE_WHAT_EVE_WHO'
+			Do method sanitizeList (ilData,'TPC_ABSTRACT,TPC_DESC','__')
+			# Calculate ilData.$line as 0
+			# While $Loop(ilData)
+			# Calculate ilData.TPC_ABSTRACT as replaceall(ilData.TPC_ABSTRACT,kCr,'__')
+			# Calculate ilData.TPC_DESC as replaceall(ilData.TPC_DESC,kCr,'__')
+			# End While
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','',lcColumnsToExport) Returns iReportText
+		End If
+		
+	Case 'LABELS'
+		If plSorts.sortCode='L4727'
+			Do $clib.$reports.rpDelegateTagsL4727.$open('*',plSearch1,pnReal1) Returns lReportInst
+		Else If plSorts.sortCode='L7418'
+			Do $clib.$reports.rpDelegateTagsL7418.$open('*',plSearch1,pnReal1) Returns lReportInst
+		Else ## INTERNAL
+			Do $clib.$reports.rpDelegateTags.$open('*',plSearch1,pnReal1) Returns lReportInst
+		End If
+		
+	Case 'NOT_THIS_CONF'
+		Do method dataPrevDGsNotRegThisEvent (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpPrevDGsNotRegThisEvent.$open('*',plSearch1,plSorts,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','PSN_SURNAME,PSN_FIRST_NAME,PreviousConferences,EO_NAME,PSN_EMAIL') Returns iReportText
+		End If
+		
+	Case 'SPKR_REQUESTS'
+		Do method dataSpeakerRequests (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSpeakerRequests.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,PSN_EMAIL') Returns iReportText
+		End If
+		
+	Case 'SESSION_FBACK'
+		Do method dataSessionFeedbackSessions (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSessionFeedback.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			# some of the columns seem to have <cr> in them which spoils an export
+			Calculate lcColumnsToExport as 'speakerName,ARR_DATE,ARR_STARTTIME,TPC_TITLE,delegateName,criteria,score,ARA_COMMENTS'
+			Do method sanitizeList (ilData,lcColumnsToExport,' // ')
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','',lcColumnsToExport) Returns iReportText
+		End If
+		
+	Case 'SPKR_COMPL'
+		Do method dataSpeakerCompletion (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSpeakerCompletion.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,PSN_EMAIL') Returns iReportText
+		End If
+		
+	Case 'GENERAL_FBACK'
+		Do method dataSessionFeedbackGeneral (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpGeneralFeedback.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','speakerName,ARR_DATE,ARR_STARTTIME,TPC_TITLE,delegateName,criteria,score,ARA_COMMENTS') Returns iReportText
+		End If
+		
+	Case 'ROOM_ALLOC'
+		Do method dataSpecificRooms (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSpecificRooms.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,SectionHeading,Arriving,Departing,DG_ROOM_ASSIGN,DG_STATUS,DG_GROUP') Returns iReportText
+		End If
+		
+	Case 'DG_EMAILS'
+		Do method dataDelegateEmails (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpDelegateEmails.$open('*',plSearch1,ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,PSN_EMAIL') Returns iReportText
+		End If
+		
+	Case 'WELCOME'
+		Do $clib.$reports.rpDelegateWelcome2.$open('*',plSearch1) Returns lReportInst
+		
+	Case 'BOOKING_STATS'
+		If pos('>',plFilter.code)
+			Calculate lnTruncateMinutes as mid(plFilter.code,1,pos('>',plFilter.code)-1)
+			Calculate lnHavingCriteria as mid(plFilter.code,pos('>',plFilter.code)+1,9)
+		Else
+			Calculate lnTruncateMinutes as plFilter.code
+			Calculate lnHavingCriteria as #NULL
+		End If
+		Do method dataSessionBookingSummary (plSearch1,lnTruncateMinutes,lnHavingCriteria)
+		If pnPrintDestination=0|pnPrintDestination=1
+			If isnumber(plFilter.code)
+				Do $clib.$reports.rpSessionBookingSummary.$open('*',plSearch1,lnTruncateMinutes,lnHavingCriteria,ilData) Returns lReportInst
+			Else
+				Do $clib.$reports.rpSessionBookingSummary.$open('*',plSearch1,lnTruncateMinutes,lnHavingCriteria,ilData) Returns lReportInst
+			End If
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','date,hour,min,type,total00,total01,total02,total03,total04,total05,total06,total07,total08,total09,total10,total11,total12,total13,total14,total15,total16,total17,total18,total19,total20,total21,total22,total23') Returns iReportText
+		End If
+		
+	Case 'TASK_STATS'
+		Do method dataRemoteTaskStats (plSearch1,plFilter.code,pnInteger1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpRemoteTaskStats.$open('*',plSearch1,ilData,plFilter.desc) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','STS_COUNT_START,STS_COUNT_END,durationTask,elapsedTask,elapsedUser,elapsedUnused') Returns iReportText
+		End If
+		
+	Case 'TASK_STATS_DB'
+		Do method dataRemoteTaskStats (plSearch1,plFilter.code,pnInteger1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpRemoteTaskStatsDb.$open('*',plSearch1,ilData,plFilter.desc) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','STS_COUNT_START,STS_COUNT_END,durationTask,elapsedTask,elapsedUser,elapsedUnused,STS_DB_REQUESTS,STS_FETCHES,STS_INSERTS,STS_UPDATES,STS_BYTES_REQTOTSENT,STS_BYTES_REQTOTRECD') Returns iReportText
+		End If
+		
+	Case 'ATTENDEE_LIST'
+		Do method dataArrangementBookings (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpArrangementBookings.$open('*',plSearch1,ilData,'') Returns lReportInst
+		Else
+			Breakpoint
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SpeakerSort,TPC_TITLE,ARR_DATE,ARR_STARTTIME,att1_PSN_SURNAME,att1_PSN_FIRST_NAME,att2_PSN_SURNAME,att2_PSN_FIRST_NAME,att3_PSN_SURNAME,att3_PSN_FIRST_NAME,att4_PSN_SURNAME,att4_PSN_FIRST_NAME') Returns iReportText
+		End If
+		
+	Case 'ATTENDEE_COUNT'
+		Do method dataArrangementCount (plSearch1,plSorts)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpArrangementCount.$open('*',plSearch1,plSorts,ilData) Returns lReportInst
+		Else
+			Breakpoint
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SpeakerSort,TPC_TITLE,ARR_DATE,ARR_STARTTIME,count,ARR_MAX_BOOKINGS,percent') Returns iReportText
+		End If
+		
+	Case 'SPKR_HIST'
+		Do method dataSpeakersHistorical (kFalse)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpSpeakersHistorical.$open('*',ilData,,'') Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SpeakerSort,PSN_EMAIL,attended,maxBookings') Returns iReportText
+		End If
+		
+	Case 'EVENTS_STATS'
+		Do method dataStatisticsAcrossEvents (plSelectList,,lrLocations) Returns ilData
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpStatsMultiEvent.$open('*',ilData,pbCheckBox1,lrLocations) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','') Returns iReportText
+		End If
+		
+	Case 'TKT_BREAKDOWN'
+		Do method dataTicketBreakdown (plSearch1) Returns ilData
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpTicketBreakdown.$open('*',ilData) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','') Returns iReportText
+		End If
+		
+	Case 'TEST_PDF'
+		Do $clib.$reports.r1.$open('*',,,'') Returns lReportInst
+		
+	Case 'TRAVEL_DEETS_IN'
+		Do method dataTravelInfoArrive (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpTravelInfo.$open('*',plSearch1,ilData,irOtherValues) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','TP_SHUTTLE,DG_GROUP,TP_LOCAL_ARR_TIME,TP_ARR_TIME,TP_ARR_POINT,SortName,TP_CARRIER,TP_FLIGHT_NO,TP_ARR_DATE,TP_CONNECT_HOW,TP_LOCAL_ARR_WHERE,TP_COMMENT') Returns iReportText
+		End If
+		
+	Case 'TRAVEL_DEETS_OT'
+		Do method dataTravelInfoDepart (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpTravelInfoDepart.$open('*',plSearch1,ilData,irOtherValues) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','SortName,TP_DEP_POINT,TP_DEP_FLIGHT_CODE,TP_DEP_FLIGHT_TIME,TP_DEP_VENUE,TP_DEP_METHOD') Returns iReportText
+		End If
+		
+	Case 'MUSICIANS'
+		Do method dataMusicInfo (plSearch1)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpMusicInfo.$open('*',plSearch1,ilData,'') Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,TP_MUSIC_PLAYER,TP_MUSIC_INSTRUMENT') Returns iReportText
+		End If
+		
+	Case 'VAT_RETURN'
+		Do method dataVATreturn (pdFrom,pdTo) ## ilData
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpVATreturn.$open('*',pdFrom,pdTo,ilData,pbCheckBox1,plSorts) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','EO_NAME,EO_VAT_NO,FOH_INV_NO,FOH_DATE,FOH_CURRENCY,FOD_UNIT_PRICE,FOD_UNIT_TAX,FOD_QTY') Returns iReportText
+		End If
+		
+	Case ''
+		# empty line - do nothing
+		# Calculate lbNoReport as kTrue
+		
+	Default
+		Breakpoint
+End Switch
+
+If pnPrintDestination=0|pnPrintDestination=1
+	Do lReportInst.$endprint()
+End If
+Do $cdevice.$assign(lnDevice) ## restore print destination
+
+If plDisplayList.otherinfo<>''
+	Do $ctask.toStrings.$TagContent(plDisplayList.otherInfo,'saveParam') Returns lcWhatToSave
+	If lcWhatToSave='real1'|lcWhatToSave='integer1'
+		Do $ctask.toValues.$initOrg('REP_PARAMS',plDisplayList.reportCode) Returns lrParameter
+		
+		If lcWhatToSave='real1'
+			Calculate lcParamXml as con('<real1>',pnReal1,'</real1>')
+		Else If lcWhatToSave='integer1'
+			Calculate lcParamXml as con('<integer1>',pnInteger1,'</integer1>')
+		End If
+		
+		If lrParameter.RFO_CHAR=lcParamXml
+			# nothing to save
+		Else
+			Calculate lrParameter.RFO_CHAR as lcParamXml
+			If lrParameter.RFO_SEQ>0
+				Do lrParameter.$update() Returns lbOK
+			Else
+				Calculate lrParameter.RFO_CLASS as 'REP_PARAMS'
+				Calculate lrParameter.RFO_VALUE as plDisplayList.reportCode
+				Calculate lrParameter.RFO_DESC as plDisplayList.reportName
+				Calculate lrParameter.RFO_GO_REF as $ctask.trGroupOrg.GO_SEQ
+				Do lrParameter.$insert() Returns lbOK
+				If not(lbOK)
+					If lrParameter.icValidationMessage<>''
+						Calculate icDisplayMessage as lrParameter.icValidationMessage
+					Else If lrParameter.irErrorSQL.NativeErrorText<>''
+						Calculate icDisplayMessage as lrParameter.irErrorSQL.NativeErrorText
+					End If
+				End If
+			End If
+		End If
+	End If
+End If
+
+If iReportText<>''
+	Quit method iReportText
+Else
+	Quit method lID
+End If

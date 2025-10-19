@@ -26,6 +26,7 @@
 
 		},
 		"contentlinecolor": "kColorDefault",
+		"contentpadding": "0",
 		"contextmenu": "mcDetail",
 		"cursor": 0,
 		"dataname": "ilLog",
@@ -86,6 +87,7 @@
 		"selectionbackcolor": "kColorDefault",
 		"selectiontextcolor": "kColorDefault",
 		"showcolumnlines": true,
+		"showcolumnslinesifempty": false,
 		"showheaderlines": true,
 		"showrowlines": false,
 		"sidepanel": false,

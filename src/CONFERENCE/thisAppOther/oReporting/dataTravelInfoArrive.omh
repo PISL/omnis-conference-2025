@@ -44,5 +44,16 @@ If ilData.$linecount=0
 	Calculate ilData.$line as ilData.$linecount
 	Calculate ilData.DisplayName as 'no travel information provided'
 Else
-	Do ilData.$sort($ref.TP_SHUTTLE,0,$ref.SortDate,0,$ref.SortTime,0,$ref.TP_LOCAL_ARR_WHERE,0,$ref.TP_ARR_POINT,0,$ref.SortName,0)
+	If pcReportCode='TRAVEL_DEETS_DG'
+		# This report is to be sent to delgates arriving at local pick up point so they can connect with ine another
+		# so exclude irrelevant records.
+		Do ilData.$search($ref.TP_SHUTTLE=2,1,0,1,0)
+		Do ilData.$remove(kListKeepSelected)
+		Do ilData.$search(0)
+		
+		Do ilData.$sort($ref.TP_LOCAL_ARR_TIME,0,$ref.SortName,0)
+	Else
+		Do ilData.$sort($ref.TP_SHUTTLE,0,$ref.SortDate,0,$ref.SortTime,0,$ref.TP_LOCAL_ARR_WHERE,0,$ref.TP_ARR_POINT,0,$ref.SortName,0)
+	End If
+	
 End If

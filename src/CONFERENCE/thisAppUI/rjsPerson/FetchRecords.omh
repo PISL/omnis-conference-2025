@@ -10,9 +10,18 @@ If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
 	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
 End If
 
+# ilDisplay is a list of Persoons joined to a Conference so people who have attended more than once will appear more than once.
+Do ilDisplayRecords.$sort($ref.PSN_SEQ,0,$ref.CF_TITLE,kTrue)
+# The $search relies on a comparison on previous line so search should begin from line 1
+# N.B. what is normally $search(condition,1,0,1,0)   has  become    $search(condition,0,0,1,0
+Calculate ilDisplayRecords.$line as 1
+Do ilDisplayRecords.$search($ref.PSN_SEQ=$ref.[ilDisplayRecords.$line-1].PSN_SEQ,0,0,1,0)
+Do ilDisplayRecords.$remove(kListDeleteSelected)
+
 Do ilDisplayRecords.$sort($ref.SortName,0)
 
 Calculate ilDisplayRecords.$line as 0
+Calculate inCountTopics as 0
 # While $Loop(ilDisplayRecords)
 # Do ilDisplayRecords.$DisplayName()
 # End While

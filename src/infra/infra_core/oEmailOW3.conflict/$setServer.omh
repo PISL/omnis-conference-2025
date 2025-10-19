@@ -1,0 +1,313 @@
+# if the configCode exists, use it first
+If len(prServer.configCode)
+	# good to go
+Else
+	Calculate prServer.configCode as 'DEFAULT'
+End If
+Do method getServer (prServer.configCode,lrAttributes) Returns lbOK
+If not(lbOK)
+	Quit method kFalse
+End If
+
+# return attributes to calling method
+Calculate prefAttributes as lrAttributes
+
+Do irCurlOptions.$clear()
+Calculate icServerURI as ''
+Calculate icUser as ''
+Calculate icPassword as ''
+Calculate icFromAddress as ''
+Calculate icFromName as ''
+
+# then any other options provided can override the base server setting
+# OW3options
+Do prServer.$cols.$findname('OW3options') Returns liColRef
+If liColRef
+	If prServer.OW3options.$colcount
+		Calculate irCurlOptions as prServer.OW3options
+	Else
+		Do lrAttributes.$cols.$findname('OW3options') Returns liColRef
+		If liColRef
+			If lrAttributes.OW3options.$colcount
+				Calculate irCurlOptions as lrAttributes.OW3options
+			End If
+		End If
+	End If
+Else
+	Do lrAttributes.$cols.$findname('OW3options') Returns liColRef
+	If liColRef
+		If lrAttributes.OW3options.$colcount
+			Calculate irCurlOptions as lrAttributes.OW3options
+		End If
+	End If
+End If
+
+# icServerURI
+Do prServer.$cols.$findname('server') Returns liColRef
+If liColRef
+	If prServer.server<>''
+		Calculate icServerURI as prServer.server
+	End If
+End If
+If isclear(icServerURI)
+	Do lrAttributes.$cols.$findname('server') Returns liColRef
+	If liColRef
+		If lrAttributes.server<>''
+			Calculate icServerURI as lrAttributes.server
+		End If
+	End If
+End If
+
+# icUser      set by either loginName or account
+Do prServer.$cols.$findname('loginName') Returns liColRef
+If liColRef
+	If prServer.loginName<>''
+		Calculate icUser as prServer.loginName
+	End If
+End If
+If isclear(icUser)
+	Do prServer.$cols.$findname('account') Returns liColRef
+	If liColRef
+		If prServer.account<>''
+			Calculate icUser as prServer.account
+		End If
+	End If
+End If
+If isclear(icUser)
+	Do lrAttributes.$cols.$findname('loginName') Returns liColRef
+	If liColRef
+		If lrAttributes.loginName<>''
+			Calculate icUser as lrAttributes.loginName
+		End If
+	End If
+End If
+If isclear(icUser)
+	Do lrAttributes.$cols.$findname('account') Returns liColRef
+	If liColRef
+		If lrAttributes.account<>''
+			Calculate icUser as lrAttributes.account
+		End If
+	End If
+End If
+
+
+# icPassword       set by either loginPassword or pw
+Do prServer.$cols.$findname('loginPassword') Returns liColRef
+If liColRef
+	If prServer.loginPassword<>''
+		Calculate icPassword as prServer.loginPassword
+	End If
+End If
+If isclear(icPassword)
+	Do prServer.$cols.$findname('pw') Returns liColRef
+	If liColRef
+		If prServer.pw<>''
+			Calculate icPassword as prServer.pw
+		End If
+	End If
+End If
+If isclear(icPassword)
+	Do lrAttributes.$cols.$findname('loginPassword') Returns liColRef
+	If liColRef
+		If lrAttributes.loginPassword<>''
+			Calculate icPassword as lrAttributes.loginPassword
+		End If
+	End If
+End If
+If isclear(icPassword)
+	Do lrAttributes.$cols.$findname('pw') Returns liColRef
+	If liColRef
+		If lrAttributes.pw<>''
+			Calculate icPassword as lrAttributes.pw
+		End If
+	End If
+End If
+
+
+# ibRequireSecureConnection
+Do prServer.$cols.$findname('secure') Returns liColRef
+If liColRef
+	Calculate ibRequireSecureConnection as pick(isclear(prServer.secure),prServer.secure,kFalse)
+Else
+	Do lrAttributes.$cols.$findname('secure') Returns liColRef
+	If liColRef
+		Calculate ibRequireSecureConnection as pick(isclear(lrAttributes.secure),lrAttributes.secure,kFalse)
+	End If
+End If
+
+# inTimeout
+Do prServer.$cols.$findname('timeout') Returns liColRef
+If liColRef
+	Calculate inTimeout as pick(prServer.timeout>0,inTimeout,prServer.timeout)
+Else
+	Do lrAttributes.$cols.$findname('timeout') Returns liColRef
+	If liColRef
+		Calculate inTimeout as pick(lrAttributes.timeout>0,inTimeout,lrAttributes.timeout)
+	End If
+End If
+
+# inLogType
+Do prServer.$cols.$findname('debugLog') Returns liColRef
+If liColRef
+	If prServer.debugLog<>''
+		Do method setDebugLog (prServer.debugLog)
+	Else
+		Do lrAttributes.$cols.$findname('debugLog') Returns liColRef
+		If liColRef
+			If lrAttributes.debugLog<>''
+				Do method setDebugLog (lrAttributes.debugLog)
+			Else
+				Do method setDebugLog ('none')
+			End If
+		End If
+	End If
+Else
+	Do lrAttributes.$cols.$findname('debugLog') Returns liColRef
+	If liColRef
+		If lrAttributes.debugLog<>''
+			Do method setDebugLog (lrAttributes.debugLog)
+		Else
+			Do method setDebugLog ('none')
+		End If
+	Else
+		Do method setDebugLog ('none')
+	End If
+End If
+
+# icFromAddress
+Do prServer.$cols.$findname('senderAddress') Returns liColRef
+If liColRef
+	If prServer.senderAddress<>''
+		Calculate icFromAddress as prServer.senderAddress
+	End If
+End If
+If isclear(icFromAddress)
+	Do lrAttributes.$cols.$findname('senderAddress') Returns liColRef
+	If liColRef
+		If lrAttributes.senderAddress<>''
+			Calculate icFromAddress as lrAttributes.senderAddress
+		End If
+	End If
+End If
+
+# icFromName
+Do prServer.$cols.$findname('senderName') Returns liColRef
+If liColRef
+	If prServer.senderName<>''
+		Calculate icFromName as prServer.senderName
+	End If
+End If
+If isclear(icFromName)
+	Do lrAttributes.$cols.$findname('senderName') Returns liColRef
+	If liColRef
+		If lrAttributes.senderName<>''
+			Calculate icFromName as lrAttributes.senderName
+		End If
+	End If
+End If
+
+# emailTO
+# Do prServer.$cols.$findname('emailTO') Returns liColRef
+# If liColRef
+# If pbMergeAddresses
+# Do ilTo.$merge(prServer.emailTO)
+# Else
+# Calculate ilTo as prServer.emailTO
+# End If
+# End If
+# If ilTo.$linecount=0
+# Do lrAttributes.$cols.$findname('emailTO') Returns liColRef
+# If liColRef
+# If lrAttributes.emailTO.$linecount
+# If pbMergeAddresses
+# Do ilTo.$merge(lrAttributes.emailTO)
+# Else
+# Calculate ilTo as lrAttributes.emailTO
+# End If
+# End If
+# End If
+# End If
+# Do ilTo.$cols.C1.$removeduplicates(kTrue)
+
+# emailCC
+# Do prServer.$cols.$findname('emailCC') Returns liColRef
+# If liColRef
+# If pbMergeAddresses
+# Do ilCC.$merge(prServer.emailCC)
+# Else
+# Calculate ilCC as prServer.emailCC
+# End If
+# End If
+# Do lrAttributes.$cols.$findname('emailCC') Returns liColRef
+# If liColRef
+# If lrAttributes.emailCC.$linecount
+# If pbMergeAddresses
+# Do ilCC.$merge(lrAttributes.emailCC)
+# Else
+# Calculate ilCC as lrAttributes.emailCC
+# End If
+# End If
+# End If
+# Do ilCC.$cols.C1.$removeduplicates(kTrue)
+
+# emailBCC
+# Do prServer.$cols.$findname('emailBCC') Returns liColRef
+# If liColRef
+# If prServer.emailBCC.$linecount
+# If pbMergeAddresses
+# Do ilBcc.$merge(prServer.emailBCC)
+# Else
+# Calculate ilBcc as prServer.emailBCC
+# End If
+# End If
+# End If
+# Do lrAttributes.$cols.$findname('emailBCC') Returns liColRef
+# If liColRef
+# If lrAttributes.emailBCC.$linecount
+# If pbMergeAddresses
+# Do ilBcc.$merge(lrAttributes.emailBCC)
+# Else
+# Calculate ilBcc as lrAttributes.emailBCC
+# End If
+# End If
+# End If
+# Do ilBcc.$cols.C1.$removeduplicates(kTrue)
+
+# mandatory settings check
+If icServerURI<>''
+	# ok
+Else
+	Calculate icErrorText as con(nam(icServerURI),' not set')
+	Quit method kFalse
+End If
+If icUser<>''
+	# ok
+Else
+	Calculate icErrorText as con(nam(icUser),' not set')
+	Quit method kFalse
+End If
+If icPassword<>''
+	# ok
+Else
+	Calculate icErrorText as con(nam(icPassword),' not set')
+	Quit method kFalse
+End If
+If icFromAddress<>''
+	# ok
+Else
+	Calculate icErrorText as con(nam(icFromAddress),' not set')
+	Quit method kFalse
+End If
+If icFromName<>''
+	# ok
+Else
+	Calculate icErrorText as con(nam(icFromName),' not set')
+	Quit method kFalse
+End If
+# If ilTo.$linecount
+# ok
+# Else
+# Quit method kFalse
+# End If
+
+Quit method kTrue

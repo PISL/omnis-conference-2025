@@ -1,0 +1,9 @@
+If pRow.C1='ilLanguages'
+	Calculate ilLanguages.$line as pRow.C2
+	Calculate inLangTextLine as ilLanguages.$line
+	
+	Calculate irLangText as pRow.C3
+	
+	Do $cinst.$behaviour()
+	# Do $cinst.$clientOkCancelMsg(con('ilLanguages.$line = ',ilLanguages.$line))
+End If

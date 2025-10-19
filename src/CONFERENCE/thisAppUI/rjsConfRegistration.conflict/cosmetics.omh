@@ -1,0 +1,12 @@
+# cosmetic consistency
+Calculate irRegistration.PSN_FIRST_NAME as cap(irRegistration.PSN_FIRST_NAME)
+Calculate irRegistration.PSN_SURNAME as cap(irRegistration.PSN_SURNAME)
+Calculate irRegistration.PSN_SPOUSE_NAME as cap(irRegistration.PSN_SPOUSE_NAME)
+Calculate irRegistration.PSN_EMAIL as low(irRegistration.PSN_EMAIL)
+Calculate irRegistration.PSN_PHOTOID_NO as upp(irRegistration.PSN_PHOTOID_NO)
+Calculate irRegistration.EO_NAME as cap(irRegistration.EO_NAME)
+Calculate irRegistration.EO_EMAIL as low(irRegistration.EO_EMAIL)
+# Calculate irRegistration.EO_ADDR_BILL as cap(irRegistration.EO_ADDR_BILL)
+Calculate irRegistration.EO_CONTACT as cap(irRegistration.EO_CONTACT)
+Calculate irRegistration.EO_COMPANY_NO as upp(irRegistration.EO_COMPANY_NO)
+Calculate irRegistration.EO_VAT_NO as upp(irRegistration.EO_VAT_NO)

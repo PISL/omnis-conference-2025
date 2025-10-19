@@ -1,8 +1,12 @@
 On evTabSelected
 	Calculate inCurrentTab as pTabNumber
 	
-	If inCurrentTab=cnTabTopics
+	If inCurrentTab=cnTabTopicsConf
 		Do method FetchAndPresentTopics
+	Else If inCurrentTab=cnTabHistory|inCurrentTab=cnTabTechnical
+		# I want to disable the TopicEdit tab when user clicks on History
+		# which is strictly Speakers conference history.  Nothing to do with a specific topic.
+		Do irTopic.$clear()
 	End If
 	
 	Do $cinst.$behaviour

@@ -1,3 +1,8 @@
+# 2025-05-20  RSM  added a facility to set excuse errors without a direct parameter call
+If isclear(pDoNotReportTheseErrors)
+	Calculate pDoNotReportTheseErrors as icDoNotReportTheseErrors
+End If
+
 Do irErrorSQL.$clear()
 
 Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
@@ -13,19 +18,50 @@ If lbExecuteOk
 Else
 	Do $cinst.$sql_error()
 	# Breakpoint {[#S1]  [#S2]}
-	If pos(con(',',irErrorSQL.NativeErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
-		# do not report error
-		Calculate lbExecuteOk as kTrue
-	Else If pos(con(',',irErrorSQL.ErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
-		# do not report error
-		Calculate lbExecuteOk as kTrue
+	# 2025-05-21  RSM  Why am I getting weird errors like this?
+	# While developing wSequencesOmnisToPg I am getting situations where $prepare fails but $sql_error() returns weird shit
+	# resulting in ReportError being called which leads to nowhere because there is no error to report!
+	# Hence check using $findname()
+	Do irErrorSQL.$cols.$findname('NativeErrorCode') Returns liColRef
+	If liColRef
+		If pos(con(',',irErrorSQL.NativeErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
+			# do not report error
+			Calculate lbExecuteOk as kTrue
+		Else If pos(con(',',irErrorSQL.ErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
+			# do not report error
+			Calculate lbExecuteOk as kTrue
+		Else
+			Do method ReportError
+		End If
 	Else
-		Do method ReportError
+		Breakpoint $sql_error is not returning the row of data expected  2025-05-21  RSM
 	End If
 End If
 
 If lbImmediateSession
+	# 2025-05-21  RSM  Changed placement of this code, even though its been running further below for years.
+	# When calling $recordStats a test is done on $damname failed Omnis error checking, raising a runtime error,
+	# presumably because the $setSession(#null,null,kTrue) was clearing the current session.
+	
+	Calculate inRowsAffected as $cinst.$statementobject.$rowsaffected
+	Calculate inRowsFetched as $cinst.$statementobject.$rowsfetched
+	If $columnExists($ctask.trTaskStats,'STS_TYPE')
+		If $ctask.trTaskStats.STS_TYPE='F'|$ctask.trTaskStats.STS_TYPE='J' ## (F)at or (J)s client
+			Do $cinst.$recordStats() ## do not bother recording the method/parameters
+			Quit method lbExecuteOk
+		End If
+	End If
+	
 	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+Else
+	Calculate inRowsAffected as $cinst.$statementobject.$rowsaffected
+	Calculate inRowsFetched as $cinst.$statementobject.$rowsfetched
+	If $columnExists($ctask.trTaskStats,'STS_TYPE')
+		If $ctask.trTaskStats.STS_TYPE='F'|$ctask.trTaskStats.STS_TYPE='J' ## (F)at or (J)s client
+			Do $cinst.$recordStats() ## do not bother recording the method/parameters
+			Quit method lbExecuteOk
+		End If
+	End If
 End If
 
 # 2024-01-26 RSM  We are not passing on SQL errors to dev team when they occur in HTMLP
@@ -35,15 +71,6 @@ If irErrorSQL.ErrorText<>''
 		# this is ultra thin running
 		Do $ProcedureStack() Returns lcStackPath
 		Do $ctask.tlDbErrors.$add(irErrorSQL,lcStackPath)
-	End If
-End If
-
-Calculate inRowsAffected as $cinst.$statementobject.$rowsaffected
-Calculate inRowsFetched as $cinst.$statementobject.$rowsfetched
-If $columnExists($ctask.trTaskStats,'STS_TYPE')
-	If $ctask.trTaskStats.STS_TYPE='F'|$ctask.trTaskStats.STS_TYPE='J' ## (F)at or (J)s client
-		Do $cinst.$recordStats() ## do not bother recording the method/parameters
-		Quit method lbExecuteOk
 	End If
 End If
 

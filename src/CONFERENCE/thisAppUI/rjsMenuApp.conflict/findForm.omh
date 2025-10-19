@@ -1,0 +1,6 @@
+JavaScript:var forms = jOmnis.omnisInsts[0].forms;
+JavaScript:for (var i = 0; i < forms.length; i++) {
+JavaScript:if (forms[i])
+JavaScript:if (forms[i].serverElem.id == pFormName)
+JavaScript:return forms[i]
+JavaScript:}

@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 733,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 819,
 	"superclass": "infra.rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1070,
+	"nextident": 1082,
 	"lastgroupident": 0,
 	"cvardefs": [
 		{
@@ -66,8 +66,24 @@
 	],
 	"ivardefs": [
 		{
+			"name": "ibActiveConference",
+			"order": 21,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
 			"name": "ibDisplayMarkdownHelp",
 			"order": 16,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse"
+		},
+		{
+			"name": "ibDisplayTopicsForCurrentConference",
+			"order": 20,
 			"type": "kBoolean",
 			"subtype": 0,
 			"sublen": 0,
@@ -109,6 +125,20 @@
 			"sublen": 0
 		},
 		{
+			"name": "ilColoursBackground",
+			"order": 19,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilColoursText",
+			"order": 18,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
 			"name": "ilDelegates",
 			"order": 1,
 			"type": "kList",
@@ -141,6 +171,13 @@
 			"order": 11,
 			"type": "kList",
 			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inCountTopics",
+			"order": 22,
+			"type": "kInteger",
+			"subtype": "k32bitint",
 			"sublen": 0
 		},
 		{
@@ -204,7 +241,7 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2018-04-17 10:03:21",
-		"currentlayoutbreakpoint": 768,
+		"currentlayoutbreakpoint": 1024,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "",
 		"designguides": "",
@@ -221,9 +258,9 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 183,
+		"left": 314,
 		"menulineheight": 0,
-		"moddate": "2025-05-07 10:51:43",
+		"moddate": "2025-08-28 20:10:23",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -234,7 +271,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 0,
+		"top": 132,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "",

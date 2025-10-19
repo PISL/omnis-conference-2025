@@ -1,0 +1,15 @@
+If upp(pcDebugCode)='FULL'
+	Calculate inLogType as kOW3logBasic+kOW3logData+kOW3logSecureData
+Else If upp(pcDebugCode)='BASIC+DATA'
+	Calculate inLogType as kOW3logBasic+kOW3logData
+Else If upp(pcDebugCode)='BASIC'
+	Calculate inLogType as kOW3logBasic
+Else If upp(pcDebugCode)='FULL+HTML'
+	Calculate inLogType as kOW3logBasic+kOW3logData+kOW3logSecureData+kOW3logHTML
+Else If upp(pcDebugCode)='BASIC+DATA+HTML'
+	Calculate inLogType as kOW3logBasic+kOW3logData+kOW3logHTML
+Else If upp(pcDebugCode)='BASIC+HTML'
+	Calculate inLogType as kOW3logBasic+kOW3logHTML
+Else ## NONE
+	Calculate inLogType as kOW3logNone
+End If

@@ -1,0 +1,10 @@
+# Enter your termination code here
+Do inherited
+
+If trLogAccess.ULA_SEQ>0
+	Calculate trLogAccess.ULA_LOGOUT as $ServerTime()
+	# There is a new systaskstats table that is being created in $construct of rtSuper and updated in $destruct in rtSuper.
+	# it records the session statistics so, the ones here were removed.
+	
+	Do trLogAccess.$update() Returns lbOK
+End If

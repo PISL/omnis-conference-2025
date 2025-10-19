@@ -57,6 +57,9 @@
 		"pagesize": 0,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"rightclicksetsline": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"selectedlinecolor": "kColorDefault",
 		"selectedlinesonly": false,
 		"selectedlinetextcolor": "kColorDefault",
@@ -71,7 +74,7 @@
 	"layout": {
 		"320": {
 			"left": 8,
-			"top": 32,
+			"top": 72,
 			"width": 208,
 			"height": 136,
 			"dragborder": false,
@@ -81,7 +84,7 @@
 		},
 		"375": {
 			"left": 8,
-			"top": 32,
+			"top": 72,
 			"width": 208,
 			"height": 136,
 			"dragborder": false,
@@ -91,8 +94,8 @@
 		},
 		"480": {
 			"left": 8,
-			"top": 32,
-			"width": 288,
+			"top": 64,
+			"width": 360,
 			"height": 136,
 			"dragborder": false,
 			"edgefloat": "kEFright",
@@ -101,7 +104,7 @@
 		},
 		"667": {
 			"left": 8,
-			"top": 32,
+			"top": 96,
 			"width": 128,
 			"height": 176,
 			"dragborder": false,
@@ -111,8 +114,8 @@
 		},
 		"768": {
 			"left": 8,
-			"top": 32,
-			"width": 136,
+			"top": 88,
+			"width": 168,
 			"height": 208,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -121,9 +124,9 @@
 		},
 		"1024": {
 			"left": 8,
-			"top": 32,
+			"top": 88,
 			"width": 176,
-			"height": 208,
+			"height": 176,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
@@ -131,7 +134,7 @@
 		},
 		"1700": {
 			"left": 8,
-			"top": 40,
+			"top": 88,
 			"width": 176,
 			"height": 192,
 			"dragborder": false,

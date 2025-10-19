@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.DR_PX_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' pax reference (DR_PX_REF) missing')
+End If
+
+If $cinst.DR_REQUEST<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' dietary request (DR_REQUEST) missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

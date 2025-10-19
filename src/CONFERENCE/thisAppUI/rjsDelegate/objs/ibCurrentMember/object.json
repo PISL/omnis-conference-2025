@@ -1,6 +1,6 @@
 {
 	"ident": 1135,
-	"order": 52,
+	"order": 50,
 	"objtype": "kComponent",
 	"componentlib": "jsCheckbox",
 	"componentctrl": "Checkbox Control",
@@ -49,8 +49,8 @@
 	},
 	"layout": {
 		"320": {
-			"left": 80,
-			"top": 688,
+			"left": 304,
+			"top": 640,
 			"width": 79,
 			"height": 19,
 			"dragborder": false,
@@ -59,8 +59,8 @@
 			"visible": true
 		},
 		"375": {
-			"left": 80,
-			"top": 688,
+			"left": 304,
+			"top": 624,
 			"width": 79,
 			"height": 19,
 			"dragborder": false,
@@ -69,9 +69,9 @@
 			"visible": true
 		},
 		"480": {
-			"left": 80,
-			"top": 688,
-			"width": 79,
+			"left": 96,
+			"top": 616,
+			"width": 64,
 			"height": 19,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -79,8 +79,8 @@
 			"visible": true
 		},
 		"667": {
-			"left": 168,
-			"top": 712,
+			"left": 312,
+			"top": 600,
 			"width": 79,
 			"height": 19,
 			"dragborder": false,
@@ -89,8 +89,8 @@
 			"visible": true
 		},
 		"768": {
-			"left": 304,
-			"top": 752,
+			"left": 408,
+			"top": 704,
 			"width": 79,
 			"height": 19,
 			"dragborder": false,
@@ -100,7 +100,7 @@
 		},
 		"1024": {
 			"left": 456,
-			"top": 536,
+			"top": 520,
 			"width": 79,
 			"height": 19,
 			"dragborder": false,
@@ -110,7 +110,7 @@
 		},
 		"1700": {
 			"left": 456,
-			"top": 552,
+			"top": 544,
 			"width": 79,
 			"height": 19,
 			"dragborder": false,

@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 172,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 184,
 	"superclass": "rjsInfraBlank",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1070,
+	"nextident": 1072,
 	"lastgroupident": 2,
 	"cvardefs": [
 		{
@@ -135,6 +135,13 @@
 			"type": "kObject",
 			"subtype": "",
 			"sublen": 0
+		},
+		{
+			"name": "irOS",
+			"order": 18,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
 		}
 	],
 	"properties": {
@@ -155,7 +162,7 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2024-03-11 17:23:06",
-		"currentlayoutbreakpoint": 1024,
+		"currentlayoutbreakpoint": 320,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "",
 		"designguides": "",
@@ -174,7 +181,7 @@
 		"layouttype": "kLayoutTypeResponsive",
 		"left": 193,
 		"menulineheight": 0,
-		"moddate": "2025-01-18 15:43:12",
+		"moddate": "2025-09-04 16:06:20",
 		"okkeyobject": "pbSave",
 		"serverlessclient": false,
 		"showascheckedout": false,

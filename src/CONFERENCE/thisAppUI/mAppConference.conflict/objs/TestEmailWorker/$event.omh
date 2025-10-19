@@ -1,0 +1,35 @@
+
+Begin reversible block
+	Do $DefineList(trGroupOrg,'infra.tentGroupOrganisations')
+	Do trGroupOrg.$fetch_("where GO_NAME_SHORT = 'OmnisWorld' ")
+End reversible block
+
+Do $tasks.tkWorkerApp.$open('*',tcCurrentLibrary,$cinst.$task(),'SMTP') Returns irefWorkerTask
+Do irefWorkerTask.$getVar("ibWorkerOK") Returns lbProceed
+If lbProceed
+	Do irefWorkerTask.$getRowMessage() Returns lrEmailMessageBody
+	Do irefWorkerTask.$getRowAttributes() Returns lrEmailAttributes
+	Do irefWorkerTask.$getRowServer() Returns lrEmailMessageServer
+	
+	
+	Calculate lrEmailMessageBody.text as 'Test message from CONFERENCE console'
+	Calculate lrEmailMessageBody.html as ""
+	
+	Calculate lrEmailAttributes.subject as 'Conference console - SMTP through worker'
+	Calculate lcTo as 'graham@omnisworld.org'
+	Calculate lrEmailAttributes.to as toStrings.$StringToList(lcTo,",")
+	Calculate lrEmailAttributes.cc as list()
+	Calculate lrEmailAttributes.bcc as list()
+	Calculate lrEmailAttributes.priority as kOW3msgPriorityNormal
+	
+	
+	Do irefWorkerTask.$setCaller($cinst)
+	Do lrParams.$cols.$add('message',kCharacter,kSimplechar,50)
+	# Do irefWorkerTask.$setCompletionMethod("$emailResult",lrParams)
+	Calculate lrEmailMessageServer.configCode as 'GENERIC_MSG'
+	
+	Do irefWorkerTask.$sendEmail(lrEmailMessageServer,lrEmailAttributes,lrEmailMessageBody)
+	
+End If
+
+Quit method

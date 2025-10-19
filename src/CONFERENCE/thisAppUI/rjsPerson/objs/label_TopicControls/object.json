@@ -80,10 +80,10 @@
 			"visible": true
 		},
 		"667": {
-			"left": 152,
+			"left": 336,
 			"top": 368,
 			"width": 120,
-			"height": 24,
+			"height": 16,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -91,10 +91,10 @@
 			"visible": true
 		},
 		"768": {
-			"left": 160,
-			"top": 368,
+			"left": 288,
+			"top": 360,
 			"width": 120,
-			"height": 24,
+			"height": 16,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",

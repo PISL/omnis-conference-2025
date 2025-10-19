@@ -1,0 +1,19 @@
+For lnColCount from 0 to 23 step 1
+	Calculate lcSuffix as jst(lnColCount,'-2P0')
+	
+	If ilData.total[lcSuffix]=irTopFive.top1
+		Calculate $cinst.$objs.total[lcSuffix].$textcolor as kRed
+	Else If ilData.total[lcSuffix]=irTopFive.top2
+		Calculate $cinst.$objs.total[lcSuffix].$textcolor as kMagenta
+	Else If ilData.total[lcSuffix]=irTopFive.top3
+		Calculate $cinst.$objs.total[lcSuffix].$textcolor as kBlue
+	Else If ilData.total[lcSuffix]=irTopFive.top4
+		Calculate $cinst.$objs.total[lcSuffix].$textcolor as kGreen
+	Else If ilData.total[lcSuffix]=irTopFive.top5
+		Calculate $cinst.$objs.total[lcSuffix].$textcolor as kCyan
+	Else
+		Calculate $cinst.$objs.total[lcSuffix].$textcolor as kBlack
+	End If
+End For
+
+Do default

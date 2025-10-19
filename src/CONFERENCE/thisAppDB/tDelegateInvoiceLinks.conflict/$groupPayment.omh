@@ -1,0 +1,43 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Calculate ldtStart as #D
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pnDG_SEQ),$cinst.$type,0,ilRESTextensions))
+	Calculate inServiceMS as ddiff(kCentiSecond,ldtStart,#D)*10
+	Calculate inRESTserverMS as toWeb.inServerTime
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+# if there are multiple delegates on this invoice, this fetch will get them all
+Sta:where DIL_FOH_REF =
+# but we have to find the FOH_REF using the DG_REF first
+Sta:( select DIL_FOH_REF from [$cinst.$servertablenames()]
+Sta:where DIL_DG_REF = @[pnDG_SEQ]
+Sta:)
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do $cinst.$search($ref.DIL_DG_REF=pnDG_SEQ,1,0,0,0)
+
+Quit method lbOK

@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.CF_VEN_REF as ilVenues.VEN_SEQ ## sVenue

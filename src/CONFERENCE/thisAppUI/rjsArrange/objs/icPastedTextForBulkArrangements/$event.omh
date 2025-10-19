@@ -1,0 +1,5 @@
+On evAfter
+	If icPastedTextForBulkArrangements<>''
+		Do method parseBulkArrangementText
+	End If
+	Do $cinst.$behaviour()

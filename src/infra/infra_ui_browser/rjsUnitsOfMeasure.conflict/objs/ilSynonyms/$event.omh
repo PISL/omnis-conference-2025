@@ -1,0 +1,6 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate ilSynonyms.$line as pLineNumber
+	Calculate irCurrentSynonym as ilSynonyms
+	
+	Do $cinst.$behaviour()

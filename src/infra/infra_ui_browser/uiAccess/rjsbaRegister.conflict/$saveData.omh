@@ -1,0 +1,42 @@
+# reverses the hex coded GO_MEC_ID before saving
+Calculate lcMEChex as replaceall(replaceall(irCurrentRecord.MECID,'-',''),' ','')
+# Calculate irCurrentRecord.GO_MEC_ID as bintoint64(binfromhex(lcMEChex))
+
+# we need to do three inserts so start a transaction
+Do irCurrentRecord.$beginTransaction(#NULL,loSession,loStatement) Returns lbRunningAsTransaction
+If lbRunningAsTransaction
+	Do irCurrentOrgName.$setSession(loSession,loStatement)
+Else
+	Breakpoint
+	Quit method kFalse
+End If
+Calculate irCurrentOrgName.GON_NAME_FULL as irCurrentRecord.GO_NAME_FULL
+Calculate irCurrentRecord.GO_NAME_FULL as #NULL
+
+Do inherited Returns lbOK
+
+If lbOK
+	Calculate irCurrentOrgName.GON_GO_REF as irCurrentRecord.GO_SEQ
+	Calculate irCurrentOrgName.GON_GO_REF as irCurrentRecord.GO_SEQ
+	Calculate irCurrentOrgName.GON_TYPE as 'I' ## internal name
+	Do irCurrentOrgName.$insert() Returns lbOK
+End If
+
+If lbOK
+	Do irCurrentRecord.$commitTransaction(#NULL,loSession,loStatement)
+Else
+	Calculate irCurrentRecord.GO_NAME_FULL as irCurrentOrgName.GON_NAME_FULL
+	Calculate irCurrentRecord.GO_SEQ as #NULL
+	Calculate irCurrentOrgName.GON_SEQ as #NULL
+	Do irCurrentRecord.$rollbackTransaction()
+End If
+Do irCurrentOrgName.$setSession(#NULL,#NULL,kTrue)
+
+
+If lbOK
+	# login as admin / admin
+	# change password
+	# get new password by going to new pane
+	
+	
+End If

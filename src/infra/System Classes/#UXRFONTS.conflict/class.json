@@ -1,0 +1,24 @@
+{
+	"classtype": "kSystemtable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 4,
+	"properties": {
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-27 11:20:24",
+		"desc": "",
+		"external": false,
+		"moddate": "2019-02-15 13:11:56",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.00"
+	},
+	"fonts": [
+		"-adobe-helvetica-",
+		"-adobe-courier-",
+		"-adobe-times-",
+		"-adobe-helvetica-",
+		"-adobe-times-"
+	]
+}

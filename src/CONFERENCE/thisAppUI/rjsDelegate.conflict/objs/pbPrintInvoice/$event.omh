@@ -1,0 +1,7 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Do $cinst.$clientcommand("openpush",row()) ## the worker will call back to $pdfcomplete which will "push" the results to the client
+	Do method InvoicePDF
+	
+	# Do $cinst.$behaviour()
+	# Do $cinst.$redraw()

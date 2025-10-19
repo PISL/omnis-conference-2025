@@ -7,7 +7,9 @@ Else If not(ibGoodConnectionToDb)
 End If
 
 Calculate inID as $ctask.trGroupOrg.GO_SEQ
-Do $cinst.$Sql(,con('where PSN_GO_REF = @[inID]'),0,0)
+# using the 3rd parameter to return distinct values
+# does not help if this method is being called with a join to CF table
+Do $cinst.$Sql(,con('where PSN_GO_REF = @[inID]'),kTrue)
 Do $cinst.$executesqlandfetch()
 
 If lbImmediateSession

@@ -1,0 +1,131 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 195,
+	"superclass": "rjsInfraSuper",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1004,
+	"lastgroupident": 0,
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "icCurrentGroupOrg",
+			"order": 1,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10
+		},
+		{
+			"name": "icWarning",
+			"order": 2,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2018-01-05 15:28:04",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "evLayoutChanged",
+		"external": false,
+		"horzgrid": 8,
+		"inheritedorder": 0,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 5,
+		"menulineheight": 0,
+		"moddate": "2024-11-01 04:27:19",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"title": {
+			"type": 0,
+			"calc": "rjsInfraSuper subclass"
+		},
+		"top": 0,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "",
+		"vertgrid": 8
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon",
+		"height",
+		"width",
+		"horzscroll",
+		"vertscroll",
+		"backcolor",
+		"backpattern",
+		"forecolor",
+		"backgroundtheme",
+		"effect",
+		"startfield",
+		"iconpages",
+		"okkeyobject",
+		"cancelkeyobject",
+		"alwaysenabledobject",
+		"backgroundskin",
+		"backgroundskinalign",
+		"openinwindow",
+		"designshowmobiletitle",
+		"backalpha",
+		"alpha",
+		"stringtabledata",
+		"stringtabledesignform",
+		"resizemode",
+		"layoutminheight",
+		"animatelayouttransitions"
+	],
+	"layout": {
+		"width": 1746,
+		"height": 1031,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

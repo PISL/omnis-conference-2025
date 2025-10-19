@@ -27,6 +27,41 @@ Else If inCurrentTab=cnTabAttendees
 			Do $cinst.$redraw()
 		End If
 	End If
+	
+Else If inCurrentTab=cnTabOverview
+	If irUserRights.canDelete&icMode='' ## copied from $behaviour()
+		
+		Do irCurrentRecord.$checkChildren() Returns lnCountChildren
+		If lnCountChildren=0
+			Calculate lcSpace as ';  '
+			Calculate lcMessage as irCurrentRecord.DisplayName
+			Calculate lcMessage as con(lcMessage,lcSpace,'day: ',irCurrentRecord.ARR_DAYNO)
+			Calculate lcMessage as con(lcMessage,lcSpace,'time: ',irCurrentRecord.ARR_STARTTIME)
+			Calculate lcMessage as con(lcMessage,lcSpace,'room: ',irCurrentRecord.FCY_NAME)
+			
+			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con(kDq,lcMessage,kDq,' from ',ilSearch1.CF_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteProceed')
+		Else
+			Do irCurrentRecord.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+			Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+			Do $cinst.$behaviour()
+			Do $cinst.$redraw()
+		End If
+		
+		# If irAttendee.ARR_SEQ>0
+		
+		# End If
+		# the PAX record may have a dietRequest record associated within it
+		# Do irAttendee.$checkChildren(lrDietRequest.$servertablenames()) Returns lnCountChildren
+		# If lnCountChildren=0
+		# Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con(irAttendee.PX_ROLE,' from ',irCurrentRecord.DisplayName,' for ',ilSearch1.CF_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteARR')
+		# Else
+		# Do irAttendee.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+		# Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+		# Do $cinst.$behaviour()
+		# Do $cinst.$redraw()
+		# End If
+	End If
+	
 Else
 	Breakpoint
 End If

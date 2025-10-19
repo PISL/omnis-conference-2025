@@ -1,0 +1,67 @@
+Calculate $cinst.$objs.pbSave.$errortext as ''
+
+If ilCorporatePerson.$linecount
+	Calculate llTemp as ilCorporatePerson
+	Calculate llTemp.$line as 0
+	For llTemp.$line from 1 to llTemp.$linecount step 1
+		Do $cinst.$objs.cg_ilCorpPersons.$clearexceptions(llTemp.$line)
+	End For
+End If
+
+Calculate $cinst.icDisplayMessage as ''
+Do irPrevCell.$clear()
+Do ilCorporatePerson.$clear()
+Do irBusinessDetailSubsetOrig.$clear()
+Do ilDeleteCorpPerson.$clear()
+Do irCurrentStructure.$clear()
+Do irParentNode.$clear()
+
+Calculate irCurrentRecord as ilDisplayRecords
+Do ilCurrentOrgAllNames.$fetchOrgNames(irCurrentRecord.GO_SEQ)
+
+Do irBusinessDetailSubsetOrig.$assignrow(irCurrentRecord,kTrue)
+Calculate irBusinessDetailSubset as irBusinessDetailSubsetOrig
+
+Do ilCountries.$search($ref.CO_ISO3=irCurrentRecord.GO_ADDR_COUNTRY,1,0,0,0)
+Calculate inRegisterType as pick(isnull(irCurrentRecord.GO_MEC_TYPE),irCurrentRecord.GO_MEC_TYPE,0)
+
+If not(isclear(irCurrentRecord.GO_MEC_ID))
+	If ibRESTserviceRunning
+		Do oService.$callFetch(llResponse,irServiceInfo,row(irCurrentRecord.GO_MEC_ID),'corpPerson',irCurrentRecord.GO_RRS)
+		If irServiceInfo.httpStatusCode<>200
+			Do toStrings.$StringTableEntry('MSG_FETCHCORPPERSONFAIL',lcMessage,'Service call to fetch corporate persons failed')
+			Calculate icDisplayMessage as con(lcMessage,', ',kCr)
+			Do toStrings.$StringTableEntry('str_statuscode',lcMessage,'status code')
+			Calculate icDisplayMessage as con(icDisplayMessage,lcMessage,': ',irServiceInfo.httpStatusCode,' ',irServiceInfo.httpStatusText,kCr,irServiceInfo.responseHeaders.omniserror)
+		Else
+			Do ilCorporatePerson.$merge(llResponse,kTrue)
+		End If
+		Calculate ilOriginalCorpPersons as ilCorporatePerson
+	Else
+		Do toStrings.$StringTableEntry('MSG_FETCHCORPPERSONFAIL',lcMessage,'Service call to fetch corporate persons failed')
+		Calculate icDisplayMessage as con(lcMessage,'.  ')
+		Do toStrings.$StringTableEntry('MSG_REGSERVUNAVAILABLE',lcMessage,'Registration service currently unavailable')
+		Calculate icDisplayMessage as con(icDisplayMessage,lcMessage)
+	End If
+End If
+
+Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+
+Do toValues.$initInherited('ORGSTRUCTURES',,,irCurrentRecord.GO_SEQ) Returns ilOrgStructures
+Calculate $cinst.$objs.TabControl_GO.$selectedtab as cnTabStructure
+Calculate $cinst.$objs.TabControl_GO.$tabenabled as ilOrgStructures.$linecount>0
+If ilOrgStructures.$linecount
+	Calculate ilOrgStructures.$line as 1
+	Calculate icCurrentStructure as ilOrgStructures.RFO_VALUE
+Else
+	If inCurrentTab=cnTabStructure
+		Calculate inCurrentTab as cnTabCompany
+		Calculate $cinst.$objs.TabControl_GO.$currenttab as inCurrentTab
+	End If
+End If
+
+If inCurrentTab=cnTabStructure
+	Do method fetchStructure
+End If
+
+Do $cinst.$behaviour()

@@ -1,0 +1,136 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+If inCurrentTab=cnConfInfo|inCurrentTab=cnConfTerms
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canUpdate&icMode=''&irCurrentRecord.CF_SEQ>0
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.CF_SEQ>0&icMode=''
+	
+Else If inCurrentTab=cnConfPrices
+	Calculate $cinst.$objs.pbInsert.$enabled as kFalse
+	Calculate $cinst.$objs.pbEdit.$enabled as kFalse
+	Calculate $cinst.$objs.pbDelete.$enabled as kFalse
+	
+Else If inCurrentTab=cnConfStats|inCurrentTab=cnConfArrangements
+	Calculate $cinst.$objs.pbInsert.$enabled as kFalse
+	Calculate $cinst.$objs.pbEdit.$enabled as kFalse
+	Calculate $cinst.$objs.pbDelete.$enabled as kFalse
+	
+Else If inCurrentTab=cnConfPriceRules
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsertPriceRule&(icMode=''|icMode='EP')
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canUpdatePriceRule&ilPricingGrid.CFP_SEQ>0&(icMode='')
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDeletePriceRule&ilPricingGrid.CFP_SEQ>0&(icMode='')
+	
+	Calculate $cinst.$objs.PagedPane.$objs.pbPriceGridAdd.$enabled as irUserRights.canInsertPriceRule&(icMode=''|icMode='EP')
+	Calculate $cinst.$objs.PagedPane.$objs.pbPriceGridMinus.$enabled as irUserRights.canDeletePriceRule&ilPricingGrid.$line>0&(icMode=''|icMode='EP')
+End If
+
+If inCurrentTab=cnConfPriceRules
+	Calculate $cinst.$objs.pbDuplicate.$enabled as irUserRights.canInsertPriceRule&ilPricingGrid.CFP_SEQ>0&icMode=''
+Else
+	Calculate $cinst.$objs.pbDuplicate.$enabled as irUserRights.canInsert&irCurrentRecord.CF_SEQ>0&icMode=''&(inCurrentTab=cnConfInfo|inCurrentTab=cnConfPriceRules)
+End If
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''&(inCurrentTab=1|inCurrentTab=2|inCurrentTab=3|inCurrentTab=7)
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''&(inCurrentTab=1|inCurrentTab=2|inCurrentTab=3|inCurrentTab=7)
+Calculate $cinst.$objs.pbPrintRules.$visible as icMode=''&inCurrentTab=cnConfPriceRules&ilPricingGrid.$linecount>0
+
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+If icMode=''
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfInfo) ## 1
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfPrices) ## 2
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfTerms) ## 3
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfTechInfo) ## 4
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfArrangements) ## 5
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfStats) ## 6
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfPriceRules) ## 7
+	Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+End If
+
+If inCurrentTab=cnConfInfo|inCurrentTab=cnConfPrices|inCurrentTab=cnConfTerms
+	Calculate $cinst.$objs.CF_TITLE.$enabled as icMode<>''
+	Calculate $cinst.$objs.CF_DATE_FROM.$enabled as icMode<>''
+	Calculate $cinst.$objs.CF_DATE_TO.$enabled as icMode<>''
+	Calculate $cinst.$objs.CF_ADMIN_DATE_TO.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.PagedPane.$objs.CF_VEN_REF.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CONTACT_NAME.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_FEATURE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_COMMENT.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_LANG.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_FILTER_BRAND.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_FILTER_NAME.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_FILTER_DESC.$enabled as icMode<>''
+	
+	For lnLine from 0 to 6 step 1
+		Calculate $cinst.$objs.PagedPane.$objs.CF_RATE[lnLine]_I.$enabled as icMode<>''
+		Calculate $cinst.$objs.PagedPane.$objs.CF_RATE[lnLine]_H.$enabled as icMode<>''
+		Calculate $cinst.$objs.PagedPane.$objs.CF_RATE[lnLine]_N.$enabled as icMode<>''
+		Calculate $cinst.$objs.PagedPane.$objs.CF_RATE[lnLine]_TEXT.$enabled as icMode<>''
+	End For
+	Calculate $cinst.$objs.PagedPane.$objs.CF_RATE_SP.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_NON_MEMBER_DELTA.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_SIGNIFICANT_TERMS.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.PagedPane.$objs.CF_TITLE_CODE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_PROD_FAMILY.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CF_LOGO_RFO_VALUE.$enabled as icMode<>''
+	
+	# Calculate $cinst.$objs.TabControl_CF.2.tabenabled as icMode<>''
+	If icMode<>''
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfTechInfo) ## 4
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfArrangements) ## 5
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfStats) ## 6
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfPriceRules) ## 7
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+	End If
+	# Calculate $cinst.$objs.TabControl_CF.$currenttab as inCurrentTab
+	
+Else If inCurrentTab=cnConfPriceRules ## 7
+	If icMode<>''
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfInfo) ## 1
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfPrices) ## 2
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfTerms) ## 3
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfTechInfo) ## 4
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfArrangements) ## 5
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfStats) ## 6
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kFalse)
+		
+		
+		Do $cinst.$objs.TabControl_CF.$selectedtab.$assign(cnConfPriceRules) ## 7
+		Do $cinst.$objs.TabControl_CF.$tabenabled.$assign(kTrue)
+	End If
+	
+	# Calculate $cinst.$objs.PagedPane.$objs.icSearchPricing.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_NAME.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_PROD_CODE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_CALC.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_COMMENT.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_START_DATE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_END_DATE.$enabled as icMode<>''
+	Calculate $cinst.$objs.PagedPane.$objs.CFP_ACTIVE.$enabled as icMode<>''
+End If
+
+Do method assignEntryFieldProperties
+
+Do inherited

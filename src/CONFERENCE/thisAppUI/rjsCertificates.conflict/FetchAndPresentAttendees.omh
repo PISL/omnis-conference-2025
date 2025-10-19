@@ -1,0 +1,19 @@
+Calculate icDisplayMessage as ''
+
+Do ilDelegates.$clear()
+Do ilDelegates.$fetch_fk($cinst.ilSearch1.CF_SEQ)
+While $Loop(ilDelegates)
+	Do ilDelegates.$DisplayName()
+End While
+Do ilDelegates.$sort($ref.SortName,0)
+
+Do ilCertAssigned.$clear()
+Do ilCertAssigned.$fetch_fk(irCurrentRecord.CRT_SEQ,'CSN_CRT_REF')
+While $Loop(ilCertAssigned)
+	Do ilDelegates.$search($ref.DG_SEQ=ilCertAssigned.CSN_DG_REF,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate ilDelegates.assigned as kTrue
+		Do ilDelegates.$assignrow(ilCertAssigned,kTrue)
+	End If
+End While
+Calculate ilDelegates.$line as 0

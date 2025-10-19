@@ -49,9 +49,9 @@
 	},
 	"layout": {
 		"320": {
-			"left": 336,
-			"top": 584,
-			"width": 136,
+			"left": 8,
+			"top": 672,
+			"width": 144,
 			"height": 16,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -59,9 +59,9 @@
 			"visible": true
 		},
 		"375": {
-			"left": 336,
-			"top": 584,
-			"width": 136,
+			"left": 8,
+			"top": 656,
+			"width": 144,
 			"height": 16,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -69,9 +69,9 @@
 			"visible": true
 		},
 		"480": {
-			"left": 336,
-			"top": 584,
-			"width": 136,
+			"left": 16,
+			"top": 648,
+			"width": 144,
 			"height": 16,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -79,9 +79,9 @@
 			"visible": true
 		},
 		"667": {
-			"left": 328,
-			"top": 584,
-			"width": 136,
+			"left": 8,
+			"top": 624,
+			"width": 144,
 			"height": 16,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -90,8 +90,8 @@
 		},
 		"768": {
 			"left": 8,
-			"top": 632,
-			"width": 136,
+			"top": 664,
+			"width": 144,
 			"height": 16,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -100,7 +100,7 @@
 		},
 		"1024": {
 			"left": 8,
-			"top": 507,
+			"top": 512,
 			"width": 144,
 			"height": 16,
 			"dragborder": false,
@@ -109,7 +109,7 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 16,
+			"left": 8,
 			"top": 520,
 			"width": 136,
 			"height": 16,

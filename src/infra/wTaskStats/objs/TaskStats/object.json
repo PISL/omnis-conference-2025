@@ -26,6 +26,7 @@
 
 		},
 		"contentlinecolor": "kColorDefault",
+		"contentpadding": "0",
 		"contextmenu": "",
 		"cursor": 0,
 		"dataname": "ilTaskStats",
@@ -86,6 +87,7 @@
 		"selectionbackcolor": "RGB(0,0,0)",
 		"selectiontextcolor": "RGB(0,0,0)",
 		"showcolumnlines": true,
+		"showcolumnslinesifempty": false,
 		"showheaderlines": true,
 		"showrowlines": false,
 		"sidepanel": false,

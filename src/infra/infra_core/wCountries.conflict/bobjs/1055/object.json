@@ -1,0 +1,33 @@
+{
+	"ident": 1055,
+	"order": 16398,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(kColorBackFill,255)",
+		"backpattern": 15,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "CtrlLabel",
+		"font": 2,
+		"fontsize": 0,
+		"fontstyle": "kPlain",
+		"forecolor": "RGBA(kColorForeFill,255)",
+		"height": 16,
+		"left": 2,
+		"linestyle": 1,
+		"objlink": 184680450,
+		"text": "curr.symb",
+		"textcolor": "kColorWindowText",
+		"top": 2,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 211
+	}
+}

@@ -1,0 +1,2 @@
+Do $cinst.$container().$initToolsMenu('') Returns llMenuItems
+Quit method llMenuItems

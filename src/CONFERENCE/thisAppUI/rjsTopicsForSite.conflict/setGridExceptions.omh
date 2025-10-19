@@ -1,0 +1,8 @@
+Do $cinst.$objs.ilTopicsWithSpeakers.$clearexceptions()
+
+# cannot use $Loop() while running on js client
+For ilTopicsWithSpeakers.$line from 1 to ilTopicsWithSpeakers.$linecount step 1
+	Do $cinst.$objs.ilTopicsWithSpeakers.$objs.PSN_ImageLink.[ilTopicsWithSpeakers.$line].$html.$assign(ilTopicsWithSpeakers.PSN_ImageLink)
+End For
+
+Quit method

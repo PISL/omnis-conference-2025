@@ -1,0 +1,23 @@
+# Breakpoint
+Do $cinst.$objs.$findname('pbSave') Returns lrefSaveButton
+If lrefSaveButton
+	Calculate lrefSaveButton.$errortext as ''
+	Do lrefSaveButton.$errortext.$assign('')
+End If
+
+Do oService.$pingComplete Returns lrResult
+If lrResult.$colcount>0
+	# OK message  {Server is present}
+	Calculate ibRESTserviceRunning as kTrue
+	# Calculate tConstants.ExternalIP as lrResult.ip
+	Do toStrings.$StringTableEntry('MSG_REGSERVAVAILABLE',lcMessage,'Registration server is available.')
+	Calculate icDisplayMessage as lcMessage
+Else
+	Do toStrings.$StringTableEntry('MSG_REGSERVUNAVAILABLE',lcMessage,'Registration server is not available.')
+	Calculate icDisplayMessage as lcMessage
+End If
+
+# Do $cinst.$behaviour()
+If lrefSaveButton
+	Calculate lrefSaveButton.$errortext as icDisplayMessage
+End If

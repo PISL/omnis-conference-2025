@@ -1,0 +1,10 @@
+Do $DefineList(ilData,'infra.tfinInvoiceOutD')
+Do ilData.$addLinkedCols('FOH_INV_NO,FOH_CUST_NAME,FOH_DATE,FOH_STATUS,FOH_CURRENCY')
+Do ilData.$addLinkedCols('EO_NAME,EO_VAT_NO,EO_CO_ISO3_REF')
+Do ilData.$addCalculatedColumns()
+Do ilData.$fetchInvoiceDateRange(pdFrom,pdTo)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do ilData.$calculatedValues()
+End While

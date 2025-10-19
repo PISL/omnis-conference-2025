@@ -71,7 +71,7 @@
 		"480": {
 			"left": 8,
 			"top": 8,
-			"width": 108,
+			"width": 164,
 			"height": 16,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -102,7 +102,7 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 24,
+			"left": 8,
 			"top": 64,
 			"width": 144,
 			"height": 19,
@@ -113,7 +113,7 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 24,
+			"left": 16,
 			"top": 64,
 			"width": 143,
 			"height": 19,

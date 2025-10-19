@@ -1,0 +1,17 @@
+Do $DefineList(llConferences,'CONFERENCE.tConference')
+Do llConferences.$fetchIncomplete()
+Do llConferences.$sort($ref.CF_DATE_FROM,1) ## most recent events at top of list
+Calculate $cinst.ilSearch1 as llConferences
+
+If ilSearch1.$linecount>0
+	If trCurrentConference.CF_SEQ>0
+		# user driven current conference takes precedence
+		Do ilSearch1.$search($ref.CF_SEQ=trCurrentConference.CF_SEQ,1,0,0,0)
+	Else If tlOpenConferences.$line>0
+		# oldest open conference comes next
+		Do ilSearch1.$search($ref.CF_SEQ=tlOpenConferences.CF_SEQ,1,0,0,0)
+	Else
+		# finally first one in list - the latest conference
+		Calculate ilSearch1.$line as 1
+	End If
+End If

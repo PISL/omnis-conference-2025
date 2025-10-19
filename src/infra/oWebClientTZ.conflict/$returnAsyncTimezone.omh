@@ -1,0 +1,37 @@
+Calculate pErrorField as ''
+Do ioRest.$returnVal(irResponseHeaders,irResponse,pResultList) Returns icXML
+
+If irResponse.httpStatusCode<>200
+	# do some error reporting here
+	Calculate pErrorField as con(irResponse.httpStatusCode,'  ',irResponse.httpStatusText,': ',icXML)
+	Quit method ''
+Else
+	# irResponse.responseContent is a binary field that must be converted to text
+	
+	Calculate lcJSON as utf8tochar(irResponse.responseContent)
+	Do OJSON.$jsontolistorrow(lcJSON) Returns lrResult
+	If lrResult.status='FAILED'
+		Quit method kFalse
+	Else
+		# continue
+		# lrResult.status is either OK or FAILED
+		# lrResult.message is an error message if applicable
+		# lrResult.totalPage has total number of pages in result
+		# lrResult.currentPage is the current page number from the totalPage count
+		# lrResult.zones is a row with any number of columns, each column being a timezone
+		
+		Calculate lrTemp as lrResult.zones
+		
+		For lnColCount from 1 to lrTemp.$colcount step 1
+			Calculate lrTimezone as lrTemp.___[lnColCount]
+			If lnColCount=1
+				Do llResult.$copydefinition(lrTimezone)
+			End If
+			Do llResult.$add()
+			Calculate llResult.$line as llResult.$linecount
+			Do llResult.$assignrow(lrTimezone)
+		End For
+	End If
+	
+	Quit method llResult
+End If

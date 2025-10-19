@@ -1,0 +1,59 @@
+
+If not(ibSendEmailAsWorker)
+	Calculate irEmailMessageAttributes.subject as pcSubject
+	Calculate irEmailMessageAttributes.to as pcTo
+	Calculate irEmailMessageAttributes.cc as pcCC
+	Calculate irEmailMessageAttributes.bcc as pcBCC
+	Calculate irEmailMessageAttributes.priority as kOW3msgPriorityNormal
+	
+	Calculate irEmailMessageBody.text as pcMessage
+	Calculate irEmailMessageBody.html as ''
+End If
+
+If ibSendEmailAsWorker
+	# the new worker uses a slightly different row for the attachments, so get the new message row
+	Do irefWorkerTask.$getRowMessage() Returns lrEmailMessage
+	Calculate lrEmailMessage.text as pcMessage
+	Calculate lrEmailMessage.html as ""
+	
+	# the new worker uses lists for TO, CC, BCC
+	Do irefWorkerTask.$getRowAttributes() Returns lrEmailAttributes
+	Calculate lrEmailAttributes.subject as pcSubject
+	Calculate lrEmailAttributes.to as toStrings.$StringToList(pcTo,",")
+	Calculate lrEmailAttributes.cc as toStrings.$StringToList(pcCC,",")
+	Calculate lrEmailAttributes.bcc as toStrings.$StringToList(pcBCC,",")
+	Calculate lrEmailAttributes.priority as kOW3msgPriorityNormal
+	
+	If len(pcPdfPath)
+		Do lrEmailMessage.attachments.$add(,,,pcPdfPath) ## the worker will convert the PDF to the correct MIME values
+	Else If iPdfFilePath<>''
+		Do lrEmailMessage.attachments.$add(,,,iPdfFilePath) ## the worker will convert the PDF to the correct MIME values
+	End If
+	
+	Calculate lbRunWorker as kFalse
+	Calculate idtStartEmailWorker as #D ## to time different between Start and Run of SMTP worker
+	Do irefWorkerTask.$sendEmail(irEmailMessageServer,lrEmailAttributes,lrEmailMessage)
+	
+Else
+	Calculate irEmailMessageAttributes.subject as con(irEmailMessageAttributes.subject,' (n)')
+	
+	Do llAttachments.$cols.$add('filename',kCharacter,kSimplechar,100)
+	Do llAttachments.$cols.$add('pathname',kCharacter,kSimplechar,1000)
+	If iPdfFilePath<>''
+		Do llAttachments.$add(mid(iPdfFilePath,rpos(sys(9),iPdfFilePath)+1,500),iPdfFilePath)
+	End If
+	
+	Do ioEmail.$attachedFileFromPDFwriter(kTrue)
+	Do ioEmail.$SendEmail(irEmailMessageAttributes.to,irEmailMessageAttributes.subject,irEmailMessageBody.text,irEmailMessageAttributes.cc,irEmailMessageAttributes.bcc,llAttachments,#NULL,#NULL,#NULL,lcFromAddress,lcFromName) Returns lcEmailStatus
+	If lcEmailStatus<>''
+		# something went wrong
+		Calculate icDisplayMessage as lcEmailStatus
+	Else
+		Calculate irCurrentRecord.DG_EMAIL_INVOICE_SENT as #D
+		Do irCurrentRecord.$update() Returns lbOK
+		If lbOK
+			Calculate irOriginalRecord as irCurrentRecord
+			Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+		End If
+	End If
+End If

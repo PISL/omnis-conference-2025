@@ -1,0 +1,18 @@
+Do ilStatistics.$unfilter()
+Switch inStatsChoice
+	Case 0 ## occupancy
+		# Do ilStatistics.$filter(con("$ref.group='Occupancy'"))
+		Do ilStatistics.$filter($ref.group='Occupancy')
+	Case 1 ## status
+		Do ilStatistics.$filter($ref.group='Status')
+	Case 2 ## registration month
+		Do ilStatistics.$filter($ref.group="Reg'n month")
+	Case 3 ## country
+		Do ilStatistics.$filter($ref.group='Country')
+	Case 4 ## topics
+		Do ilStatistics.$filter($ref.group='Topics')
+End Switch
+# the list in the remote form supports sorting by clicking on column header.
+# But once the user does this, the list (was originally displaying ilStatistics) loses its smartlist status
+# and any further filtering did not work.  So now we maintain the smart list here in memory and use ilDisplayStats to present.
+Calculate ilDisplayStats as ilStatistics

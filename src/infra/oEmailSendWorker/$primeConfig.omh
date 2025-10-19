@@ -8,7 +8,14 @@ Do lrEmail.$fetchEmailRecord(pcConfigValue,pcLanguage) Returns irConfigEmail
 If irConfigEmail.ELC_SEQ>0
 	Do method $setConfig (irConfigEmail,prefTo,prefMessage)
 Else
-	Calculate icErrors as con(icErrors,pick(icErrors<>'','',', and '),con('no active config record for ',pcConfigValue,': ',pcLanguage,' found'))
+	# 2025-09-08  RSM  For some reason the postgres function within method $fetchEmailRecord is not returning anything
+	# So here is a backup method
+	Do lrEmail.$fetchEmailRecord2(pcConfigValue,pcLanguage) Returns irConfigEmail
+	If irConfigEmail.ELC_SEQ>0
+		Do method $setConfig (irConfigEmail,prefTo,prefMessage)
+	Else
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',', and '),con('no active config record for ',pcConfigValue,': ',pcLanguage,' found'))
+	End If
 End If
 
 Quit method (icErrors='')

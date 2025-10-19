@@ -1,0 +1,13 @@
+Calculate icDisplayMessage as ''
+Do irCurrentRecord.$clear()
+
+Do ilMembershipHistory.$fetch_fk(ilDisplayRecords.PSN_SEQ)
+If ilMembershipHistory.$linecount>0
+	Do ilMembershipHistory.$sort($ref.MB_FROM,1)
+	Calculate ilMembershipHistory.$line as 1
+	Calculate irCurrentRecord as ilMembershipHistory
+	Do ilType.$search($ref.RFO_VALUE=irCurrentRecord.MB_TYPE,1,0,0,0)
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

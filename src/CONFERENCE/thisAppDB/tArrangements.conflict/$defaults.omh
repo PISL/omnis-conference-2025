@@ -1,0 +1,6 @@
+Calculate $cinst.ARR_ORDER as 0
+Calculate $cinst.ARR_BOOKING_REQD as kTrue
+Calculate $cinst.ARR_MAX_BOOKINGS as 6
+If trGroupOrg.GO_NAME_SHORT='OmnisWorld'
+	Calculate $cinst.ARR_FORMAT as 'SESSION'
+End If

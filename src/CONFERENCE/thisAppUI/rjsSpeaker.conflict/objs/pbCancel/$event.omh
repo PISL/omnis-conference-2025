@@ -1,0 +1,17 @@
+On evClick
+	If inCurrentTab=cnTabDelegate
+		Do method $displayListClick
+		
+	Else If inCurrentTab=cnTabTopics
+		Do method FetchAndPresentTopics
+		
+	End If
+	
+	If ibUserHasSemaphore
+		# just because irSemaphore has a value in it doesn't mean the semaphore belongs to this user
+		# The semaphore may belong to another user after calling $obtainSemaphore()
+		Do irSemaphore.$clearSemaphore() Returns lbOK
+	End If
+	
+	Calculate icMode as ''
+	Do $cinst.$behaviour()

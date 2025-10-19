@@ -1,0 +1,219 @@
+Do method $clearConfig
+
+# = = = = = = = = = = =        server attributes      = = = = = = = = = = =
+#      prConfig.ELC_SERVER  ,  prConfig.ELC_LOGIN_NAME  ,  prConfig.ELC_LOGIN_PW
+
+# = = = = = = = = = = =        mandatory attributes      = = = = = = = = = = =
+
+# addressee   prConfig.ELT_SUBJECT   prConfig.ELC_TO   prConfig.ELC_CC   prConfig.ELC_BCC
+
+If prConfig.ELC_TO<>''
+	# this is in json format
+	# if the JSON begins with a { then a row will be returned
+	# if the JSONbegins with a [ then and array will be returned
+	If left(prConfig.ELC_TO,1)='{'
+		Do OJSON.$jsontolistorrow(prConfig.ELC_TO) Returns lrHeadersAsRow
+		Do method emailAddressesAsRow (lrHeadersAsRow,ilTo)
+		
+	Else If left(prConfig.ELC_TO,1)='['
+		Do OJSON.$jsontolistorrow(prConfig.ELC_TO,kTrue) Returns llHeaderRow
+		Do method emailAddressesAsList (llHeaderRow,ilTo)
+		
+	Else
+		# a plain string?  I don't think postgres syntax checking will allow this
+		Breakpoint Not tested
+	End If
+End If
+
+If prefTo.$type=kCharacter
+	# addressee is set from business logic/data
+	If prefTo<>''
+		Do ilTo.$search($ref.address=prefTo,1,0,0,0) Returns lbFound
+		If not(lbFound)
+			Do ilTo.$add()
+			Calculate ilTo.$line as ilTo.$linecount
+			Calculate ilTo.address as prefTo
+		End If
+	End If
+	
+Else If prefTo.$type=kList
+	# addressee(s) set from business logic/data
+	Do ilTo.$merge(prefTo)
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'Addressee is of incorrect format.')
+End If
+
+If ilTo.$linecount=0
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'There are no addressees.')
+End If
+
+If prConfig.ELC_CC<>''
+	# this is in json format
+	If left(prConfig.ELC_CC,1)='{'
+		Do OJSON.$jsontolistorrow(prConfig.ELC_CC) Returns lrHeadersAsRow
+		Do method emailAddressesAsRow (lrHeadersAsRow,ilCC)
+		
+	Else If left(prConfig.ELC_CC,1)='['
+		Do OJSON.$jsontolistorrow(prConfig.ELC_CC) Returns llHeaderRow
+		Do method emailAddressesAsList (llHeaderRow,ilCC)
+		
+	Else
+		# a plain string?  I don't think postgres syntax checking will allow this
+		Breakpoint Not tested
+	End If
+End If
+
+If prConfig.ELC_BCC<>''
+	# this is in json format
+	If left(prConfig.ELC_BCC,1)='{'
+		Do OJSON.$jsontolistorrow(prConfig.ELC_BCC) Returns lrHeadersAsRow
+		Do method emailAddressesAsRow (lrHeadersAsRow,ilBCC)
+		
+	Else If left(prConfig.ELC_BCC,1)='['
+		Do OJSON.$jsontolistorrow(prConfig.ELC_BCC) Returns llHeaderRow
+		Do method emailAddressesAsList (llHeaderRow,ilBCC)
+		
+	Else
+		# a plain string?  I don't think postgres syntax checking will allow this
+		Breakpoint Not tested
+	End If
+	
+End If
+
+#    sender    prConfig.ELC_SENDER_NAME   prConfig.ELC_SENDER_ADDR   prConfig.ELT_SUBJECT   prConfig.ELT_MSG_TEXT   prConfig.ELT_MSG_HTML
+
+
+# message must exist
+# Remember that there is a good chance that the message has [[...]] entries, to be substtuted with data outside of this object.
+# method $messageSubstitute will handle this situation and put result back in RFO_CHAR
+
+# 2023-08-22  RSM  If this object is being primed for an actual send then we expect ELT_MSG_TEXT to be associated with prConfig
+#      but if the method is being called from the configuration UI the ELT_MSG_TEXT will be associated to plLanguages.
+#      This means we have to look at both prConfig (the priority) and plLanguages.  Test if column exists in plLanguages to determine priority.
+#      At end of check the text must be placed in prConfig.ELT_MSG_TEXT because only this column is referenced in the worker instruction.
+Do plLanguages.$cols.$findname('ELT_MSG_TEXT') Returns liColRefLanguages
+If liColRefLanguages
+	If isclear(plLanguages.ELT_MSG_TEXT)&prefMessage<>''
+		Calculate prConfig.ELT_MSG_TEXT as prefMessage
+		
+	Else If plLanguages.ELT_MSG_TEXT<>''&isclear(prefMessage)
+		# no conflict between config and nothing else provided    ELT_MSG_TEXT has content
+		Calculate prConfig.ELT_MSG_TEXT as plLanguages.ELT_MSG_TEXT
+		
+	Else If plLanguages.ELT_MSG_TEXT<>''&prefMessage<>''
+		# conflict >
+		# let submitted message take precedence
+		Calculate prConfig.ELT_MSG_TEXT as prefMessage
+		
+	Else
+		Breakpoint something needs fixing here
+	End If
+Else
+	# only look in prConfig
+	If isclear(prConfig.ELT_MSG_TEXT)&prefMessage<>''
+		Calculate prConfig.ELT_MSG_TEXT as prefMessage
+		
+	Else If prConfig.ELT_MSG_TEXT<>''&isclear(prefMessage)
+		# no conflict between config and nothing else provided    ELT_MSG_TEXT has content
+		
+	Else If prConfig.ELT_MSG_TEXT<>''&prefMessage<>''
+		# conflict >
+		# let submitted message take precedence
+		Calculate prConfig.ELT_MSG_TEXT as prefMessage
+		
+	Else
+		Breakpoint something needs fixing here
+	End If
+	
+End If
+If isclear(prConfig.ELT_MSG_TEXT)
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),'There is no message to send.')
+End If
+# = = = = = = = = = = =        optional attributes start      = = = = = = = = = = =
+
+If prConfig.ELC_HEADERS<>''
+	# this is in json format
+	If left(prConfig.ELC_HEADERS,1)='{'
+		Do OJSON.$jsontolistorrow(prConfig.ELC_HEADERS) Returns lrHeadersAsRow
+		Do method headersAsRow (lrHeadersAsRow,ilHeaders)
+		
+	Else If left(prConfig.ELC_HEADERS,1)='['
+		Do OJSON.$jsontolistorrow(prConfig.ELC_HEADERS) Returns llHeaderRow
+		Do method headersAsList (llHeaderRow,ilHeaders)
+		
+	Else
+		# a plain string?  I don't think postgres syntax checking will allow this
+		Breakpoint Not tested
+	End If
+	
+End If
+
+If prConfig.ELC_PRIORITY<>''
+	If isnumber(prConfig.ELC_PRIORITY)
+		Calculate inPriority as prConfig.ELC_PRIORITY
+	Else If pos('highest',prConfig.ELC_PRIORITY)>0
+		Calculate inPriority as kOW3msgPriorityHighest
+	Else If pos('high',prConfig.ELC_PRIORITY)>0
+		Calculate inPriority as kOW3msgPriorityHigh
+	Else If pos('lowest',prConfig.ELC_PRIORITY)
+		Calculate inPriority as kOW3msgPriorityLowest
+	Else If pos('low',prConfig.ELC_PRIORITY)
+		Calculate inPriority as kOW3msgPriorityLow
+	Else If pos('normal',prConfig.ELC_PRIORITY)
+		Calculate inPriority as kOW3msgPriorityLow
+	Else
+		Calculate inPriority as kOW3msgPriorityNormal
+	End If
+Else
+	Calculate inPriority as kOW3msgPriorityNormal
+End If
+
+# = = = = = = = = = = =        optional attributes end      = = = = = = = = = = =
+
+# next step is $initialise
+# irSecureOptions # fetched during $construct
+#   irSecureOptions.iSecBoolVerifyPeer ## may want to adjust this
+#  irSecureOptions.iSecBoolVerifyHost ## may want to adjust this
+#  irSecureOptions.iSecCharCertFile ## unlikely to adjust
+#  irSecureOptions.iSecCharPrivateKeyFile ## unlikely to adjust
+#  irSecureOptions.iSecCharPrivateKeyPw ## unlikely to adjust
+
+If prConfig.ELC_TIMEOUT>0
+	Calculate $cinst.$timeout as prConfig.ELC_TIMEOUT
+End If
+
+If not(isnull(prConfig.ELC_KEEP_CONNECT_OPEN))
+	Calculate $cinst.$keepconnectionopen as prConfig.ELC_KEEP_CONNECT_OPEN
+End If
+
+If not(isnull(prConfig.ELC_SECURE))
+	Calculate $cinst.$requiresecureconnection as prConfig.ELC_SECURE
+End If
+
+If not(isnull(prConfig.ELC_CALL_PROGRESS))
+	Calculate $cinst.$callmailshotprogress as prConfig.ELC_CALL_PROGRESS
+End If
+
+If not(isnull(prConfig.ELC_DEBUGLOG))
+	Calculate $cinst.$protocollog as prConfig.ELC_DEBUGLOG ## see documentation method for explanation
+End If
+
+If not(isnull(prConfig.ELC_IS_MAILSHOT))
+	If prConfig.ELC_IS_MAILSHOT
+		# Do $cinst.$setMailshotProgressInst(prConfig.ELC_IS_MAILSHOT)
+		
+		If not(isnull(prConfig.ELC_CALL_PROGRESS))
+			Calculate $cinst.$callprogress as prConfig.ELC_CALL_PROGRESS
+		End If
+	Else
+		Calculate $cinst.$callprogress as kFalse
+	End If
+End If
+
+If prConfig.ELC_JSON<>''
+	Do OJSON.$jsontolistorrow(prConfig.ELC_JSON,icErrors,kTrue) Returns lrSubConfig
+	Breakpoint This has not been tested.
+	
+End If
+
+Quit method (icErrors='')

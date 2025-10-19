@@ -1,6 +1,6 @@
 {
 	"ident": 1094,
-	"order": 106,
+	"order": 104,
 	"objtype": "kComponent",
 	"componentlib": "jsLabel",
 	"componentctrl": "Label Object",

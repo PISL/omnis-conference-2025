@@ -1,0 +1,39 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	If icMode<>''
+		Quit event handler (Discard event)
+	End If
+	If pNodeIdent<>$nullToEmpty(irCurrentStructure.GS_SEQ)
+		Calculate irCurrentStructure.GS_SEQ as pNodeIdent
+		Do irCurrentStructure.$fetch_pk()
+		Calculate irParentNode.GS_SEQ as irCurrentStructure.GS_SUPERIOR_GS_REF
+		Do irParentNode.$fetch_pk()
+		Do ilStructureType.$unfilter(0)
+		Do ilStructureType.$search($ref.RFO_VALUE=irCurrentStructure.GS_TYPE,1,0,0,0)
+	Else
+		# clear the currently selected node so the user could add a LEVEL1 node
+		Calculate $cobj.$currentnodeident as 0
+		Do irCurrentStructure.$clear()
+		Do ilStructureType.$unfilter(0)
+		Calculate ilStructureType.$line as 0
+	End If
+	Do $cinst.$behaviour()
+	
+On evLoadNode
+	If icMode<>''
+		Quit event handler (Discard event)
+	End If
+	Do irCurrentStructure.$treeFetchChildren(pNodeIdent) Returns $cinst.$objs.ilCorporateTree.$nodedata
+	
+On evDrop
+	# check permissions
+	If irUserRights.CanEditS
+		# check that we are dropping on self
+		If pDragField=$cobj.$name
+			Do method dropNode (pDragField,pDragValue,pDropId)
+		Else
+			Quit event handler (Discard event)
+		End If
+	Else
+		Quit event handler (Discard event)
+	End If

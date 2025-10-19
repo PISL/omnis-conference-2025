@@ -1,0 +1,26 @@
+{
+	"classtype": "kSchema",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 3,
+	"nextident": 32032,
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2024-10-18 02:11:41",
+		"createinstancewhensubtype": true,
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"moddate": "2024-10-18 02:20:49",
+		"servertablename": "infra.docreference",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

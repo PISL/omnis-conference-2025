@@ -1,0 +1,51 @@
+{
+	"classtype": "kTable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 7,
+	"superclass": "infra.tMaster",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "___ROW1",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW2",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2019-10-29 20:42:15",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2019-10-30 11:26:49",
+		"showascheckedout": false,
+		"sqlclassname": "sTestQuestions",
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "1.02"
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon"
+	]
+}

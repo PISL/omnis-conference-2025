@@ -1,0 +1,7 @@
+If isclear(irCurrentRecord.DG_PAYMENT_ACK)
+	
+	Do $cinst.$clientNoYesMsg('Proceed to send money received in full email?','CONFIRM ACTION','$sendEmailReceiptFull')
+Else
+	Do $cinst.$clientNoYesMsg(con('Proceed to send money received in full email, even though it was already sent ',irCurrentRecord.DG_PAYMENT_ACK,'?'),'CONFIRM ACTION','$sendEmailReceiptFull')
+	
+End If

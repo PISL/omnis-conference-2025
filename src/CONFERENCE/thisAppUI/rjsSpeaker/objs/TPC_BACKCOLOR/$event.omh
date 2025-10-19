@@ -1,0 +1,5 @@
+On evClick
+	Calculate ilColoursBackground.$line as pLineNumber
+	Calculate irTopic.TPC_BACKCOLOR as ilColoursBackground.RFO_CHAR
+	Do method changeDescriptionColour
+	Do $cinst.$behaviour()

@@ -1,8 +1,8 @@
 {
 	"classtype": "kTable",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 12,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 15,
 	"superclass": "infra.tMaster",
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
@@ -37,7 +37,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2023-10-20 11:57:39",
+		"moddate": "2025-09-26 16:42:07",
 		"showascheckedout": false,
 		"sqlclassname": "sPAX",
 		"userinfo": "",

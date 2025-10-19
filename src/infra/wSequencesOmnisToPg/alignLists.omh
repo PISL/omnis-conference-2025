@@ -1,0 +1,45 @@
+If not(ibListsAligned)
+	If ilMaxValues.$linecount>=ilSequences.$linecount
+		Calculate lcPrimaryList as nam(ilMaxValues)
+		Calculate lcSecondaryList as nam(ilSequences)
+		
+		Calculate ilSequences.$line as 1
+		Calculate ilMaxValues.$line as 0
+		While $Loop(ilMaxValues)
+			Calculate lcCommonValue as mid(ilMaxValues.name,1,rpos('.',ilMaxValues.name)-1)
+			
+			Do ilSequences.$search(pos(lcCommonValue,$ref.name)=1,1,0,0,0) Returns lnLine
+			If lnLine>0
+				# corresponding entry found
+				If ilSequences.$line>ilMaxValues.$line
+					
+				Else If ilSequences.$line<ilMaxValues.$line
+					
+				Else
+					# the line numbers are the same - nothing to do
+					If ilSequences.$line=ilSequences.$linecount
+						Break to end of loop
+					End If
+				End If
+				
+			Else
+				If ilSequences.$line=ilSequences.$linecount
+					Breakpoint
+				Else
+					Do ilSequences.$addbefore(ilMaxValues.$line,#NULL,#NULL)
+				End If
+				
+			End If
+			
+		End While
+		
+		
+	Else
+		Breakpoint
+		
+		Calculate lcPrimaryList as nam(ilSequences)
+		Calculate lcSecondaryList as nam(ilMaxValues)
+	End If
+	
+	Calculate ibListsAligned as kTrue
+End If

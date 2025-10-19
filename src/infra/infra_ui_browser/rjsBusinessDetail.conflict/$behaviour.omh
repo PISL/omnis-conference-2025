@@ -1,0 +1,5 @@
+
+Calculate $cinst.$objs.app_navigation_bar.$objs.ilAuthorisedForms.$enabled as icMode=''
+Calculate $cinst.$objs.app_navigation_bar.$objs.ilAuthorisedForms.$alpha as pick(icMode='',150,255) ## changing $textcolor doesn't seem to work
+
+Calculate $cinst.$objs.app_navigation_bar.$objs.pbFeedBack.$enabled as trCurrentForm.code<>'FORM_FEEDBACK'&icMode=''

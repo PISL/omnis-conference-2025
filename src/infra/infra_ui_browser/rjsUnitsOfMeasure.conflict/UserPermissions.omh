@@ -1,0 +1,9 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('uom_insert','canInsert')
+Do llPrivsUsedInThisForm.$add('uom_delete','canDelete')
+Do llPrivsUsedInThisForm.$add('uom_update','canEdit')
+# Do llPrivsUsedInThisForm.$add('uom_select','canSelect')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

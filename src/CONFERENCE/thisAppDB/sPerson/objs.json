@@ -264,5 +264,19 @@
 			"primarykey": false,
 			"userinfo": ""
 		}
+	},
+	{
+		"name": "PSN_WEBSITE_LINK",
+		"ident": 32021,
+		"order": 20,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "hyperlink to speakers page on website",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
 	}
 ]

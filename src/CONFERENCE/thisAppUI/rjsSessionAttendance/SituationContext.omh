@@ -73,36 +73,11 @@ End If
 
 Calculate ibMaxAttendeesReached as kFalse
 If ilArrangements.ARR_MAX_BOOKINGS>0
+	# 2025-09-09  RSM   We are allowing delegates to overbook sessions if they really want to.  Introducing inSessionCountTolerance
+	# The application of this occurs in $behaviour.  The button is still marked "max reached" but the button will be enabled.
 	Calculate ibMaxAttendeesReached as ilAttendees.$linecount>=ilArrangements.ARR_MAX_BOOKINGS
 End If
 Calculate ibDelegateAlreadyBookedForSelectedTime as ilDelegateSessions.$line
-
-# If ilArrangements.$line>0
-# If ilArrangements.ARR_STARTTIME>tim('00:00')
-# Calculate ibTimePast as dadd(kMinute,inCutoffMinutes,ilArrangements.ARR_STARTTIME)<ldtTimeNow
-# Calculate ibTimePast as ldtTestDateTime>dadd(kMinute,inCutoffMinutes,ldtEventStart)
-# Calculate ibTimeNow as abs(ddiff(kMinute,ldtEventStart,ldtTestDateTime))<=inCutoffMinutes
-# Calculate ibTimeFuture as ldtEventStart>ldtTestDateTime
-# Else
-# If pos('AM',upp(ilArrangements.ARR_SLOT))|pos('MORNING',upp(ilArrangements.ARR_SLOT))
-# Calculate ibTimePast as ldtTimeNow>ldtSessionStartAM
-# Calculate ibTimeNow as abs(ddiff(kMinute,ldtTimeNow,ldtSessionStartAM))<=inCutoffMinutes
-# Calculate ibTimeFuture as ldtTimeNow<ldtSessionStartAM
-# Else If pos('PM',upp(ilArrangements.ARR_SLOT))|pos('AFTERNOON',upp(ilArrangements.ARR_SLOT))
-# Calculate ibTimePast as ldtTimeNow>ldtSessionStartPM
-# Calculate ibTimeNow as abs(ddiff(kMinute,ldtTimeNow,ldtSessionStartPM))<=inCutoffMinutes
-# Calculate ibTimeFuture as ldtTimeNow<ldtSessionStartPM
-# Else If pos('EVE',upp(ilArrangements.ARR_SLOT)) ## EVE or EVENING
-# Calculate ibTimePast as ldtTimeNow>ldtSessionStartEVE
-# Calculate ibTimeNow as abs(ddiff(kMinute,ldtTimeNow,ldtSessionStartEVE))<=inCutoffMinutes
-# Calculate ibTimeFuture as ldtTimeNow<ldtSessionStartEVE
-# End If
-# End If
-# If ibTimeNow
-# Calculate ibTimePast as kFalse
-# Calculate ibTimeFuture as kFalse
-# End If
-# End If
 
 Calculate ibDelegateIsRegistered as ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF
 Calculate ibDelegateIsPresenter as ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF

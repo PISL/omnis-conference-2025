@@ -1,0 +1,23 @@
+Do irPreviousRecord.$clear()
+
+Do ilPreviousRoleUsers.$clear()
+Calculate icCommonUsers as ''
+Calculate icDistinctUsersPrevious as ''
+Calculate icDistinctUsersCurrent as ''
+
+Do ilPreviousRolePermissions.$clear()
+Calculate icCommonPermissions as ''
+Calculate icDistinctPermissionsPrevious as ''
+Calculate icDistinctPermissionsCurrent as ''
+
+Calculate $cinst.$objs.ilRolePermissions.$errortext as ''
+Calculate $cinst.$objs.ilRoleUsers.$errortext as ''
+
+# clearing done, now run the comparison
+If pcUserOrPermission='U'
+	Do method UsersCompare
+Else If pcUserOrPermission='P'
+	Do method PermissionsCompare
+Else
+	Breakpoint
+End If

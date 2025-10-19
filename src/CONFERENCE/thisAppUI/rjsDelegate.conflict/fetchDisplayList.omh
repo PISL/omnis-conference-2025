@@ -1,0 +1,136 @@
+Do method ClearWorkArea
+
+Do ilDisplayRecords.$clear()
+Do ilDisplayRecords.$fetchForConference(ilSearch1.CF_SEQ,icSearch,pcStatusCriteria)
+# now that we have PY_DATE added to the list (outer join) and some delegates make multiple (part) payments
+# We will wind up with multiple DG records when multiple payment occur.
+# It is also possible for a delegate to have a corporate invoice + a private invoice for spouses.
+# Which can result in yet another duplicate!
+Do ilDisplayRecords.$sort($ref.DG_SEQ,0,$ref.FOH_INV_NO,0,$ref.PY_DATE,0)
+While $Loop(ilDisplayRecords)
+	If ilDisplayRecords.$line>1
+		If ilDisplayRecords.DG_SEQ=ilDisplayRecords.[ilDisplayRecords.$line-1].DG_SEQ&ilDisplayRecords.FOH_INV_NO=ilDisplayRecords.[ilDisplayRecords.$line-1].FOH_INV_NO
+			# duplicate delegate referring to duplicate Invoice No ## therefore must be multiple payment on same invoice
+			Calculate ilDisplayRecords.[ilDisplayRecords.$line].$selected as kTrue ## removed at end of loop
+		Else If ilDisplayRecords.DG_SEQ=ilDisplayRecords.[ilDisplayRecords.$line-1].DG_SEQ&ilDisplayRecords.FOH_INV_NO<>ilDisplayRecords.[ilDisplayRecords.$line-1].FOH_INV_NO
+			# duplicate delegate on different Invoice number. ## Still... we want only one delegate in this list.
+			Calculate ilDisplayRecords.[ilDisplayRecords.$line].$selected as kTrue ## removed at end of loop
+		End If
+	End If
+End While
+Do ilDisplayRecords.$remove(kListDeleteSelected)
+
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+Else
+	# RSM: 22 SEP 15 added functionality that extends text search to bank reference values when user is on Payments tab
+	If inCurrentTab=cnTabReceipts&icSearch<>''
+		# user may be providing a bank reference in search
+		Do ilPayments.$textSearchForConference(ilSearch1.CF_SEQ,icSearch) Returns llPaymentSearch
+		If llPaymentSearch.$linecount>0
+			# only merge lines for entries that do not already exist in ilDisplayList
+			Calculate llPaymentSearch.$line as 0
+			While $Loop(llPaymentSearch)
+				Do ilDisplayRecords.$search($ref.DG_SEQ=llPaymentSearch.DG_SEQ,1,0,0,0) Returns lbFound
+				If lbFound
+					Calculate llPaymentSearch.[llPaymentSearch.$line].$selected as kTrue
+				End If
+			End While
+			Do llPaymentSearch.$remove(kListDeleteSelected)
+			# llPaymentSearch does not have SortName and DisplayName columns ## so we have to populate them
+			Calculate llTemp as ilDisplayRecords
+			Do llTemp.$clear()
+			Do llTemp.$merge(llPaymentSearch,kTrue)
+			# SortName and DisplayName are not populated
+			Calculate llTemp.$line as 0
+			While $Loop(llTemp)
+				Do llTemp.$DisplayName()
+				Calculate llTemp.SortName as upp(llTemp.DisplayName)
+			End While
+			# finally! ## put result into ilDisplayRecords
+			Do ilDisplayRecords.$merge(llTemp,kTrue)
+		End If
+	End If
+	
+	Do ilDisplayRecords.$sort($ref.SortName,0)
+End If
+
+If ilSearch2.RFO_VALUE='INCL_INVIS'
+	# display everyone
+Else If ilSearch2.RFO_VALUE='ONLY_INVIS'
+	# display ONLY the invisibles - a selectable option
+	# Do ilDisplayRecords.$search(left($ref.PSN_SURNAME,1)='_',1,0,1,0)
+	# Do ilDisplayRecords.$search(left($ref.PSN_SURNAME,1)='.',1,0,1,0)
+	Do ilDisplayRecords.$search($ref.PSN_SEX='O',1,0,1,0)
+	Do ilDisplayRecords.$remove(kListKeepSelected)
+	Do ilDisplayRecords.$search(0)
+Else
+	# suppress any names beginning with _ or .
+	# Do ilDisplayRecords.$search(left($ref.PSN_SURNAME,1)='_',1,0,1,0)
+	# Do ilDisplayRecords.$search(left($ref.PSN_SURNAME,1)='.',1,0,1,0)
+	Do ilDisplayRecords.$search($ref.PSN_SEX='O',1,0,1,0)
+	Do ilDisplayRecords.$remove(kListDeleteSelected)
+End If
+
+Calculate inSearchCount as ilDisplayRecords.$linecount
+
+# use icFormIntro as a summary
+Do ilDisplayRecords.$search($ref.DG_STATUS='REG_UNPAID',1,0,1,0)
+Calculate lnCountUnpaid as tot(ilDisplayRecords,#LSEL)
+
+Do ilDisplayRecords.$search($ref.DG_STATUS='PAID',1,0,1,1)
+Calculate lnCountPaid as tot(ilDisplayRecords,#LSEL)
+
+Do ilDisplayRecords.$search($ref.DG_ROLE='SPEAKER',1,0,1,1)
+Calculate lnCountSpeakers as tot(ilDisplayRecords,#LSEL)
+
+Do ilDisplayRecords.$search($ref.DG_STATUS='CANCEL',1,0,1,1)
+Calculate lnCountCancelled as tot(ilDisplayRecords,#LSEL)
+
+Do ilDisplayRecords.$search($ref.DG_STATUS='CC_HOTEL',1,0,1,1)
+Calculate lnCountCreditCardHotel as tot(ilDisplayRecords,#LSEL)
+
+Do ilDisplayRecords.$search(pos('DOUBT',$ref.DG_STATUS),1,0,1,1) ## doubtful with payment, doubtful without payment
+Calculate lnCountDoubtful as tot(ilDisplayRecords,#LSEL)
+
+Do ilDisplayRecords.$search(0)
+
+Calculate lnCountOther as ilDisplayRecords.$linecount-lnCountPaid-lnCountUnpaid-lnCountSpeakers-lnCountCancelled-lnCountCreditCardHotel-lnCountDoubtful
+
+Calculate lcStatus as con('total = ',ilDisplayRecords.$linecount)
+If lnCountUnpaid>0
+	Calculate lcStatus as con(lcStatus,', ',' unpaid = ',lnCountUnpaid)
+End If
+If lnCountCreditCardHotel>0
+	Calculate lcStatus as con(lcStatus,', ',' CC @ hotel = ',lnCountCreditCardHotel)
+End If
+If lnCountPaid>0
+	Calculate lcStatus as con(lcStatus,', ',' paid = ',lnCountPaid)
+End If
+If lnCountSpeakers>0
+	Calculate lcStatus as con(lcStatus,', ',' speakers = ',lnCountSpeakers)
+End If
+If lnCountDoubtful>0
+	Calculate lcStatus as con(lcStatus,', ',' doubtful = ',lnCountDoubtful)
+End If
+If lnCountCancelled>0
+	Calculate lcStatus as con(lcStatus,', ',' cancelled = ',lnCountCancelled)
+End If
+If lnCountOther>0
+	Calculate lcStatus as con(lcStatus,', ',' other = ',lnCountOther)
+End If
+
+Calculate llTemp as ilDisplayRecords
+Do llTemp.$cols.DG_COUNTRY.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilDisplayRecords.$search($ref.DG_COUNTRY=llTemp.DG_COUNTRY,1,0,1,0)
+	Calculate lcNationalities as con(lcNationalities,pick(lcNationalities<>'','',', '),llTemp.DG_COUNTRY,' = ',totc(ilDisplayRecords,#LSEL))
+	Do ilDisplayRecords.$search(0)
+End While
+Calculate ilDisplayRecords.$line as 0
+
+Calculate icFormIntro as con(lcStatus,pick(lcStatus<>'','',kCr),lcNationalities)
+# While $Loop(ilDisplayRecords)
+# Do ilDisplayRecords.$DisplayName()
+# End While

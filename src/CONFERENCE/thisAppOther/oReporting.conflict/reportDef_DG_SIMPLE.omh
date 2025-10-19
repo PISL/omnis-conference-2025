@@ -1,0 +1,33 @@
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "DG_SIMPLE"
+
+Text:, "title" : "Delegates report - simple"
+Text:, "description" : "Lists all delegates with simple presentation."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+Text:, "sortlist_lbl" : "sort options"
+Text:, "sortlist_tt" : "you can determine the sort order of your report here"
+Text:, "sortlist_default" : "1"
+Text:, "sortlist_column" : "sortName"
+
+Text:, "checkbox1_lbl" : "exclude cancelled"
+Text:, "checkbox1_tt" : "If someone has cancelled, do not include them in the report."
+Text:, "checkbox1_default" : "1"
+Text:
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('DG',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

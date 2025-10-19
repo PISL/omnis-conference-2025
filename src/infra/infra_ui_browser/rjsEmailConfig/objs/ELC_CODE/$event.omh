@@ -17,7 +17,7 @@ On evAfter
 			End If
 		End If
 		
-		If icMode='I'
+		If icMode='IC'
 			# if a code has been provided, look it up from earlier config records and place into new
 			Do toValues.$initInherited('EM_SRVR_FROM',irCurrentRecord.ELC_CODE) Returns lrReference
 			If lrReference.RFO_SEQ>0

@@ -12,6 +12,7 @@ Do method reportDef_DG_SIMPLE
 Do method reportDef_DG_NAMES
 Do method reportDef_DG_EMAILS
 Do method reportDef_TRAVEL_DEETS_IN
+Do method reportDef_TRAVEL_DEETS_DG
 Do method reportDef_TRAVEL_DEETS_OT
 Do method reportDef_MUSICIANS
 
@@ -35,6 +36,8 @@ Do ilDisplayRecords.$add('VENUE','','','','')
 Do ilDisplayRecords.$add('VENUE','','VENUE','','')
 Do method reportDef_ROOM_ALLOC
 Do method reportDef_PAX
+Do method reportDef_PAX2
+Do method reportDef_PAX_NIGHT_NAME
 Do method reportDef_DIETREQ
 Do method reportDef_SPKR_REQUESTS
 Do method reportDef_LABELS

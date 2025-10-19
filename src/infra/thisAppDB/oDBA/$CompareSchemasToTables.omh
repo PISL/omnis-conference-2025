@@ -1,0 +1,164 @@
+Do llIssues.$cols.$add('schema',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('table',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('column',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('problem',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('clienttype',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('clientsubtype',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('clientsize',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('servertype',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('serversize',kCharacter,kSimplechar,100)
+Do llIssues.$cols.$add('issue',kCharacter,kSimplechar,255)
+
+Do $DefineList(llDatabases,'infra.tsql_administration') ## this has to be repeated within the loop
+Do $DefineList(llTablesOnServer,'infra.tsql_administration') ## this has to be repeated within the loop
+Do llDatabases.$ListDatabases()
+Do llTablesOnServer.$ListTables('public')
+
+
+Do $clib().$schemas.$makelist($ref.$name) Returns llSchemasOmnis
+# highlight schemas that do not appear on db server
+Do llSchemasOmnis.$search(pos('soSOA',$ref.C1)=1,1,0,1,0)
+Do llSchemasOmnis.$search(pos('_',$ref.C1)=1,1,0,1,0) ## "invisible" schemas
+Do llSchemasOmnis.$remove(kListDeleteSelected)
+
+While $Loop(llSchemasOmnis)
+	Working message checking database definition (Repeat count) {checking structure of [llSchemasOmnis.$linecount] tables...}
+	
+	Do llDescription.$clear()
+	
+	Do $DefineList(lrTemp,llSchemasOmnis.C1)
+	Do $DefineList(llDescription,'infra.tsql_administration') ## this has to be repeated within the loop
+	Do llDescription.$DescribeTable(low(lrTemp.$servertablenames()))
+	Do llTablesOnServer.$search($ref.tablename=low(lrTemp.$servertablenames()),1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate llTablesOnServer.[llTablesOnServer.$line].$selected as kTrue ## track the matches so unmatched can be reported
+		Calculate llSchemasOmnis.[llSchemasOmnis.$line].$selected as kTrue ## track the matches so unmatched can be reported
+	End If
+	
+	For lnColNo from 1 to lrTemp.$colcount step 1
+		Set reference liColRef to lrTemp.$cols.[lnColNo].$ref
+		Calculate lcColName as liColRef.$name
+		Calculate llDescription.$line as lnColNo
+		
+		# usually the column names will match the column order in both schema class and db table class
+		# however if they don't align numerically then search out of sequence ## the app will still work
+		If upp(lcColName)=upp(llDescription.name)
+			Calculate lbColumnNameMatch as kTrue
+		Else
+			Do llDescription.$search(upp($ref.name)=upp(lcColName),1,0,0,0) Returns lbColumnNameMatch
+		End If
+		
+		If lbColumnNameMatch
+			Calculate llDescription.[llDescription.$line].$selected as kTrue ## track the matches and report non matches at end
+			
+			# name matches
+			If liColRef.$coltype=kCharacter&pos('character',llDescription.type)=1
+				# matching character type
+				If pos(con('(',liColRef.$colsublen,')'),llDescription.type)>0
+					# matching column size
+				Else
+					# Breakpoint {character column length mismatch}
+					# schema, table, column, problem, client type, client size, server type, server size, description
+					Calculate lcColType as mid(llDescription.type,1,pos('(',llDescription.type)-1)
+					Calculate lcColLength as mid(llDescription.type,pos('(',llDescription.type)+1,99)
+					Calculate lcColLength as mid(lcColLength,1,pos(')',lcColLength)-1)
+					Do llIssues.$add(llSchemasOmnis.C1,lrTemp.$servertablenames(),lcColName,'column mismatch',liColRef.$coltype,liColRef.$colsubtype,liColRef.$colsublen,lcColType,lcColLength,con('column width mismatch - ',liColRef.$colsublen,'in schema class, ',llDescription.type,' in db table'))
+				End If
+			Else If liColRef.$coltype=kCharacter&liColRef.$colsubtype=kSimplechar&liColRef.$colsublen>=1500&pos('text',llDescription.type)=1
+				# matching large character type
+				
+			Else If liColRef.$coltype=kInteger&liColRef.$colsubtype=k32bitint&pos('integer',llDescription.type)=1
+				# matching integer type
+			Else If liColRef.$coltype=kInteger&liColRef.$colsubtype=kShortint&pos('smallint',llDescription.type)=1
+				# matching small int column
+				
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k1dp&pos('numeric(15,1)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k2dp&pos('numeric(15,2)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k3dp&pos('numeric(15,3)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k4dp&pos('numeric(15,4)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k5dp&pos('numeric(15,5)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k6dp&pos('numeric(15,6)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k8dp&pos('numeric(15,8)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k10dp&pos('numeric(15,10)',llDescription.type)=1
+				# matching real number
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k0dpShortnum&rxpos('numeric(.*,0)',llDescription.type,kTrue,kFalse,lnMatchLength)>0
+				# matching integer column (short number)
+			Else If liColRef.$coltype=kNumber&liColRef.$colsubtype=k2dpShortnum&rxpos('numeric(.*,2)',llDescription.type,kTrue,kFalse,lnMatchLength)>0
+				# matching 2dp column (short number)
+				
+			Else If liColRef.$coltype=kDate&liColRef.$colsubtype=kDatetime&pos('timestamp',llDescription.type)=1
+				# matching datetime column
+			Else If liColRef.$coltype=kDate&liColRef.$colsubtype=kTime&pos('time',llDescription.type)=1
+				# matching datetime column
+			Else If liColRef.$coltype=kDate&pos('date',llDescription.type)=1
+				# matching date column
+				
+			Else If liColRef.$coltype=kBinary&pos('bytea',llDescription.type)=1
+				# matching binary column
+				
+			Else
+				Breakpoint [llDescription.name]
+			End If
+			
+			# if column has particular attributes then check these also
+			If llDescription.primarykey='t'
+				# Calculate #1 as $schemas.[llSchemas.C1].$objs.[lnColNo].$primarykey
+				If $schemas.[llSchemasOmnis.C1].$objs.[lnColNo].$primarykey
+					# then we have a match
+				Else
+					# Breakpoint {primary key mismatch}
+					# schema, table, column, problem, client type, client size, server type, server size, description
+					Do llIssues.$add(llSchemasOmnis.C1,lrTemp.$servertablenames(),lcColName,'schema column not marked as primary key',#NULL,#NULL,#NULL,#NULL,#NULL,'primary key on db server but not marked in schema class')
+				End If
+			Else If $schemas.[llSchemasOmnis.C1].$objs.[lnColNo].$primarykey
+				If llDescription.primarykey='t'
+					# fine ## this will detected above
+				Else
+					# schema, table, column, problem, client type, client size, server type, server size, description
+					Do llIssues.$add(llSchemasOmnis.C1,lrTemp.$servertablenames(),lcColName,'primary key constraint missing',#NULL,#NULL,#NULL,#NULL,#NULL,'schema class column marked as primary key but not reflected in db server')
+				End If
+			End If
+		Else ## lbColumnNameMatch
+			# Breakpoint {bad name}
+			# schema, table, column, problem, client type, client size, server type, server size, description
+			Do llIssues.$add(llSchemasOmnis.C1,lrTemp.$servertablenames(),lcColName,'column in table missing',liColRef.$coltype,liColRef.$colsubtype,liColRef.$colsublen,#NULL,#NULL,'exists in schema class but not in database')
+		End If ## lbColumnNameMatch
+	End For
+	
+	Do llDescription.$remove(kListDeleteSelected)
+	Calculate llDescription.$line as 0
+	While $Loop(llDescription)
+		# schema, table, column, problem, client type, client size, server type, server size, description
+		Calculate lcColType as mid(llDescription.type,1,pos('(',llDescription.type)-1)
+		Calculate lcColLength as mid(llDescription.type,pos('(',llDescription.type)+1,99)
+		Calculate lcColLength as mid(lcColLength,1,pos(')',lcColLength)-1)
+		Do llIssues.$add(llSchemasOmnis.C1,lrTemp.$servertablenames(),llDescription.name,'column in schema class missing',#NULL,#NULL,#NULL,lcColType,lcColLength,'exists in db table but not in schema class')
+	End While
+End While
+Close working message
+
+Do llTablesOnServer.$remove(kListDeleteSelected)
+Calculate llTablesOnServer.$line as 0
+While $Loop(llTablesOnServer)
+	# schema, table, column, problem, client type, client size, server type, server size, description
+	Do llIssues.$add('',llTablesOnServer.tablename,'','schema class missing',#NULL,#NULL,#NULL,#NULL,#NULL,'table exists in db but not in schema classes')
+End While
+
+Do llSchemasOmnis.$remove(kListDeleteSelected)
+Calculate llSchemasOmnis.$line as 0
+While $Loop(llSchemasOmnis)
+	# schema, table, column, problem, client type, client size, server type, server size, description
+	Do llIssues.$add(llSchemasOmnis.C1,'','','db table missing',#NULL,#NULL,#NULL,#NULL,#NULL,con('schema class ',llSchemasOmnis.C1,' exists but db table on server does not'))
+End While
+
+Sound bell
+
+# Breakpoint
+Quit method llIssues

@@ -44,13 +44,16 @@ Calculate irSecureOptions.iSecCharPrivateKeyPw as iSecCharPrivateKeyPw
 
 Do method vCardSpec ## irVcardConfig
 
-# a comprehensive list f mime types is available in oStringThings
+# a comprehensive list f mime types is available in oValues.$mimeTypes
 Do iMIMEtypeList.$define(iMIMEtype)
 Do iMIMEtypeList.$add("text/plain")
 Do iMIMEtypeList.$add("text/html")
 Do iMIMEtypeList.$add("text/xml")
 Do iMIMEtypeList.$add("text/css")
 Do iMIMEtypeList.$add("text/javascript")
+Do iMIMEtypeList.$add("application/pdf")
+Do iMIMEtypeList.$add('text/x-vcalendar')
+Do iMIMEtypeList.$add('text/calendar')
 
 Do iMIMEtypeList.$add("application/octet-stream")
 Do iMIMEtypeList.$add("application/pdf")

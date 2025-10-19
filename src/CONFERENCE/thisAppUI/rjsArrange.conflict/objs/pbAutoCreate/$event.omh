@@ -1,0 +1,5 @@
+On evClick
+	# Breakpoint
+	Do method autoCreateArrangements
+	
+	Do $cinst.$behaviour()

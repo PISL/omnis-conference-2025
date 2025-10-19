@@ -1,0 +1,9 @@
+Calculate $cinst.PRD_GO_REF as $ctask.trGroupOrg.GO_SEQ
+Calculate $cinst.PRD_UNIT_DIVISOR as 1
+Calculate $cinst.PRD_SIZE as 1
+Calculate $cinst.PRD_SERVICE_UNIT as 1
+If tcCurrentLibrary='CONFERENCE'
+	Calculate $cinst.PRD_UOS_CODE as 'Unit(s)' ## CONFERENCE
+Else
+	Calculate $cinst.PRD_UOS_CODE as 'kg'
+End If

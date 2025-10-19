@@ -1,0 +1,16 @@
+Do toStrings.$HasRowBeenModified(irAttendeeOrig,irAttendee) Returns lbModified
+If lbModified
+	Do irAttendee.$validation() Returns lbProceed
+	If lbProceed
+		Do irAttendee.$update() Returns lbOK
+		If lbOK
+			Do ilAttendees.$assignrow(irAttendee)
+			Calculate irAttendeeOrig as irAttendee
+			Calculate ibFeedbackModified as kFalse
+		Else
+			Calculate icDisplayMessage as irAttendee.irErrorSQL.NativeErrorText
+		End If
+	Else
+		Calculate icDisplayMessage as con('NOT SAVED !',kCr,irAttendee.icValidationMessage)
+	End If
+End If

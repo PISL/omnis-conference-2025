@@ -1,0 +1,21 @@
+# called from rtSuper.$buildNavMenus
+# initialise this applications navigation menu items
+Do llGroups.$cols.$add('container',kCharacter,kSimplechar,100) ## remote form container name
+Do llGroups.$cols.$add('code',kCharacter,kSimplechar,50) ## string table ID
+Do llGroups.$cols.$add('group',kCharacter,kSimplechar,50) ## string table ID
+Do llGroups.$cols.$add('params',kCharacter,kSimplechar,1000) ## remote form container name
+
+# add these lines in the order they will appear in the Navigation Menu
+Do llGroups.$add('rjsParticipants','FORM_PART','NAVMENU_DATA')
+Do llGroups.$add('rjsConference','FORM_EVENT','NAVMENU_DATA')
+Do llGroups.$add('rjsSetup','FORM_SETUP','NAVMENU_DATA')
+Do llGroups.$add('rjsValidity','FORM_VALID','NAVMENU_DATA')
+Do llGroups.$add('rjsPublicForms','FORM_PUBLIC_CO','NAVMENU_DATA')
+
+Do llGroups.$add('infra.rjsReferenceAll','FORM_CFG','NAVMENU_CONFIG')
+Do llGroups.$add('infra.rjsUserAccess','FORM_ACCESS','NAVMENU_CONFIG')
+Do llGroups.$add('infra.rjsLogsAll','FORM_LOGS','NAVMENU_CONFIG')
+Do llGroups.$add('infra.rjsEmailConfig','FORM_EMCONF','NAVMENU_CONFIG')
+Do llGroups.$add('infra.rjsEnvironment','FORM_ENV','NAVMENU_CONFIG')
+
+Quit method llGroups

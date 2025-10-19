@@ -1,0 +1,274 @@
+# initialise rows so test for valid calculation is more reliable
+If pcTestString<>''
+	If left(pcTestString,1)='$'
+		# make sure there is a valid method name to call
+		# This code was started but abandoned because it was starting to get convoluted.
+		# The solution is to make more product codes and more rules.
+		# Do $cinst.$methods.$findname(pcTestString) Returns lrMethodRef
+		# If lrMethodRef
+		# valid
+		# Calculate lbValidCalculation as kTrue
+		# Else
+		Calculate lbValidCalculation as kFalse
+		# End If
+	Else If pos('(',pcTestString)|pos("'",pcTestString)
+		Test for valid calculation eval(pcTestString)
+		If flag true
+			# valid
+			Calculate lbValidCalculation as kTrue
+		Else
+			Calculate lbValidCalculation as kFalse
+		End If
+	Else ## no calculation characters
+		# assume it is a string e.g. XXXY
+		Calculate lbValidCalculation as kTrue
+	End If
+	
+	Quit method lbValidCalculation
+End If
+
+If prConference.CF_SEQ>0
+	# continue
+Else
+	Quit method #NULL
+End If
+
+Do irDelegate.$delegateCount(prConference.CF_SEQ) Returns DelegateCount
+
+Calculate lbRefreshRules as kTrue
+If ilRules.$linecount>0
+	If ilRules.1.CFP_CF_REF=prConference.CF_SEQ
+		Calculate lbRefreshRules as kFalse
+	End If
+End If
+
+If lbRefreshRules
+	Do ilRules.$fetchActive(prConference.CF_SEQ)
+	Do ilRules.$sort($ref.CFP_ORDER,0)
+End If
+
+# set up variables that are used when interpreting the Rules
+Calculate CurrencySymbol as prConference.CF_CURRENCY
+
+Calculate lbMembershipApplies as kFalse
+If upp(trGroupOrg.GO_NAME_SHORT)='OMNISWORLD'
+	Calculate lbMembershipApplies as kTrue
+End If
+Calculate lbSpouseOptionApplies as kFalse
+If upp(trGroupOrg.GO_NAME_SHORT)='OMNISWORLD'
+	Calculate lbSpouseOptionApplies as kTrue
+End If
+Calculate lbPostProcessingApplies as kFalse
+If upp(trGroupOrg.GO_NAME_SHORT)='OMNISWORLD'
+	Calculate lbPostProcessingApplies as kTrue
+End If
+
+Do ilDetails.$clear()
+
+Calculate plPersons.$line as 0
+While $Loop(plPersons)
+	
+	Calculate Occupancy as plPersons.inDG_OCCUPANCY
+	Calculate Extras as plPersons.inExtras
+	Calculate Membership as plPersons.inMembership
+	Calculate NoDays as plPersons.inNoDays
+	
+	Calculate OccupancyCode as ilOccupancy.[Occupancy+1].RFO_VALUE ## If ilOccupancy.[inDG_OCCUPANCY+1].RFO_VALUE='P'     ;; sPeaker
+	Calculate DailyRate as (OccupancyCode='D')
+	
+	# primary product code for conference / event
+	Calculate ilRules.$line as 0
+	While $Loop(ilRules)
+		Calculate lbValid as kFalse
+		Calculate lbSatisfied as kFalse
+		Calculate lbChecked as kFalse
+		
+		Test for valid calculation eval(ilRules.CFP_CALC)
+		Calculate lbValid as #F
+		If lbValid
+			Calculate lbSatisfied as eval(ilRules.CFP_CALC)
+		Else
+			# Breakpoint
+		End If
+		
+		If lbSatisfied
+			Do irProduct.$clear()
+			# how do we determine a calculation? ## content could be con('xxx','y')  or  'XXXY'  or  XXXY
+			# unfortunately XXXY, which I thought would fail Test for valid calculation, does not.
+			
+			# So we explicitly check for calculation characters now.
+			# And we also support tailored method calls ## to cope with Daily rates for Euromnis
+			# method calls have a $prefix
+			If left(ilRules.CFP_PROD_CODE,1)='$'
+				# make sure there is a valid method name to call
+				# This code was started but abandoned because it was starting to get convoluted.
+				
+			Else If pos('(',ilRules.CFP_PROD_CODE)|pos("'",ilRules.CFP_PROD_CODE)
+				Test for valid calculation eval(ilRules.CFP_PROD_CODE)
+				If flag true
+					Calculate lcCodeCheck as eval(ilRules.CFP_PROD_CODE)
+					If lcCodeCheck<>''
+						If irProduct.PRD_INT_PRODCODE=lcCodeCheck
+							# not need to re-fetch
+						Else
+							Do ilProductCache.$search($ref.PRD_INT_PRODCODE=con(lcCodeCheck),1,0,0,0) Returns lbFoundInCache
+							If lbFoundInCache
+								Do irProduct.$assignrow(ilProductCache)
+							Else
+								Do irProduct.$fetchIntCode(lcCodeCheck,kTrue) ## could be con() function
+							End If
+						End If
+					End If
+				Else
+					Do ilProductCache.$search($ref.PRD_INT_PRODCODE=con(ilRules.CFP_PROD_CODE),1,0,0,0) Returns lbFoundInCache
+					If lbFoundInCache
+						Do irProduct.$assignrow(ilProductCache)
+					Else
+						Do irProduct.$fetchIntCode(ilRules.CFP_PROD_CODE,kTrue)
+					End If
+				End If
+				If irProduct.PRD_SEQ>0
+					# fetch ok
+				Else
+					# Breakpoint
+					Do ilResolveErrors.$add('evalCheck',ilRules.CFP_NAME,con(ilRules.CFP_PROD_CODE,' (',lcCodeCheck,') not found in Products table'))
+					Calculate lbChecked as kTrue
+				End If
+			Else ## no calculation characters
+				Do ilProductCache.$search($ref.PRD_INT_PRODCODE=con(ilRules.CFP_PROD_CODE),1,0,0,0) Returns lbFoundInCache
+				If lbFoundInCache
+					Do irProduct.$assignrow(ilProductCache)
+				Else
+					Do irProduct.$fetchIntCode(ilRules.CFP_PROD_CODE,kTrue)
+				End If
+			End If
+			
+			If irProduct.PRD_SEQ>0
+				If not(lbFoundInCache)
+					Do ilProductCache.$add()
+					Calculate ilProductCache.$line as ilProductCache.$linecount
+					Do ilProductCache.$assignrow(irProduct,kTrue)
+				End If
+				
+				# Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,irProduct.PRD_NAME,irProduct.PID_UNIT_PRICE,irProduct.PRD_TAX_BAND,1,llInvDetails.$linecount)
+				If NoDays>0
+					Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,irProduct.PID_TAX_BAND,NoDays,llInvDetails.$linecount)
+				Else
+					Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,irProduct.PID_TAX_BAND,1,llInvDetails.$linecount)
+				End If
+				Calculate ilDetails.$line as ilDetails.$linecount
+				Do ilDetails.$assignrow(irProduct,kTrue)
+				Do ilDetails.$calculatedValues()
+				Do ilDetails.$assignrow(irProduct,kTrue)
+				
+				Break to end of loop ## rules loop that is - we will still be in Persons loop
+			Else If lbChecked
+				# do not report same error twice
+			Else
+				Breakpoint
+				Do ilResolveErrors.$add('hardCheck',ilRules.CFP_NAME,con(ilRules.CFP_PROD_CODE,' not found in Products table'))
+				Calculate lbChecked as kTrue
+			End If
+		End If
+		
+	End While
+	
+	# post processing ## this applies to OmnisWorld when 24hr rates are to be applied
+	If lbPostProcessingApplies
+		# not implemented
+	End If
+	
+	# membership
+	If lbMembershipApplies
+		Do irProduct.$clear()
+		If plPersons.$cols.$findname('inMembership')
+			If plPersons.inMembership=0 ## personal
+				Do ilProductCache.$search($ref.PRD_INT_PRODCODE=con(prConference.CF_PRODCODE_MEMP,prConference.CF_CURRENCY),1,0,0,0) Returns lbFoundInCache
+				If lbFoundInCache
+					Do irProduct.$assignrow(ilProductCache)
+					
+					Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,0,1,llInvDetails.$linecount) Returns llInvDetails
+					Calculate ilDetails.$line as ilDetails.$linecount
+					Do ilDetails.$assignrow(irProduct,kTrue)
+					Do ilDetails.$calculatedValues()
+					
+				Else
+					Do irProduct.$fetchIntCode(con(prConference.CF_PRODCODE_MEMP,prConference.CF_CURRENCY),kTrue)
+					If irProduct.PRD_SEQ>0
+						Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,0,1,llInvDetails.$linecount) Returns llInvDetails
+						Calculate ilDetails.$line as ilDetails.$linecount
+						Do ilDetails.$assignrow(irProduct,kTrue)
+						Do ilDetails.$calculatedValues()
+						
+						Do ilProductCache.$add()
+						Calculate ilProductCache.$line as ilProductCache.$linecount
+						Do ilProductCache.$assignrow(irProduct,kTrue)
+					End If
+				End If
+				
+			Else If plPersons.inMembership=1 ## corporate
+				Do ilProductCache.$search($ref.PRD_INT_PRODCODE=con(prConference.CF_PRODCODE_MEMC,prConference.CF_CURRENCY),1,0,0,0) Returns lbFoundInCache
+				If lbFoundInCache
+					Do irProduct.$assignrow(ilProductCache)
+				Else
+					Do irProduct.$fetchIntCode(con(prConference.CF_PRODCODE_MEMC,prConference.CF_CURRENCY),kTrue)
+					If irProduct.PRD_SEQ>0
+						Do ilProductCache.$add()
+						Calculate ilProductCache.$line as ilProductCache.$linecount
+						Do ilProductCache.$assignrow(irProduct,kTrue)
+					End If
+				Else
+					# not applicable
+				End If
+				
+				# add to the invoice
+				If irProduct.PRD_SEQ>0
+					Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,irProduct.PRD_NAME,irProduct.PID_UNIT_PRICE,0,1,llInvDetails.$linecount) Returns llInvDetails
+					Calculate ilDetails.$line as ilDetails.$linecount
+					Do ilDetails.$assignrow(irProduct,kTrue)
+					Do ilDetails.$calculatedValues()
+				End If
+			End If
+		End If
+	End If
+	
+	# spouse and/or family
+	If lbSpouseOptionApplies
+		If plPersons.inExtras=1|plPersons.inExtras=2 ## 1=spouse, 2=family
+			Do ilProductCache.$search($ref.PRD_INT_PRODCODE=con(prConference.CF_PRODCODE_SPOUSE,prConference.CF_CURRENCY),1,0,0,0) Returns lbFoundInCache
+			If lbFoundInCache
+				Do irProduct.$assignrow(ilProductCache)
+			Else
+				Do irProduct.$clear()
+				Do irProduct.$fetchIntCode(con(prConference.CF_PRODCODE_SPOUSE,prConference.CF_CURRENCY),kTrue)
+				
+				Do ilProductCache.$add()
+				Calculate ilProductCache.$line as ilProductCache.$linecount
+				Do ilProductCache.$assignrow(irProduct,kTrue)
+				
+			End If
+			
+			If irProduct.PRD_SEQ>0
+				Do ilDetails.$add(#NULL,#NULL,irProduct.PRD_SEQ,con(irProduct.PRD_NAME,': ',plPersons.PSN_SURNAME,', ',plPersons.PSN_FIRST_NAME),irProduct.PID_UNIT_PRICE,0,1,llInvDetails.$linecount) Returns llInvDetails
+				Calculate ilDetails.$line as ilDetails.$linecount
+				Do ilDetails.$assignrow(irProduct,kTrue)
+				Do ilDetails.$calculatedValues()
+				
+				
+			End If
+			
+			If plPersons.inExtras=2
+				# we don't have any product codes for this ## dealt with manually later on
+			End If
+		End If
+	End If
+	
+End While
+
+# fudge for jsClient which seems to have difficulty displaying a column name called "Total"
+Calculate ilDetails.$line as 0
+While $Loop(ilDetails)
+	Calculate ilDetails.Total2 as ilDetails.Total
+End While
+
+Quit method ilDetails

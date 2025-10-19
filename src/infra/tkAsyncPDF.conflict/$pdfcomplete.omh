@@ -1,0 +1,21 @@
+If pbOK
+	If irefCaller.$construct.$cando()
+		If icCompletionMethod<>''
+			Do irefCaller.[icCompletionMethod](icPDFid,pcFilePath,irJobAttributes)
+		Else
+			Do irefCaller.$pdfcomplete(icPDFid,pcFilePath,irJobAttributes)
+		End If
+	Else
+		Do $LogEvent($cclass.$name,'pdfcompleted',con('callback param count ',irCallerParams.$colcount,' and primary column value ',irCallerParams.C1))
+	End If
+Else
+	If ibSaveOnError ## this will be kFalse if we have no DB connection
+		Calculate lcMessage as con("Attempting to print PDF: ",kCr,icReportClass)
+		If len(pcFilePath)
+			Calculate lcMessage as con(lcMessage," to '",pcFilePath,"'")
+		End If
+		Do $AppError(999000,lcMessage,'PDF Device failure')
+	End If
+End If
+
+Do $cinst.$close() ## our job is done here

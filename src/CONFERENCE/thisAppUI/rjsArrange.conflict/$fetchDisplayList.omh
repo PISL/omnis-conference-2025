@@ -1,0 +1,111 @@
+Do method ClearWorkArea ## ilSearch2
+
+Calculate inConferenceDurationDays as ddiff(kDay,ilSearch1.CF_DATE_FROM,ilSearch1.CF_DATE_TO)
+If trGroupOrg.GO_NAME_SHORT='OmnisWorld'
+	# because we know Euromnis start and end days are arrival and departure ## Sun & Fri
+	# and the ddiff function counts number of midnights between dates ## 6 days spans 5 nights
+	Calculate inConferenceDurationDays as inConferenceDurationDays-1 ## this relfects a count of whole days between arrival and departure
+End If
+
+Do ilDisplayRecords.$clear()
+Do ilDisplayRecords.$fetchConference(ilSearch1.CF_SEQ,pcSearch2,pcTextSearch)
+
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+Else
+	# Do ilDisplayRecords.$sort($ref.SortName,0)
+	Do ilDisplayRecords.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0,$ref.ARR_ORDER,0)
+End If
+
+Calculate ilDisplayRecords.$line as 0
+While $Loop(ilDisplayRecords)
+	Do ilDisplayRecords.$DisplayName()
+	# "convert" PG time to Omnis time ## required for time comparisons below
+	Calculate ilDisplayRecords.ARR_STARTTIME as tim(ilDisplayRecords.ARR_STARTTIME)
+	Calculate ilDisplayRecords.ARR_ENDTIME as tim(ilDisplayRecords.ARR_ENDTIME)
+	# set DisplayDate
+	If ilDisplayRecords.ARR_DATE>dat('1 JAN 2010')
+		Calculate ilDisplayRecords.DisplayDate as ilDisplayRecords.ARR_DATE
+	Else
+		Calculate ilDisplayRecords.DisplayDate as con('day ',ilDisplayRecords.ARR_DAYNO)
+	End If
+	# set DisplayTime
+	If ilDisplayRecords.ARR_STARTTIME>tim('00:00')
+		Calculate ilDisplayRecords.DisplayTime as ilDisplayRecords.ARR_STARTTIME
+	Else
+		Calculate ilDisplayRecords.DisplayTime as ilDisplayRecords.ARR_SLOT
+	End If
+End While
+
+# use icFormIntro for summary info
+Calculate icFormIntro as ''
+Calculate inSearchCount as ilDisplayRecords.$linecount
+
+# daily summary
+Do ilSummaryDays.$clear()
+Calculate llTemp as ilDisplayRecords
+Do llTemp.$cols.DisplayDate.$removeduplicates(kTrue)
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	# count AM sessions
+	Do ilDisplayRecords.$search($ref.DisplayDate=llTemp.DisplayDate&$ref.ARR_STARTTIME>=tim('08:00')&$ref.ARR_STARTTIME<tim('12:00'),1,0,1,0)
+	Do ilSummaryDays.$add(con(llTemp.DisplayDate,' AM'),totc(ilDisplayRecords,#LSEL))
+	Do ilDisplayRecords.$search(0)
+	# count PM sessions
+	Do ilDisplayRecords.$search($ref.DisplayDate=llTemp.DisplayDate&$ref.ARR_STARTTIME>=tim('12:00')&$ref.ARR_STARTTIME<tim('17:00'),1,0,1,0)
+	Do ilSummaryDays.$add(con(llTemp.DisplayDate,' PM'),totc(ilDisplayRecords,#LSEL))
+	Do ilDisplayRecords.$search(0)
+	# count evening sessions
+	Do ilDisplayRecords.$search($ref.DisplayDate=llTemp.DisplayDate&$ref.ARR_STARTTIME>=tim('18:00')&$ref.ARR_STARTTIME<tim('23:00'),1,0,1,0)
+	If totc(ilDisplayRecords,#LSEL)>0
+		Do ilSummaryDays.$add(con(llTemp.DisplayDate,' EVE'),totc(ilDisplayRecords,#LSEL))
+		Do ilDisplayRecords.$search(0)
+	End If
+End While
+
+# speaker summary
+Do ilSummarySpeakers.$clear()
+Calculate llTemp as ilDisplayRecords
+Do llTemp.$cols.ARR_PSN_REF.$removeduplicates(kTrue)
+# exclude special names from summary
+Do llTemp.$search(left($ref.PSN_SURNAME,1)='_',1,0,1,0)
+Do llTemp.$search(left($ref.PSN_SURNAME,1)='.',1,0,1,0)
+Do llTemp.$remove(kListDeleteSelected)
+
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	Do ilDisplayRecords.$search($ref.ARR_PSN_REF=llTemp.ARR_PSN_REF,1,0,1,0)
+	# Calculate lcSummarySpeakers as con(lcSummarySpeakers,pick(lcSummarySpeakers<>'','','; '),llTemp.PSN_SURNAME,' = ',totc(ilDisplayRecords,#LSEL))
+	Do ilSummarySpeakers.$add(llTemp.PSN_SURNAME,totc(ilDisplayRecords,#LSEL))
+	Do ilDisplayRecords.$search(0)
+End While
+
+# put it all together...
+# Calculate icFormIntro as con(lcSummaryDays,pick(lcSummaryDays<>'','',kCr),lcSummarySpeakers)
+
+Do method ScheduleConflicts
+
+If pos('ALL',upp(pcDesc))|isclear(pcDesc) ## ilSearch2
+	Do method fetchSearch2List
+End If
+
+# show the relevant day / slot lists
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1AM.$visible as inConferenceDurationDays>=1
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1PM.$visible as inConferenceDurationDays>=1
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1EVE.$visible as inConferenceDurationDays>=1&ilDay1EVE.$linecount>0
+
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2AM.$visible as inConferenceDurationDays>=2
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2PM.$visible as inConferenceDurationDays>=2
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2EVE.$visible as inConferenceDurationDays>=2&ilDay2EVE.$linecount>0
+
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3AM.$visible as inConferenceDurationDays>=3
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3PM.$visible as inConferenceDurationDays>=3
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3EVE.$visible as inConferenceDurationDays>=3&ilDay3EVE.$linecount>0
+
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4AM.$visible as inConferenceDurationDays>=4
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4PM.$visible as inConferenceDurationDays>=4
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4EVE.$visible as inConferenceDurationDays>=4&ilDay4EVE.$linecount>0
+
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5AM.$visible as inConferenceDurationDays>=5
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5PM.$visible as inConferenceDurationDays>=5
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5EVE.$visible as inConferenceDurationDays>=5&ilDay5EVE.$linecount>0

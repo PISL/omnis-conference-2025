@@ -1,0 +1,13 @@
+On evClick
+	Calculate irPax.PX_ROLE as ilSpouse.RFO_VALUE
+	If irPax.PX_SEQ>0
+		# leave as is
+	Else
+		Do irPax.$defaults()
+	End If
+	If irPax.PX_ROLE='SPOUSE'
+		If len(irPax.PX_NAME)=0
+			Calculate irPax.PX_NAME as ilPersons.PSN_SPOUSE_NAME
+		End If
+	End If
+	Do $cinst.$behaviour()

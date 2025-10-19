@@ -1,6 +1,6 @@
 {
 	"ident": 1003,
-	"order": 42,
+	"order": 38,
 	"objtype": "kComponent",
 	"componentlib": "jsBack",
 	"componentctrl": "Background Control",

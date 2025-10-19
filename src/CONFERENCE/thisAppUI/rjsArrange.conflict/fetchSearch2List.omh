@@ -1,0 +1,77 @@
+# Do toValues.$initOrg('DG_STATUS') Returns $cinst.ilSearch2
+
+# provide a rich sub selection set
+# Speaker
+# Day / date
+# Day / date with AM, PM, EVE
+
+Do ilSearch2.$define(ilDisplayRecords.DisplayDate,ilDisplayRecords.ARR_DATE,ilDisplayRecords.ARR_DAYNO,ilDisplayRecords.ARR_STARTTIME,ilPersons.PSN_SEQ,ilDisplayRecords.ARR_LEADER,lnRatioFrom,lnRatioTo)
+
+Calculate llDates as ilSearch2
+Calculate llSpeakers as ilSearch2
+Do llDates.$merge($cinst.ilDisplayRecords,kTrue)
+Do llDates.$cols.DisplayDate.$removeduplicates(kTrue)
+Do llDates.$sendall($ref.ARR_STARTTIME.$assign(#NULL))
+
+Calculate llLeaders as ilSearch2
+Do llLeaders.$merge(ilDisplayRecords,kTrue)
+Do llLeaders.$cols.ARR_LEADER.$removeduplicates(kTrue)
+If llLeaders.$linecount=1
+	If isnull(llLeaders.1.ARR_LEADER)
+		Do llLeaders.$clear() ## no leaders !
+	End If
+End If
+
+Calculate llDatesAndTimesAM as llDates
+Calculate llDatesAndTimesPM as llDates
+Calculate llDatesAndTimesEVE as llDates
+Do llDatesAndTimesAM.$sendall($ref.DisplayDate.$assign(con(llDatesAndTimesAM.DisplayDate,': ','AM')))
+Do llDatesAndTimesAM.$sendall($ref.ARR_STARTTIME.$assign(tim('09:00')))
+Do llDatesAndTimesPM.$sendall($ref.DisplayDate.$assign(con(llDatesAndTimesPM.DisplayDate,': ','PM')))
+Do llDatesAndTimesPM.$sendall($ref.ARR_STARTTIME.$assign(tim('14:00')))
+Do llDatesAndTimesEVE.$sendall($ref.DisplayDate.$assign(con(llDatesAndTimesEVE.DisplayDate,': ','EVE')))
+Do llDatesAndTimesEVE.$sendall($ref.ARR_STARTTIME.$assign(tim('19:00')))
+
+Do llDates.$merge(llDatesAndTimesAM)
+Do llDates.$merge(llDatesAndTimesPM)
+Do llDates.$merge(llDatesAndTimesEVE)
+Do llDates.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0)
+
+# !!! this does not accommodate when ARR_LEADER is in use
+Calculate ilPersons.$line as 0
+While $Loop(ilPersons)
+	If ilPersons.PSN_SEQ>0
+		Do llSpeakers.$add(con(ilPersons.PSN_SURNAME,', ',mid(ilPersons.PSN_SURNAME,1,1)),#NULL,#NULL,#NULL,ilPersons.PSN_SEQ)
+	End If
+End While
+Do llSpeakers.$sort($ref.DisplayDate,0)
+Do llDates.$add() ## blank line
+Do llDates.$merge(llSpeakers)
+
+If llLeaders.$linecount>0
+	Do llDates.$add() ## blank line
+	
+	Calculate llLeaders.$line as 0
+	While $Loop(llLeaders)
+		If llLeaders.ARR_LEADER<>''
+			Do llDates.$add(llLeaders.ARR_LEADER,#NULL,#NULL,#NULL,#NULL,llLeaders.ARR_LEADER)
+		End If
+	End While
+End If
+
+If ilDisplayRecords.$linecount>0
+	# are there any attendance statistics yet ?
+	Do ilDisplayRecords.$search($ref.countAttended>0,1,0,0,0) Returns lbFound
+	If lbFound
+		Do llDates.$add()
+		Do llDates.$add('Att. ratio > 66%',,,,,,67,100)
+		Do llDates.$add('Att. ratio 34% - 66%',,,,,,34,66)
+		Do llDates.$add('Att. ratio < 33%',,,,,,0,33)
+	End If
+	Calculate ilDisplayRecords.$line as 0
+End If
+
+Do llDates.$addbefore(1,'All',#NULL,#NULL)
+
+Calculate ilSearch2 as llDates
+Calculate ilSearch2.$line as 1

@@ -13,6 +13,7 @@ Do llSuperLabels.$add('DG_Heading')
 Do llSuperLabels.$add('DG_Intro')
 Do llSuperLabels.$add('pbInvoiceRaise')
 Do llSuperLabels.$add('pbInvoiceList')
+Do llSuperLabels.$add('arrangements')
 
 Do $cinst.$objs.$makelist($ref.$name,$ref) Returns llLabels
 Do llLabels.$sendall($sendallref.C1.$assign(mid($sendallref.C1,1,len($sendallref.C1)-2)),isnumber(right($sendallref.C1,1))&left(right($sendallref.C1,2),1)='_') ## remove the "_digit" from the end of duplicated object names

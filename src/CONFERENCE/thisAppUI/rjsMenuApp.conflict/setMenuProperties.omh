@@ -1,0 +1,18 @@
+Calculate $cinst.$objs.NavMenu.$fontstyle as kBold
+Calculate $cinst.$objs.NavMenu.$headingfontsize as 10
+
+Calculate $cinst.$objs.NavMenuCascade.$fontstyle as kBold
+Calculate $cinst.$objs.NavMenuCascade.$headingfontsize as 10
+
+Calculate $cinst.$objs.UserMenu.$fontstyle as kPlain
+Calculate $cinst.$objs.UserMenu.$fontsize as 10
+
+Calculate $cinst.$objs.ToolsMenu.$fontstyle as kPlain
+Calculate $cinst.$objs.ToolsMenu.$fontsize as 10
+
+Calculate $cinst.$objs.OrgMenu.$fontstyle as kPlain
+Calculate $cinst.$objs.OrgMenu.$fontsize as 12
+
+# also set icCurrntGroupOrg as the user will probably have just the one Org
+Calculate $cinst.$objs.icCurrentGroupOrg.$fontstyle as kPlain
+Calculate $cinst.$objs.icCurrentGroupOrg.$fontsize as 12

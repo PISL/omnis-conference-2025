@@ -1,0 +1,51 @@
+Do inherited ## fetches data into ilPreparations
+
+If pnRecordSpacing<>0
+	Calculate $cinst.$recordspacing as pnRecordSpacing
+End If
+# Set labels across page {3}
+# Set record spacing
+# Set label width
+
+# now convert ilPreparation to ilData
+
+# column structure first
+Calculate lcColumnsRequiredInReport as 'PSN_SURNAME,PSN_FIRST_NAME,DG_SEQ,DG_ROLE,Role,EO_NAME,Country'
+Calculate lnLabelColumns as 2
+For lnColCount from 1 to ilPreparation.$colcount step 1
+	Set reference liColRef to ilPreparation.$cols.[lnColCount].$ref
+	# OK message  {[liColRef.$name] , [liColRef.$coltype] , [liColRef.$colsubtype] , [liColRef.$colsublen]}
+	If pos(liColRef.$name,lcColumnsRequiredInReport) ## only put the necessary columns into ilData
+		For lnRepeatCol from 1 to lnLabelColumns step 1
+			Do ilData.$cols.$add(con(liColRef.$name,'_',lnRepeatCol),liColRef.$coltype,liColRef.$colsubtype,liColRef.$colsublen)
+		End For
+	End If
+End For
+
+# now the content
+Calculate ilPreparation.$line as 0
+While $Loop(ilPreparation)
+	Calculate lnColSuffix as mod(ilPreparation.$line,lnLabelColumns)
+	If lnColSuffix=0
+		Calculate lnColSuffix as lnLabelColumns
+	End If
+	If lnColSuffix=1
+		Do ilData.$add()
+		Calculate ilData.$line as ilData.$linecount
+	End If
+	
+	For lnColCount from 1 to ilPreparation.$colcount step 1
+		Set reference liColRef to ilPreparation.$cols.[lnColCount].$ref
+		Calculate lcColName as liColRef.$name
+		If pos(lcColName,lcColumnsRequiredInReport) ## only put the necessary columns into ilData
+			Calculate ilData.[lcColName]_[lnColSuffix] as ilPreparation.[lcColName]
+		End If
+	End For
+	
+End While
+
+# and now the printing loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

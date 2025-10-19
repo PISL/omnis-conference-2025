@@ -1,0 +1,110 @@
+Do ilDay1.$clear()
+Calculate ilDay2 as ilDay1
+Calculate ilDay3 as ilDay1
+Calculate ilDay4 as ilDay1
+Calculate ilDay5 as ilDay1
+
+Calculate lnDaysSpan as ddiff(kDay,ilConferences.CF_DATE_FROM,ilConferences.CF_DATE_TO)-1
+
+For lnDay from 1 to lnDaysSpan step 1 ## omit arrival and departure days
+	Do lrPointer.$cols.$add(con('day',lnDay,'AM'),kInteger,kShortint)
+	Do lrPointer.$cols.$add(con('day',lnDay,'PM'),kInteger,kShortint)
+	Do lrPointer.$cols.$add(con('day',lnDay,'EVE'),kInteger,kShortint)
+	
+	Do irTitles.$cols.$add(con('day',lnDay,'AMcount'),kInteger,kShortint)
+	Do irTitles.$cols.$add(con('day',lnDay,'PMcount'),kInteger,kShortint)
+	Do irTitles.$cols.$add(con('day',lnDay,'EVEcount'),kInteger,kShortint)
+	
+	Do ilDay[lnDay].$add()
+	Calculate lrPointer.day[lnDay]AM as 1
+	Calculate lrPointer.day[lnDay]PM as 1
+	Calculate lrPointer.day[lnDay]EVE as 1
+	
+	Calculate iRowDays.day[lnDay] as ilConferences.CF_DATE_FROM+lnDay
+End For
+
+Do ioArrangements.$fetchForConference(ilConferences.CF_SEQ) Returns ilArrangements
+Calculate ilArrangements.$smartlist as kTrue
+
+# now re-arrange lists
+Do ilArrangements.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_SLOT,0,$ref.ARR_STARTTIME,0,$ref.displaySpeaker,0)
+Calculate ilArrangements.$line as 0
+While $Loop(ilArrangements)
+	# which day
+	If ilArrangements.ARR_DAYNO
+		Calculate lnDay as ilArrangements.ARR_DAYNO
+	Else
+		Calculate lnDay as ddiff(kDay,ilConferences.CF_DATE_FROM,ilArrangements.ARR_DATE)
+	End If
+	# morning, afternoon or evening
+	If ilArrangements.ARR_STARTTIME>=tim('00:00')
+		If ilArrangements.ARR_STARTTIME<tim('12:00')
+			Calculate lnAmPm as 0
+			Calculate irTitles.day[lnDay]AMcount as irTitles.day[lnDay]AMcount+1
+		Else If ilArrangements.ARR_STARTTIME<tim('18:00')
+			Calculate lnAmPm as 1
+			Calculate irTitles.day[lnDay]PMcount as irTitles.day[lnDay]PMcount+1
+		Else
+			# Calculate lnAmPm as 2 ## evening
+			# We don't have the real estate for a 3rd column which would be mostly empty.
+			# Instead place in afternoon column
+			Calculate lnAmPm as 1 ## at end of afternoon
+			Calculate irTitles.day[lnDay]EVEcount as irTitles.day[lnDay]EVEcount+1
+		End If
+	Else
+		Calculate lnAmPm as ilArrangements.ARR_SLOT
+	End If
+	
+	Calculate lnLineNo as lrPointer.day[lnDay][pick(lnAmPm,'AM','PM','EVE')]
+	If lnLineNo>ilDay[lnDay].$linecount ## ilDay1  ilDay2  ilDay3  ilDay4  ilDay5
+		Do ilDay[lnDay].$add()
+		Calculate lrPointer.day[lnDay][pick(lnAmPm,'AM','PM','EVE')] as ilDay[lnDay].$linecount
+		Calculate lnLineNo as lrPointer.day[lnDay][pick(lnAmPm,'AM','PM','EVE')]
+	End If
+	
+	Calculate ilDay[lnDay].[lnLineNo].[pick(lnAmPm,'AM','PM','EVE')]speaker as ilArrangements.displaySpeaker
+	Calculate ilDay[lnDay].[lnLineNo].[pick(lnAmPm,'AM','PM','EVE')]title as ilArrangements.TPC_TITLE
+	Calculate ilDay[lnDay].[lnLineNo].[pick(lnAmPm,'AM','PM','EVE')]desc as ilArrangements.TPC_ABSTRACT
+	Calculate ilDay[lnDay].[lnLineNo].[pick(lnAmPm,'AM','PM','EVE')]full as ilArrangements.TPC_DESC
+	Calculate ilDay[lnDay].[lnLineNo].[pick(lnAmPm,'AM','PM','EVE')]time as tim(ilArrangements.ARR_STARTTIME,'H:N')
+	
+	Calculate lrPointer.day[lnDay][pick(lnAmPm,'AM','PM','EVE')] as lrPointer.day[lnDay][pick(lnAmPm,'AM','PM','EVE')]+1
+	
+End While
+# ilDay1   ilDay2   ilDay3   ilDay4   ilDay5
+# Do $cinst.$objs.TabPane.$currenttab.$assign(1)
+# Do $cinst.$objs.TabPane.$tabvisible.$assign(kTrue) ## day 1 always visible
+Calculate inDayHighlight as 1
+Calculate ilDayDisplay as ilDay1
+Do method setDayHighlight (1)
+#
+Calculate $cinst.$objs.day1.$visible as pick(ilDay1.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.underlineDay1.$visible as pick(ilDay1.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.pbDay1.$enabled as pick(ilDay1.$linecount>0,kFalse,kTrue)
+
+Calculate $cinst.$objs.day2.$visible as pick(ilDay2.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.underlineDay2.$visible as pick(ilDay2.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.pbDay2.$enabled as pick(ilDay2.$linecount>0,kFalse,kTrue)
+
+Calculate $cinst.$objs.day3.$visible as pick(ilDay3.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.underlineDay3.$visible as pick(ilDay3.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.pbDay3.$enabled as pick(ilDay3.$linecount>0,kFalse,kTrue)
+
+Calculate $cinst.$objs.day4.$visible as pick(ilDay4.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.underlineDay4.$visible as pick(ilDay4.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.pbDay4.$enabled as pick(ilDay4.$linecount>0,kFalse,kTrue)
+
+Calculate $cinst.$objs.day5.$visible as pick(ilDay5.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.underlineDay5.$visible as pick(ilDay5.$linecount>0,kFalse,kTrue)
+Calculate $cinst.$objs.pbDay5.$enabled as pick(ilDay5.$linecount>0,kFalse,kTrue)
+
+Do ilArrangements.$filter($ref.ARR_DAYNO=1)
+If ilArrangements.1.ARR_DATE>dat('1 JAN 2010')
+	Calculate idSelectedDate as ilArrangements.1.ARR_DATE
+Else
+	Calculate idSelectedDate as ilConferences.CF_DATE_FROM+ilArrangements.1.ARR_DAYNO
+End If
+
+Do method setGridExceptions
+
+Calculate icDaySelected as dat(iRowDays.day[inDayHighlight],'V D m')

@@ -1,0 +1,18 @@
+Do $defineList(lrArrangements,'tArrangements')
+Do lrArrangements.$reportArrangementsByRoom(ilConferences.CF_SEQ) Returns ilArrangements
+
+# these css links were taken from omnisworld.co.uk website
+Calculate lcReferenceCSS as "<link rel='stylesheet' id='wp-block-library-css' href='https://www.omnisworld.co.uk/wp-includes/css/dist/block-library/style.min.css?ver=5.1.19' type='text/css' media='all' data-viewport-units-buggyfill='ignore'/>"
+Calculate lcReferenceCSS as con(lcReferenceCSS,kCr,"<link rel='stylesheet' id='wc-block-style-css' href='https://www.omnisworld.co.uk/wp-content/plugins/woocommerce/packages/woocommerce-blocks/build/style.css?ver=2.4.5' type='text/css' media='all' data-viewport-units-buggyfill='ignore'/>")
+# Calculate lcReferenceCSS as con(lcReferenceCSS,kCr,"<link rel='stylesheet' id='contact-form-7-css' href='https://www.omnisworld.co.uk/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.1.6' type='text/css' media='all' data-viewport-units-buggyfill='ignore'/>")
+
+Do method formatArrangements (ilArrangements,ibFormatBootstrap) Returns icBootstrap
+If ibFormatBootstrap
+	# true = bootstrap
+	Calculate #S1 as con('<html>  <head>',lcReferenceCSS,kCr,lcReferenceToBootstrap,'</head>  <body>',icBootstrap,'</body>  </html>')
+Else
+	Calculate #S1 as con('<html>  <head>',lcReferenceCSS,'</head>  <body>',icBootstrap,'</body>  </html>')
+End If
+
+Do $cinst.$objs.icBootstrap.$html.$assign(#S1)
+Do $cinst.$objs.icBootstrap.$autoscroll.$assign(kTrue)

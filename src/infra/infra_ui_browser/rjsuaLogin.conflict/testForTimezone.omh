@@ -1,0 +1,27 @@
+Calculate icOriginal_USR_TZ as ''
+
+# If trCurrUser.USR_TZ<>''
+# Use new column USR_TRAVELLING, which in retrospect should be called USR_CROSS_TZ, to prompt for timezone
+If trCurrUser.USR_TRAVELLING<>''
+	If trCurrUser.USR_TZ<>''
+		Do $cinst.$objs.PagedPane.$currentpage.$assign(cnPageTimezone)
+		
+		Calculate icOriginal_USR_TZ as trCurrUser.USR_TZ
+		
+		Do ilTimezones.$citySearch(trCurrUser.USR_TZ)
+	End If
+	
+	If ilTimezones.$linecount=1
+		Calculate ilTimezones.$line as 1
+		Calculate icSearchTZ as trCurrUser.USR_TZ
+	Else
+		# no timezone found - user has no control of this.
+		# clear the USR_TZ column to avoid further confusion but don't update record.
+		Do ilTimezones.$search(pos(upp(trCurrUser.USR_TZ),upp($ref.TOOLTIP)),1,0,0,0) Returns lbFound
+		Quit method kTrue
+	End If
+	
+	Quit method kFalse
+Else
+	Quit method kTrue
+End If

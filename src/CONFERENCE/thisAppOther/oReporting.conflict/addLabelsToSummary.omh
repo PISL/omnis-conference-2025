@@ -1,0 +1,21 @@
+Calculate plSummaryLabels.$line as 0
+While $Loop(plSummaryLabels)
+	If plSummaryLabels.$line=1
+		If plStatistics.$linecount>0
+			# Do plStatistics.$add('','') ## blank line between categories
+		End If
+		# Do plStatistics.$add(plSummaryLabels.column_source,con(' ',pcLabel))
+	End If
+	If pcLabel='Regn month'
+		Do plStatistics.$add(plSummaryLabels.column_source,plSummaryLabels.value2)
+	Else If pcLabel='Occupancy'
+		Do ilOccupancy.$search($ref.RFO_VALUE=plSummaryLabels.value1,1,0,0,0) Returns lbFound
+		If lbFound
+			Do plStatistics.$add(plSummaryLabels.column_source,ilOccupancy.RFO_DESC)
+		Else
+			Do plStatistics.$add(plSummaryLabels.column_source,plSummaryLabels.value1)
+		End If
+	Else
+		Do plStatistics.$add(plSummaryLabels.column_source,plSummaryLabels.value1)
+	End If
+End While

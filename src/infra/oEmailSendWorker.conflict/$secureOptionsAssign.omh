@@ -1,0 +1,2 @@
+Calculate irSecureOptions as pRow
+Do $cinst.$setsecureoptions(irSecureOptions.iSecBoolVerifyPeer,irSecureOptions.iSecBoolVerifyHost,irSecureOptions.iSecCharCertFile,irSecureOptions.iSecCharPrivateKeyFile,irSecureOptions.iSecCharPrivateKeyPw)

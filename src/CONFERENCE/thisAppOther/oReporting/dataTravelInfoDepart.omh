@@ -8,11 +8,12 @@ Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
 # Do ilData.$fetch_fk(prConference.CF_SEQ,'DG_CF_REF','TP_SHUTTLE > 0')
 Do ilData.$fetch_fk(prConference.CF_SEQ,'DG_CF_REF'," DG_STATUS <> 'CANCEL' and ( TP_DEP_POINT<>'' or TP_DEP_VENUE <> '' or TP_DEP_METHOD <> '' ) ")
 Do ilData.$cols.$add('SortDate',kDate,kDate2000)
-Do ilData.$cols.$add('SortTime',kDatetime,kTime)
+Do ilData.$cols.$add('SortTime',kDate,kTime)
 
 Calculate ilData.$line as 0
 While $Loop(ilData)
-	Calculate ilData.SortTime as ilData.TP_DEP_VENUE
+	# convert character to time field
+	Calculate ilData.SortTime as tim(ilData.TP_DEP_VENUE)
 End While
 
 If ilData.$linecount=0

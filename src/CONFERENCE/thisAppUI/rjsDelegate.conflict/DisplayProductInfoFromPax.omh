@@ -1,0 +1,27 @@
+If irPax.PX_INT_PRODCODE<>''
+	Do irProduct.$fetchIntCode(irPax.PX_INT_PRODCODE)
+	If irProduct.PRD_SEQ>0
+		# good
+		Calculate icDisplayMessage as irProduct.PRD_NAME ## to save on precious real estate
+		If irPax.PX_AGREED_PRICE>0
+			# then leave as is
+		Else
+			# user may override this figure
+			# Calculate irPax.PX_AGREED_PRICE as irProduct.PRD_UNIT_PRICE
+			Calculate irPax.PX_AGREED_PRICE as irProduct.PID_UNIT_PRICE
+		End If
+	Else
+		Calculate icDisplayMessage as 'invalid product code'
+	End If
+	Do $cinst.$redraw()
+Else
+	# If irPax.PX_AGREED_PRICE>0
+	# then leave as is
+	# Else
+	# user may override this figure
+	Calculate irPax.PX_AGREED_PRICE as 0 ## so totals can be done
+	# End If
+End If
+
+Do irDiet.$fetch_fk(irPax.PX_SEQ) ## its either there or not there
+Calculate icDietComment as irDiet.DR_REQUEST ## keep a copy for comparison on save

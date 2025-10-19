@@ -1,0 +1,47 @@
+Calculate $cinst.$objs.PagedPane.$objs.ilTopics.$errortext as ''
+Calculate $cinst.icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+Do ilPastTopics.$clear()
+Do ilTopicSummary.$clear()
+
+Do method DropLists
+
+# added RSM 21-Jan-20
+# ilDisplayRecords may have been populated from the Nominated Topics option in the Tools menu
+# in which case the person in this list may not be a speaker (they will be a person linked to the topic).
+# If this is the case then do nothing on a click
+# 2020-03-03 GRS changed this to highlight topics when a person is clicked
+If isclear(ilDisplayRecords.DG_SEQ)
+	# highlight this person's linked topics
+	Do ilTopics.$search($ref.PSN_SURNAME=ilDisplayRecords.PSN_SURNAME&$ref.PSN_FIRST_NAME=ilDisplayRecords.PSN_FIRST_NAME)
+Else
+	Do ilTopicDetail.$reportSpeakerSummary(irCurrentRecord.DG_PSN_REF) Returns ilPastTopics
+	Do ilPastTopics.$sort($ref.CF_DATE_FROM,1,$ref.CF_SEQ,0,$ref.TPC_TITLE,0)
+	# insert a blank line between distinct conferences for easier reading
+	Calculate ilPastTopics.$line as 0
+	While $Loop(ilPastTopics)
+		If ilPastTopics.$line>1
+			If ilPastTopics.CF_SEQ<>ilPastTopics.[ilPastTopics.$line-1].CF_SEQ
+				Do ilPastTopics.$addbefore(ilPastTopics.$line) ## $line points to blank line
+				Calculate ilPastTopics.$line as ilPastTopics.$line+1 ## stick to line we were referring to before
+			End If
+		End If
+	End While
+	
+	If inCurrentTab=cnTabDisplayPDF
+		Calculate inCurrentTab as cnTabDelegate
+		Do $cinst.$objs.PagedPane.$currentpage.$assign(inCurrentTab)
+	End If
+	
+	If inCurrentTab=cnTabTopics
+		Do method FetchAndPresentTopics (kTrue)
+	Else If inCurrentTab=cnTabHistory
+	End If
+	
+	If inCurrentTab=cnTabTextForClipboard
+		Do method FetchAndPresentTopics
+		Do method TopicsToText
+	End If
+End If
+
+Do $cinst.$behaviour()

@@ -1,0 +1,6 @@
+If prFingerPrint.DG_SEQ>0
+	Do method updateWorkflow (prFingerPrint.DG_SEQ,'DG_REGN_CONFIRMED',prFingerPrint) Returns lbOK
+	If lbOK
+		# Do $cinst.$clientcommand('soundbell')
+	End If
+End If

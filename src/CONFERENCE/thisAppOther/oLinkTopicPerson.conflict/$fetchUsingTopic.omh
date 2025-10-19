@@ -1,0 +1,36 @@
+Do ilJoinedFetch.$clear()
+Do ilJoinedFetch.$fetchTopicPerson_TPC(pnTPC_SEQ) ## does not pick up joined records
+Calculate ilOrigJoinedFetch as ilJoinedFetch
+If ilJoinedFetch.$linecount=1
+	Calculate ilJoinedFetch.$line as 1
+	
+	Do irLinkRecord.$clear()
+	# Do irLinkRecord.$fetch_fk(pnTPC_SEQ,'TPP_TPC_REF')
+	Do irLinkRecord.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigLinkRecord as irLinkRecord
+	
+	Do irTopic.$clear()
+	# Do irTopic.$fetch_pk(irLinkRecord.TPP_TPC_REF)
+	Do irTopic.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigTopic as irTopic
+	
+	Do irPerson.$clear()
+	# Do irPerson.$fetch_pk(irLinkRecord.TPP_PSN_REF)
+	Do irPerson.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigPerson as irPerson
+	
+	Do prTopic.$assignrow(irTopic) ## return result to calling object
+	Do prPerson.$assignrow(irPerson)
+	Do prLink.$assignrow(irLinkRecord) ## return result to calling object
+Else
+	# Breakpoint
+	Calculate ilJoinedFetch.$line as 0
+	While $Loop(ilJoinedFetch)
+		Calculate lcNames as con(lcNames,pick(lcNames<>'','','; '),upp(ilJoinedFetch.PSN_SURNAME),', ',ilJoinedFetch.PSN_FIRST_NAME)
+	End While
+	Calculate icErrorMessage as con('This topic is associated to more than one person : ',lcNames)
+	# By not setting prTopic, prPerson and prLink the edit method being invoked will continue to work.
+	# The topic will be altered and show up in both Person's topics list.
+End If
+
+Quit method ilJoinedFetch

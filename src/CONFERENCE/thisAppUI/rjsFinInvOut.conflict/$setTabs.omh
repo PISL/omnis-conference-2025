@@ -1,0 +1,3 @@
+# superclass.$construct will call here if there is no REF_CLASS='INVOICE_TABS'
+Calculate $cinst.$objs.TabControl_FOH.$selectedtab as cnTabConference
+Do $cinst.$objs.TabControl_FOH.$tabvisible.$assign(kTrue)

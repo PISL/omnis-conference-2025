@@ -1,0 +1,6 @@
+On evClick
+	Do irCurrentRecord.$fetch_pk() ## reload data
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'E' ## edit
+	
+	Do $cinst.$behaviour()

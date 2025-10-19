@@ -1,0 +1,5 @@
+# Enter your initialization code here
+Calculate icPrimarykey as "ELT_SEQ"
+Calculate icForeignKey as "ELT_ELC_REF"
+Calculate icPrefix as 'ELT_'
+Do inherited

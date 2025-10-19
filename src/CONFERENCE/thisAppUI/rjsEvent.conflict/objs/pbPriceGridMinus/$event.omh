@@ -1,0 +1,4 @@
+On evClick
+	Do method $deleteCR
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

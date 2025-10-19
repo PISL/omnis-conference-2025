@@ -1,0 +1,33 @@
+Do $DefineList(irProduct,'infra.tProducts')
+Do irProduct.$addSchemaColumns('infra.sProductInternalData')
+Do irProduct.$cols.$add(lrRefLocal.RFL_NUMBER)
+Calculate ilProductCache as irProduct
+
+Do toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancyOptions ## may be overwritten with $setOccupancyOptions
+Do toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy ## may be overwritten with $setOccupancyOptions
+
+# exclude spouse & family from options ## these are handled under the inExtras radio button
+Do ilOccupancy.$search($ref.RFO_VALUE='U',1,0,1,0) ## spouse
+Do ilOccupancy.$search($ref.RFO_VALUE='F',1,0,1,0) ## family
+Do ilOccupancy.$remove(kListDeleteSelected)
+
+# build up the text in the radio group from the list entries
+# locate some specific values where business logic applies
+Do ilOccupancy.$search($ref.RFO_VALUE='H',1,0,0,0) ## H=shared
+Calculate ikOccupationShared as ilOccupancy.$line-1
+Do ilOccupancy.$search($ref.RFO_VALUE='N',1,0,0,0) ## N=No Accommodation
+Calculate ikOccupationNoAccomm as ilOccupancy.$line-1
+
+Do $DefineList(ilDetails,'infra.tfinInvoiceOutD')
+Do ilDetails.$AddSchemaColumns('infra.tProducts')
+Do ilDetails.$AddSchemaColumns('infra.tProductInternalData')
+Do ilDetails.$cols.$add(lrRefLocal.RFL_NUMBER)
+Do ilDetails.$addCalculatedColumns()
+Do ilDetails.$cols.$add('Total2',kNumber,k2dp)
+
+Do $DefineList(irDelegate,'tDelegates')
+Do $DefineList(ilRules,'tConfPricing')
+
+Do ilResolveErrors.$cols.$add('code',kCharacter,kSimplechar,15)
+Do ilResolveErrors.$cols.$add('ruleName',kCharacter,kSimplechar,20)
+Do ilResolveErrors.$cols.$add('desc',kCharacter,kSimplechar,100)

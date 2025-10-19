@@ -1,0 +1,15 @@
+On evClick
+	Calculate $cinst.$objs.pbTextLangDelete.$errortext as ''
+	
+	# do not offer user anguage options that are already taken
+	Calculate ilSelectLangChoose as ilSelectLangMaster
+	Calculate llTemp as ilLanguages
+	Calculate llTemp.$line as 0
+	While $Loop(llTemp)
+		Do ilSelectLangChoose.$search($ref.LG_ISO2=llTemp.ELT_LANG,1,0,1,0)
+	End While
+	Do ilSelectLangChoose.$remove(kListDeleteSelected)
+	
+	# now put the form in edit mode
+	Do $cinst.$editCR()
+	Do $cinst.$behaviour()

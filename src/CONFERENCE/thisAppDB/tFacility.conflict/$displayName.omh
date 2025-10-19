@@ -1,0 +1,11 @@
+If pnFormat=1
+	If $cinst.FCY_SEATING<>''
+		Calculate $cinst.DisplayName as con($cinst.FCY_NAME,' (',mid($cinst.FCY_SEATING,1,15),')',pick($cinst.FCY_LOCATION<>'','',con(' - ',$cinst.FCY_LOCATION)))
+	Else If $cinst.FCY_AREA>0
+		Calculate $cinst.DisplayName as con($cinst.FCY_NAME,' (',rnd($cinst.FCY_AREA,0),'m2)',pick($cinst.FCY_LOCATION<>'','',con(' - ',$cinst.FCY_LOCATION)))
+	Else
+		Calculate $cinst.DisplayName as con($cinst.FCY_NAME,pick($cinst.FCY_LOCATION<>'','',con(', ',$cinst.FCY_LOCATION)))
+	End If
+Else
+	Calculate $cinst.DisplayName as con($cinst.FCY_NAME,pick($cinst.FCY_LOCATION<>'','',con(' - ',$cinst.FCY_LOCATION)))
+End If

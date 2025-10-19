@@ -1,0 +1,380 @@
+[
+	{
+		"name": "DG_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_CF_REF",
+		"ident": 32002,
+		"order": 2,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to CONFERENCE",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_PSN_REF",
+		"ident": 32003,
+		"order": 3,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to PERSON",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_REG_DATE",
+		"ident": 32004,
+		"order": 4,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "date of registration, used to determine which rate",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_OCCUPANCY",
+		"ident": 32005,
+		"order": 5,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1,
+		"properties": {
+			"desc": "single, shared, no accommodation",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_INT_PRODCODE",
+		"ident": 32025,
+		"order": 6,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "product code reflecting registration",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_COMPANY_NAME",
+		"ident": 32024,
+		"order": 7,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 100,
+		"properties": {
+			"desc": "company name if applicable",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_RATE",
+		"ident": 32008,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "which early bird rate is being applied",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_AMOUNT_DUE",
+		"ident": 32006,
+		"order": 9,
+		"type": "kNumber",
+		"subtype": "k2dpShortnum",
+		"sublen": 0,
+		"properties": {
+			"desc": "duplicating rate from CF_RATE allows for tailored adjustments",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_MEMBERSHIP_DUE",
+		"ident": 32018,
+		"order": 10,
+		"type": "kNumber",
+		"subtype": "k2dpShortnum",
+		"sublen": 0,
+		"properties": {
+			"desc": "record membership amount to be paid separately  N.B. may have paid membership separately to registration",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_GROUP",
+		"ident": 32014,
+		"order": 11,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "if travelling with others, enter group name here",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_STATUS",
+		"ident": 32016,
+		"order": 12,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "registered, part paid, paid",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_COMMENT",
+		"ident": 32023,
+		"order": 13,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "general comment",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_CWHEN",
+		"ident": 32009,
+		"order": 14,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_CBY",
+		"ident": 32010,
+		"order": 15,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_MWHEN",
+		"ident": 32011,
+		"order": 16,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_MBY",
+		"ident": 32012,
+		"order": 17,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_MCOUNT",
+		"ident": 32036,
+		"order": 18,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_ROOM_ASSIGNMENT",
+		"ident": 32026,
+		"order": 19,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 10,
+		"properties": {
+			"desc": "used to communicate room requests (e.g. family) to hotel; also used to pair up shared delegates",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_EO_REF",
+		"ident": 32027,
+		"order": 20,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "foreign key to ENTEXTORG - customer",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_COUNTRY",
+		"ident": 32028,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 3,
+		"properties": {
+			"desc": "copied from PSN_COUNTRY on registration for statistical integrity",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_FEEDBACK",
+		"ident": 32029,
+		"order": 22,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "delegate comments on whole event",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_EMAIL_INVOICE_SENT",
+		"ident": 32030,
+		"order": 23,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "date and time when invoice was emailed through system",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_EMAIL_TRAVEL_SENT",
+		"ident": 32031,
+		"order": 24,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "date and time when travel link was sent",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_ROLE",
+		"ident": 32032,
+		"order": 25,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "DG, SPKR, KEYNOTE etc - to distinguish from DG_STATUS for payment",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_STATUS_CHANGED",
+		"ident": 32033,
+		"order": 26,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "date of last change in status",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_INV_TO_EO_ONLY",
+		"ident": 32034,
+		"order": 27,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "if set to 1, email invoice ONLY to customer (not the delegate)",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

@@ -1,5 +1,5 @@
 # may be called from pbInsert or handleMenuCall
-
+Calculate $cinst.$objs.splitButtonWorkflow.$errortext as ''
 
 If inCurrentTab=cnTabDelegate
 	If irUserRights.canInsert&icMode=''&ibActiveConference ## taken from $behaviour()

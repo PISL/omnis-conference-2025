@@ -1,0 +1,17 @@
+# Breakpoint
+Do llFormList.$define(lcFormID,lClassName,lcFormParams,lcFormTitle,lnFormLeft,lnFormTop,lnFormWidth,lFormHeight)
+
+For ilGraphs.$line from 1 to ilGraphs.$linecount step 1
+	Calculate inFormCount as inFormCount+1
+	Do llFormList.$add(inFormCount,'rfMarqueeApp',con(inFormCount,icFPSep,kDq,ilGraphs.RFO_VALUE,kDq),ilGraphs.RFO_DESC,lnFormLeft,lnFormTop,inSubFormWidth,inSubFormHeight,ibSubFormModal)
+	Calculate lnFormLeft as pick(lnFormLeft=10,10,620)
+	Calculate lnFormTop as pick(mod(ilGraphs.$line,2),lnFormTop+50,lnFormTop)
+End For
+
+
+Do lrSetRow.$define(lcSetName,lcParent,lFlags,lcOrderVar,llFormList)
+# Do lrSetRow.$assigncols("SubformSet",,kSFSflagMaxButton+kSFSflagMinButton+kSFSflagResize+kSFSflagCloseButton,'iOpenForms',llFormList)
+Do lrSetRow.$assigncols("SubformSet",,kSFSflagMaxButton+kSFSflagResize,ilOpenForms,llFormList)
+# Do lrSetRow.$assigncols("SubformSet",,,'iOpenForms',llFormList)
+Do $cinst.$clientcommand("subformset_add",lrSetRow)
+Calculate ibSFSexists as kTrue

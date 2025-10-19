@@ -1,6 +1,6 @@
 {
 	"ident": 1059,
-	"order": 71,
+	"order": 69,
 	"objtype": "kComponent",
 	"componentlib": "jsCheckbox",
 	"componentctrl": "Checkbox Control",
@@ -20,8 +20,8 @@
 		"contextmenu": "",
 		"cssclassname": "",
 		"dataname": "irPax.PX_2_BFAST",
-		"defaultinactiveappearance": true,
-		"desgroup": 4,
+		"defaultinactiveappearance": false,
+		"desgroup": 19,
 		"designactive": true,
 		"deslock": false,
 		"disabledefaultcontextmenu": false,
@@ -110,7 +110,7 @@
 		},
 		"1700": {
 			"left": 168,
-			"top": 176,
+			"top": 160,
 			"width": 100,
 			"height": 20,
 			"dragborder": false,

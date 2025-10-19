@@ -1,0 +1,20 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Calculate pCurrencyCodeISO3 as con(pCurrencyCodeISO3,'%')
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from [$cinst.$servertablenames()]
+Sta:where CU_ISO3 ilike @[pCurrencyCodeISO3]
+End statement
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

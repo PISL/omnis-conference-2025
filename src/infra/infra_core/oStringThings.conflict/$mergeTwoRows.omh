@@ -1,0 +1,11 @@
+# these lines were copied from Omnis list server
+# from Kelly Burgess' response to Martin Obongita's thread "Merge 2 row"
+Breakpoint This code has not been tested.
+
+If pbWhenColumnInRowA_isClear
+	# if column in row A is empty, assign column from row B
+	Do rowA.$cols.$sendall(rowA.[$ref.$name].$assign(rowB.[$ref.$name]),isclear(rowA.[$ref.$name]))
+Else ## when row B has a value
+	# if column in row B has a value, copy it to row A
+	Do rowA.$cols.$sendall(rowA.[$ref.$name].$assign(rowB.[$ref.$name]),not(isclear(rowB.[$ref.$name])))
+End If

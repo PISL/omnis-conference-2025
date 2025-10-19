@@ -1,0 +1,54 @@
+If $ctask.trGroupOrg.GO_SEQ>0
+	# proceed
+Else
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+If pcCriteria<>''
+	If mid(upp(pcCriteria),1,4)='AND '
+		# leave as is
+	Else If mid(upp(pcCriteria),1,6)='WHERE '
+		Calculate pcCriteria as con('and ',mid(pcCriteria,7,99))
+	Else
+		Calculate pcCriteria as con('and ',pcCriteria)
+	End If
+End If
+
+If pcTextSearch<>''
+	Calculate icChar as con('%',pcTextSearch,'%')
+	
+	Begin text block
+	Text:  and
+	Text: ['('] PSN_SURNAME ilike '[icChar]'
+	Text:  or   PSN_FIRST_NAME ilike '[icChar]'
+	Text:  or   TPC_TITLE ilike '[icChar]'
+	Text:  or   TPC_ABSTRACT ilike '[icChar]'
+	Text:  or   FCY_NAME ilike '[icChar]'
+	Text:  or   FCY_LOCATION ilike '[icChar]'
+	Text: )
+	End text block
+	Get text block lcTextSearch
+End If
+
+Calculate inID as pnCF_SEQ
+Do $cinst.$Sql(,con(" ARR_CF_REF = @[inID] ",pcCriteria,lcTextSearch))
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+If pos('ARR_PSN_REF',upp(pcCriteria))
+	# this fetch refers to a particular speaker
+	Calculate icBiasTopicOrSpeaker as 'D' ## just date and slot
+End If
+Do method populateDisplayName
+
+Quit method lbOK

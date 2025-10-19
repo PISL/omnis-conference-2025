@@ -1,0 +1,6 @@
+On evDrag
+	
+	
+On evClick
+	Calculate ilTopicsToDrag.$line as pVertCell
+	# Breakpoint

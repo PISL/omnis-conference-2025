@@ -1,0 +1,5 @@
+On evClick
+	Do method login
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

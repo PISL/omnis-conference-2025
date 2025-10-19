@@ -1,0 +1,97 @@
+Do lrResult.$cols.$add('totalInvoiceSent',kInteger,k32bitint)
+Do lrResult.$cols.$add('totalTravelLinkSent',kInteger,k32bitint)
+Calculate lnCountDays as ddiff(kDay,pFrom,pTo)
+For lnCountCols from 1 to lnCountDays+1 step 1
+	Do lrResult.$cols.$add(con('countInvoiceSent',lnCountCols),kInteger,k32bitint)
+	Do lrResult.$cols.$add(con('countTravelLinkSent',lnCountCols),kInteger,k32bitint)
+End For
+
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Calculate ldtStart as #D
+	Do toWeb.$callFetch(lrResult,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pFrom,pTo,pcExtraString),lrResult.$type,0,ilRESTextensions))
+	Calculate inServiceMS as ddiff(kCentiSecond,ldtStart,#D)*10
+	Calculate inRESTserverMS as toWeb.inServerTime
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Calculate ldEndOfDate as pTo+1
+Calculate pcExtraString as trim(pcExtraString)
+
+# count inserts
+Calculate lnCountInsert as 0
+Begin statement
+Sta:select count(*) from [$cinst.$servertablenames()]
+Sta:where DG_EMAIL_INVOICE_SENT between @[pFrom] and @[ldEndOfDate]
+If pcExtraString<>''
+	If left(upp(pcExtraString),4)<>'AND '
+		Calculate pcExtraString as con(' and ',pcExtraString)
+	End If
+	Sta:[pcExtraString]
+End If
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountInsert)
+Calculate lrResult.totalInvoiceSent as lnCountInsert
+
+# count updates
+Calculate lnCountUpdate as 0
+
+Begin statement
+Sta:select count(*) from [$cinst.$servertablenames()]
+Sta:where DG_EMAIL_TRAVEL_SENT between @[pFrom] and @[ldEndOfDate]
+If pcExtraString<>''
+	Sta:[pcExtraString]
+End If
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountUpdate)
+Calculate lrResult.totalTravelLinkSent as lnCountUpdate
+
+For lnCountCols from 1 to lnCountDays+1 step 1
+	Calculate ldDate as dadd(kDay,lnCountCols-1,pFrom)
+	Calculate ldEndOfDate as ldDate+1
+	
+	Calculate lnCountInsert as 0
+	Calculate lnCountUpdate as 0
+	
+	Begin statement
+	Sta:select count(*) from [$cinst.$servertablenames()]
+	Sta:where DG_EMAIL_INVOICE_SENT between @[ldDate] and @[ldEndOfDate]
+	If pcExtraString<>''
+		Sta:[pcExtraString]
+	End If
+	End statement
+	Do $cinst.$executesqlandfetchinto(lnCountInsert)
+	Calculate lrResult.countInvoiceSent[lnCountCols] as lnCountInsert
+	
+	Begin statement
+	Sta:select count(*) from [$cinst.$servertablenames()]
+	Sta:where DG_EMAIL_TRAVEL_SENT between @[ldDate] and @[ldEndOfDate]
+	If pcExtraString<>''
+		Sta:[pcExtraString]
+	End If
+	End statement
+	Do $cinst.$executesqlandfetchinto(lnCountUpdate)
+	Calculate lrResult.countTravelLinkSent[lnCountCols] as lnCountUpdate
+End For
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lrResult

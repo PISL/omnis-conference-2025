@@ -1,0 +1,7 @@
+# Do $DefineList(lrSpeakers,'tTopicPersonLink')
+Do $DefineList(lrSpeakers,'tArrangements')
+Do lrSpeakers.$reportHistoricalSpeakers() Returns ilData
+# remove invisible speakers such as _ConferenceOrganisingCommittee
+# Do ilData.$search(mid($ref.PSN_SURNAME,1,1)='_',1,0,1,0)
+# Do ilData.$remove(kListDeleteSelected)
+Do ilData.$sort($ref.SpeakerSort,0,$ref.CF_DATE_FROM,1,$ref.TPC_TITLE,0)

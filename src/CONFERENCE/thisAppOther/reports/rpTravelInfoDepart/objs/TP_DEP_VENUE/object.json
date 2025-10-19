@@ -9,10 +9,11 @@
 		"componentinfo": {
 
 		},
-		"dataname": "ilData.TP_DEP_VENUE",
+		"dataname": "ilData.SortTime",
 		"desgroup": 0,
 		"deslock": false,
 		"dupblanks": false,
+		"enterable": false,
 		"fieldstyle": "reportMedium",
 		"floating": false,
 		"font": 1,

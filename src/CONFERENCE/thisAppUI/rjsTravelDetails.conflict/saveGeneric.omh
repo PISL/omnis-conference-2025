@@ -1,0 +1,31 @@
+# Do toStrings.$HasRowBeenModified(irOriginalDiet,irDietDG) Returns lbModified
+Do toStrings.$HasRowBeenModified(prOriginal,prCurrent) Returns lbModified
+If lbModified
+	If prCurrent.[prCurrent.icPrimaryKey]>0
+		Do prCurrent.$update() Returns lbOK
+	Else
+		Calculate prCurrent.[prCurrent.icForeignKey] as prParent.[prParent.icPrimaryKey]
+		If pcTypeCol<>''
+			Calculate prCurrent.[pcTypeCol] as pcTypeValue ## eg PX_ROLE = DG or SPOUSE
+		End If
+		Do prCurrent.$insert() Returns lbDietOk
+		
+		If not(lbDietOk)
+			If prCurrent.icValidationMessage<>''
+				Calculate icDisplayMessage as prCurrent.icValidationMessage
+				Calculate lbOK as kFalse
+			Else If prCurrent.irErrorSQL.NativeErrorText<>''
+				Calculate icDisplayMessage as prCurrent.irErrorSQL.NativeErrorText
+				Calculate lbOK as kFalse
+			End If
+		Else
+			Calculate prOriginal as prCurrent
+		End If
+		# End If
+	End If
+	
+Else
+	Calculate lbOK as kTrue ## no change, no update, all ok
+End If
+
+Quit method lbOK

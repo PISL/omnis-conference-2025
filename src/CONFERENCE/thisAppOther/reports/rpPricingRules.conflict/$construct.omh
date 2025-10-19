@@ -1,0 +1,14 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate ilData as plData
+
+Calculate icReportTitle as con('Pricing Rules',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+Do ioResolve.$calculationText() Returns icInfo
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

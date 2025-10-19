@@ -1,0 +1,103 @@
+# Breakpoint
+Calculate lcErrorCodeTableNotFound as '42P01'
+
+Do llResult.$cols.$add('found',kCharacter,kSimplechar,10)
+Do llResult.$cols.$add('name',kCharacter,kSimplechar,100)
+Do llResult.$cols.$add('value',kInteger,k64bitint)
+Do llResult.$cols.$add('common',kCharacter,kSimplechar,100)
+Do llResult.$cols.$add('error',kCharacter,kSimplechar,255)
+
+If ilOmnisSchemasInfra.$linecount>0
+	# do not $makelist again
+Else
+	Do infra.$tables.$makelist($ref.$name,$ref.$superclass) Returns ilOmnisSchemasInfra
+	Do [tcCurrentLibrary].$tables.$makelist($ref.$name,$ref.$superclass) Returns ilOmnisSchemasThisLib
+	
+	Do ilOmnisSchemasInfra.$cols.$add('exists',kBoolean)
+	Do ilOmnisSchemasInfra.$cols.$add('common',kCharacter,kSimplechar,100)
+	Do ilOmnisSchemasThisLib.$cols.$add('exists',kBoolean)
+	Do ilOmnisSchemasThisLib.$cols.$add('common',kCharacter,kSimplechar,100)
+End If
+
+Do ilOmnisSchemasInfra.$search(left($ref.C1,1)='t',1,0,1,0)
+Do ilOmnisSchemasInfra.$remove(kListKeepSelected)
+Do ilOmnisSchemasInfra.$search(0)
+
+Calculate ilOmnisSchemasInfra.$line as 0
+While $Loop(ilOmnisSchemasInfra)
+	# If the table class has a superclass, then it should have an actual database table associated with it.
+	# This does not hold true when there are interim superclasses.
+	Do method determineFetch (ilOmnisSchemasInfra) Returns lbFetchMaxValue
+	
+	If lbFetchMaxValue
+		# But checking for tMaster as the superclass indicates there are no interim superclasses
+		Do $defineList(lrTableInstance,ilOmnisSchemasInfra.C1)
+		
+		# If icPrefix doesn't exist then the table/schema class does not conform to our naming standard.
+		# This is probably for good reason but we won't try to obtain max value.  There is a parameter to override this now.
+		
+		# in rare cases the icPrefix is set to space to fudge some esoteric situation, hence the trim()
+		If trim(lrTableInstance.icPrefix)<>''|pbIncludeNotPrefixed
+			# Some table classes may refer to a schema class that does not have a servertabename set
+			# This happens when the schema class is used for structure definition in memory   e.g. when importing data, or a super class like tSysReferenceSuper
+			If lrTableInstance.$servertablenames<>''
+				Calculate lcSequenceName as con(low(lrTableInstance.$servertablenames),'_seq')
+				Calculate ilOmnisSchemasInfra.common as lrTableInstance.$servertablenames
+				
+				Do lrTableInstance.$setDoNotReportTheseErrors(lcErrorCodeTableNotFound)
+				Do lrTableInstance.$fetchLastRecord()
+				
+				If lrTableInstance.[lrTableInstance.icPrimaryKey]>0
+					Calculate lnMax as lrTableInstance.[lrTableInstance.icPrimaryKey]
+					Do llResult.$add('',con(lrTableInstance.$servertablenames,'.',lrTableInstance.icPrimaryKey),lnMax,ilOmnisSchemasInfra.common)
+					Calculate ilOmnisSchemasInfra.exists as kTrue
+				Else If pbReportNoResult
+					# is there an error to report?
+					Do llResult.$add('',con(lrTableInstance.$servertablenames,'.',lrTableInstance.icPrimaryKey),lnMax,ilOmnisSchemasInfra.common,'no result')
+				End If
+			End If ## icPrefix has a value
+		End If ## lrTableInstance.$servertablenames
+	End If
+End While
+
+Do ilOmnisSchemasThisLib.$search(left($ref.C1,1)='t',1,0,1,0)
+Do ilOmnisSchemasThisLib.$remove(kListKeepSelected)
+Do ilOmnisSchemasThisLib.$search(0)
+
+Calculate ilOmnisSchemasThisLib.$line as 0
+While $Loop(ilOmnisSchemasThisLib)
+	Do method determineFetch (ilOmnisSchemasThisLib) Returns lbFetchMaxValue
+	
+	If lbFetchMaxValue
+		Do $defineList(lrTableInstance,ilOmnisSchemasThisLib.C1)
+		
+		# If icPrefix doesn't exist then the table/schema class does not conform to our naming standard.
+		# This is probably for good reason but we won't try to obtain max value.  There is a parameter to override this now.
+		
+		If trim(lrTableInstance.icPrefix)<>''|pbIncludeNotPrefixed
+			# Some table classes may refer to a schema class that does not have a servertabename set
+			# This happens when the schema class is used for structure definition in memory   e.g. when importing data, or a super class like tSysReferenceSuper
+			If lrTableInstance.$servertablenames<>''
+				Calculate lcSequenceName as con(low(lrTableInstance.$servertablenames),'_seq')
+				Calculate ilOmnisSchemasThisLib.common as lrTableInstance.$servertablenames
+				
+				Do lrTableInstance.$setDoNotReportTheseErrors(lcErrorCodeTableNotFound)
+				Do lrTableInstance.$fetchLastRecord()
+				
+				If lrTableInstance.[lrTableInstance.icPrimaryKey]>0
+					Calculate lnMax as lrTableInstance.[lrTableInstance.icPrimaryKey]
+					
+					Do llResult.$add('',con(lrTableInstance.$servertablenames,'.',lrTableInstance.icPrimaryKey),lnMax,ilOmnisSchemasThisLib.common)
+					Calculate ilOmnisSchemasThisLib.exists as kTrue
+				Else If pbReportNoResult
+					# is there an error to report?
+					Do llResult.$add('',con(lrTableInstance.$servertablenames,'.',lrTableInstance.icPrimaryKey),lnMax,ilOmnisSchemasThisLib.common,'no result')
+				End If
+			End If ## lrTableInstance.$servertablenames
+		End If ## icPrefix exists
+	Else
+		# There is an interim superclass
+	End If
+End While
+
+Quit method llResult

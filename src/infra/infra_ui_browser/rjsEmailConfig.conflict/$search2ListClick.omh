@@ -1,0 +1,15 @@
+# Calculate icSearch as ''
+
+Do method productDisplayName
+
+Do irCurrentRecord.$clear()
+Do irOriginalRecord.$clear()
+
+Do ilLanguages.$clear()
+
+Calculate icEmTo as ''
+Calculate icEmCC as ''
+Calculate icEmBCC as ''
+Calculate icEmHeaders as ''
+
+Do $cinst.$behaviour()

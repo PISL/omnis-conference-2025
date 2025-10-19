@@ -92,20 +92,20 @@ End If
 # show the relevant day / slot lists
 Calculate $cinst.$objs.PagedPane.$objs.ilDay1AM.$visible as inConferenceDurationDays>=1
 Calculate $cinst.$objs.PagedPane.$objs.ilDay1PM.$visible as inConferenceDurationDays>=1
-Calculate $cinst.$objs.PagedPane.$objs.ilDay1EVE.$visible as inConferenceDurationDays>=1&ilDay1EVE.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.ilDay1EVE.$visible as inConferenceDurationDays>=1
 
 Calculate $cinst.$objs.PagedPane.$objs.ilDay2AM.$visible as inConferenceDurationDays>=2
 Calculate $cinst.$objs.PagedPane.$objs.ilDay2PM.$visible as inConferenceDurationDays>=2
-Calculate $cinst.$objs.PagedPane.$objs.ilDay2EVE.$visible as inConferenceDurationDays>=2&ilDay2EVE.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.ilDay2EVE.$visible as inConferenceDurationDays>=2
 
 Calculate $cinst.$objs.PagedPane.$objs.ilDay3AM.$visible as inConferenceDurationDays>=3
 Calculate $cinst.$objs.PagedPane.$objs.ilDay3PM.$visible as inConferenceDurationDays>=3
-Calculate $cinst.$objs.PagedPane.$objs.ilDay3EVE.$visible as inConferenceDurationDays>=3&ilDay3EVE.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.ilDay3EVE.$visible as inConferenceDurationDays>=3
 
 Calculate $cinst.$objs.PagedPane.$objs.ilDay4AM.$visible as inConferenceDurationDays>=4
 Calculate $cinst.$objs.PagedPane.$objs.ilDay4PM.$visible as inConferenceDurationDays>=4
-Calculate $cinst.$objs.PagedPane.$objs.ilDay4EVE.$visible as inConferenceDurationDays>=4&ilDay4EVE.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.ilDay4EVE.$visible as inConferenceDurationDays>=4
 
 Calculate $cinst.$objs.PagedPane.$objs.ilDay5AM.$visible as inConferenceDurationDays>=5
 Calculate $cinst.$objs.PagedPane.$objs.ilDay5PM.$visible as inConferenceDurationDays>=5
-Calculate $cinst.$objs.PagedPane.$objs.ilDay5EVE.$visible as inConferenceDurationDays>=5&ilDay5EVE.$linecount>0
+Calculate $cinst.$objs.PagedPane.$objs.ilDay5EVE.$visible as inConferenceDurationDays>=5

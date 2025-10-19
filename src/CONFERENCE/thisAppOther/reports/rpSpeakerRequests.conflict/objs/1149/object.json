@@ -1,0 +1,29 @@
+{
+	"ident": 1149,
+	"order": 5,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "start",
+		"align": "kLeftJst",
+		"backcolor": "RGB(80,0,0)",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 6.601,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"rowid": "ARR_STARTTIME",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 1.532
+	}
+}

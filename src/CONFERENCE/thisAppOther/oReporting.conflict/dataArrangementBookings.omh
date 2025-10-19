@@ -1,0 +1,61 @@
+Do $DefineList(lrSpeakers,'tArrangements')
+Do lrSpeakers.$reportArrangementBookings(prConference.CF_SEQ) Returns llDataRaw
+
+# remove entries that do not require bookings ## _CONFERENCE Committee entries typically
+Do llDataRaw.$search($ref.ARR_BOOKING_REQD=1,1,0,1,0)
+Do llDataRaw.$remove(kListKeepSelected)
+Do llDataRaw.$search(0)
+
+# report class breakpoints are SpeakerSort, ARR_SEQ
+Do llDataRaw.$sort($ref.SpeakerSort,0,$ref.ARR_DATE,0,$ref.ARR_STARTTIME,0,$ref.ARR_SEQ,0,$ref.att_PSN_SURNAME,0,$ref.att_PSN_FIRST_NAME,0)
+
+Do ilData.$copydefinition(llDataRaw)
+Do ilData.$cols.$add('att1_PSN_SURNAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att1_PSN_FIRST_NAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att2_PSN_SURNAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att2_PSN_FIRST_NAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att3_PSN_SURNAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att3_PSN_FIRST_NAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att4_PSN_SURNAME',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('att4_PSN_FIRST_NAME',kCharacter,kSimplechar,100)
+
+Calculate llDataRaw.$line as 0
+While $Loop(llDataRaw)
+	# see if a new line is appropriate
+	Calculate lbNewLine as kFalse
+	If ilData.att4_PSN_SURNAME<>''
+		Calculate lbNewLine as kTrue
+	End If
+	
+	If llDataRaw.$line=1
+		Calculate lbNewLine as kTrue
+		
+	Else If llDataRaw.SpeakerSort<>llDataRaw.[llDataRaw.$line-1].SpeakerSort
+		Calculate lbNewLine as kTrue
+		
+	Else If llDataRaw.ARR_SEQ<>llDataRaw.[llDataRaw.$line-1].ARR_SEQ ## new arrangement
+		Calculate lbNewLine as kTrue
+	End If
+	
+	# apply new line or add attendee to extra columns
+	If lbNewLine
+		Do ilData.$add()
+		Calculate ilData.$line as ilData.$linecount
+		Do ilData.$assignrow(llDataRaw,kTrue)
+		
+		Calculate ilData.att1_PSN_SURNAME as llDataRaw.att_PSN_SURNAME
+		Calculate ilData.att1_PSN_FIRST_NAME as llDataRaw.att_PSN_FIRST_NAME
+		
+	Else If ilData.att2_PSN_SURNAME=''
+		Calculate ilData.att2_PSN_SURNAME as llDataRaw.att_PSN_SURNAME
+		Calculate ilData.att2_PSN_FIRST_NAME as llDataRaw.att_PSN_FIRST_NAME
+		
+	Else If ilData.att3_PSN_SURNAME=''
+		Calculate ilData.att3_PSN_SURNAME as llDataRaw.att_PSN_SURNAME
+		Calculate ilData.att3_PSN_FIRST_NAME as llDataRaw.att_PSN_FIRST_NAME
+		
+	Else
+		Calculate ilData.att4_PSN_SURNAME as llDataRaw.att_PSN_SURNAME
+		Calculate ilData.att4_PSN_FIRST_NAME as llDataRaw.att_PSN_FIRST_NAME
+	End If
+End While

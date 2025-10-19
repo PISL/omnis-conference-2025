@@ -1,0 +1,5 @@
+Do irTravelPlan.$clear()
+
+Do irTravelPlan.$fetch_fk(irCurrentRecord.DG_SEQ)
+
+Do ilMusic.$search($ref.RFO_VALUE=irTravelPlan.TP_MUSIC_PLAYER,1,0,0,0)

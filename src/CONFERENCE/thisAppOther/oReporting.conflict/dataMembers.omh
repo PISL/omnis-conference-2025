@@ -1,0 +1,15 @@
+Do $DefineList(ilData,'tMembership')
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY')
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+Do ilData.$fetchAsAtDate(pdDate)
+
+If ilData.$linecount=0
+	Do ilData.$add()
+	Calculate ilData.$line as ilData.$linecount
+	Calculate ilData.DisplayName as 'there are no members'
+Else
+	Do ilData.$sort($ref.MB_FROM,0,$ref.SortName,0)
+End If

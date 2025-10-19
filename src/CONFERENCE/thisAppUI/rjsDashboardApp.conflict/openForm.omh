@@ -1,0 +1,4 @@
+Calculate inFormCount as inFormCount+1 ## unique form id
+Do lFormRow.$define(lFormSetName,lFormID,lFormClassName,lFormParams,lFormTitle,lFormLeft,lFormTop,lFormWidth,lHeight,lModal)
+Do lFormRow.$assigncols('SubformSet',inFormCount,'rfMarqueeApp',con(inFormCount,',',kDq,'NOTES',kDq),'Notes (last 30 days)',kSFScenter,kSFScenter,inSubFormWidth,inSubFormHeight,ibSubFormModal)
+Do $cinst.$clientcommand("subformset_formadd",lFormRow)

@@ -1,0 +1,55 @@
+# pane 1 - identification
+Calculate $cinst.$objs.PagedPane.$objs.PSN_FIRST_NAME_LOGIN.$bordercolor as pick(isclear(irPerson.PSN_FIRST_NAME),kColorDefault,kYellow)
+Calculate $cinst.$objs.PagedPane.$objs.PSN_SURNAME_LOGIN.$bordercolor as pick(isclear(irPerson.PSN_SURNAME),kColorDefault,kYellow)
+Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL_LOGIN.$bordercolor as pick(isclear(irPerson.PSN_EMAIL),kColorDefault,kYellow)
+
+Calculate $cinst.$objs.PagedPane.$objs.PSN_FIRST_NAME_LOGIN.$effect as pick(isclear(irPerson.PSN_FIRST_NAME),kJSborderDefault,kJSborderPlain)
+Calculate $cinst.$objs.PagedPane.$objs.PSN_SURNAME_LOGIN.$effect as pick(isclear(irPerson.PSN_SURNAME),kJSborderDefault,kJSborderPlain)
+Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL_LOGIN.$effect as pick(isclear(irPerson.PSN_EMAIL),kJSborderDefault,kJSborderPlain)
+
+
+# pane 2 - new submission
+Calculate $cinst.$objs.PagedPane.$objs.pbNewTopic.$enabled as (icMode=''&not(ibModifiedTopic)&not(ibModifiedTag))
+Calculate $cinst.$objs.PagedPane.$objs.pbSave.$visible as (icMode='I'|ibModifiedPerson|ibModifiedTopic|ibModifiedTag)
+Calculate $cinst.$objs.PagedPane.$objs.pbSave.$enabled as (icMode='I'|ibModifiedPerson|ibModifiedTopic|ibModifiedTag)
+
+Calculate $cinst.$objs.PagedPane.$objs.pbCancel.$visible as (icMode='I'|ibModifiedPerson|ibModifiedTopic|ibModifiedTag)
+Calculate $cinst.$objs.PagedPane.$objs.pbCancel.$enabled as (icMode='I'|ibModifiedPerson|ibModifiedTopic|ibModifiedTag)
+
+Calculate $cinst.$objs.PagedPane.$objs.ilTopics.$visible as (ilTopics.$linecount>0)
+Calculate $cinst.$objs.PagedPane.$objs.ilTopics.$enabled as (ilTopics.$linecount>0&icMode=''&not(ibModifiedTopic)&not(ibModifiedTag))
+
+Calculate $cinst.$objs.PagedPane.$objs.TPC_TITLE.$bordercolor as pick(isclear(irTopic.TPC_TITLE)&icMode='I',kColorDefault,kYellow)
+Calculate $cinst.$objs.PagedPane.$objs.TPC_TITLE.$effect as pick(isclear(irTopic.TPC_TITLE)&icMode='I',kJSborderDefault,kJSborderPlain)
+Calculate $cinst.$objs.PagedPane.$objs.TPC_TITLE.$enabled as (icMode='I'|not(isclear(irTopic.TPC_SEQ)))
+
+Calculate $cinst.$objs.PagedPane.$objs.TPC_ABSTRACT.$bordercolor as pick(isclear(irTopic.TPC_ABSTRACT)&icMode='I',kColorDefault,kYellow)
+Calculate $cinst.$objs.PagedPane.$objs.TPC_ABSTRACT.$effect as pick(isclear(irTopic.TPC_ABSTRACT)&icMode='I',kJSborderDefault,kJSborderPlain)
+Calculate $cinst.$objs.PagedPane.$objs.TPC_ABSTRACT.$enabled as (icMode='I'|not(isclear(irTopic.TPC_SEQ)))
+
+Calculate $cinst.$objs.PagedPane.$objs.TPC_DESC.$bordercolor as pick(isclear(irTopic.TPC_DESC)&icMode='I',kColorDefault,kYellow)
+Calculate $cinst.$objs.PagedPane.$objs.TPC_DESC.$effect as pick(isclear(irTopic.TPC_DESC)&icMode='I',kJSborderDefault,kJSborderPlain)
+Calculate $cinst.$objs.PagedPane.$objs.TPC_DESC.$enabled as (icMode='I'|not(isclear(irTopic.TPC_SEQ)))
+
+# Calculate $cinst.$objs.PagedPane.$objs.TPC_DURN_MINS.$bordercolor as pick(isclear(irTopic.TPC_DURN_MINS),kColorDefault,kYellow)
+# Calculate $cinst.$objs.PagedPane.$objs.TPC_DURN_MINS.$effect as pick(isclear(irTopic.TPC_DURN_MINS),kJSborderDefault,kJSborderPlain)
+Calculate lbTemp as (icMode='I'|not(isclear(irTopic.TPC_SEQ)))
+Calculate $cinst.$objs.PagedPane.$objs.TPC_DURN_MINS.$active as lbTemp
+
+Calculate $cinst.$objs.PagedPane.$objs.label_ilTagsDisplay.$visible as (ilTagsDisplay.$linecount>0)
+Calculate $cinst.$objs.PagedPane.$objs.ilTagsDisplay.$visible as (ilTagsDisplay.$linecount>0)
+Calculate $cinst.$objs.PagedPane.$objs.ilTagsDisplay.$enabled as (icMode='I'|not(isclear(irTopic.TPC_SEQ)))
+
+Calculate $cinst.$objs.PagedPane.$objs.pbSubmitNextConference.$visible as pick(len(icConferenceTag)>0,kFalse,kTrue)&not(ibModifiedTopic)
+Calculate $cinst.$objs.PagedPane.$objs.pbSubmitNextConference.$enabled as irTopic.TPC_SEQ>0
+Calculate $cinst.$objs.PagedPane.$objs.pbSubmitNextConference.$text as pick(ibConferenceTagSet,con('submit to ',icConferenceTag),con('withdraw from ',icConferenceTag))
+
+If inCurrentPane=1
+	Calculate $cclass.$okkeyobject as 'pbIdentify'
+Else
+	If icMode<>''
+		Calculate $cclass.$okkeyobject as 'pbSave'
+	Else
+		
+	End If
+End If

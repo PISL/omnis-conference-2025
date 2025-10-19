@@ -1,0 +1,59 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Breakpoint
+	
+	Calculate lnWhichAddress as 1
+	If lnWhichAddress=1
+		Calculate lcServer as 'pop.death2spam.net'
+		Calculate lcLogin as 'omnisworldregistrations@multidimensionalmoney.net'
+		Calculate lcPassword as 'Br1nkman'
+	End If
+	
+	Do llResponses.$cols.$add('content',kCharacter,kSimplechar,255)
+	Do ilMailHandshake.$clear()
+	
+	# IMAPConnect (lcServer,lcLogin,lcPassword,'$cinst.$MailProtocol',llResponses,2) Returns lnMailSocket
+	POP3Stat (lcServer,lcLogin,lcPassword,'$cinst.$MailProtocol') Returns lnCount
+	
+	# connect and download all messages in one step
+	Do llMessages.$cols.$add('messageBinary',kBinary)
+	Do llHeaders.$cols.$add('name',kCharacter,kSimplechar,255)
+	Do llHeaders.$cols.$add('value',kCharacter,kSimplechar,255)
+	POP3Recv (lcServer,lcLogin,lcPassword,llMessages,kFalse,'$cinst.$MailProtocol',10) ## opens AND CLOSES the connection to server
+	# While $Loop(llMessages)
+	For llMessages.$line from 1 to llMessages.$linecount step 1
+		MailSplit (llMessages.messageBinary,llHeaders,lcMessage) ## required before calling IMAPListMessages
+	End For
+	# End While
+	
+	# connect and manage the downloads individually
+	POP3Connect (lcServer,lcLogin,lcPassword,'$cinst.$MailProtocol') Returns lnMailSocket
+	If lnMailSocket>0
+		Do ilMailHandshake.$clear()
+		POP3MessageCount (lnMailSocket,'$cinst.$MailProtocol') Returns lnCount
+		If lnCount>0
+			Do llMailBoxData.$cols.$add('msgNumber',kInteger,k32bitint)
+			Do llMailBoxData.$cols.$add('size',kInteger,k32bitint)
+			Do ilMailHandshake.$clear()
+			POP3ListMessages (lnMailSocket,0,llMailBoxData,'$cinst.$MailProtocol') Returns lnStatus
+			
+			Calculate llMailBoxData.$line as 0
+			While $Loop(llMailBoxData)
+				If 1=1
+					Do ilMailHandshake.$clear()
+					POP3RecvMessage (lnMailSocket,llMailBoxData.msgNumber,lbinMessage,'$cinst.$MailProtocol') Returns lnStatus
+				Else
+					# read headers only first, which can be used to detect if rest of message should be read
+					Do ilMailHandshake.$clear()
+					POP3RecvHeaders (lnMailSocket,llMailBoxData.msgNumber,lbinMessage,'$cinst.$MailProtocol')
+					# then the message
+					Do ilMailHandshake.$clear()
+					POP3RecvMessage (lnMailSocket,llMailBoxData.msgNumber,lbinMessage,'$cinst.$MailProtocol')
+				End If
+			End While
+		End If
+		MailSplit ## required before calling IMAPListMessages
+		
+		POP3Disconnect (lnMailSocket) Returns lnStatus
+	Else
+		
+	End If

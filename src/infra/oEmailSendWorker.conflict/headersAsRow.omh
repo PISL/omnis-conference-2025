@@ -1,0 +1,17 @@
+For lnColNo from 1 to prHeadersAsRow.$colcount step 1
+	# Calculate lrSubConfig as lrHeadersAsRow.C[lnColNo]
+	
+	If prHeadersAsRow.C[lnColNo].$type=kCharacter
+		# Do prefList.$add()
+		# Calculate prefList.$line as prefList.$linecount
+		# Calculate prefList.C1 as prHeadersAsRow.C[lnColNo]
+		Do prefList.$add(prHeadersAsRow.C[lnColNo].$name,prHeadersAsRow.C[lnColNo])
+		
+	Else If prHeadersAsRow.C[lnColNo].$type=kList
+		Breakpoint
+		
+	Else If prHeadersAsRow.C[lnColNo].$type=kRow
+		Breakpoint
+		
+	End If
+End For

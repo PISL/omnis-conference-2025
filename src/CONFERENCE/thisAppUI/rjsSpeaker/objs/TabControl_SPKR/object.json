@@ -83,7 +83,7 @@
 		"visible": true
 	},
 	"multivalueproperties": {
-		"selected": 2,
+		"selected": 1,
 		"properties": [
 			{
 				"::tabiconid": 0,
@@ -98,7 +98,15 @@
 				"::tabtooltip": "",
 				"tabenabled": true,
 				"tabmenu": "",
-				"tabtext": "Topics",
+				"tabtext": "Topics for conf.",
+				"tabvisible": true
+			},
+			{
+				"::tabiconid": 0,
+				"::tabtooltip": "",
+				"tabenabled": true,
+				"tabmenu": "",
+				"tabtext": "Topic editor",
 				"tabvisible": true
 			},
 			{

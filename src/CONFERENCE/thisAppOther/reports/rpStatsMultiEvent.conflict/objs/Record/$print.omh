@@ -1,0 +1,2 @@
+Calculate $cinst.$objs.1111.$backcolor as pick(mod(#R,2),rgb(238,238,238),kWhite)
+Do default

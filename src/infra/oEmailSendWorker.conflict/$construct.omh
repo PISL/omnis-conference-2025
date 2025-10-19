@@ -1,0 +1,119 @@
+# Enter your initialization code here
+Do ilTo.$cols.$add('address',kCharacter,kSimplechar,255)
+Do ilTo.$cols.$add('name',kCharacter,kSimplechar,100)
+Calculate ilCC as ilTo
+Calculate ilBCC as ilTo
+
+Do ilHeaders.$cols.$add('name',kCharacter,kSimplechar,255)
+Do ilHeaders.$cols.$add('value',kCharacter,kSimplechar,1000)
+
+Do irEventConfig.$cols.$add('UUID',kCharacter,kSimplechar,100)
+Do irEventConfig.$cols.$add('Title',kCharacter,kSimplechar,255)
+Do irEventConfig.$cols.$add('Location',kCharacter,kSimplechar,500)
+Do irEventConfig.$cols.$add('Start',kDate,kDatetime)
+Do irEventConfig.$cols.$add('StartTimezone',kCharacter,kSimplechar,40)
+Do irEventConfig.$cols.$add('End',kDate,kDatetime)
+Do irEventConfig.$cols.$add('EndTimezone',kCharacter,kSimplechar,40)
+Do irEventConfig.$cols.$add('DurationMinutes',kInteger,k32bitint)
+Do irEventConfig.$cols.$add('Description',kCharacter,kSimplechar,2000)
+Do irEventConfig.$cols.$add('URL',kCharacter,kSimplechar,500)
+Do irEventConfig.$cols.$add('AlarmMinutes',kInteger,k32bitint)
+
+Do ilMIME.$cols.$add('Level',kInteger,kShortint)
+Do ilMIME.$cols.$add('ContentType',kCharacter,kSimplechar,100)
+Do ilMIME.$cols.$add('ContentSubType',kCharacter,kSimplechar,100)
+Do ilMIME.$cols.$add('Filename',kCharacter,kSimplechar,255)
+Do ilMIME.$cols.$add('CharacterData',kCharacter,kSimplechar,10000000)
+Do ilMIME.$cols.$add('BinaryData',kBinary)
+Do ilMIME.$cols.$add('CharacterSet',kCharacter,kSimplechar,40)
+Do ilMIME.$cols.$add('Encoding',kCharacter,kSimplechar,40)
+Do ilMIME.$cols.$add('ContentDisposition',kCharacter,kSimplechar,255)
+
+Calculate ilMimeAppend as ilMIME
+
+# So that outsiders to this object can access these secure options and aleter as needed,
+# define a row variable that contains them.
+Do irSecureOptions.$define(iSecBoolVerifyPeer,iSecBoolVerifyHost,iSecCharCertFile,iSecCharPrivateKeyFile,iSecCharPrivateKeyPw)
+Do $cinst.$getsecureoptions(iSecBoolVerifyPeer,iSecBoolVerifyHost,iSecCharCertFile,iSecCharPrivateKeyFile,iSecCharPrivateKeyPw)
+Calculate irSecureOptions.iSecBoolVerifyPeer as iSecBoolVerifyPeer
+Calculate irSecureOptions.iSecBoolVerifyHost as iSecBoolVerifyHost
+Calculate irSecureOptions.iSecCharCertFile as iSecCharCertFile
+Calculate irSecureOptions.iSecCharPrivateKeyFile as iSecCharPrivateKeyFile
+Calculate irSecureOptions.iSecCharPrivateKeyPw as iSecCharPrivateKeyPw
+# use method $secureOptionsRead and $secureOptionsAssign
+
+Do method vCardSpec ## irVcardConfig
+
+# a comprehensive list f mime types is available in oStringThings
+Do iMIMEtypeList.$define(iMIMEtype)
+Do iMIMEtypeList.$add("text/plain")
+Do iMIMEtypeList.$add("text/html")
+Do iMIMEtypeList.$add("text/xml")
+Do iMIMEtypeList.$add("text/css")
+Do iMIMEtypeList.$add("text/javascript")
+
+Do iMIMEtypeList.$add("application/octet-stream")
+Do iMIMEtypeList.$add("application/pdf")
+Do iMIMEtypeList.$add("application/zip")
+
+Do iMIMEtypeList.$add("image/jpeg")
+Do iMIMEtypeList.$add("image/png")
+Do iMIMEtypeList.$add("image/apng")
+Do iMIMEtypeList.$add("image/avif")
+Do iMIMEtypeList.$add("image/gif")
+Do iMIMEtypeList.$add("image/svg")
+
+
+
+
+Do iCharsetList.$define(iCharset,iCharsetId)
+Do iCharsetList.$add("No charset",0)
+Do iCharsetList.$add("kUniTypeAuto",kUniTypeAuto)
+Do iCharsetList.$add("kUniTypeUTF8",kUniTypeUTF8)
+Do iCharsetList.$add("kUniTypeUTF16BE",kUniTypeUTF16BE)
+Do iCharsetList.$add("kUniTypeUTF16LE",kUniTypeUTF16LE)
+Do iCharsetList.$add("kUniTypeUTF16",kUniTypeUTF16)
+Do iCharsetList.$add("kUniTypeUTF32BE",kUniTypeUTF32BE)
+Do iCharsetList.$add("kUniTypeUTF32LE",kUniTypeUTF32LE)
+Do iCharsetList.$add("kUniTypeUTF32",kUniTypeUTF32)
+Do iCharsetList.$add("kUniTypeNativeCharacters",kUniTypeNativeCharacters)
+Do iCharsetList.$add("kUniTypeAnsiThai",kUniTypeAnsiThai)
+Do iCharsetList.$add("kUniTypeAnsiCentralEuropean",kUniTypeAnsiCentralEuropean)
+Do iCharsetList.$add("kUniTypeAnsiCyrillic",kUniTypeAnsiCyrillic)
+Do iCharsetList.$add("kUniTypeAnsiLatin1",kUniTypeAnsiLatin1)
+Do iCharsetList.$add("kUniTypeAnsiGreek",kUniTypeAnsiGreek)
+Do iCharsetList.$add("kUniTypeAnsiTurkish",kUniTypeAnsiTurkish)
+Do iCharsetList.$add("kUniTypeAnsiHebrew",kUniTypeAnsiHebrew)
+Do iCharsetList.$add("kUniTypeAnsiArabic",kUniTypeAnsiArabic)
+Do iCharsetList.$add("kUniTypeAnsiBaltic",kUniTypeAnsiBaltic)
+Do iCharsetList.$add("kUniTypeAnsiVietnamese",kUniTypeAnsiVietnamese)
+Do iCharsetList.$add("kUniTypeISO8859_1",kUniTypeISO8859_1)
+Do iCharsetList.$add("kUniTypeISO8859_2",kUniTypeISO8859_2)
+Do iCharsetList.$add("kUniTypeISO8859_3",kUniTypeISO8859_3)
+Do iCharsetList.$add("kUniTypeISO8859_4",kUniTypeISO8859_4)
+Do iCharsetList.$add("kUniTypeISO8859_5",kUniTypeISO8859_5)
+Do iCharsetList.$add("kUniTypeISO8859_6",kUniTypeISO8859_6)
+Do iCharsetList.$add("kUniTypeISO8859_7",kUniTypeISO8859_7)
+Do iCharsetList.$add("kUniTypeISO8859_8",kUniTypeISO8859_8)
+Do iCharsetList.$add("kUniTypeISO8859_9",kUniTypeISO8859_9)
+Do iCharsetList.$add("kUniTypeISO8859_10",kUniTypeISO8859_10)
+Do iCharsetList.$add("kUniTypeISO8859_11",kUniTypeISO8859_11)
+Do iCharsetList.$add("kUniTypeISO8859_13",kUniTypeISO8859_13)
+Do iCharsetList.$add("kUniTypeISO8859_14",kUniTypeISO8859_14)
+Do iCharsetList.$add("kUniTypeISO8859_15",kUniTypeISO8859_15)
+Do iCharsetList.$add("kUniTypeISO8859_16",kUniTypeISO8859_16)
+Do iCharsetList.$add("kUniTypeOEM",kUniTypeOEM)
+Calculate iCharsetList.$line as 1
+
+Do iEncodingList.$define(iEncoding)
+Do iEncodingList.$add("No encoding specified")
+Do iEncodingList.$add("base64")
+Do iEncodingList.$add("quoted-printable")
+Do iEncodingList.$add("7bit")
+Do iEncodingList.$add("8bit")
+Do iEncodingList.$add("binary")
+Calculate iEncodingList.$line as 1
+
+Do iDispositionList.$define(iDisposition)
+Do iDispositionList.$add("attachment")
+Do iDispositionList.$add("inline")

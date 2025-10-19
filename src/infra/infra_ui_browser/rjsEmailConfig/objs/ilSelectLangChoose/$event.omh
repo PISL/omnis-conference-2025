@@ -2,9 +2,14 @@ On evClick
 	# create new line in display list
 	Do ilLanguages.$add()
 	Calculate ilLanguages.$line as ilLanguages.$linecount
+	Calculate inLangTextLine as ilLanguages.$line
+	
 	Do ilLanguages.$defaults()
 	Calculate ilLanguages.ELT_LANG as ilSelectLangChoose.LG_ISO2 ## displayed while editing
 	Calculate ilLanguages.ELT_ELC_REF as irCurrentRecord.ELC_SEQ ## foreign key
+	
+	Calculate irLangText as ilLanguages
+	Calculate irLangTextOrig as irLangText
 	
 	# select language has done its job
 	Do ilSelectLangChoose.$clear() ##  to disappear

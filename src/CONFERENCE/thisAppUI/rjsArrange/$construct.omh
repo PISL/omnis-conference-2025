@@ -5,9 +5,9 @@ Do inherited
 Do method setTabColours
 
 Do $DefineList(ilDisplayRecords,'tArrangements')
-Do ilDisplayRecords.$AddLinkedCols("TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS",kTrue)
-Do ilDisplayRecords.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL",kTrue)
-Do ilDisplayRecords.$AddLinkedCols("FCY_NAME,FCY_LOCATION",kTrue)
+Do ilDisplayRecords.$AddLinkedCols("TPC_SEQ,TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS",kTrue)
+Do ilDisplayRecords.$AddLinkedCols("PSN_SEQ,PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL",kTrue)
+Do ilDisplayRecords.$AddLinkedCols("FCY_SEQ,FCY_NAME,FCY_LOCATION",kTrue)
 Do ilDisplayRecords.$cols.$add('countAttended',kInteger,k32bitint)
 Do ilDisplayRecords.$AddFunction(con("( select count(*) from ",lrAttendees.$servertablenames," where ARA_ARR_REF = ARR_SEQ) as countAttended"))
 Do ilDisplayRecords.$cols.$add('DisplayDate',kCharacter,kSimplechar,100)
@@ -27,10 +27,10 @@ Do ilPersons.$cols.$findname('DisplayName') Returns liColRef
 Calculate $cinst.$objs.PagedPane.$objs.ARR_PSN_REF.$listcolumn as liColRef.$ident
 
 Do $DefineList(ilTopics,'tTopics')
-# Do ilTopics.$addLinkedCols('PSN_SURNAME(DG),PSN_FIRST_NAME,PSN_SEQ,DG_STATUS') ## $SubString method missing from oStringThings
-# Do ilTopics.$addDisplayName()
-# Do ilTopics.$cols.$findname('DisplayName') Returns liColRef
-# Calculate $cinst.$objs.PagedPane.$objs.ARR_TPC_REF.$listcolumn as liColRef.$ident
+Do ilTopics.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_SEQ') ## $SubString method missing from oStringThings
+Do ilTopics.$addDisplayName()
+Do ilTopics.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ARR_TPC_REF.$listcolumn as liColRef.$ident
 
 Do $DefineList(ilFacilities,'tFacility')
 Do ilFacilities.$addDisplayName()
@@ -84,10 +84,14 @@ Do method $displayListClick (kTrue)
 
 Calculate inMinSearchString as 0
 
+# actually, dragging Arrangements from ilDisplayList does not seem to work.
+# The drag mechanism from the list is not functioning.
+Calculate ibDragArrangementsOrTopics as kTrue
+
 Do $cinst.$superText(kTrue,'text search')
 Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE')
 Do $cinst.$superSearchList2($cell(clLabels,'objName','sel_date','label'),'DisplayDate')
-Do $cinst.$superFoundList($cell(clLabels,'objName','disp_values','label'),'DisplayName')
+Do $cinst.$superFoundList($cell(clLabels,'objName','arrangements','label'),'DisplayName',kTrue)
 
 Calculate inCurrentTab as 1
 Calculate $cinst.$objs.TabControl_ARR.$currenttab as inCurrentTab

@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(255,255,255)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -71,6 +72,8 @@
 		"objlink": 196618,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,

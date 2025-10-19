@@ -1,0 +1,4 @@
+On evAfter
+	# Do method login
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

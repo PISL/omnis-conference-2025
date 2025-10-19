@@ -1,0 +1,36 @@
+Do $DefineList(ilData,'tDelegates')
+Do ilData.$fetch_all()
+While $Loop(ilData)
+	Working message Obfuscating Delegates... (Cancel button) {[ilData.$line] of [ilData.$linecount] records}
+	Redraw working message
+	
+	If len(ilData.DG_GROUP)
+		Do method obfuscateText (ilData.DG_GROUP) Returns lcTemp
+		Calculate ilData.DG_GROUP as lcTemp
+	End If
+	
+	If len(ilData.DG_COMMENT)
+		Do method obfuscateText (ilData.DG_COMMENT) Returns lcTemp
+		Calculate ilData.DG_COMMENT as lcTemp
+	End If
+	
+	If len(ilData.DG_FEEDBACK)
+		Do method obfuscateText (ilData.DG_FEEDBACK) Returns lcTemp
+		Calculate ilData.DG_FEEDBACK as lcTemp
+	End If
+	
+	If left(ilData.DG_CBY,4)='onl:'
+		Calculate ilData.DG_CBY as 'onl:'
+		Calculate ilData.DG_MBY as 'onl:'
+	Else
+		# leave CBY as is - it will be one of the staff - not confidential
+	End If
+	
+	
+	Calculate lrUpdate as ilData
+	Do lrUpdate.$update() Returns lbOK
+	If not(lbOK)
+		Breakpoint
+	End If
+End While
+# Breakpoint

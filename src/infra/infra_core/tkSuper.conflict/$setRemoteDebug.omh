@@ -1,0 +1,14 @@
+# set $remotedebug property of all open libraries and tasks
+# using the current value of tConstants.debugMode, ie. turn them on or off
+
+Do $libs.$first() Returns lItemRef
+While not(isnull(lItemRef))
+	Calculate lItemRef.$remotedebug as tConstants.debugMode
+	Do $libs.$next(lItemRef) Returns lItemRef
+End While
+
+Do $itasks.$first() Returns lItemRef
+While not(isnull(lItemRef))
+	Calculate lItemRef.$remotedebug as tConstants.debugMode
+	Do $itasks.$next(lItemRef) Returns lItemRef
+End While

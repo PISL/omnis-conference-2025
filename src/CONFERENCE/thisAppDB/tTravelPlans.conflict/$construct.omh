@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TP_'
+Calculate icPrimarykey as 'TP_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TP_DG_REF'
+
+Do inherited

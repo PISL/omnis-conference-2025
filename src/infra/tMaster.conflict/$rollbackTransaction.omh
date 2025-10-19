@@ -1,0 +1,31 @@
+# If isclear(pobjSession)|isclear(pobjStatement)
+# Breakpoint Oi!  Developer! You have not passed in the session and statement objects!
+# Quit method kFalse
+# End If
+
+#     RSM  16-AUG-21 - commented out this code because (row/list) object within the transaction
+#     is already assigned to this object and does not need re-assignment.
+#     The bothersome thing is that this code has been here for a long time, so why remove it now?
+#     It could be that I am testing between sessionpools and fixed connection.
+
+# If isclear(pobjSession)&ibGoodConnectionToDb
+# session and statement already assigned
+# Else If pobjSession
+# Do $cinst.$sessionobject.$assign(pobjSession)
+# Do $cinst.$statementobject.$assign(pobjStatement)
+# Else
+# Breakpoint
+# End If
+
+Do $cinst.$executesqldirect(con('rollback',pick(pcName<>'','',' '),pcName)) Returns lbOK
+If lbOK
+	If isclear(pobjSession)&ibGoodConnectionToDb
+		Do $ctask.tFormSession.$transactionmode.$assign(kSessionTranAutomatic)
+		
+	Else
+		Do pobjSession.$transactionmode.$assign(kSessionTranAutomatic)
+		Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+	End If
+End If
+
+Quit method lbOK

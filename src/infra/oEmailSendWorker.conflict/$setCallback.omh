@@ -1,0 +1,6 @@
+Set reference irefCallingObject to prefObject
+Calculate icCallbackMethodNameGood as pcCallbackMethodNameGood
+Calculate icCallbackMethodNameBad as pcCallbackMethodNameBad
+Calculate irFingerPrint as prData
+
+Quit method (icErrors='')

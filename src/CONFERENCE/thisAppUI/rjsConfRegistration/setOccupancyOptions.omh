@@ -2,6 +2,7 @@ Do toValues.$initOrg('DG_OCCUPANCY') Returns ilOccupancy ## uses FIXED entries a
 # exclude spouse & family from options ## these are handled under the inExtras radio button
 Do ilOccupancy.$search($ref.RFO_VALUE='U',1,0,1,0) ## spouse
 Do ilOccupancy.$search($ref.RFO_VALUE='F',1,0,1,0) ## family
+Do ilOccupancy.$search(not($ref.RFO_ACTIVE),1,0,1,0) ## remove inactive (GRS added after we disabled Full time education for EurOmnis 2025)
 # don't offer this if the speaker slots are already full
 If ilConferences.CF_MAX_SPEAKERS>0
 	If inCountSpeakers>=ilConferences.CF_MAX_SPEAKERS

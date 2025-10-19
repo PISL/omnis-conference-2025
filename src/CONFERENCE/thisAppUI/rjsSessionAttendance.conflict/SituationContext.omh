@@ -1,0 +1,111 @@
+# do not test against #D - use ldtTestDateTime instead ## which can be manipulated for testing and debugging purposes
+If idtTestTime>tim('00:00')
+	Calculate ldtTimeNow as idtTestTime
+Else
+	Calculate ldtTimeNow as #T
+End If
+If idTestDate>dat('1 JAN 2010')
+	Calculate ldTestDate as idTestDate
+Else
+	Calculate ldTestDate as #D
+End If
+Calculate ldtTestDateTime as ldTestDate+ldtTimeNow
+
+# use ldtEventStart to test against - the start time of the selected arrangement
+Calculate ldtEventStart as #NULL
+If ilArrangements.$line>0
+	Calculate ldtEventStart as ilArrangements.ARR_DATE+ilArrangements.ARR_STARTTIME
+End If
+
+# Is the selected arrangement running within the conference scheduled time frame?
+Calculate ibDuringConference as ldTestDate>=ilConferences.CF_DATE_FROM&ldTestDate<=ilConferences.CF_DATE_TO
+If isnull(ibDuringConference)
+	Calculate ibDuringConference as kFalse
+End If
+
+# Can the user book or unbook this arrangement?
+# a. within preliminary timeframe and b. before cutoff minutes
+Calculate ibWithinPreStartTime as kFalse
+If inPreDayOfEventMinutes>0
+	If not(isclear(ldtEventStart))
+		If dat(ldtTestDateTime)=dat(ldtEventStart)
+			Calculate ibWithinPreStartTime as ldtTestDateTime<=ldtEventStart
+		Else
+			Calculate lnMinutes as ddiff(kMinute,ldtTestDateTime,dat(ldtEventStart))
+		End If
+		If lnMinutes>0
+			Calculate ibWithinPreStartTime as lnMinutes<inPreDayOfEventMinutes
+		End If
+	End If
+Else If inPreStartMinutes>0
+	Calculate lnMinutes as ddiff(kMinute,ldtTestDateTime,ldtEventStart)
+	If lnMinutes>0
+		Calculate ibWithinPreStartTime as lnMinutes<inPreStartMinutes
+	End If
+End If
+
+Calculate ibWithinPostStartTime as kFalse
+If not(isclear(ldtEventStart))
+	Calculate lnMinutes as ddiff(kMinute,ldtTestDateTime,ldtEventStart)
+	If lnMinutes<0 ## we want a negative value to set this boolean properly
+		Calculate ibWithinPostStartTime as abs(lnMinutes)<inPostStartMinutes
+	End If
+End If
+
+Calculate ibWithinCutoffTime as kFalse
+If inCutoffMinutes>0&not(isclear(ldtEventStart))
+	# up to ARR_START + inCutoffMinutes
+	Calculate lnMinutes as ddiff(kMinute,ldtTestDateTime,dadd(kMinute,inCutoffMinutes,ldtEventStart))
+	If lnMinutes>0
+		Calculate ibWithinCutoffTime as lnMinutes<inCutoffMinutes
+	End If
+End If
+
+Calculate ibFeedbackWithinRangeOfEvent as kFalse
+If inFeedbackMinutes>0&not(isclear(ldtEventStart))
+	Calculate lnMinutes as ddiff(kMinute,ldtTestDateTime,ldtEventStart)
+	If lnMinutes<0
+		Calculate ibFeedbackWithinRangeOfEvent as abs(lnMinutes)<inFeedbackMinutes
+	End If
+End If
+# Can the user provide feedback on this arrangement?
+# a. they must have been booked and b. the session must be finished and c. within the grace minutes for providing feedback.
+
+Calculate ibMaxAttendeesReached as kFalse
+If ilArrangements.ARR_MAX_BOOKINGS>0
+	Calculate ibMaxAttendeesReached as ilAttendees.$linecount>=ilArrangements.ARR_MAX_BOOKINGS
+End If
+Calculate ibDelegateAlreadyBookedForSelectedTime as ilDelegateSessions.$line
+
+# If ilArrangements.$line>0
+# If ilArrangements.ARR_STARTTIME>tim('00:00')
+# Calculate ibTimePast as dadd(kMinute,inCutoffMinutes,ilArrangements.ARR_STARTTIME)<ldtTimeNow
+# Calculate ibTimePast as ldtTestDateTime>dadd(kMinute,inCutoffMinutes,ldtEventStart)
+# Calculate ibTimeNow as abs(ddiff(kMinute,ldtEventStart,ldtTestDateTime))<=inCutoffMinutes
+# Calculate ibTimeFuture as ldtEventStart>ldtTestDateTime
+# Else
+# If pos('AM',upp(ilArrangements.ARR_SLOT))|pos('MORNING',upp(ilArrangements.ARR_SLOT))
+# Calculate ibTimePast as ldtTimeNow>ldtSessionStartAM
+# Calculate ibTimeNow as abs(ddiff(kMinute,ldtTimeNow,ldtSessionStartAM))<=inCutoffMinutes
+# Calculate ibTimeFuture as ldtTimeNow<ldtSessionStartAM
+# Else If pos('PM',upp(ilArrangements.ARR_SLOT))|pos('AFTERNOON',upp(ilArrangements.ARR_SLOT))
+# Calculate ibTimePast as ldtTimeNow>ldtSessionStartPM
+# Calculate ibTimeNow as abs(ddiff(kMinute,ldtTimeNow,ldtSessionStartPM))<=inCutoffMinutes
+# Calculate ibTimeFuture as ldtTimeNow<ldtSessionStartPM
+# Else If pos('EVE',upp(ilArrangements.ARR_SLOT)) ## EVE or EVENING
+# Calculate ibTimePast as ldtTimeNow>ldtSessionStartEVE
+# Calculate ibTimeNow as abs(ddiff(kMinute,ldtTimeNow,ldtSessionStartEVE))<=inCutoffMinutes
+# Calculate ibTimeFuture as ldtTimeNow<ldtSessionStartEVE
+# End If
+# End If
+# If ibTimeNow
+# Calculate ibTimePast as kFalse
+# Calculate ibTimeFuture as kFalse
+# End If
+# End If
+
+Calculate ibDelegateIsRegistered as ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF
+Calculate ibDelegateIsPresenter as ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF
+If isnull(ibDelegateIsPresenter)
+	Calculate ibDelegateIsPresenter as kFalse
+End If

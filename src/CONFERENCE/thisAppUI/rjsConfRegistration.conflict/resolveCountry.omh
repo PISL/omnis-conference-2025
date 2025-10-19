@@ -1,0 +1,23 @@
+# COUNTRY has not been resolved before and this is now an important column for VAT reporting
+# User may or may not have provided Country in the address but either way we will try to resolve.
+Calculate lnLineNo as ilCountriesEO.$line
+Calculate lcTemp as pcAddress
+While lcTemp<>''
+	# loop through line by line to see if a country can be resolved
+	Calculate lcLine as trim(strtok(nam(lcTemp),kCr))
+	Do ilCountriesEO.$search(upp($ref.REF_DESC)=upp(lcLine),1,0,0,0) Returns lbFound
+	If lbFound
+		Break to end of loop
+	End If
+	If lbFound
+		# It has been found! ## Make sure all other places in memory get a copy.
+		Calculate irRegistration.EO_CO_ISO3_REF as ilCountriesEO.REF_VALUE
+		If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+			Calculate ilPersons.EO_CO_ISO3_REF as irRegistration.EO_CO_ISO3_REF
+		End If
+	End If
+End While
+
+If not(lbFound)
+	Calculate ilCountriesEO.$line as lnLineNo
+End If

@@ -1,0 +1,39 @@
+Do irEmailMessageServer.$clear()
+Do irEmailMessageAttributes.$clear()
+Do irEmailMessageBody.$clear()
+Do ilEmailMessageAttachments.$clear() ## to be removed
+
+If ibSendEmailAsWorker
+	
+	# ## Do ioEmailWorker.$initialiseMessage()
+	# ## Do ioEmailWorker.$setVisualLayer($cinst)
+	
+	# open the emailer task to handle the worker
+	# passing tcCurrentLibrary tells tkEmailer where to call back for task variable/methods
+	# and we need to pass in the trGroupOrg because Startup_Task will be using CONSOLE
+	Do $tasks.tkWorkerApp.$open('*',tcCurrentLibrary,$cinst.$task(),'SMTP') Returns irefWorkerTask ## third parameter defaults to 'SMTP' so this is optional here
+	Do irefWorkerTask.$getVar("ibWorkerOK") Returns lbProceed
+	If lbProceed
+		Do irefWorkerTask.$setCaller($cinst)
+		Do lrParams.$cols.$add('instruction',kCharacter,kSimplechar,50)
+		Do lrParams.$cols.$add("DG_SEQ",kInteger,k32bitint)
+		Do lrParams.$assigncols(irEmailWorker.instruction,irEmailWorker.DG_SEQ)
+		Do irefWorkerTask.$setCompletionMethod("$delegateEmail",lrParams) ## $delegateEmail is in tkWorkerApp
+		
+		If irEmailWorker.instruction='EMAIL_INVOICE'
+			Calculate irEmailMessageServer.configCode as 'CONF_INVOICE'
+		Else If irEmailWorker.instruction='EMAIL_CHASEPAY'
+			Calculate irEmailMessageServer.configCode as 'CONF_INVOICE' ## same recipients as sending invoice
+		Else If irEmailWorker.instruction='EMAIL_TRAVEL'
+			Calculate irEmailMessageServer.configCode as 'CONF_TRAVEL'
+		Else ## PDF_THANKS_DG and others
+			Calculate irEmailMessageServer.configCode as 'GENERIC_MSG'
+		End If
+		
+	End If
+	
+Else
+	
+	Do ioEmail.$Initialise(#NULL,#NULL,'SMTPW_REGN') Returns lnEmailStatus
+	
+End If

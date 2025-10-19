@@ -1,6 +1,6 @@
 {
 	"ident": 1036,
-	"order": 48,
+	"order": 44,
 	"objtype": "kComponent",
 	"componentlib": "jsRadioGroup",
 	"componentctrl": "RadioGroup Control",
@@ -21,7 +21,7 @@
 		"contextmenu": "",
 		"cssclassname": "",
 		"dataname": "inPSN_SEX",
-		"defaultinactiveappearance": true,
+		"defaultinactiveappearance": false,
 		"desgroup": 0,
 		"designactive": true,
 		"deslock": false,

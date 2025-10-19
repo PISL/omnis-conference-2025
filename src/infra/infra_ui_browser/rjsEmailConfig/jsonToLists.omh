@@ -1,4 +1,7 @@
-Do ioSMTPworker.$setConfig(irCurrentRecord,#NULL,#NULL,ilLanguages)
+Do ioSMTPworker.$setConfig(irCurrentRecord,#NULL,#NULL,ilLanguages) Returns lbOK
+If not(lbOK)
+	Do $cinst.$clientOkCancelMsg(ioSMTPworker.icErrors)
+End If
 
 Calculate icEmTo as ''
 Calculate icEmCC as ''

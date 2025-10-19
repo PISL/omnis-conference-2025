@@ -17,6 +17,9 @@ Do method showPermissions
 Do method networkInfo
 Do method sysVars
 Do method tConstants
+Do systemversion() Returns irOS
+Do irOS.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+Calculate irOS.DisplayName as con(irOS.platform,kSp,kSp,kSp,'version: ',irOS.major,kSp,'.',kSp,irOS.minor,kSp,'.',kSp,irOS.build,pick(irOS.server,'','Windows Server'))
 
 # Calculate icNetwork as con('active connections:',sys(244),'  multi process server:',sys(243))
 Do $sessions.$makelist($ref.$name,$ref.$sessionobject) Returns ilSessions

@@ -1,0 +1,4 @@
+Do irParent.$clear()
+Do ilParentTagsOrig.$clear()
+Do ilTagsAll.$search(0) ## clear selected
+Quit method ilTagsAll

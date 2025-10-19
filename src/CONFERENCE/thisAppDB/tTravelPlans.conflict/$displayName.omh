@@ -1,0 +1,5 @@
+If pnFormat=1
+	Calculate $cinst.DisplayName as con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)
+Else If pnFormat=2
+	Calculate $cinst.DisplayName as con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME,'  ',$cinst.TP_ARR_DATE,'  ',$cinst.TP_ARR_POINT,'  ',$cinst.TP_CARRIER,' - ',$cinst.TP_FLIGHT_NO)
+End If

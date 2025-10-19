@@ -1,0 +1,22 @@
+# callback method from clientmessage - Yes
+Do irCurrentRecord.$delete_pk() Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+Else
+	# 2024-08-10  RSM  This little test deals with ilDisplayRecords in TRACKER.rjsBlogging
+	# because it is not built from a list of records from DB.
+	If ilDisplayRecords.icPrimaryKey<>''
+		If ilDisplayRecords.[ilDisplayRecords.icPrimaryKey]=irCurrentRecord.[irCurrentRecord.icPrimaryKey]
+			# this exception occures when called from TRACKER.rjsBlogging
+			Do ilDisplayRecords.$remove(ilDisplayRecords.$line)
+			Calculate ilDisplayRecords.$line as 0
+		End If
+	End If
+	
+	Do irCurrentRecord.$clear()
+	Calculate irOriginalRecord as irCurrentRecord
+	
+	Calculate $cinst.icDisplayMessage as $cell($cinst.clLabels,'objName','REC_DELETED','label') ## irCurrentRecord
+End If
+
+Do $cinst.$behaviour()

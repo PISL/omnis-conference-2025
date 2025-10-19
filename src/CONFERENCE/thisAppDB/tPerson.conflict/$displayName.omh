@@ -1,0 +1,2 @@
+Calculate $cinst.DisplayName as con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)
+# Quit method con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)

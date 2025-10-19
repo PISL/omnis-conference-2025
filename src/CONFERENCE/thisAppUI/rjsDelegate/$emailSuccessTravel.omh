@@ -1,0 +1,60 @@
+If prFingerPrint.DG_SEQ>0
+	Do method updateWorkflow (prFingerPrint.DG_SEQ,'DG_EMAIL_TRAVEL_SENT',prFingerPrint) Returns lbOK
+	If lbOK
+		# unfortunately this does not seem to work on MacOS
+		# it generates a runtime error.
+		# Do $cinst.$clientOkCancelMsg(con("workflow record ",irEmailConfig.elc_code," has been updated"))
+		# Calculate $cinst.$objs.splitButtonWorkflow.$errortext as con("workflow record ",irEmailConfig.elc_code," has been updated")
+	End If
+End If
+Quit method
+
+If prFingerPrint.DG_SEQ=irCurrentRecord.DG_SEQ
+	Calculate irCurrentRecord.DG_EMAIL_TRAVEL_SENT as #D
+	Do irCurrentRecord.$update() Returns lbOK
+	If lbOK
+		Calculate irOriginalRecord as irCurrentRecord
+		Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+	End If
+Else
+	Breakpoint
+	# the current record does not reflect the email send result being recevied.
+	# Update the email sent and restore the relevant line in ilDisplayList with result
+	Calculate lrTemp as irCurrentRecord
+	Do lrTemp.$clear()
+	
+	# 2025-09-29  RSM  Introduced check on which column to use from prFingerPrint
+	Do prFingerPrint.$cols.$findname('DIL_DG_REF') Returns liColRef
+	If liColRef
+		Do lrTemp.$fetch_pk(prFingerPrint.DIL_DG_REF)
+	Else
+		Do prFingerPrint.$cols.$findname('DG_SEQ') Returns liColRef
+		If liColRef
+			Do lrTemp.$fetch_pk(prFingerPrint.DG_SEQ)
+		Else
+			Breakpoint
+			Do $AppError(con('Missing column DG_SEQ / DIL_DG_REF in parameter ',nam(prFingerPrint),': ',sys(85)))
+			Quit method kFalse
+		End If
+	End If
+	If lrTemp.DG_SEQ>0
+		Calculate lrTemp.DG_EMAIL_TRAVEL_SENT as #D
+		Do lrTemp.$update() Returns lbOK
+		If lbOK
+			Calculate lnCurrentLine as ilDisplayRecords.$line
+			Do ilDisplayRecords.$search($ref.DG_SEQ=lrTemp.DG_SEQ,1,0,0,0) Returns lbFound
+			If lbFound
+				Do ilDisplayRecords.$assignrow(lrTemp,kTrue)
+				Do irCurrentRecord.$assignrow(lrTemp,kTrue)
+				Calculate irOriginalRecord as irCurrentRecord
+			End If
+			Calculate ilDisplayRecords.$line as lnCurrentLine
+		End If
+	Else
+		Breakpoint Something needs looking into.
+	End If
+End If
+
+If lbOK
+	Do $LogEvent('EMAIL_SEND_TRA','OK',con(prFingerPrint.PSN_FIRST_NAME,' ',prFingerPrint.PSN_SURNAME))
+End If

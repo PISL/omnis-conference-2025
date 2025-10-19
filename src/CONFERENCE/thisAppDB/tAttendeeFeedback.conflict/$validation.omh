@@ -1,0 +1,25 @@
+Calculate icValidationMessage as ''
+
+If $cinst.AFB_ARA_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' arrangement missing')
+End If
+
+If $cinst.AFB_RFO_VALUE<>''
+	# good
+Else
+	# this may or may not be required ## depends on user experience and expectations
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' criteria missing')
+End If
+
+If isclear($cinst.AFB_SCORE)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' feedback missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

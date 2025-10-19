@@ -1,0 +1,21 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate icSessionInfo as ''
+	
+	Do method RefreshAttendees
+	# other delegates may be registering so keep this user up-to-date with counts
+	Do method RefreshCounts
+	# Do irAttendee.$reportCounts(ilArrangements.ARR_SEQ,irDelegate.DG_SEQ) Returns lrBookingCounts
+	# Calculate ilArrangements.countAll as lrBookingCounts.countAll
+	# Calculate ilArrangements.countThisUser as lrBookingCounts.countThisUser
+	# If ilArrangements.ARR_MAX_BOOKINGS>0
+	# Calculate ilArrangements.displayCount as con(ilArrangements.countAll,'/',ilArrangements.ARR_MAX_BOOKINGS)
+	# Else
+	# Calculate ilArrangements.displayCount as #NULL ## no limit
+	# End If
+	Do method FetchFeedback
+	
+	Do method DisplaySessionInfo
+	
+	Do method TimeSlotCheck
+	Do $cinst.$behaviour()

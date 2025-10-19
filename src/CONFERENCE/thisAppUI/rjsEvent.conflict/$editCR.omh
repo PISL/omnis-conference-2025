@@ -1,0 +1,44 @@
+# these rules copied from $behaviour
+If inCurrentTab=cnConfInfo|inCurrentTab=cnConfPrices|inCurrentTab=cnConfTerms
+	If not(irUserRights.canUpdate&icMode=''&irCurrentRecord.CF_SEQ>0)
+		Quit method
+	End If
+	
+Else If inCurrentTab=cnConfStats
+	Quit method
+	
+Else If inCurrentTab=cnConfPriceRules
+	If not(irUserRights.canUpdatePriceRule&irCurrentRecord.CF_SEQ>0&(icMode=''|icMode='EP'))
+		Quit method
+	End If
+	
+End If
+
+Calculate icDisplayMessage as ''
+If inCurrentTab=cnConfArrangements
+	Calculate icMode as 'ET' ## edit topic
+	Do irTopic.$fetch_pk() ## re-read from db
+	
+Else If inCurrentTab=cnConfPriceRules ## new pricing
+	Calculate irProductPriceRule as ilPricingGrid
+	Do irProductPriceRule.$fetch_pk() ## re-read before editing
+	Calculate irOriginalRecord as irProductPriceRule
+	
+	Calculate icMode as 'EP' ## edit pricing
+	Do ioResolve.$calculationText() Returns icDisplayMessage
+	
+Else If inCurrentTab=cnConfInfo|inCurrentTab=cnConfTerms ## new pricing
+	Calculate icMode as 'EC' ## edit conference/event
+	# Calculate irCurrentRecord as ilPricingGrid
+	Do irCurrentRecord.$fetch_pk()
+	
+Else
+	Calculate icMode as 'EC' ## edit conference/event
+	
+	# refresh record from db to ensure latest copy
+	Do irCurrentRecord.$fetch_pk()
+	Calculate irOriginalRecord as irCurrentRecord
+	Do method DropLists
+End If
+
+Do $cinst.$behaviour()

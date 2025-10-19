@@ -166,5 +166,33 @@
 			"primarykey": false,
 			"userinfo": ""
 		}
+	},
+	{
+		"name": "TPC_BACKCOLOR",
+		"ident": 32022,
+		"order": 13,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "TPC_TEXTCOLOR",
+		"ident": 32023,
+		"order": 14,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 20,
+		"properties": {
+			"desc": "",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
 	}
 ]

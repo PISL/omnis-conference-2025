@@ -1,0 +1,204 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+			{
+				"name": "plData",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pbIncludeGraphs",
+				"order": 16,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 2,
+				"initval": "kTrue"
+			},
+			{
+				"name": "prLocation",
+				"order": 17,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcColName",
+				"order": 8,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 40
+			},
+			{
+				"name": "liObjRefCount",
+				"order": 13,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "liObjRefCumCount",
+				"order": 18,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "liObjRefPercent",
+				"order": 14,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "liSortRef",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llPAX",
+				"order": 4,
+				"type": "kList",
+				"subtype": "sfinInvoiceOutD",
+				"sublen": 0
+			},
+			{
+				"name": "llPaymentsIn",
+				"order": 3,
+				"type": "kList",
+				"subtype": "tPaymentsIn",
+				"sublen": 0
+			},
+			{
+				"name": "lnColcount",
+				"order": 5,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnConfCount",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnNumber",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnObjNoHeading",
+				"order": 15,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnPosHeight",
+				"order": 12,
+				"type": "kNumber",
+				"subtype": "k3dp",
+				"sublen": 0
+			},
+			{
+				"name": "lnPosLeft",
+				"order": 11,
+				"type": "kNumber",
+				"subtype": "k3dp",
+				"sublen": 0
+			},
+			{
+				"name": "lnPosTop",
+				"order": 9,
+				"type": "kNumber",
+				"subtype": "k3dp",
+				"sublen": 0
+			},
+			{
+				"name": "lnPosWidth",
+				"order": 10,
+				"type": "kNumber",
+				"subtype": "k3dp",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$destruct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "populateGraph",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcColName",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "lcGroupType",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "liColRef",
+				"order": 3,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llTemp",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnColNo",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 4,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

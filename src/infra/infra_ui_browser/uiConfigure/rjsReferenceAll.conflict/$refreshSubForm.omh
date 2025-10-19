@@ -1,0 +1,11 @@
+# called from one of the other subforms after cloning a class
+If pcForm='RFL'
+	Set reference lrefSubForm to $cinst.$objs.subFormLocal.$subinst
+Else
+	Set reference lrefSubForm to $cinst.$objs.subFormOrg.$subinst
+End If
+
+If lrefSubForm
+	Do lrefSubForm.$fetchSearch1List(pcClass)
+	Do lrefSubForm.$search1ListClick()
+End If

@@ -1,0 +1,138 @@
+Calculate icValidationMessage as ''
+Do ilValidation.$clear()
+
+If $cinst.[icPrefix]EFFECTIVE<=dat('1-JAN-2000')
+	Calculate $cinst.[icPrefix]EFFECTIVE as #NULL
+End If
+If $cinst.[icPrefix]EXPIRES<=dat('1-JAN-2000')
+	Calculate $cinst.[icPrefix]EXPIRES as #NULL
+End If
+
+If $cinst.[icPrefix]CLASS<>''
+	# good
+	Do ioFormatData.$FormatRef($cinst.[icPrefix]CLASS,ibInvisible) Returns lcResponse
+	If lcResponse<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'CLASS ',lcResponse,' ( ',ioFormatData.icInvalidChars,' )')
+	End If
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'CLASS missing')
+	Do ilValidation.$add(con(icPrefix,'CLASS_LBL'),'VAL_MISSING',con(icPrefix,'CLASS missing'),0)
+End If
+
+If $cinst.[$cinst.icPrefix]VALUE<>''
+	# good
+	Do ioFormatData.$FormatRef($cinst.[$cinst.icPrefix]VALUE) Returns lcResponse
+	If lcResponse<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'VALUE ',lcResponse,' ( ',ioFormatData.icInvalidChars,' )')
+	End If
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'VALUE missing')
+	Do ilValidation.$add(con(icPrefix,'VALUE_LBL'),'VAL_MISSING',con(icPrefix,'VALUE missing'),0)
+End If
+
+If $cinst.[icPrefix]DESC<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'DESC missing')
+	Do ilValidation.$add(con(icPrefix,'DESC_LBL'),'VAL_MISSING',con(icPrefix,'DESC missing'),0)
+	Calculate lnCountErrors as lnCountErrors+1
+End If
+
+If $cinst.[icPrefix]DATE<>''
+	If $cinst.[icPrefix]DATE<idTestDate
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'DATE must be >= ',idTestDate)
+		Do ilValidation.$add(con(icPrefix,'DATE_LBL'),'VAL_ERR',con(icPrefix,'DATE must be >= ',idTestDate),0)
+		Calculate lnCountErrors as lnCountErrors+1
+	Else
+		# date is valid
+	End If
+End If
+
+If $cinst.[icPrefix]EFFECTIVE<>''
+	If $cinst.[icPrefix]EFFECTIVE<idTestDate
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'EFFECTIVE must be >= ',idTestDate)
+		Do ilValidation.$add(con(icPrefix,'EFFECTIVE_LBL'),'VAL_ERR',con(icPrefix,'EFFECTIVE must be >= ',idTestDate),0)
+		Calculate lnCountErrors as lnCountErrors+1
+	Else
+		# date is valid
+	End If
+End If
+
+If $cinst.[icPrefix]EXPIRES<>''
+	If $cinst.[icPrefix]EXPIRES<idTestDate
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'EXPIRES must be >= ',idTestDate)
+		Do ilValidation.$add(con(icPrefix,'EXPIRES_LBL'),'VAL_ERR',con(icPrefix,'EXPIRES must be >= ',idTestDate),0)
+		Calculate lnCountErrors as lnCountErrors+1
+	Else
+		# date is valid
+	End If
+End If
+
+If $cinst.[icPrefix]JSON<>''
+	# JSON content is often eval() strings for Omnis to execute.
+	# The problem is that if the eval() string is invalid it causes Omnis to stop executing which is a disaster when using rjs forms.
+	# So we will apply an eval() string check... however that can only be returned as a warning because it might just be for something else.
+	
+	Do OJSON.$jsontolistorrow($cinst.[icPrefix]JSON,lcErrorInJSON) Returns lrJSON
+	
+	If lcErrorInJSON<>''
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),lcErrorInJSON)
+		Do ilValidation.$add(con(icPrefix,'JSON_LBL'),'VAL_ERR',lcErrorInJSON,0)
+		Calculate lnCountErrors as lnCountErrors+1
+		
+	Else
+		# now do extra check on row attributes, if applicable
+		
+		If pos(con(',',$cinst.[icPrefix]CLASS,','),icClassesRequiringEvalCheckOnJSON)>0
+			
+			For lnColNo from 1 to lrJSON.$colcount step 1
+				Calculate lcColName as lrJSON.$cols.[lnColNo].$name
+				
+				# JSON can contain a row, a list, or character data.  What are we trying to check here?
+				If lrJSON.[lcColName].$type=kRow
+					# check for nested row?
+					Calculate lrCheckRow as lrJSON.[lcColName]
+					# to be developed further
+					
+				Else If lrJSON.[lcColName].$type=kList
+					# how do we check this?
+					Calculate llCheckList as lrJSON.[lcColName]
+					# to be developed further
+					
+				Else
+					Calculate lcTestString as lrJSON.[lcColName]
+					If lcTestString<>''
+						Test for valid calculation eval(lcTestString)
+						If flag false
+							Do ilValidation.$add(con(icPrefix,'JSON_LBL'),'VAL_ERR',con(icPrefix,'JSON ','eval() string on attribute "',lcColName,'"  "',lcTestString,'" was invalid'),1)
+							Calculate lnCountWarnings as lnCountWarnings+1
+							
+							# do not populate lcMessage as this will stop $save
+							# If pbWarningsIssued
+							# # do not re-textualise warnings in simple text response
+							# Else
+							# Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),icPrefix,'JSON ','eval() string on attribute "',lcColName,'"  "',lcTestString,'" was invalid')
+							# End If
+						End If
+					End If
+				End If
+				
+			End For
+		End If
+	End If
+	
+End If
+
+# reset ibInvisible
+Calculate ibInvisible as kFalse
+
+If lnCountErrors>0
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+Else If lnCountWarnings>0
+	# warnings do not get presented using old icValidationMessage method
+	# programmer must detect warnings in ilValidation and deal with them there
+	Quit method kFalse
+End If
+
+Quit method kTrue

@@ -1,0 +1,10 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Do orefReporting.$delegatesExternal(ilDisplayRecords,ilSearch1,#NULL,kFalse,1) Returns lID
+	If orefReporting.icDisplayMessage<>''
+		Calculate icDisplayMessage as orefReporting.icDisplayMessage
+	End If
+	Calculate lbFileTechnique as orefReporting.ibFileTechnique
+	Calculate lcFilePath as orefReporting.icFilePath
+	
+	Do $cinst.$clientcommand("showpdf",row(lcFilePath))

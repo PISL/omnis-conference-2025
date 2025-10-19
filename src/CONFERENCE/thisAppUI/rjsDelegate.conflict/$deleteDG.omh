@@ -1,0 +1,58 @@
+# callback method from clientmessage - Yes
+If inCurrentTab=cnTabDelegate
+	Do irCurrentRecord.$delete_pk() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+	Else
+		Do ilDisplayRecords.$remove(ilDisplayRecords.$line)
+		Do irProduct.$clear()
+		Do irCurrentRecord.$clear()
+		Calculate idPseudoInvoiceEmailed as #NULL
+		Calculate ibCurrentMember as kFalse
+		If ilDisplayRecords.$linecount=0 ## just deleted the only remaining entry for the currently selected class
+			Do method fetchDisplayList
+		Else
+			Calculate ilDisplayRecords.$line as 0
+		End If
+	End If
+	
+Else If inCurrentTab=cnTabPAX
+	If irDiet.DR_SEQ>0
+		# must be done before irPax.$delete
+		Do irDiet.$delete_pk() Returns lbOK
+	End If
+	
+	Do irPax.$delete_pk() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irPax.irErrorSQL.NativeErrorText
+	Else
+		Do ilPax.$remove(ilPax.$line)
+		Calculate ilPax.$line as 0
+		Do irPax.$clear()
+		
+	End If
+	
+Else If inCurrentTab=cnTabReceipts
+	Do irPayment.$delete_pk() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irPayment.irErrorSQL.NativeErrorText
+	Else
+		Do ilPayments.$remove(ilPayments.$line)
+		Calculate ilPayments.$line as 0
+		Do irPayment.$clear()
+		
+	End If
+	
+Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+	Do irTravelPlan.$delete_pk() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irTravelPlan.irErrorSQL.NativeErrorText
+	Else
+		Do irTravelPlan.$clear()
+		Calculate ilMusic.$line as 0
+	End If
+	
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

@@ -1,8 +1,8 @@
 {
 	"classtype": "kTable",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 13,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 17,
 	"superclass": "tMaster",
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
@@ -45,7 +45,7 @@
 		"editordata": "",
 		"external": false,
 		"issupercomponent": false,
-		"moddate": "2024-08-05 12:43:12",
+		"moddate": "2025-05-23 15:17:49",
 		"showascheckedout": false,
 		"sqlclassname": "_administration",
 		"userinfo": "Copyright © 1999-2012 Platform Independent Systems Limited, registered company number 3155091, UK",

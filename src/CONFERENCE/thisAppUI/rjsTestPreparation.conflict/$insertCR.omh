@@ -1,0 +1,28 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabTestDesc|inCurrentTab=cnTabTestRules
+	If irUserRights.canInsert&icMode='' ## copied from $behaviour()
+		Do method ClearWorkArea
+		Calculate icMode as 'IT' ## insert test, tab 1
+		If ilSearch2.ARR_SEQ
+			Calculate irCurrentRecord.TST_ARR_REF as ilSearch2.ARR_SEQ
+		Else
+			Calculate irCurrentRecord.TST_CF_REF as ilSearch1.CF_SEQ
+		End If
+		If inCurrentTab=cnTabTestRules
+			Calculate inCurrentTab as cnTabTestDesc
+			Calculate $cinst.$objs.TabControl_CRT.$currentpage as inCurrentTab
+			Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+		End If
+	End If
+	
+Else If inCurrentTab=cnTabQuestions
+	If irUserRights.canEdit&icMode=''&irCurrentRecord.TST_SEQ>0 ## canEdit a TEST (not question)    -- copied from $behaviour
+		Do method ClearWorkArea
+		Calculate icMode as 'IQ' ## insert Question
+		Do method ClearWorkArea
+		Calculate irQuestion.TSQ_ORDER as ilQuestions.$linecount+1
+	End If
+End If
+
+Do $cinst.$behaviour()

@@ -1,0 +1,6 @@
+Do oReporting.$printAsFatClient()
+Do oReporting.$reportsList() Returns ilDisplayRecords
+Calculate ilOrganisations as oReporting.ilOrganisations
+Do oReporting.$conferenceList(ilOrganisations.GO_SEQ) Returns ilConferences
+
+Do $cinst.$behaviour()

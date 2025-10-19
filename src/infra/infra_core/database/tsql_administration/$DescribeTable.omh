@@ -30,14 +30,14 @@ Sta:SELECT f.attnum AS number,
 Sta:f.attname AS name,
 Sta:f.attnum,
 Sta:f.attnotnull AS notnull,
-Sta:pg_catalog.format_type(f.atttypid,f.atttypmod) AS type,
-Sta:CASE WHEN p.contype = 'p' THEN 't' ELSE 'f' END AS primarykey,
-Sta:CASE WHEN p.contype = 'u' THEN 't' ELSE 'f' END AS uniquekey,
-Sta:CASE WHEN p.contype = 'f' THEN g.relname END AS foreignkey,
-Sta:CASE WHEN p.contype = 'f' THEN p.confkey END AS foreignkey_fieldnum,
-Sta:CASE WHEN p.contype = 'f' THEN g.relname END AS foreignkey,
-Sta:CASE WHEN p.contype = 'f' THEN p.conkey END AS foreignkey_connnum,
-Sta:CASE WHEN f.atthasdef = 't' THEN d.adsrc END AS default 𯿿𯿿
+Sta:pg_catalog.format_type(f.atttypid,f.atttypmod) AS type
+Sta:, CASE WHEN p.contype = 'p' THEN 't' ELSE 'f' END AS primarykey
+Sta:, CASE WHEN p.contype = 'u' THEN 't' ELSE 'f' END AS uniquekey
+Sta:, CASE WHEN p.contype = 'f' THEN g.relname END AS foreignkey
+Sta:, CASE WHEN p.contype = 'f' THEN p.confkey END AS foreignkey_fieldnum
+Sta:, CASE WHEN p.contype = 'f' THEN g.relname END AS foreignkey
+Sta:, CASE WHEN p.contype = 'f' THEN p.conkey END AS foreignkey_connnum
+Sta:, CASE WHEN f.atthasdef = 't' THEN d.adsrc END AS default
 Sta:
 Sta:FROM pg_attribute f
 Sta:JOIN pg_class c ON c.oid = f.attrelid 𯿿

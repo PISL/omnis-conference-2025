@@ -1,0 +1,26 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TTK_TST_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' test reference must be set')
+End If
+
+If $cinst.TTK_DG_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' delegate missing')
+End If
+
+If $cinst.TTK_START>dat('1 JAN 2010')
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' question format missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

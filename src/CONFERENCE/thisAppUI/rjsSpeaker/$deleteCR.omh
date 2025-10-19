@@ -1,8 +1,9 @@
 # may be called from pbDelete or handleMenuCall
 Calculate icDisplayMessage as ''
 
-If inCurrentTab=cnTabDelegate
+If inCurrentTab=cnTabDGPerson
 	If irUserRights.canDelete&irCurrentRecord.DG_SEQ>0&icMode='' ## copied from $behaviour
+		# This method may delete the Delegate record but it does NOT delete the Person record.
 		Do irCurrentRecord.$checkChildren() Returns lnCountChildren
 		If lnCountChildren=0
 			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con('"',irCurrentRecord.DisplayName,'"',' from ',ilSearch1.CF_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteDG')
@@ -13,9 +14,22 @@ If inCurrentTab=cnTabDelegate
 		End If
 	End If
 	
-Else If inCurrentTab=cnTabTopics ## PAX
+Else If inCurrentTab=cnTabTopicsConf ## PAX
 	If irUserRights.canDelete&irTopic.TPC_SEQ>0&icMode='' ## copied from $behaviour
 		# the PAX record may have a dietRequest record associated within it
+		Do irTopic.$checkChildren(lrDietRequest.$servertablenames()) Returns lnCountChildren
+		If lnCountChildren=0
+			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con(irTopic.PX_ROLE,' from ',irCurrentRecord.DisplayName,' for ',ilSearch1.CF_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteDG')
+		Else
+			Do irTopic.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+			Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+			Do $cinst.$behaviour()
+		End If
+	End If
+	
+Else If inCurrentTab=cnTabTopicEditor
+	If irUserRights.canDelete&irTopic.TPC_SEQ>0&icMode=''
+		
 		Do irTopic.$checkChildren(lrDietRequest.$servertablenames()) Returns lnCountChildren
 		If lnCountChildren=0
 			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con(irTopic.PX_ROLE,' from ',irCurrentRecord.DisplayName,' for ',ilSearch1.CF_TITLE),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteDG')

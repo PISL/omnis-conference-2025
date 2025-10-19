@@ -1,0 +1,6 @@
+If irUserRights.canUpdate&icMode=''&irCurrentRecord.MB_SEQ>0 ## copied from $behaviour()
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'EM' ## edit membership
+	
+	Do $cinst.$behaviour()
+End If

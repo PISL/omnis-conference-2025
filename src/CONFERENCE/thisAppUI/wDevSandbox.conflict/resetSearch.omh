@@ -1,0 +1,7 @@
+Calculate icNameOfConstant as ''
+Calculate inValueOfConstant as #NULL
+Calculate ibCompleteNavigation as kFalse
+
+Do $DefineList(ilOrganisations,'infra.tentGroupOrganisations')
+Do ilOrganisations.$fetch_all()
+Do ilOrganisations.$search($ref.XXX='OmnisWorld',1,0,0,0) Returns lbFound

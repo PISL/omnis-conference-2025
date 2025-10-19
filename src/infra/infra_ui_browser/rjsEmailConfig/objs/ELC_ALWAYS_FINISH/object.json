@@ -20,7 +20,7 @@
 		"contextmenu": "",
 		"cssclassname": "",
 		"dataname": "irCurrentRecord.ELC_ALWAYS_FINISH",
-		"defaultinactiveappearance": true,
+		"defaultinactiveappearance": false,
 		"desgroup": 0,
 		"designactive": true,
 		"deslock": false,

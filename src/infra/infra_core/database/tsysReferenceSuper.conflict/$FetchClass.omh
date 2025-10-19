@@ -1,0 +1,61 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcClass,pcValue,prExtraParams),$cinst.$type,0,$cinst.ilRESTextensions))
+	Calculate lrWebResponse as toWeb.irResponse
+	If lrWebResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+# Breakpoint DEBUGCODE
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from  [$cinst.$servertablenames()]
+Sta:where [icPrefix]CLASS = @[pcClass]
+If pcValue<>''
+	Sta:and [icPrefix]VALUE = @[pcValue]
+End If
+If prExtraParams.pbIncludeNonActive
+	# exclude the active items clause
+Else
+	Sta:and [icPrefix]ACTIVE = 1
+End If
+If prExtraParams.pdDate>dat('1 JAN 2010')
+	Sta:and (
+	# no time frame on reord
+	Sta:([icPrefix]EFFECTIVE is null and  [icPrefix]EXPIRES is null )
+	# valid effective date with no expiry date ## this is current
+	Sta:or  ([icPrefix]EFFECTIVE >= @[prExtraParams.pdDate] and  [icPrefix]EXPIRES is null )
+	# valid effective and expiry dates
+	Sta:or  ([icPrefix]EFFECTIVE >= @[prExtraParams.pdDate] and  [icPrefix]EXPIRES <= @[prExtraParams.pdDate] )
+	# logically peculiar but technically possible
+	Sta:or  ([icPrefix]EFFECTIVE is null and  [icPrefix]EXPIRES <= @[prExtraParams.pdDate] )
+	Sta:)
+End If
+If prExtraParams.pcJSONQuery<>''
+	Sta:and (
+	# this is a JSON query string so DO NOT bind it
+	Sta: [prExtraParams.pcJSONQuery]
+	Sta:)
+End If
+End statement
+Do $cinst.$executesqlandfetch($cinst,prExtraParams.pbAppend)
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do $cinst.$sort($ref.[icPrefix]ORDER,0,$ref.[icPrefix]VALUE,0)

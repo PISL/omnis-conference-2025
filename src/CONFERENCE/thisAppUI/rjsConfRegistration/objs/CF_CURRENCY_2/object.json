@@ -1,6 +1,6 @@
 {
 	"ident": 1129,
-	"order": 124,
+	"order": 120,
 	"objtype": "kComponent",
 	"componentlib": "jsEdit",
 	"componentctrl": "Edit Control",
@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(255,255,255)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -31,7 +32,7 @@
 		"datepickermode": null,
 		"datepickeroptions": "kJSDatePickerOptionsShowHeading,kJSDatePickerOptionsShowMonthNav",
 		"datepickerpopupstyle": null,
-		"defaultdisabledappearance": true,
+		"defaultdisabledappearance": false,
 		"defaultinactiveappearance": true,
 		"desgroup": 0,
 		"designactive": true,
@@ -71,6 +72,8 @@
 		"objlink": 65537,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,
@@ -143,7 +146,7 @@
 			"left": 215,
 			"top": 307,
 			"width": 17,
-			"height": 17,
+			"height": 19,
 			"align": "kRightJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",

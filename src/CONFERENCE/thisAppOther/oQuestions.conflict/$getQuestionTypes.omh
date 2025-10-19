@@ -1,0 +1,18 @@
+Do toValues.$initGlobal() Returns llTypes
+
+Do llTypes.$add(#NULL,'QTYPES','QUIZ','Quiz')
+Do llTypes.$add(#NULL,'QTYPES','PERSON_TEST','Personality Test')
+Do llTypes.$add(#NULL,'QTYPES','OPINION_POLL','Opinion Poll')
+Do llTypes.$add(#NULL,'QTYPES','SURVEY','Survey')
+Do llTypes.$add(#NULL,'QTYPES','LIST_MESSAGES','List messages')
+Do llTypes.$add(#NULL,'QTYPES','DYNAMIC_SEQ','Dynamic sequence')
+Do llTypes.$add(#NULL,'QTYPES','REACTION_POLL','Reaction poll')
+Do llTypes.$add(#NULL,'QTYPES','LIST_RANKED','Ordered list')
+Do llTypes.$add(#NULL,'QTYPES','TAP_FIND','Tap and find')
+Do llTypes.$add(#NULL,'QTYPES','ORDER_IT ','Order it')
+Do llTypes.$add(#NULL,'QTYPES','SOCIAL_STORY','Social story')
+Do llTypes.$add(#NULL,'QTYPES','POLL_RANKED','Ranked poll')
+
+Do method TranslateText (llTypes)
+
+Quit method llTypes

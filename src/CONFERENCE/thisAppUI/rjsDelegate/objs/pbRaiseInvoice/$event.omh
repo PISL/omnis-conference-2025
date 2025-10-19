@@ -20,7 +20,7 @@ On evClick
 		Do trParameters.$cols.$add('Delegate',kRow)
 		Do trParameters.$cols.$add('Conference',kRow)
 		Do trParameters.$cols.$add('PAX',kList)
-		Calculate trParameters.instruction as 'INV_FROM_DG'
+		Calculate trParameters.instruction as ilEmailConfigs.RFO_VALUE
 		Calculate trParameters.Delegate as irCurrentRecord
 		Calculate trParameters.PAX as llPAX
 		Calculate trParameters.Conference as ilSearch1

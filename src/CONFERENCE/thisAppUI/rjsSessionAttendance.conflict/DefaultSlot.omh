@@ -1,0 +1,14 @@
+If inSlot>0
+	# leave as is ## instead of getting reset every time a new date is selected
+Else
+	# set a default figure for time slot filtering
+	If idtTestTime<='10:00'
+		Calculate inSlot as 1 ## AM
+	Else If idtTestTime<='15:00'
+		Calculate inSlot as 2 ## PM
+	Else If idtTestTime<='20:00'
+		Calculate inSlot as 3 ## EVE
+	Else
+		Calculate inSlot as 1 ## back to morning
+	End If
+End If

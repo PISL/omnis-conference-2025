@@ -1,0 +1,44 @@
+# select DG_SEQ, DG_EMAIL_INVOICE_SENT from conf.delegates
+# join conf.delegateinvoicelinks on dil_dg_ref = dg_seq
+# where dil_foh_ref = (select FOH_SEQ from conf.delegates
+# join conf.delegateinvoicelinks on dil_dg_ref = dg_seq
+# join infra.fininvoiceouth on dil_foh_ref = foh_seq
+# where dg_seq = 267);
+If pnDG_SEQ>0
+	Calculate lnDG_SEQ as pnDG_SEQ
+Else
+	Calculate lnDG_SEQ as $cinst.DG_SEQ
+End If
+
+Do llData.$cols.$add($cinst.DG_SEQ)
+Do llData.$cols.$add($cinst.DG_EMAIL_INVOICE_SENT)
+
+If lnDG_SEQ
+	
+	Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+	If lbImmediateSession
+		Do $cinst.$SetSession(loSession,loStatement)
+	Else If not(ibGoodConnectionToDb)
+		Quit method kFalse
+	End If
+	
+	Begin statement
+	Sta:select DG_SEQ, DG_EMAIL_INVOICE_SENT
+	Sta:from [$cinst.$servertablenames()]
+	Sta:join [lrDGinvoiceLinks.$servertablenames()] on dil_dg_ref = dg_seq
+	Sta:where dil_foh_ref = (select FOH_SEQ from [$cinst.$servertablenames()]
+	Sta:join [lrDGinvoiceLinks.$servertablenames()] on dil_dg_ref = dg_seq
+	Sta:join [lrFinInvoice.$servertablenames()] on dil_foh_ref = foh_seq
+	Sta:where dg_seq = @[pnDG_SEQ])
+	End statement
+	
+	Do $cinst.$executesqlandfetch(llData) Returns lbOK
+	If lbImmediateSession
+		Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+	End If
+	
+	Do llData.$sort($ref.DG_EMAIL_INVOICE_SENT,1)
+	Calculate llData.$line as 1
+End If
+
+Quit method llData.DG_EMAIL_INVOICE_SENT

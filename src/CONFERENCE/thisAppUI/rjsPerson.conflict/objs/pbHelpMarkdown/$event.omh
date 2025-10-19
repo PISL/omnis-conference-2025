@@ -1,0 +1,5 @@
+On evClick
+	Calculate ibDisplayMarkdownHelp as not(ibDisplayMarkdownHelp)
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

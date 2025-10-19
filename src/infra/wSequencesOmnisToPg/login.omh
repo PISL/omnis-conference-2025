@@ -1,0 +1,17 @@
+If icLogin<>''&icPassword<>''
+	# assign sessiion values outside the login method
+	Calculate ioSession.$port as tlDatabases.port
+	Calculate ioSession.$quotedidentifier as kFalse
+	Calculate ioSession.$database as tlDatabases.DB
+	Do ioSession.$addcustomtype(100000000,'JSONB')
+	
+	Do ioSession.$logon(tlDatabases.Host,icLogin,icPassword,'sequence_temp') Returns lbOK
+	If ioSession.$state=kSessionStateLoggedOn
+		Do ioSession.$newstatement('STMT') Returns ioStatement
+		# now that we have our administrator session, pass it to the oDBA object so it can use it too
+		Do ioDBA.$SetSession(ioSession,ioStatement)
+	Else
+		OK message login failed {[ioSession.$nativeerrortext]}
+		
+	End If
+End If

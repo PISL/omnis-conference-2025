@@ -1,0 +1,7 @@
+Do toValues.$initInherited("GRAPH","REGCOUNT") Returns lrRefRow
+Calculate icGraphConfig as lrRefRow.RFO_JSON
+
+Do $DefineList(llTemp,'tCharts')
+Do llTemp.$fetchRegistrationCounts(tlOpenConferences.CF_SEQ) Returns lbOK
+
+Quit method llTemp

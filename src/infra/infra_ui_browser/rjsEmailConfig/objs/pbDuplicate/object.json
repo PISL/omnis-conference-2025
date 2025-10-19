@@ -1,6 +1,6 @@
 {
 	"ident": 1037,
-	"order": 89,
+	"order": 90,
 	"objtype": "kComponent",
 	"componentlib": "jsButton",
 	"componentctrl": "Button Control",
@@ -58,7 +58,7 @@
 	"layout": {
 		"320": {
 			"left": 272,
-			"top": 816,
+			"top": 864,
 			"width": 30,
 			"height": 30,
 			"align": "kCenterJst",
@@ -69,7 +69,7 @@
 		},
 		"375": {
 			"left": 272,
-			"top": 896,
+			"top": 944,
 			"width": 30,
 			"height": 32,
 			"align": "kCenterJst",

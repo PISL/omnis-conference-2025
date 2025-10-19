@@ -1,6 +1,6 @@
 # may be called from pbDelete or handleMenuCall
-
 Calculate icDisplayMessage as ''
+Calculate $cinst.$objs.splitButtonWorkflow.$errortext as ''
 
 If inCurrentTab=cnTabDelegate
 	If irUserRights.canDelete&irCurrentRecord.DG_SEQ>0&icMode=''&ibActiveConference ## copied from $behaviour

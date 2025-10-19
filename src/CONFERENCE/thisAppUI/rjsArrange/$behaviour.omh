@@ -6,19 +6,21 @@ Calculate $cinst.$objs.ilSearch1.$enabled as $cinst.icMode=''
 Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
 Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
 
-If inCurrentTab=cnTabArrangement ## Delegate
-	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''
-	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.ARR_SEQ>0&icMode=''
-	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.ARR_SEQ>0&icMode=''
+Calculate lbOpenConference as ilSearch1.CF_DATE_FROM>#D
+Calculate lbAdministrativelyOpenConference as #D<=ilSearch1.CF_ADMIN_DATE_TO
+
+If inCurrentTab=cnTabArrangement|inCurrentTab=cnTabOverview ## Delegate
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&(lbOpenConference|lbAdministrativelyOpenConference)
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.ARR_SEQ>0&icMode=''&(lbOpenConference|lbAdministrativelyOpenConference)
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.ARR_SEQ>0&icMode=''&(lbOpenConference|lbAdministrativelyOpenConference)
 	
 Else If inCurrentTab=cnTabAttendees ## PAX
-	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&irCurrentRecord.ARR_SEQ>0
-	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irAttendee.ARA_SEQ>0&icMode=''
-	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irAttendee.ARA_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&irCurrentRecord.ARR_SEQ>0&(lbAdministrativelyOpenConference)
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irAttendee.ARA_SEQ>0&icMode=''&(lbAdministrativelyOpenConference)
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irAttendee.ARA_SEQ>0&icMode=''&(lbAdministrativelyOpenConference)
 	
 End If
 
-Calculate lbOpenConference as ilSearch1.CF_DATE_FROM>#D
 
 Calculate $cinst.$objs.PagedPane.$objs.ARR_FCY_REF.$visible as icMode='EARR' ## remaining rooms only
 Calculate $cinst.$objs.PagedPane.$objs.ARR_FCY_REF_show.$visible as $cinst.icMode<>'EARR' ## all rooms
@@ -54,9 +56,19 @@ Else If inCurrentTab=cnTabComments
 Else If inCurrentTab=cnTabAttendees
 	Calculate $cinst.$objs.PagedPane.$objs.ilAttendees.$enabled as icMode=''
 	
+Else If inCurrentTab=cnTabOverview
+	Calculate $cinst.$objs.label_RoomsToDrag.$visible as ibDragArrangementsOrTopics
+	Calculate $cinst.$objs.ilFacilitiesToDrag.$visible as ibDragArrangementsOrTopics
+	Calculate $cinst.$objs.label_TopicsToDrag.$visible as ibDragArrangementsOrTopics
+	Calculate $cinst.$objs.ilTopicsToDrag.$visible as ibDragArrangementsOrTopics
+	
+	Calculate $cinst.$objs.ilDisplayRecords.$enabled as not(ibDragArrangementsOrTopics)
+	
 End If
 
 Calculate $cinst.$objs.TabControl_ARR.$enabled as icMode=''
+
+Calculate $cinst.$objs.PagedPane.$objs.icPastedTextForBulkArrangements.$visible as icMode=''&irUserRights.canImportArrangements&lbOpenConference
 
 Do method assignEntryFieldProperties
 

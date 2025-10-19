@@ -1,0 +1,25 @@
+# Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+Set reference lirefPagedPaneObjs to $cinst.$objs.PagedPane.$objs
+
+If inCurrentForm=1
+	# Calculate lirefPagedPaneObjs.GO_MEC_ID.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.GO_NAME_FULL.$enabled as icMode<>''
+	# Calculate lirefPagedPaneObjs.GO_NAME_SHORT.$enabled as icMode<>''
+	# Calculate lirefPagedPaneObjs.GO_DDN_AP1.$enabled as icMode<>''
+	# Calculate lirefPagedPaneObjs.GO_DDN_AP2.$enabled as icMode<>''
+	
+	Calculate lirefPagedPaneObjs.email.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.address.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.postcode.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.ilCountries.$enabled as icMode<>''
+	
+Else If inCurrentForm=2
+	Calculate lirefPagedPaneObjs.icNewPassword.$enabled as icMode<>''
+	Calculate lirefPagedPaneObjs.icCheckPassword.$enabled as icMode<>''
+End If
+
+Do method assignEntryFieldProperties
+
+Do inherited ## handle objects in the navigation and results panes

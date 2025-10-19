@@ -1,0 +1,19 @@
+Calculate icDisplayMessage as ''
+Do irPax.$clear()
+Do irDiet.$clear()
+
+Do ilPax.$clear()
+Do ilPax.$fetch_fk(irCurrentRecord.DG_SEQ)
+If ilPax.$linecount>0
+	Do ilPax.$sort($ref.PX_SEQ,0)
+	
+	While $Loop(ilPax)
+		Do ilPax.$calculateTotals()
+	End While
+	
+	Calculate ilPax.$line as 1
+	Calculate irPax as ilPax
+	Do ilSpouse.$search($ref.RFO_VALUE=irPax.PX_ROLE,1,0,0,0)
+End If
+
+Do method DisplayProductInfoFromPax

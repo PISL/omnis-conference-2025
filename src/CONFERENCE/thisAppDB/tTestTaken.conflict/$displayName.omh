@@ -1,0 +1,1 @@
+Calculate $cinst.DisplayName as con($cinst.TTK_START,' : ',$cinst.TTK_STATUS,' : ',$cinst.TTK_PERCENT,'%')

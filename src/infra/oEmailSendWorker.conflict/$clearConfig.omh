@@ -1,0 +1,14 @@
+Do ilTo.$clear()
+Do ilCC.$clear()
+Do ilBCC.$clear()
+Do ilHeaders.$clear()
+Do ilMIME.$clear()
+Do ilMimeAppend.$clear()
+
+Calculate icErrors as ''
+Calculate icEventSpec as ''
+Calculate icVcardSpec as ''
+Calculate ibinPDF as #NULL
+
+Calculate ibNoMIME as kTrue
+Calculate irFingerPrint as ''

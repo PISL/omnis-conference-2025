@@ -1,0 +1,338 @@
+[
+	{
+		"name": "ARR_SEQ",
+		"ident": 32001,
+		"order": 1,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>record ID</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": true,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_CBY",
+		"ident": 32024,
+		"order": 2,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>created by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_CWHEN",
+		"ident": 32025,
+		"order": 3,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>created when</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_MBY",
+		"ident": 32026,
+		"order": 4,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "<lbl>last modified by</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_MWHEN",
+		"ident": 32027,
+		"order": 5,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "<lbl>last modified</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_MCOUNT",
+		"ident": 32029,
+		"order": 6,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>mod. count</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_CF_REF",
+		"ident": 32019,
+		"order": 7,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "<lbl>conference</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_TPC_REF",
+		"ident": 32030,
+		"order": 8,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "initially optional but eventually required<lbl>topic</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_PSN_REF",
+		"ident": 32040,
+		"order": 9,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "by default this will be the PERSON whose TOPIC it is.  This allows the person to change while keeping the topic the same.<lbl>leader</lbl><tt>Person to presents this topic, or leads this workshop.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_LEADER",
+		"ident": 32042,
+		"order": 10,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 40,
+		"properties": {
+			"desc": "mutually exclusive with ARR_PSN_REF; here as a textual substitute in case its relevant<lbl>Override leader</lbl><tt>If Person does not exist in list, you can manually set the leader's name here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_FCY_REF",
+		"ident": 32021,
+		"order": 11,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "mutully exclusive with ARR_FACILITY; initially optional but eventually required<lbl>room</lbl><tt>Specify room from list of values associated with Venue.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_FACILITY",
+		"ident": 32038,
+		"order": 12,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 50,
+		"properties": {
+			"desc": "mutually exclusive with ARR_FCY_REF; this could be a webinar link<lbl>Override room</lbl><tt>If location of event does not appear in list, then explicitly set rrom or location here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_FORMAT",
+		"ident": 32044,
+		"order": 13,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 15,
+		"properties": {
+			"desc": "webinar; class room, small group, workshop etc<lbl>format</lbl><tt>Specify the format of the event here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_DATE",
+		"ident": 32036,
+		"order": 14,
+		"type": "kDate",
+		"subtype": "kDate2000",
+		"sublen": 0,
+		"properties": {
+			"desc": "mutually exclusive with ARR_DAYNO<lbl>date</lbl><tt>Specify either an explicit date here, or a relative date using Day No.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_DAYNO",
+		"ident": 32007,
+		"order": 15,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "mutually exclusive with ARR_DATE; 0-n for each day of conference<lbl>Day no.</lbl><tt>Mutually exclusive with Date.  Either Date or Day No but not both.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_STARTTIME",
+		"ident": 32033,
+		"order": 16,
+		"type": "kDate",
+		"subtype": "kTime",
+		"sublen": 0,
+		"properties": {
+			"desc": "mutually exclusive with ARR_SLOT; <lbl>Start time</lbl><tt>Enter either a start time or a Time slot.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_ENDTIME",
+		"ident": 32034,
+		"order": 17,
+		"type": "kDate",
+		"subtype": "kTime",
+		"sublen": 0,
+		"properties": {
+			"desc": "mutually exclusive with ARR_SLOT; <lbl>End time</lbl><tt></tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_SLOT",
+		"ident": 32008,
+		"order": 18,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 30,
+		"properties": {
+			"desc": "mutually exclusive with ARR_STARTTIME & ARR_ENDTIME;  desribes when arrangement is scheduled: e.g. AM, PM, 09:00-12:30, from 20:00<lbl>Time slot</lbl><tt>Mutually exclusive with Start time.  Use either Start time or Time slot but not both.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_ORDER",
+		"ident": 32023,
+		"order": 19,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "ARR_SLOT may not sort into desirable order<lbl>Sort order</lbl><tt>Use this for consistent presentation when events use same start time or time slot.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_SPECIFIC_EQUIPT",
+		"ident": 32011,
+		"order": 20,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "<lbl>Equipment required</lbl><tt>If specific equipment is required for this session, describe it here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_COMMENT",
+		"ident": 32017,
+		"order": 21,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 255,
+		"properties": {
+			"desc": "<lbl>Comment</lbl><tt>Internal comments about this arrangement can be made here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_BOOKING_REQD",
+		"ident": 32045,
+		"order": 22,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "is YES then delagate must explicitly book this session<lbl>Bookings mandatory</lbl><tt>If arrangement requires people to \"sign up\" for, check this book, otherwise arrangement is open to all attendees.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_MAX_BOOKINGS",
+		"ident": 32046,
+		"order": 23,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "if 0 then no limit, otherwise this sets maximum number of people who can register for a session<lbl>Maximum attendance</lbl><tt>If numbers are limited for a specific arrangement, enter the maximum number here.</tt>",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "ARR_ALL_SPKR_TOPICS",
+		"ident": 32047,
+		"order": 24,
+		"type": "kInteger",
+		"subtype": "kShortint",
+		"sublen": 0,
+		"properties": {
+			"desc": "if 1, display all topics for ARR_PSN_REF for this conference",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	}
+]

@@ -1,0 +1,23 @@
+On evKeyPress
+	Do ilTopics.$unfilter()
+	Calculate lnTotalTopics as ilTopics.$linecount
+	If icSearch<>''
+		# OK message [ilTopics.$smartlist]
+		Do ilTopics.$filter(pos(upp(icSearch),upp($ref.TPC_TITLE))|pos(upp(icSearch),upp($ref.TPC_ABSTRACT))|pos(upp(icSearch),upp($ref.TPC_DESC)))
+		Calculate lnSelectedTopics as ilTopics.$linecount
+	End If
+	
+	If lnSelectedTopics>0
+		Calculate $cinst.$objs.PagedPane.$objs.label_TopicTitle.$text as con(lnSelectedTopics,' of ',lnTotalTopics,' Topic Titles') ## ;;# stb
+	Else
+		Calculate $cinst.$objs.PagedPane.$objs.label_TopicTitle.$text as con(lnTotalTopics,' Topic Titles') ## ;;# stb
+	End If
+	
+	Do $cinst.$behaviour()
+	
+On evAfter
+	If icSearch=''
+		Do ilTopics.$unfilter()
+		Calculate lnTotalTopics as ilTopics.$linecount
+		Calculate $cinst.$objs.PagedPane.$objs.label_TopicTitle.$text as con(lnTotalTopics,' Topic Titles') ## ;;# stb
+	End If

@@ -1,0 +1,54 @@
+# Tags first.  e.g. #CRUDEOIL  #ACID  #ALKALIE  #PHOSPHATE
+If pos('#',pcSourceText)
+	# isolate any tags so they form a separate sub query
+	Calculate lcParseTags as pcSourceText
+	
+	# loop through extracting any #tags that are in the string
+	Calculate lnPos as pos('#',lcParseTags)
+	While lnPos>0
+		Calculate lcParseTags as mid(lcParseTags,lnPos,255)
+		
+		If pos(' ',lcParseTags)
+			Calculate lcToken as mid(lcParseTags,1,pos(' ',lcParseTags)-1)
+		Else
+			Calculate lcToken as mid(lcParseTags,1,255)
+		End If
+		If trim(lcToken)<>''
+			Calculate lcParseTags as replace(lcParseTags,lcToken,'')
+			Calculate lcTags as con(lcTags,pick(lcTags<>'','',','),lcToken)
+		End If
+		
+		Calculate lnPos as pos('#',lcParseTags)
+	End While
+	
+	If lcTags='#'
+		# return nothing
+		Calculate lcTags as ''
+	End If
+End If
+# lcTags is a comma separated string of tags
+
+# now extract the tags from the original search text.  Any remaining text is classic search string.
+Calculate lcSearchText as pcSourceText
+If lcTags<>''
+	# So there are some tags... eliminate them from the search text from user to leave pure search text
+	Calculate lcTemp as lcTags
+	While lcTemp<>''
+		Calculate lcToken as strtok(nam(lcTemp),',')
+		Calculate lcSearchText as replace(lcSearchText,lcToken,'')
+	End While
+	# this method leaves multiple spaces in certain circumstances
+	While pos('  ',lcSearchText)
+		Calculate lcSearchText as replaceall(lcSearchText,'  ',' ')
+	End While
+End If
+
+Calculate lcSearchText as trim(lcSearchText)
+If trim(lcSearchText)='#'
+	Calculate lcSearchText as ''
+End If
+
+Calculate pretTags as lcTags
+Calculate pretText as lcSearchText
+
+Quit method lcTags<>''|lcSearchText<''

@@ -5,6 +5,7 @@ Do method setTabColours
 
 # Enter your initialization code here
 Do $DefineList(ilDisplayRecords,'tPerson')
+Do ilDisplayRecords.$addLinkedCols('CF_TITLE')
 Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
 Do ilDisplayRecords.$AddFunction("concat(psn_surname,', ',psn_first_name)")
 Do ilDisplayRecords.$cols.$add('SortName',kCharacter,kSimplechar,100)
@@ -32,10 +33,15 @@ Do ilAllTopics.$fetchOurTopics()
 Do ilTopics.$cols.$findname('TPC_TITLE') Returns liColRef
 Calculate $cinst.$objs.PagedPane_PERSON.$objs.ilTopics.$listcolumn as liColRef.$ident
 
+Do method fetchSearch1List ## list of conferences
+
 Do $DefineList(ilDelegates,'tDelegates')
 Do ilDelegates.$addLinkedCols('CF_TITLE,CF_DATE_FROM,CF_DATE_TO,VEN_NAME')
 
 Do $DefineList(ilMembership,'tMembership')
+
+Do toValues.$initInherited('FORM_SESS_BACK') Returns ilColoursBackground
+Do toValues.$initInherited('FORM_SESS_TEXT') Returns ilColoursText
 
 Do toValues.$initInherited('URL') Returns llUrlOptions
 
@@ -58,6 +64,7 @@ End If
 Do method FetchRecords
 # no drop lists needed for this small group of records
 Do $cinst.$superText(kTrue,'name search')
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE')
 Do $cinst.$superFoundList($cell(clLabels,'objName','disp_attendees','label'),'DisplayName')
 
 # RSM  2025-04-16  Providing markdown help

@@ -1,0 +1,2 @@
+On evClick
+	Calculate irFacility.FCY_TYPE as ilFacilityType.RFO_VALUE

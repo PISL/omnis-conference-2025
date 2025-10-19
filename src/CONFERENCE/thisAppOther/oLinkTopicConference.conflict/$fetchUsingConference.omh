@@ -1,0 +1,29 @@
+Do ilJoinedFetch.$clear()
+Do ilJoinedFetch.$fetch_(con('TPF_CF_REF = ',pnCF_SEQ))
+If ilJoinedFetch.$linecount=1
+	Calculate ilJoinedFetch.$line as 1
+	
+	Do irLinkRecord.$clear()
+	# Do irLinkRecord.$fetch_fk(pnCF_SEQ,'TPF_CF_REF')
+	Do irLinkRecord.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigLinkRecord as irLinkRecord
+	
+	Do irTopic.$clear()
+	# Do irTopic.$fetch_pk(irLinkRecord.TPF_TPC_REF)
+	Do irTopic.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigTopic as irTopic
+	
+	Do irConference.$clear()
+	# Do irConference.$fetch_pk(irLinkRecord.TPF_CF_REF)
+	Do irConference.$assignrow(ilJoinedFetch,kTrue)
+	Calculate irOrigConference as irConference
+	
+	Do prTopic.$assignrow(irTopic) ## return result to calling object
+	Do prConference.$assignrow(irConference)
+	Do prLink.$assignrow(irLinkRecord) ## return result to calling object
+	
+Else
+	Breakpoint
+End If
+
+Quit method ilJoinedFetch

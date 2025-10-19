@@ -1,0 +1,31 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabDelegate
+	# there is no save on the Delegate info pane
+	
+Else If inCurrentTab=cnTabTopics
+	# ilNewPerson is based on DG, not PSN
+	Do ioTopicPerson.$fetchTopicPerson(irTopic.TPC_SEQ,irCurrentRecord.DG_PSN_REF,lrTopic,lrPerson,lrLink) ## get the link record
+	If lrLink.[lrLink.icPrimaryKey]>0
+		If icMode='CT' ## clone - create new link
+			Calculate lrLink.TPP_SEQ as #NULL
+			Calculate lrLink.TPP_PSN_REF as ilNewPerson.DG_PSN_REF
+			Do lrLink.$insert() Returns lbOK
+		Else If icMode='MT' ## move - alter existing link
+			Calculate lrLink.TPP_PSN_REF as ilNewPerson.DG_PSN_REF
+			Do lrLink.$update() Returns lbOK
+		End If
+		
+		If not(lbOK)
+			If lrLink.irErrorSQL.NativeErrorText<>''
+				Calculate icDisplayMessage as lrLink.irErrorSQL.NativeErrorText
+			Else
+				Calculate icDisplayMessage as lrLink.icValidationError
+			End If
+		Else
+			Calculate icMode as ''
+			Do method $displayListClick ## if a MT has taken place the line will disappear from list
+		End If
+	End If
+	Quit method lbOK
+End If

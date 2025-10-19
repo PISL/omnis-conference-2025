@@ -1,0 +1,69 @@
+If binlength(prefBinary)=0
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('attached PDF is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+If isclear(pcFilename)
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('filename is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+If pos('/',pcApplicationCode)
+	# good
+	Do iMIMEtypeList.$search($ref.iMIMEtype=pcApplicationCode,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('invalid mime type'))
+		Calculate lbErrorDetected as kTrue
+	End If
+Else
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('application code incorrect format'))
+	Calculate lbErrorDetected as kTrue
+End If
+If pcCharset<>''
+	Do iCharsetList.$search($ref.iCharset=pcCharset,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('invalid charset'))
+		Calculate lbErrorDetected as kTrue
+	End If
+End If
+If pcEncoding<>''
+	Do iEncodingList.$search($ref.iEncoding=pcEncoding,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('invalid encoding'))
+		Calculate lbErrorDetected as kTrue
+	End If
+End If
+If pcDisposition<>''
+	Do iDispositionList.$search($ref.iDisposition=pcDisposition,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('invalid disposition'))
+		Calculate lbErrorDetected as kTrue
+	End If
+End If
+
+If lbErrorDetected
+	Quit method kFalse
+End If
+
+# assumption here is level 1
+Calculate lcPart1 as mid(pcApplicationCode,1,pos('/',pcApplicationCode)-1)
+Calculate lcPart2 as mid(pcApplicationCode,pos('/',pcApplicationCode)+1,99)
+If pcEncoding<>''
+	If pcEncoding='base64'
+		Do OXML.$base64encode(prefBinary) Returns lcBinContentEncoded
+		Do ilMimeAppend.$add(1,lcPart1,lcPart2,pcFilename,lcBinContentEncoded,,pcCharset,pcEncoding,pcDisposition)
+	Else If pcEncoding='binary'
+		# same as no encoding below
+		Do ilMimeAppend.$add(1,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
+	Else
+		# Do iEncodingList.$add("quoted-printable")
+		# Do iEncodingList.$add("7bit")
+		# Do iEncodingList.$add("8bit")
+		Breakpoint
+	End If
+Else
+	Do ilMimeAppend.$add(1,lcPart1,lcPart2,pcFilename,,prefBinary,pcCharset,pcEncoding,pcDisposition)
+End If
+
+# using MIMEis detected if there is either HTML involved or an attachment
+Calculate ibinPDF as prefBinary
+
+Quit method kTrue

@@ -1,8 +1,8 @@
 {
 	"classtype": "kRemoteTask",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 38,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 39,
 	"nextident": 1,
 	"tvardefs": [
 		{
@@ -77,6 +77,13 @@
 			"type": "kBinary",
 			"subtype": 0,
 			"sublen": 100000000
+		},
+		{
+			"name": "tlAuthorisedForms",
+			"order": 53,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
 		},
 		{
 			"name": "tLayoutDesignMode",
@@ -623,7 +630,7 @@
 		"localtime": false,
 		"maxtime": 0,
 		"maxusers": 0,
-		"moddate": "2025-02-13 09:33:29",
+		"moddate": "2025-05-16 12:15:22",
 		"restful": false,
 		"restfulapiname": "",
 		"showascheckedout": false,

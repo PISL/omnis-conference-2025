@@ -1,7 +1,7 @@
 {
 	"classtype": "kObjectclass",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
 	"internalversion": 33,
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
@@ -11,7 +11,7 @@
 			"type": "kCharacter",
 			"subtype": "kSimplechar",
 			"sublen": 100000000,
-			"initval": "'ABCDEFGHIJKLMNOP'"
+			"initval": "'AIzaSyCTY6pqxf3oCRrCUrjji8qHduv0fo4KOGk'"
 		}
 	],
 	"ivardefs": [

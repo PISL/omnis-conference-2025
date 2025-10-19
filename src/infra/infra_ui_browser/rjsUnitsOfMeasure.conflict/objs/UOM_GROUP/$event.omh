@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.UOM_GROUP as ilUOM_GROUP.RFG_VALUE

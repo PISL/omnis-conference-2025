@@ -1,6 +1,6 @@
 {
 	"ident": 1043,
-	"order": 44,
+	"order": 43,
 	"objtype": "kComponent",
 	"componentlib": "jsEdit",
 	"componentctrl": "Edit Control",
@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(238,238,238)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -71,6 +72,8 @@
 		"objlink": 65540,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,
@@ -85,8 +88,8 @@
 	},
 	"layout": {
 		"320": {
-			"left": 168,
-			"top": 664,
+			"left": 152,
+			"top": 760,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",
@@ -96,8 +99,8 @@
 			"visible": true
 		},
 		"375": {
-			"left": 168,
-			"top": 664,
+			"left": 152,
+			"top": 744,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",
@@ -107,8 +110,8 @@
 			"visible": true
 		},
 		"480": {
-			"left": 168,
-			"top": 664,
+			"left": 160,
+			"top": 720,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",
@@ -118,8 +121,8 @@
 			"visible": true
 		},
 		"667": {
-			"left": 168,
-			"top": 664,
+			"left": 152,
+			"top": 712,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",
@@ -130,7 +133,7 @@
 		},
 		"768": {
 			"left": 152,
-			"top": 688,
+			"top": 752,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",
@@ -141,7 +144,7 @@
 		},
 		"1024": {
 			"left": 152,
-			"top": 560,
+			"top": 624,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",
@@ -151,8 +154,8 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 168,
-			"top": 576,
+			"left": 152,
+			"top": 632,
 			"width": 120,
 			"height": 19,
 			"align": "kCenterJst",

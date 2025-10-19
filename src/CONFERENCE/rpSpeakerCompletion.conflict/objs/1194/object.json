@@ -1,0 +1,52 @@
+{
+	"ident": 1194,
+	"order": 28,
+	"objtype": "kLine",
+	"properties": {
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+			"type": [
+				{
+					"name": "group",
+					"order": 1,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "iconid",
+					"order": 2,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "default",
+					"order": 3,
+					"type": "kBoolean",
+					"subtype": 0,
+					"sublen": 0
+				}
+			],
+			"data": {
+				"group": "Shapes",
+				"iconid": "line1+16x16",
+				"default": false
+			}
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"effect": "kBorderNone",
+		"fieldstyle": "",
+		"floating": true,
+		"height": 0.0,
+		"left": 0.503,
+		"lineno": 26,
+		"lineoffset": 0.0,
+		"linestyle": 10,
+		"printontop": false,
+		"userinfo": "",
+		"vertextend": false,
+		"width": 17.78
+	}
+}

@@ -1,8 +1,8 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 47,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 48,
 	"superclass": "rjsBusinessSuper",
 	"designtaskname": "rtBusinessApp",
 	"nextident": 1051,

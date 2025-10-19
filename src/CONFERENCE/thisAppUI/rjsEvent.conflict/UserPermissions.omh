@@ -1,0 +1,11 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('conf_insert','canInsert')
+Do llPrivsUsedInThisForm.$add('conf_update','canUpdate')
+Do llPrivsUsedInThisForm.$add('conf_delete','canDelete')
+Do llPrivsUsedInThisForm.$add('cfp_insert','canInsertPriceRule')
+Do llPrivsUsedInThisForm.$add('cfp_update','canUpdatePriceRule')
+Do llPrivsUsedInThisForm.$add('cfp_delete','canDeletePriceRule')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

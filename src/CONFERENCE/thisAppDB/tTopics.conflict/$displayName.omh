@@ -1,0 +1,14 @@
+If isnull(ibPSNcolsExist)
+	Do $cinst.$cols.$findname('PSN_SURNAME') Returns liColRef
+	If liColRef
+		Calculate ibPSNcolsExist as kTrue
+	Else
+		Calculate liColRef as kFalse
+	End If
+End If
+
+If ibPSNcolsExist&not(pbExcludeName)
+	Calculate $cinst.DisplayName as con($cinst.TPC_TITLE,' (',$cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME,')')
+Else
+	Calculate $cinst.DisplayName as con($cinst.TPC_TITLE)
+End If

@@ -1,0 +1,3 @@
+Calculate $cinst.$objs.TP_ARR_DATE.$textcolor as pick(ilData.TP_ARR_DATE=irConference.CF_DATE_FROM,kBlue,kBlack)
+Calculate $cinst.$objs.1100.$text as pick(ilData.TP_SHUTTLE,'','','international arrival')
+Do default

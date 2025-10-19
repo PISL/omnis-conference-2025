@@ -9,25 +9,47 @@ If not(ibUserHasSemaphore)
 	Quit method
 End If
 
-If inCurrentTab=cnTabDelegate
+If inCurrentTab=cnTabDGPerson
+	# refresh record from db to ensure latest copy
+	Do irCurrentRecord.$fetch_pk()
+	Calculate irOriginalRecord as irCurrentRecord
+	# The problem we have here is that ilDisplayList and hence irCurrentRecord,
+	# is that it has been defined primarily from the delegate record, not Person record.
+	# And on this Tab there is both Speaker/Person data and Delegate data.
+	Do irPerson.$fetch_pk(irCurrentRecord.PSN_SEQ) Returns lbOK
+	Calculate irPersonOrig as irPerson
+	
+	Do method DropLists
+	
 	If irUserRights.canEdit&irCurrentRecord.DG_SEQ>0&icMode='' ## copied from $behaviour
 		Calculate icMode as 'ED' ## edit delegate
 	End If
 	
-Else If inCurrentTab=cnTabTopics
+Else If inCurrentTab=cnTabTopicsConf
 	If irUserRights.canEdit&irTopic.TPC_SEQ>0&icMode='' ## copied from $behaviour
-		Calculate icMode as 'EP' ## edit PAX
+		Calculate icMode as 'EP' ## insert or delete link between Topic and Conference
+	End If
+	
+Else If inCurrentTab=cnTabTopicEditor
+	Do irLinkConference.$fetch_pk(irTopic.TPF_SEQ)
+	Do irTopic.$fetch_pk() ## this fetch will clear irTopic.TPF_SEQ
+	Do irConference.$assignrow(ilSearch1,kTrue)
+	Do ioTopicConference.$setOriginals(irTopic,irConference,irLinkConference)
+	
+	# Do ioTopicPerson.$save(irTopic,irPerson,irLinkConference) Returns lbOK
+	Do $defineList(irPerson,'tPerson')
+	Do irPerson.$assignrow(ilDisplayRecords,kTrue)
+	Do ioTopicPerson.$fetchTopicPerson(irTopic.TPC_SEQ,irPerson.PSN_SEQ)
+	
+	# Do irTopic.$fetch_pk()
+	If irUserRights.canEdit&irTopic.TPC_SEQ>0&icMode=''
+		Calculate icMode as 'ET' ## edit Topic
+		Calculate irTopicOrig as irTopic
 	End If
 	
 Else If inCurrentTab=cnTabTextForClipboard
 	# no equvalent in $behaviour
-	Calculate icMode as 'EY' ## edit payment
 	
 End If
-
-# refresh record from db to ensure latest copy
-Do irCurrentRecord.$fetch_pk()
-Calculate irOriginalRecord as irCurrentRecord
-Do method DropLists
 
 Do $cinst.$behaviour()

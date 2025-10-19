@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.DG_ROLE as ilRoles.RFO_VALUE

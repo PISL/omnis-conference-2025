@@ -1,0 +1,7 @@
+Calculate $cinst.$database as tlDatabases.DB
+Calculate $cinst.$port as tlDatabases.port
+Calculate $cinst.$quotedidentifier as kFalse
+Do $cinst.$logon(tlDatabases.Host,tlDatabases.UserName,tlDatabases.password) Returns lbOK
+If not(lbOK)
+	Send to trace log (Always log) Listen / notify mechanism failed connection to database.
+End If

@@ -1,0 +1,53 @@
+If #D>ilSearch1.CF_DATE_TO&#D<dim(ilSearch1.CF_DATE_TO,2) ## 2 months to send thank you letter
+	# Do method testForWholeList Returns lbWholeList ## this has been decided in $sendPdfThanks
+	If pbWholeList
+		# get the maximum number to send
+		Do toValues.$initInherited("EMAIL_GENERIC","BATCHSIZE") Returns lrReference
+		If lrReference.RFO_SEQ>0
+			Calculate lnMaxBatch as lrReference.RFO_INT ## default value set to 5
+		End If
+		# use local variables as irCurrentRecord could change with multiple callbacks/user interaction
+		Calculate llDisplayCopy as ilDisplayRecords
+		Calculate llDGlog as ilDelegateLog
+		
+		Calculate lnCount as 0
+		Calculate llDisplayCopy.$line as 0
+		While $Loop(llDisplayCopy)
+			
+			# Do method $displayListClick
+			Calculate lrCurrentDelegate as llDisplayCopy
+			Do lrCurrentDelegate.$fetch_pk() ## refresh from the DB, it may have been updated
+			Do llDGlog.$clear()
+			Do llDGlog.$fetch_fk(lrCurrentDelegate.DG_SEQ)
+			Do llDGlog.$sort($ref.DSL_CWHEN,0)
+			
+			Calculate lbSendThanks as kFalse
+			If lrCurrentDelegate.DG_ROLE='DG'&pcEventCode='PDF_THANKS_DG'
+				Calculate lbSendThanks as kTrue
+			Else If lrCurrentDelegate.DG_ROLE='SPEAKER'&pcEventCode='PDF_THANKS_SPK'
+				Calculate lbSendThanks as kTrue
+			Else If lrCurrentDelegate.DG_ROLE='DG_SPECIAL'&pcEventCode='PDF_THANKS_VIP'
+				Calculate lbSendThanks as kTrue
+			End If
+			If lbSendThanks
+				# see if letter has already been sent ## if so, don't repeat.
+				Do llDGlog.$search($ref.DSL_EVENT=pcEventCode,1,0,0,0) Returns lbFound
+				If not(lbFound)
+					Do method $sendGenericMessage (pcEventCode,'rpGenericContent',lrCurrentDelegate,kFalse)
+					Calculate lnCount as lnCount+1
+				End If
+			End If
+			If lnCount>=lnMaxBatch
+				Break to end of loop
+			End If
+		End While
+	Else
+		Do method $sendGenericMessage (pcEventCode,'rpGenericContent',irCurrentRecord)
+	End If
+	
+	# reload the originally selected delegate
+	Do $cinst.$displayListClick() ## this calls $behaviour()
+Else
+	Calculate icDisplayMessage as "Today's date is out of range.  Thank you not sent."
+	Calculate icFormIntro as ''
+End If

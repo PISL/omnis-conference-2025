@@ -1,0 +1,1 @@
+Do $libs.infra.$windows.wConfig.$openonce('*',kWindowCenter)

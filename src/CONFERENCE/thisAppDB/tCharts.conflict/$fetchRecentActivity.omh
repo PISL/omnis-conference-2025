@@ -1,0 +1,45 @@
+# Breakpoint
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# this method relies on the extension tablefunc being created on the server
+# this extension includes the crosstab function which creates pivot tables
+
+# to make this whole thing more readable, we create a temp teable first to hold the required data and then get the pivot table from that
+# the temp table will be created with "on commit drop" so it does not persevere
+Do $cinst.$beginTransaction('',loSession,loStatement) Returns lbTransBegun
+If lbTransBegun
+	Do method createSQLforTempTable Returns lcSQL
+	Begin statement (Carriage return,Linefeed)
+	Sta:[lcSQL]
+	End statement
+	Do $cinst.$executesql() Returns lbOK
+	If lbOK
+		# now get the pivot table
+		Begin statement (Carriage return)
+		Sta:SELECT * FROM crosstab('select dt, cat, val from activity','select distinct cat from activity order by 1')
+		Sta:as (dt date
+		Sta:, dgins int, dgupd int
+		Sta:, dslins int, dslupd int
+		Sta:, invsent int
+		Sta:, pxins int, pxupd int
+		Sta:, pyins int, pyupd int
+		Sta:, tpfins int, tpfupd int
+		Sta:, tpins int, tpupd int
+		Sta:, travsent int);
+		End statement
+		
+		Do $cinst.$executesqlandfetch() Returns lbOK
+	End If
+End If
+Do $cinst.$commitTransaction('',loSession,loStatement)
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

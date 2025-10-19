@@ -1,0 +1,70 @@
+TCPGetMyAddr Returns lcMyIP
+# TCPGetRemoteAddr get IP address of remote server where a connection has been established, which we are not doing here.
+Calculate lcRequestPage as 'https://whatismyipaddress.com'
+HTTPPage (lcRequestPage) Returns lcContent
+
+Calculate lcSearch as '<div class="ip-address-list">'
+Calculate lnPos as pos(lcSearch,lcContent)
+If lnPos>0
+	Calculate lcPagePortion as mid(lcContent,lnPos,5000)
+	# Calculate lnPos as pos('Not detected',lcPagePortion)
+	
+	# IP4 portion
+	# chunk content into smaller pieces.  This is easier for debugging, not performance.
+	Calculate lcSearch as 'whatismyipaddress.com/ip/'
+	Calculate lnPos as pos(lcSearch,lcPagePortion)
+	
+	# we don't need lcContent any more
+	Calculate lcPagePortion as mid(lcPagePortion,lnPos+len(lcSearch),3000)
+	Calculate lcPageAnswerIP4 as mid(lcPagePortion,1,pos(kDq,lcPagePortion)-1)
+	
+	# They are a cunning lot, those people at whatismyaddress.com
+	# On the displayed page the IP6 adress appears shortly after the IP4
+	# but they have done some jiggery pokery so that one cannot decipher the page content to extract both values.
+	If 1=0
+		Calculate lcSearch as '"IPv6:"'
+		Calculate lnPos as pos(lcSearch,lcPagePortion)
+		
+		Calculate lcContent as mid(lcPagePortion,lnPos+len(lcSearch),30)
+		Calculate lcPageAnswerIP6 as mid(lcContent,1,pos(kDq,lcContent)-1)
+	End If
+	Calculate lcRemoteIP as lcPageAnswerIP4
+End If
+Do OW3.$computername() Returns lcComputerName
+
+# Breakpoint
+Calculate inMinSearchString as 0
+
+
+If tlDatabases.$linecount>1
+	Calculate $cinst.icDisplayMessage as ilDisplayRecords.$WhichDatabase()
+End If
+
+# extra commands in Action menu
+# Do $cinst.$container().$initToolsMenu('') Returns ilMenuCommands
+# Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Calculate icOmnisVersion as con(sys(1),lcSeparator,'build: ',mid(sys(123),5,5),kCr,'serial:',sys(5))
+
+Calculate icOmnisServer as con('max. licence count: ',sys(256),lcSeparator,'current licence count: ',sys(257))
+Calculate icOmnisServer as con(icOmnisServer,kCr,'Omnis listener started: ',sys(122),lcSeparator,'multi process server: ',sys(243))
+
+Calculate icHardware as con('platform: ',sys(6),lcSeparator,'os version: ',sys(7),lcSeparator,'architecture: ',sys(8))
+Calculate icHardware as con(icHardware,kCr,'processors: ',sys(210))
+
+Calculate icNetwork as con('Server port: ',$root.$prefs.$serverport)
+If lcMyIP<>''
+	Calculate lcAddressLine as con(lcAddressLine,pick(lcAddressLine<>'','',lcSeparator),'local IP address: ',lcMyIP)
+End If
+If lcRemoteIP<>''
+	Calculate lcAddressLine as con(lcAddressLine,pick(lcAddressLine<>'','',lcSeparator),'remote IP address: ',lcRemoteIP)
+Else
+	# Calculate lcAddressLine as con(lcAddressLine,pick(lcAddressLine<>'','',lcSeparator),'remote IP address: <unobtainable>')
+End If
+If lcComputerName<>''
+	Calculate lcAddressLine as con(lcAddressLine,pick(lcAddressLine<>'','',lcSeparator),'computer name: ',lcComputerName)
+End If
+Calculate icNetwork as con(icNetwork,kCr,lcAddressLine)
+Calculate icNetwork as con(icNetwork,kCr,'multi process server: ',sys(243),lcSeparator,'active connections: ',sys(244))
+
+Calculate icDbConnection as con('DAM: ',tFormSession.$damname,lcSeparator,'host: ',tFormSession.$hostname,lcSeparator,'state: ',tFormSession.$state,lcSeparator,'user: ',tFormSession.$username)

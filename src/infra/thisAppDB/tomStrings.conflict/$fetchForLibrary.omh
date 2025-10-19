@@ -1,0 +1,52 @@
+# If tlDatabases.DAM='WebService'
+# pass parameters to web service
+# Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcLibName),$cinst.$type,0,$cinst.ilRESTextensions))
+# Calculate lrWebResponse as toWeb.irResponse
+# If lrWebResponse.httpStatusCode=200
+# the result should be in this object ## however there may be a SQL error
+# If irErrorSQL.NativeErrorText<>''
+# Quit method kFalse
+# End If
+# Quit method kTrue
+# Else
+# Quit method kFalse
+# End If
+# End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Calculate pcLibName as upp(pcLibName)
+
+# 2023-11-30  RSM  noticed that strings associated with infra library (INFRASTRUCTURE in db) were not being fetched!
+# Select extended to instra and other common libraries.
+If pcLibName='HTMLP'|pcLibName='TRACKER'
+	Calculate lcInClause as con(kSq,pcLibName,kSq,lcComma,kSq,'HTCOMMON',kSq,lcComma,kSq,'INFRASTRUCTURE',kSq,lcComma,kSq,'INFRA',kSq)
+Else If pcLibName='MEC'|pcLibName='MECIS'|pcLibName='MECRS'
+	Calculate lcInClause as con(kSq,pcLibName,kSq,lcComma,kSq,'MCOMMON',kSq,lcComma,kSq,'INFRASTRUCTURE',kSq,lcComma,kSq,'INFRA',kSq)
+Else
+	Calculate lcInClause as con(kSq,pcLibName,kSq,lcComma,kSq,'INFRASTRUCTURE',kSq,lcComma,kSq,'INFRA',kSq)
+End If
+
+Begin statement (Carriage return)
+Sta:select distinct [$cinst.$selectnames()]
+Sta:from  [$cinst.$servertablenames()]
+Sta:join [lrGroup.$servertablenames] on OMG_SEQ = OMS_OMG_REF
+Sta:join [lrLink.$servertablenames] on OLG_OMG_REF = OMG_SEQ
+Sta:join [lrLibrary.$servertablenames] on OML_SEQ = OLG_OML_REF
+# Sta:where OML_NAME = @[pcLibName]
+Sta:where OML_NAME in ( [lcInClause] )
+Sta:order by STRINGID
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

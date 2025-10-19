@@ -50,6 +50,8 @@
 		"rowborder": "kJSborderNone",
 		"rowdividerlinestyle": 16,
 		"rowheight": 650,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"showheader": true,
 		"showhorzfooter": false,
 		"showhorzheader": false,

@@ -1,0 +1,36 @@
+If $cinst.ROL_SU
+	Calculate lcSuperUser as ' su '
+	Calculate lbAppend as kTrue
+End If
+If $cinst.ROL_REVOKE
+	Calculate lcRevoke as ' revoke '
+	Calculate lbAppend as kTrue
+End If
+If $cinst.ROL_ACTIVE
+	# leave clear
+Else
+	Calculate lcInactive as ' inactive '
+	Calculate lbAppend as kTrue
+End If
+If $cinst.ROL_ROL_REF>0
+	Calculate lcHierrarchy as ' subord '
+	Calculate lbAppend as kTrue
+End If
+
+If pcHowMuch='F' ## full description
+	If lbAppend
+		Calculate $cinst.DisplayName as con($cinst.ROL_NAME,' (',lcSuperUser,lcRevoke,lcInactive,lcHierrarchy,')')
+	Else
+		Calculate $cinst.DisplayName as con($cinst.ROL_NAME)
+	End If
+	
+Else If pcHowMuch='E' ## enhanced description
+	If lbAppend
+		Calculate $cinst.DisplayName as con($cinst.ROL_NAME,' (',lcSuperUser,lcRevoke,')')
+	Else
+		Calculate $cinst.DisplayName as con($cinst.ROL_NAME)
+	End If
+	
+Else
+	Calculate $cinst.DisplayName as con($cinst.ROL_NAME)
+End If

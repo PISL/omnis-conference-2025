@@ -1,0 +1,8 @@
+# Sending a "chase payment" email is not recorded on the delegate record.
+# It is rare to chase people for payment more than once.
+
+# before sending the chase payment email, generate a pdf of the invoice to attach to the email
+
+# Do $cinst.$clientNoYesMsg('Proceed to send chase payment email?','CONFIRM ACTION','$sendEmailChasePay')
+Calculate icSourceAsyncEvent as 'CHASE_PAY'
+Do $cinst.$clientNoYesMsg('Proceed to send chase payment email?','CONFIRM ACTION','$generateInvoicePdf')

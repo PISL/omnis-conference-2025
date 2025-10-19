@@ -1,5 +1,5 @@
 On evAfter
-	Calculate $cobj.$errortext as ''
+	Do $cinst.$clientcommand('clearerrors')
 	
 	If irCurrentRecord.ELC_BCC<>''
 		Do OJSON.$formatjson(irCurrentRecord.ELC_BCC) Returns lcFormattedJSON

@@ -1,0 +1,33 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	Do ioTopicPerson.$fetchUsingTopic(irTopic.[irTopic.icPrimaryKey],irTopic,irCurrentRecord,irLinkTP) Returns llJoined
+	If llJoined.$linecount>1&irLinkTP.TPP_SEQ>0
+		# then delete the LINK record, not the topic record.
+		Do irLinkTP.$delete() Returns lbOK
+		If lbOK
+			Calculate icDisplayMessage as 'Topic - person link reord deleted' ## ;;# string table entry
+			Do ilTopics.$remove(ilTopics.$line)
+			Do irTopic.$clear()
+		Else
+			Calculate icDisplayMessage as irLinkTP.irErrorSQL.NativeErrorText
+		End If
+	Else
+		# Do irTopic.$checkChildren(irLinkTP.$servertablenames()) Returns lnCountChildren
+		Do irTopic.$checkChildren() Returns lnCountChildren
+		Do irTopic.$getTablesWithChildren() Returns llTables
+		If lnCountChildren=0
+			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',irTopic.TPC_TITLE,'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteTPC')
+		Else If llTables.$linecount=1&llTables.1.CTABLE=irLinkTP.$servertablenames()
+			# The only child table is irLinkTP and it is this record we will delete.
+			# Many Persons can deliver a topic.  We will be deleting the LINK record between this Person and Topic.
+			# If llTables.1.COUNT = 1 then we will delete the Topic record as well as the link record.
+			Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',irTopic.TPC_TITLE,'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteTPC')
+		Else
+			Do irTopic.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+			Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+		End If
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

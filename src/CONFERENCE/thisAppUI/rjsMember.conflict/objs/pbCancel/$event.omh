@@ -1,0 +1,13 @@
+On evClick
+	Calculate lrTemp as irCurrentRecord
+	
+	Calculate icDisplayMessage as ''
+	Calculate icMode as ''
+	Do $cinst.$displayListClick
+	
+	If lrTemp.MB_SEQ>0
+		Do ilMembershipHistory.$search($ref.MB_SEQ=lrTemp.MB_SEQ,1,0,0,0)
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

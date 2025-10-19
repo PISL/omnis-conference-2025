@@ -1,0 +1,7 @@
+Do inherited
+
+If $cinst.CF_ADMIN_DATE_TO>dat('1 JAN 2010')
+	# it has been set
+Else
+	Calculate $cinst.CF_ADMIN_DATE_TO as $cinst.CF_DATE_TO
+End If

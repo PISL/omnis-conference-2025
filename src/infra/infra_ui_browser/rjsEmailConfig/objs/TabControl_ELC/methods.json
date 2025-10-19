@@ -7,7 +7,13 @@
 
 		],
 		"lvardefs": [
-
+			{
+				"name": "lnOldTab",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			}
 		]
 	}
 ]

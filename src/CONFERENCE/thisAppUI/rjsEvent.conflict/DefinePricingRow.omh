@@ -1,0 +1,37 @@
+# for each product code in Conference table, provide a price column
+
+Do irPrices.$cols.$add('CF_RATE0_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE0_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE0_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE1_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE1_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE1_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE2_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE2_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE2_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE3_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE3_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE3_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE4_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE4_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE4_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE5_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE5_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE5_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE6_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE6_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE6_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE7_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE7_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE7_N',kInteger,k32bitint)
+
+Do irPrices.$cols.$add('CF_RATE8_I',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE8_H',kInteger,k32bitint)
+Do irPrices.$cols.$add('CF_RATE8_N',kInteger,k32bitint)

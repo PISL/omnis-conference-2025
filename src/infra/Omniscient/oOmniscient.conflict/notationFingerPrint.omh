@@ -1,0 +1,9 @@
+Do sys(192) Returns llStack
+Do llFingerprint.$cols.$add('fingerprint',kCharacter)
+Calculate llStack.$line as 3
+
+Do llFingerprint.$add(llStack.classitem().$name)
+Do llFingerprint.$add(llStack.method)
+Do llFingerprint.$add(llStack.line)
+
+Quit method llFingerprint

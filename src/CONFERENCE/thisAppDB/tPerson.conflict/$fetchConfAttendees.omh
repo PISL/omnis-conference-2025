@@ -1,0 +1,28 @@
+If pnCF_SEQ>0
+	# proceed
+Else
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+Sta:, [lrDelegate.$servertablenames()]
+# join
+Sta:where DG_PSN_REF = PSN_SEQ
+Sta:and    DG_CF_REF = @[pnCF_SEQ]
+End statement
+Do $cinst.$executesqlandfetch() Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

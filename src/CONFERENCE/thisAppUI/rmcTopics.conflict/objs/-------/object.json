@@ -1,0 +1,15 @@
+{
+	"ident": 1021,
+	"order": 19,
+	"properties": {
+		"cascade": "",
+		"checked": false,
+		"commandid": 1021,
+		"enabled": true,
+		"iconcolor": "RGB(0,0,0)",
+		"iconid": 0,
+		"ischeckable": false,
+		"text": "",
+		"userinfo": ""
+	}
+}

@@ -1,0 +1,109 @@
+Calculate icMode as pcMode
+# we disable the menus while in "enter data", ie. icMode <> ''
+# BUT the user could move to another form while editing, eg. Composites from ModelWizard, and click insert/edit in that form
+# in this case when we call this $behaviour after saving/cancelling the edit mode in the second form
+# we do not want to reenable the menus because we are still in "enter data" mode in the first form
+# so we add the "enter data" to a list and only reenable menus when the list is empty
+If $stillEditing() ## task method Returnｓ kTrue if the edit stack still has rows
+	Calculate icMode as 'X' ## prevent the menus from being enabled
+End If
+
+Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVLIST)
+# we only disable the cascade menus, not the "Send feedback" option which is set as a heading, ie. uses $heading... properties
+If icMode=''
+	Calculate $cinst.$objs.NavMenu.$textcolor as eval(lrAttributes.textcolor)
+	Calculate $cinst.$objs.NavMenuCascade.$textcolor as eval(lrAttributes.textcolor)
+	Calculate $cinst.$objs.UserMenu.$textcolor as eval(lrAttributes.textcolor)
+	Calculate $cinst.$objs.ToolsMenu.$textcolor as eval(lrAttributes.textcolor)
+	Calculate $cinst.$objs.OrgMenu.$textcolor as eval(lrAttributes.textcolor)
+Else
+	Calculate $cinst.$objs.NavMenu.$textcolor as kGray
+	Calculate $cinst.$objs.NavMenuCascade.$textcolor as kGray
+	Calculate $cinst.$objs.UserMenu.$textcolor as kGray
+	Calculate $cinst.$objs.ToolsMenu.$textcolor as kGray
+	Calculate $cinst.$objs.OrgMenu.$textcolor as kGray
+End If
+
+For ilNavMenu.$line from 1 to ilNavMenu.$linecount step 1
+	Calculate lbinFlags as ilNavMenu.flags
+	If icMode='' ## clear the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			Calculate ilNavMenu.flags as ilNavMenu.flags-lnFlagDisable ## remove the flag
+		End If
+	Else ## set the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			# do nothing
+		Else
+			Calculate ilNavMenu.flags as ilNavMenu.flags+lnFlagDisable ## add the flag
+		End If
+	End If
+End For
+
+# now do the cascading menu
+Calculate lrCascadeInfo as ilNavMenuCascade.1.info
+Calculate llCascade as lrCascadeInfo.C1
+
+For llCascade.$line from 1 to llCascade.$linecount-1 step 1
+	Calculate lbinFlags as llCascade.flags
+	If icMode='' ## clear the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			Calculate llCascade.flags as llCascade.flags-lnFlagDisable ## remove the flag
+		End If
+	Else
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			# do nothing
+		Else
+			Calculate llCascade.flags as llCascade.flags+lnFlagDisable ## add the flag
+		End If
+	End If
+End For
+
+Calculate lrCascadeInfo.C1 as llCascade
+Calculate ilNavMenuCascade.1.info as lrCascadeInfo
+
+# now deal with the UserMenu
+Calculate lbinFlags as ilUserMenu.1.flags
+If icMode='' ## clear the flag
+	If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+		Calculate ilUserMenu.1.flags as ilUserMenu.1.flags-lnFlagDisable ## remove the flag
+	End If
+Else ## set the flag
+	If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+		# do nothing
+	Else
+		Calculate ilUserMenu.1.flags as ilUserMenu.1.flags+lnFlagDisable ## add the flag
+	End If
+End If
+
+# now do the Tools menu
+For ilToolsMenu.$line from 1 to ilToolsMenu.$linecount-1 step 1 ## leave Help option enabled
+	Calculate lbinFlags as ilToolsMenu.flags
+	If icMode='' ## clear the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			Calculate ilToolsMenu.flags as ilToolsMenu.flags-lnFlagDisable ## remove the flag
+		End If
+	Else ## set the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			# do nothing
+		Else
+			Calculate ilToolsMenu.flags as ilToolsMenu.flags+lnFlagDisable ## add the flag
+		End If
+	End If
+End For
+
+# and the OrgMenu
+If ilOrgMenu.$linecount
+	Calculate lbinFlags as ilOrgMenu.1.flags
+	If icMode='' ## clear the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			Calculate ilOrgMenu.1.flags as ilOrgMenu.1.flags-lnFlagDisable ## remove the flag
+		End If
+	Else ## set the flag
+		If bittest(lbinFlags,29,29) ## bitwise comparison to test if the disabled flag is set  (bit 2 from the right = bit 29 from the left)
+			# do nothing
+		Else
+			Calculate ilOrgMenu.1.flags as ilOrgMenu.1.flags+lnFlagDisable ## add the flag
+		End If
+	End If
+End If
+#

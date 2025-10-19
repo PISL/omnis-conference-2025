@@ -1,0 +1,61 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# prepare some data for the message text
+	Calculate lcTo as 'mostyn@platformis.net'
+	Do $defineList(llConferences,'CONFERENCE.tConference')
+	Do llConferences.$fetchIncomplete()
+	Calculate llConferences.$line as 1
+	
+	Do $defineList(llDelegates,'CONFERENCE.tDelegates')
+	Do llDelegates.$addLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL,PSN_COUNTRY')
+	Do llDelegates.$fetchForConference(llConferences.CF_SEQ)
+	Do llDelegates.$search($ref.PSN_SURNAME='Mostyn',1,0,0,0) Returns lbFound
+	
+	Breakpoint
+	# prime the worker with a configuration
+	Do ioSmtpWorker.$primeConfig('DEFAULT',lcTo,lcText) Returns lbOK
+	# loWorker.irConfig
+	If ioSmtpWorker.icErrors<>''
+		Breakpoint
+	End If
+	If lbOK
+		# assuming the message has text to substitute
+		Do ioSmtpWorker.$messageSubstitute(#NULL,row(llConferences,trGroupOrg,llDelegates)) Returns lbOK
+		If ioSmtpWorker.icErrors<>''
+			Breakpoint
+		End If
+		If lbOK
+			# when email completes we will want to process result here, not in the worker object
+			Do ioSmtpWorker.$setCallback($cinst,'$workerEmailCompleted') ## $completed is the default method name to callback on
+			If ioSmtpWorker.icErrors<>''
+				Breakpoint
+			End If
+			
+			# optional attributes
+			Calculate ioSmtpWorker.$timeout as 20
+			Calculate ioSmtpWorker.$callprogress as kFalse
+			Calculate ioSmtpWorker.$keepconnectionopen as kFalse
+			Calculate ioSmtpWorker.$requiresecureconnection as kFalse
+			Calculate ioSmtpWorker.$callmailshotprogress as kFalse
+			Calculate ioSmtpWorker.$protocollog as 9 ## see documentation method for explanation
+			Do ioSmtpWorker.$setMailshotProgressInst(#NULL)
+			
+			# prepare for lift off
+			Do ioSmtpWorker.$initialise() Returns lbOK
+			If ioSmtpWorker.icErrors<>''
+				Breakpoint
+			End If
+			If not(lbOK)
+				Breakpoint
+			End If
+			
+			# fire the worker off
+			Calculate lbRunOnCurrentThread as kFalse
+			If lbRunOnCurrentThread
+				Do ioSmtpWorker.$run() Returns lbOK
+			Else
+				Do ioSmtpWorker.$start() Returns lbOK
+			End If
+		End If
+	Else
+		Breakpoint
+	End If

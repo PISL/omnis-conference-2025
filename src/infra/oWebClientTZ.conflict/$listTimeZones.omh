@@ -1,0 +1,29 @@
+# https://timezonedb.com/references/list-time-zone
+
+# Parameter Description
+# key         REQUIRED          Your unique API key you get after register your account.
+# format      OPTIONAL          The response format from API. It can be either xml or json.
+#                               DEFAULT: xml
+
+# callback    OPTIONAL          Use for JavaScript JSON callback.
+# fields      OPTIONAL          Customize the field to display in response. Use commas ("," without spaces) to separate the field names.
+#                               FIELDS: countryCode, countryName, zoneName, gmtOffset, dst, timestamp
+#                               DEFAULT: countryCode, countryName, zoneName, gmtOffset, timestamp
+# country     OPTIONAL          A valid ISO 3166 country code. Only time zones of provided country will list out.
+# zone        OPTIONAL          The name of a time zone. Use asterisk (*) for wildcard search.
+
+Calculate lcURI as con(ccURLrecords,"/list-time-zone",ccURLkey,ccURLformat)
+
+# Calculate lcRecordIDs as OJSON.$listorrowtojson(plIDs,kUniTypeCharacter,lcError)
+Calculate icContent as con('')
+
+Do ioRest.$init(lcURI,kOW3httpMethodPost,ilHeaders,icContent) Returns lbStatus
+
+If ibRunAsynchronously
+	Do ioRest.$start()
+	Quit method kTrue
+Else
+	Do ioRest.$run() Returns lbStatus
+	Do method $returnAsyncTimezones Returns llResult
+	Quit method llResult
+End If

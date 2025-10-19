@@ -1,0 +1,153 @@
+Calculate irTotal as ''
+# Keep aggregations in a separate row ## to be displayed in Total section
+Do irTotal.$cols.$add('Nights',kInteger,k32bitint)
+Do irTotal.$cols.$add('Breakfasts',kInteger,k32bitint)
+Do irTotal.$cols.$add('Lunches',kInteger,k32bitint)
+Do irTotal.$cols.$add('Dinners',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms0',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM0',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF0',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms1',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM1',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF1',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms2',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM2',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF2',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms3',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM3',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF3',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms4',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM4',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF4',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms5',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM5',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF5',kInteger,k32bitint)
+Do irTotal.$cols.$add('Rooms6',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsM6',kInteger,k32bitint)
+Do irTotal.$cols.$add('RoomsF6',kInteger,k32bitint)
+
+# this report used to be based on PAX only
+# but it was too easy to lose awareness of a delegate that had not paid in full
+
+# So now the report is based on DG table with outer join to PAX
+If 1=0
+	Do $DefineList(ilData,'tPAX')
+	Do ilData.$fetchForConference(prConference.CF_SEQ," DG_STATUS <> 'CANCEL' ")
+Else
+	Do $DefineList(lrDelegate,'tDelegates')
+	Do lrDelegate.$reportPaxForConference(prConference.CF_SEQ," DG_STATUS <> 'CANCEL' ") Returns ilData
+End If
+
+Do ilData.$sort($ref.SortName,0,$ref.PX_SEQ,0)
+
+Do ilData.$cols.$add('RoomRequirement',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement0',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM0',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF0',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement1',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM1',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF1',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement2',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM2',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF2',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement3',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM3',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF3',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement4',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM4',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF4',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement5',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM5',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF5',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirement6',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementM6',kNumber,k1dp)
+Do ilData.$cols.$add('RoomRequirementF6',kNumber,k1dp)
+
+While $Loop(ilData)
+	# only apply room requirement figures to DELEGATE rows ## not SPOUSE, CHILD etc
+	If ilData.PX_ROLE='DELEGATE'|ilData.PX_ROLE='DG'
+		If ilData.DG_ROLE='SPEAKER'
+			Calculate ilData.RoomRequirement as 1
+		Else If ilData.DG_OCCUPANCY='H'
+			Calculate ilData.RoomRequirement as 0.5
+		Else If ilData.DG_OCCUPANCY='N'
+			Calculate ilData.RoomRequirement as 0
+		Else
+			Calculate ilData.RoomRequirement as 1
+		End If
+		
+		For lnColCount from 0 to 6 step 1
+			If ilData.DG_OCCUPANCY='H'
+				If ilData.PSN_SEX='F'
+					Calculate ilData.RoomRequirementF[lnColCount] as ilData.RoomRequirement*ilData.PX_[lnColCount]_NIGHT
+				Else
+					Calculate ilData.RoomRequirementM[lnColCount] as ilData.RoomRequirement*ilData.PX_[lnColCount]_NIGHT
+				End If
+			Else
+				Calculate ilData.RoomRequirement[lnColCount] as ilData.RoomRequirement*ilData.PX_[lnColCount]_NIGHT
+			End If
+		End For
+	End If
+End While
+
+# RSM 2023-02-21  reponding to Sentry warning
+# in case any column total returns null
+# Calculate irTotal.Nights as ilData.$cols.PX_0_NIGHT.$total()+ilData.$cols.PX_1_NIGHT.$total()+ilData.$cols.PX_2_NIGHT.$total()+ilData.$cols.PX_3_NIGHT.$total()+ilData.$cols.PX_4_NIGHT.$total()+ilData.$cols.PX_5_NIGHT.$total()+ilData.$cols.PX_6_NIGHT.$total()
+# Calculate irTotal.Breakfasts as ilData.$cols.PX_0_BFAST.$total()+ilData.$cols.PX_1_BFAST.$total()+ilData.$cols.PX_2_BFAST.$total()+ilData.$cols.PX_3_BFAST.$total()+ilData.$cols.PX_4_BFAST.$total()+ilData.$cols.PX_5_BFAST.$total()+ilData.$cols.PX_6_BFAST.$total()
+# Calculate irTotal.Lunches as ilData.$cols.PX_0_LUNCH.$total()+ilData.$cols.PX_1_LUNCH.$total()+ilData.$cols.PX_2_LUNCH.$total()+ilData.$cols.PX_3_LUNCH.$total()+ilData.$cols.PX_4_LUNCH.$total()+ilData.$cols.PX_5_LUNCH.$total()+ilData.$cols.PX_6_LUNCH.$total()
+# Calculate irTotal.Dinners as ilData.$cols.PX_0_DINNER.$total()+ilData.$cols.PX_1_DINNER.$total()+ilData.$cols.PX_2_DINNER.$total()+ilData.$cols.PX_3_DINNER.$total()+ilData.$cols.PX_4_DINNER.$total()+ilData.$cols.PX_5_DINNER.$total()+ilData.$cols.PX_6_DINNER.$total()
+
+Calculate lnTotal as 0
+Calculate lnWholeTotal as 0
+For lnColCount from 0 to 6 step 1
+	Calculate lnTotal as ilData.$cols.PX_[lnColCount]_NIGHT.$total()
+	If lnTotal>0
+		Calculate lnWholeTotal as lnWholeTotal+lnTotal
+	End If
+End For
+Calculate irTotal.Nights as lnWholeTotal
+
+Calculate lnTotal as 0
+Calculate lnWholeTotal as 0
+For lnColCount from 0 to 6 step 1
+	Calculate lnTotal as ilData.$cols.PX_[lnColCount]_BFAST.$total()
+	If lnTotal>0
+		Calculate lnWholeTotal as lnWholeTotal+lnTotal
+	End If
+End For
+Calculate irTotal.Breakfasts as lnWholeTotal
+
+Calculate lnTotal as 0
+Calculate lnWholeTotal as 0
+For lnColCount from 0 to 6 step 1
+	Calculate lnTotal as ilData.$cols.PX_[lnColCount]_LUNCH.$total()
+	If lnTotal>0
+		Calculate lnWholeTotal as lnWholeTotal+lnTotal
+	End If
+End For
+Calculate irTotal.Lunches as lnWholeTotal
+
+Calculate lnTotal as 0
+Calculate lnWholeTotal as 0
+For lnColCount from 0 to 6 step 1
+	Calculate lnTotal as ilData.$cols.PX_[lnColCount]_DINNER.$total()
+	If lnTotal>0
+		Calculate lnWholeTotal as lnWholeTotal+lnTotal
+	End If
+End For
+Calculate irTotal.Dinners as lnWholeTotal
+
+# shared rooms have to be rounded up to whole rooms
+For lnColCount from 0 to 6 step 1
+	Calculate lnTotalReal as ilData.$cols.RoomRequirementM[lnColCount].$total()
+	Calculate lnTotalInteger as lnTotalReal+0.499 ## round up if 0.5
+	Calculate irTotal.RoomsM[lnColCount] as lnTotalInteger
+	
+	Calculate lnTotalReal as ilData.$cols.RoomRequirementF[lnColCount].$total()
+	Calculate lnTotalInteger as lnTotalReal+0.499 ## round up if 0.5
+	Calculate irTotal.RoomsF[lnColCount] as lnTotalInteger
+	
+	Calculate lnTotalReal as ilData.$cols.RoomRequirement[lnColCount].$total()
+	Calculate lnTotalInteger as lnTotalReal+0.499 ## round up if 0.5
+	Calculate irTotal.Rooms[lnColCount] as lnTotalInteger
+End For

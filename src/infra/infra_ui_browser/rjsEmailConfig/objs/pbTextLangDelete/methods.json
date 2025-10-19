@@ -8,25 +8,11 @@
 		],
 		"lvardefs": [
 			{
-				"name": "lbOK",
-				"order": 1,
-				"type": "kBoolean",
-				"subtype": 0,
-				"sublen": 0
-			},
-			{
-				"name": "lc2",
-				"order": 6,
+				"name": "lcLangToTest",
+				"order": 2,
 				"type": "kCharacter",
 				"subtype": "kSimplechar",
-				"sublen": 255
-			},
-			{
-				"name": "lcFrom",
-				"order": 5,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 100000000
+				"sublen": 3
 			},
 			{
 				"name": "lcMessage",
@@ -43,10 +29,10 @@
 				"sublen": 255
 			},
 			{
-				"name": "lnCountChildren",
-				"order": 2,
+				"name": "lnLine",
+				"order": 1,
 				"type": "kInteger",
-				"subtype": "k32bitint",
+				"subtype": "kShortint",
 				"sublen": 0
 			}
 		]

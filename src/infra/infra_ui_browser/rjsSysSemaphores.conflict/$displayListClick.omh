@@ -1,0 +1,10 @@
+Calculate $cinst.icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+Calculate icDuration as ''
+
+If irCurrentRecord.SMH_CWHEN>dat('1 JAN 2010')
+	Calculate lnSeconds as ddiff(kSecond,irCurrentRecord.SMH_CWHEN,#D)
+	Do toStrings.$TimeLapse(kSecond,lnSeconds) Returns icDuration
+End If
+
+Do $cinst.$behaviour()

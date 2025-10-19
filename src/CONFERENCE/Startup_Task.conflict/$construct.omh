@@ -1,0 +1,85 @@
+# Created: GRS 28/2/2014
+# to standardise on library architecture
+
+Calculate tcCurrentLibrary as $clib().$name
+
+# before 'Do inherited' check that required libraries (stored in ccCommonLibs) are open
+Do method checkRequiredLibs (ccCommonLibs) Returns #F
+If flag false
+	Send to trace log (Always log) Missing library: [ccCommonLibs]
+	Send to trace log (Always log) * * * * *  The application WILL NOT RUN  * * * * *
+	Open trace log
+	Quit method
+End If
+
+# toValues is set to infa.oValues by default ## We need to override this to oValuesApp because we have app specific entries.
+Do $objects.$findname('oValuesApp') Returns liObjRef
+If liObjRef
+	Do $objects.oValuesApp.$new() Returns toValues ## subclassed from infra.oValues
+End If
+
+# now we can continue, tkSuper will get the table classes
+Do $ctask.tlTableClasses.$cols.$add('lib',kCharacter,kSimplechar,50)
+Do $ctask.tlTableClasses.$cols.$add('classes',kCharacter,kSimplechar)
+
+Do toConfig.$GetSysPrefs($clib().$name()) Returns ilSysPrefs
+If ilSysPrefs.$linecount=0
+	Do $libs.infra.$windows.wConfig.$openonce('*',kWindowCenter)
+	Quit method
+End If
+# End If
+
+Do inherited
+
+# connect to database
+Install menu infra.mPreConnectConfig/mPreConnectConfig
+If cmd()
+	Quit method
+End If
+
+Do $cinst.$Read_db_config() ## tlDatabases
+Calculate irConfigFile.UserName as 'conf_user'
+Calculate irConfigFile.password as 'Euromnis2025'
+
+Do method $cinst.$OpenSessionPool (tlDatabases.Name,tlDatabases.Host,irConfigFile.UserName,irConfigFile.password,tlDatabases.DAM,tlDatabases.poolSize) Returns lbConnected
+If not(lbConnected)
+	Send to trace log (Always log) Failed to establish session pool [tlDatabases.Name] at [tlDatabases.Host]
+End If
+
+# now we can initialise the TaskStats row
+Do $cinst.$initStatistics()
+
+# other resources
+# string tables should be opened here but currently done on remote task $construct
+Do $DefineList(lrSemaphores,'infra.tsysSemaphores')
+Do lrSemaphores.$delete_all()
+
+Do tConstants.$cols.$add('topBanner',kBinary) ## although not used in CONFERENCE, code in infra is expecting this column
+# Do tConstants.$cols.$add('topLeft',kBinary)
+# Do tConstants.$cols.$add('topRight',kBinary)
+
+# Do tConstants.$cols.$add('wsSessionID',kCharacter,kSimplechar,100) ## ;;# this is application specific
+
+If sys(2)=17
+	# do not start multiple threads
+Else
+	# If isclear(inMaxConnections)
+	# Calculate $root.$prefs.$serverstacks as 5
+	# Else
+	# Calculate $root.$prefs.$serverstacks as inMaxConnections
+	# End If
+	# Start server
+	# If flag true
+	# Send to trace log {Multiple threads started}
+	# Else
+	# Send to trace log {Failed to start multiple threads}
+	# End If
+End If
+
+Do $getFormColours() ## trFormColours
+
+# set current user to CONSOLE for inserts/updates done at the server
+Do $DefineList(trCurrUser,'infra.tuaUsers')
+Calculate trCurrUser.USR_NAME as 'CONSOLE'
+
+Remove menu mPreConnectConfig

@@ -16,6 +16,11 @@ On evClick
 		Do ilDisplayRecords.$search($ref.DG_PSN_REF=irTopic.PSN_SEQ,1,0,0,0)
 	End If
 	
+	If irTopic.TPC_SEQ
+		Do ilColoursBackground.$search($ref.RFO_CHAR=irTopic.TPC_BACKCOLOR,1,0,0,0)
+		Do ilColoursText.$search($ref.RFO_CHAR=irTopic.TPC_TEXTCOLOR,1,0,0,0)
+	End If
+	
 	Do $cinst.$behaviour()
 	
 On evExecuteContextMenu

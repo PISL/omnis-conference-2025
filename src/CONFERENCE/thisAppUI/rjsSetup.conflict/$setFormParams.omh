@@ -1,0 +1,9 @@
+# set the parameter for form rjsbcExtOrgs
+Do trParameters.$clear()
+Do trParameters.$cols.$findname('EOType') Returns lrefCol
+If lrefCol
+	# got it
+Else
+	Do trParameters.$cols.$add('EOType',kCharacter,kSimplechar,50)
+End If
+Calculate trParameters.EOType as pick(inCurrentTab-2,'CUSTOMER','SUPPLIER')

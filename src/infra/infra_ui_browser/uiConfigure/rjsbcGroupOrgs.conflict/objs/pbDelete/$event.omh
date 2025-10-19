@@ -1,0 +1,40 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate $cinst.$objs.pbSave.$errortext as ''
+	
+	If inCurrentTab=cnTabStructure
+		Do irCurrentStructure.$checkChildren() Returns lnCountChildren
+		If lnCountChildren=0
+			Do irCurrentStructure.$delete_pk() Returns lbOK
+			If not(lbOK)
+				Calculate icDisplayMessage as irCurrentStructure.irErrorSQL.NativeErrorText
+				Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+			Else
+				Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionDelete,irCurrentStructure.GS_SEQ)
+			End If
+		Else
+			Calculate icDisplayMessage as con('Node "',irCurrentStructure.GS_DESC_FULL,'" has dependants and cannot be deleted')
+			Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+		End If
+		
+	Else
+		Do irCurrentRecord.$checkChildren() Returns lnCountChildren
+		If lnCountChildren=0
+			Do irCurrentRecord.$delete_pk() Returns lbOK
+			If not(lbOK)
+				Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+				Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+			Else
+				Do ilDisplayRecords.$remove(ilDisplayRecords.$line)
+				Do irCurrentRecord.$clear()
+				Calculate ilDisplayRecords.$line as 0
+			End If
+		Else
+			Do irCurrentRecord.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+			Do toStrings.$StringTableEntry('ERR_NODEL_CHILDREN',icDisplayMessage,'record has associated child records, delete those first')
+			Calculate icDisplayMessage as con(icDisplayMessage,kCr,lcTablesWithChildren)
+			Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+		End If
+	End If
+	
+	Do $cinst.$behaviour()

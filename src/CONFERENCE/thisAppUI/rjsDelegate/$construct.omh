@@ -110,6 +110,38 @@ Do toValues.$initOrg('URL','TRAVELINFO') Returns irTravelInfoLink
 Do toValues.$initOrg('TP_MUSIC_PLAYER') Returns ilMusic
 
 Do toValues.$initOrg('DG_STATUS') Returns ilStatus
+Do toValues.$initOrg('EMAIL_CONFIGS') Returns ilEmailConfigs
+Do ilEmailConfigs.$cols.$add('callbackMethod',kCharacter,kSimplechar,100)
+While $Loop(ilEmailConfigs)
+	If ilEmailConfigs.RFO_VALUE='SEND_CONF'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessRegnConf'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_INVOICE'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessInv'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_TRAV_LINK'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessTravel'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_TOPICCHECK'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessTopicsCheck'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_SPKRINFO'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessSpeakerInfo'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_RCPTFULL'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessReceiptFull'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_RCPTPART'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessReceiptPart'
+		
+	Else If ilEmailConfigs.RFO_VALUE='SEND_CHASEPAY'
+		Calculate ilEmailConfigs.callbackMethod as '$emailSuccessChasePay'
+		
+	Else
+		Breakpoint
+	End If
+End While
+
 # Calculate ilStatus as ilSearch2
 Do ilStatus.$cols.$findname('RFO_DESC') Returns liColRef
 Calculate $cinst.$objs.PagedPane.$objs.DG_STATUS.$listcolumn as liColRef.$ident
@@ -144,9 +176,9 @@ Do method UserPermissions
 
 Calculate $cinst.$objs.pbDelCascade.$visible as irUserRights.canDeleteCascade
 
-Do toValues.$initInherited('EMAIL_INVOICE','MESSAGE') Returns irEmailInvoiceMessage
-Do toValues.$initInherited('EMAIL_CHASEPAY','MESSAGE') Returns irEmailChasePayment
-Do toValues.$initInherited('EMAIL_TRAVEL','MESSAGE') Returns irEmailTravelMessage
+# Do toValues.$initInherited('EMAIL_INVOICE','MESSAGE') Returns irEmailInvoiceMessage
+# Do toValues.$initInherited('EMAIL_CHASEPAY','MESSAGE') Returns irEmailChasePayment
+# Do toValues.$initInherited('EMAIL_TRAVEL','MESSAGE') Returns irEmailTravelMessage
 
 Do $DefineList(ilDelegateLog,'tDGstatusLog')
 

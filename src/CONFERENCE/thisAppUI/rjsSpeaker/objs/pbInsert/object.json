@@ -1,6 +1,6 @@
 {
 	"ident": 1041,
-	"order": 41,
+	"order": 29,
 	"objtype": "kComponent",
 	"componentlib": "jsButton",
 	"componentctrl": "Button Control",
@@ -58,7 +58,7 @@
 	"layout": {
 		"320": {
 			"left": 176,
-			"top": 760,
+			"top": 912,
 			"width": 24,
 			"height": 24,
 			"align": "kCenterJst",
@@ -69,7 +69,7 @@
 		},
 		"375": {
 			"left": 216,
-			"top": 760,
+			"top": 912,
 			"width": 24,
 			"height": 24,
 			"align": "kCenterJst",
@@ -80,7 +80,7 @@
 		},
 		"480": {
 			"left": 184,
-			"top": 744,
+			"top": 864,
 			"width": 24,
 			"height": 24,
 			"align": "kCenterJst",
@@ -91,7 +91,7 @@
 		},
 		"667": {
 			"left": 240,
-			"top": 744,
+			"top": 768,
 			"width": 30,
 			"height": 30,
 			"align": "kCenterJst",
@@ -102,7 +102,7 @@
 		},
 		"768": {
 			"left": 240,
-			"top": 744,
+			"top": 760,
 			"width": 30,
 			"height": 30,
 			"align": "kCenterJst",
@@ -112,8 +112,8 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 242,
-			"top": 617,
+			"left": 240,
+			"top": 656,
 			"width": 30,
 			"height": 30,
 			"align": "kCenterJst",

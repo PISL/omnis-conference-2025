@@ -1,0 +1,23 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	Calculate irAttendee as ilAttendees
+	Do irAttendee.$delete() Returns lbOK
+	If lbOK
+		Do ilAttendees.$remove(ilAttendees.$line)
+		Do irAttendee.$clear()
+		Calculate irAttendeeOrig as irAttendee
+		Calculate ibFeedbackModified as kFalse
+		
+		Calculate ilRatings.$line as 0
+		Calculate ibDelegateAlreadyAttending as kFalse
+		# refresh values
+		Calculate ilArrangements.countAll as ilArrangements.countAll-1 ## this is multi user should possibly refresh from db
+		Calculate ilArrangements.countThisUser as 0
+		Calculate ilArrangements.displayCount as con(ilArrangements.countAll,'/',ilArrangements.ARR_MAX_BOOKINGS)
+		Calculate ilArrangements.displayThisUser as ''
+	Else
+		Calculate icDisplayMessage as irAttendee.irErrorSQL.NativeErrorText
+	End If
+	
+	Do $cinst.$behaviour()

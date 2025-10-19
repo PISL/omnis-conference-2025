@@ -1,0 +1,346 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 82,
+	"superclass": "rjsBusinessSuper",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1061,
+	"lastgroupident": 2,
+	"cvardefs": [
+		{
+			"name": "cbinLogo",
+			"order": 1,
+			"type": "kBinary",
+			"subtype": 0,
+			"sublen": 100000000
+		},
+		{
+			"name": "clLabels",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ibExactDate",
+			"order": 20,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse",
+			"desc": "set to kTrue after parsing date finds no hyphen"
+		},
+		{
+			"name": "ibOpenInNewWindow",
+			"order": 30,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "$ctask.ibOpenInNewWindow",
+			"desc": "new form will open in a new browser tab/window"
+		},
+		{
+			"name": "icCurrentGroupOrg",
+			"order": 14,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 10
+		},
+		{
+			"name": "icDisplayMessage",
+			"order": 8,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 2000
+		},
+		{
+			"name": "icFormHeading",
+			"order": 1,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icFormIntro",
+			"order": 2,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icSearch",
+			"order": 15,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
+			"name": "icURLexit",
+			"order": 21,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'http://www.pis-apps.co.uk'"
+		},
+		{
+			"name": "icURLsupportTools",
+			"order": 28,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000,
+			"initval": "'http://www.adm-global.org/ProductSupportTools.html'"
+		},
+		{
+			"name": "icUserInput",
+			"order": 19,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icValidationText",
+			"order": 31,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100000000
+		},
+		{
+			"name": "idFrom",
+			"order": 18,
+			"type": "kDate",
+			"subtype": "kDate2000",
+			"sublen": 0
+		},
+		{
+			"name": "idTo",
+			"order": 17,
+			"type": "kDate",
+			"subtype": "kDate2000",
+			"sublen": 0
+		},
+		{
+			"name": "ilDisplayRecords",
+			"order": 7,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSearch1",
+			"order": 4,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSearch2",
+			"order": 5,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilSearch3",
+			"order": 6,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "inColourDisabled",
+			"order": 9,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inColourDropList",
+			"order": 22,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inColourEnterable",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inColourMandatory",
+			"order": 10,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inColourNavObjs",
+			"order": 23,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inColourUnique",
+			"order": 11,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inMaxReturnCount",
+			"order": 29,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "inMinSearchString",
+			"order": 16,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "0"
+		},
+		{
+			"name": "inSearchCount",
+			"order": 27,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0
+		},
+		{
+			"name": "ioFormatData",
+			"order": 32,
+			"type": "kObject",
+			"subtype": "oFormatData",
+			"sublen": 0
+		},
+		{
+			"name": "iorefSysPrefsHandler",
+			"order": 12,
+			"type": "kObjectref",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ipictBanner",
+			"order": 24,
+			"type": "kPicture",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ipictLogo",
+			"order": 13,
+			"type": "kPicture",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ipictTopLeft",
+			"order": 25,
+			"type": "kPicture",
+			"subtype": 0,
+			"sublen": 0
+		},
+		{
+			"name": "ipictTopRight",
+			"order": 26,
+			"type": "kPicture",
+			"subtype": 0,
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"alpha": 255,
+		"alwaysenabledobject": "",
+		"animatelayouttransitions": false,
+		"backalpha": 255,
+		"backcolor": "RGB(255,255,255)",
+		"backpattern": 0,
+		"cancelkeyobject": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2019-05-30 11:57:35",
+		"currentlayoutbreakpoint": 1280,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "",
+		"designguides": "",
+		"designshowmobiletitle": true,
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"events": "",
+		"external": true,
+		"forecolor": "RGB(255,255,255)",
+		"horzgrid": 8,
+		"horzscroll": false,
+		"inheritedorder": 1,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1280",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 11,
+		"menulineheight": 0,
+		"moddate": "2019-07-12 10:00:25",
+		"okkeyobject": "",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"startfield": 0,
+		"title": {
+			"type": 0,
+			"calc": "New remote form"
+		},
+		"top": 1,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2",
+		"vertgrid": 8,
+		"vertscroll": false
+	},
+	"layout": {
+		"width": 1312,
+		"height": 831,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1280": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

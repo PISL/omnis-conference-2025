@@ -1,0 +1,10 @@
+If pIdent=102
+	# logout by refreshing the browser window
+	JavaScript:location.reload(true);
+Else If pIdent=103
+	# exit
+	Do $cinst.$clientNoYesMsg('Are you sure you want to quit?','Confirm exit',"$quit","")
+Else If pIdent=104 ## dashboard
+	Calculate icSubFormClass as "rjsDashboardApp"
+	Calculate $cinst.$objs.SubForm.$classname as "rjsDashboardApp"
+End If

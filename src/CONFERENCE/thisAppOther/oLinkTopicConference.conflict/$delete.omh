@@ -1,0 +1,26 @@
+Breakpoint
+Quit method
+
+Do irLinkRecord.$clear()
+Do irLinkRecord.$assignrow(prLink)
+Do irLinkRecord.$delete_pk() Returns lbOK
+If lbOK
+	Do irLinkRecord.$clear()
+	Do prLink.$clear() ## return result to calling object
+Else
+	Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
+	Quit method kFalse
+End If
+
+Do irTopic.$clear()
+Do irTopic.$assignrow(prDelegate)
+Do irTopic.$delete_pk() Returns lbOK
+If lbOK
+	Do irTopic.$clear()
+	Do prDelegate.$clear() ## return result to calling object
+Else
+	Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+	Quit method kFalse
+End If
+
+Quit method kTrue

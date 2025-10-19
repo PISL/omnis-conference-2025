@@ -1,0 +1,78 @@
+Calculate lcURI as con(ccURLformat,'name')
+
+
+If pcSearchString<>''
+	Do lrRequest.$cols.$add('name',kCharacter,kSimplechar,255)
+	Do lrRequest.$cols.$add('orderBy',kCharacter,kSimplechar,255)
+	Do lrRequest.$cols.$add('orderDirection',kCharacter,kSimplechar,255)
+	Calculate lrRequest.name as pcSearchString
+	Calculate icContent as OJSON.$listorrowtojson(lrRequest,kUniTypeCharacter,lcError)
+	
+	Do ioRest.$init(lcURI,kOW3httpMethodPost,ilHeaders,icContent) Returns lbStatus
+	
+	Do ioRest.$run() Returns lbStatus ## no need to run asynchronously as this call will return a query ID
+	
+	Do $cinst.$returnAsyncResult(llData,icError) ## get the query ID tp pass to $getQueryStatus
+	
+	If len(icError)>0
+		# we have a problem
+		Quit method kFalse
+	End If
+	
+	# interatively check query status until "Completed"
+	# ## # this should probably be done asynchronously
+	Calculate lcQueryID as llData.1.queryid
+	
+	Calculate lcURI as con(ccURLformat,lcQueryID,'/status')
+	Calculate llData as #NULL
+	Calculate icContent as ""
+	Do ioRest.$init(lcURI,kOW3httpMethodGet,ilHeaders,icContent) Returns lbStatus
+	Do ioRest.$run() Returns lbStatus
+	Do $cinst.$returnAsyncResult(llData,icError)
+	While llData.1.status<>'Complete'
+		Do ioRest.$run() Returns lbStatus
+		Do $cinst.$returnAsyncResult(llData,icError)
+	End While
+	
+	# get the resulting record IDs
+	Calculate lcURI as con(ccURLformat,lcQueryID,'/results')
+	Calculate icContent as ""
+	Do ioRest.$init(lcURI,kOW3httpMethodGet,ilHeaders,icContent) Returns lbStatus
+	Do ioRest.$run() Returns lbStatus
+	Do $cinst.$returnAsyncResult(llData,icError)
+	
+	If len(icError)>0
+		# we have a problem
+		Quit method kFalse
+	End If
+	
+	If llData.1.results.$linecount
+		# ## # should we check llData.limitedToMaxAllowed for "true" which signals too broad a search term?
+		Calculate llData as llData.1.results
+		Do $cinst.$getRecordsBatch(llData)
+		
+	Else
+		Calculate icError as 'no records found'
+		Quit method kFalse
+	End If
+Else
+	Calculate icError as 'cannot execute search without a search string'
+	Quit method kFalse
+End If
+
+
+
+
+
+
+If llData.$linecount
+	Calculate llData.$line as 0
+	Calculate lcCSIDs as ''
+	While $Loop(llData)
+		Calculate lcCSIDs as con(lcCSIDs,'&CSIDs=',llData.value)
+	End While
+	
+	Do $cinst.$GetExtendedCompoundInfoArray(lcCSIDs) ## this will make the call asynchronously
+End If
+
+Quit method kTrue

@@ -2,6 +2,9 @@ Do $debugMessage(con($class().$name,' / ',$cmethod().$name,' - ',tlPermissions.$
 
 Calculate llPermissions as $ctask.tlPermissions
 Do llPermissions.$cols.FormPrefix.$removeduplicates(kTrue)
+
+Do tlAuthorisedForms.$add('FORM_DSH','Dashboard','rjsDashboardApp',0,10,1,lcGroupFrequent)
+
 Calculate llPermissions.$line as 0
 While $Loop(llPermissions)
 	Switch low(llPermissions.FormPrefix)

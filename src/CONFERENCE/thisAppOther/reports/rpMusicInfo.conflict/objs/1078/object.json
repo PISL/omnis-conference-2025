@@ -1,0 +1,29 @@
+{
+	"ident": 1078,
+	"order": 4,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "playing?",
+		"align": "kLeftJst",
+		"backcolor": "RGB(80,0,0)",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 6.612,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"rowid": "TP_MUSIC_PLAYER",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 2.047
+	}
+}

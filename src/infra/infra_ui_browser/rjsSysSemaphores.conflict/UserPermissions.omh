@@ -1,0 +1,8 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+# This privilege is actually used for access to this form.  Not for use within the form.
+Do llPrivsUsedInThisForm.$add('smh_select','canSelect')
+Do llPrivsUsedInThisForm.$add('smh_delete','canDelete')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

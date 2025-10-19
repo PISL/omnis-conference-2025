@@ -1,7 +1,9 @@
 On evClick
-	Calculate $cinst.$objs.pbTextLangDelete.$errortext as ''
+	Do $cinst.$clientcommand('clearerrors')
+	Do irLangText.$clear()
+	Calculate irLangTextOrig as irLangText
 	
-	# do not offer user anguage options that are already taken
+	# do not offer user language options that are already taken
 	Calculate ilSelectLangChoose as ilSelectLangMaster
 	Calculate llTemp as ilLanguages
 	Calculate llTemp.$line as 0
@@ -11,5 +13,5 @@ On evClick
 	Do ilSelectLangChoose.$remove(kListDeleteSelected)
 	
 	# now put the form in edit mode
-	Do $cinst.$editCR()
+	Do $cinst.$editCR(kTrue)
 	Do $cinst.$behaviour()

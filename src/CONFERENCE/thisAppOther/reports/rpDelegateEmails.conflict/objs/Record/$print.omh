@@ -1,0 +1,19 @@
+If ilData.TotalDue=ilData.TotalReceived
+	Calculate $cinst.$objs.1076.$backcolor as kWhite
+Else If ilData.TotalDue<(ilData.TotalReceived*0.98) ## tolerance for erroneous bank fees etc
+	Calculate $cinst.$objs.1076.$backcolor as kWhite
+Else
+	Calculate $cinst.$objs.1076.$backcolor as rgb(255,170,255)
+End If
+
+If ilData.RepeatInvoiceRef<>''
+	Calculate $cinst.$objs.RepeatInvoiceRef.$visible as kTrue
+	Calculate $cinst.$objs.TotalDue.$visible as kFalse
+	Calculate $cinst.$objs.TotalReceived.$visible as kFalse
+Else
+	Calculate $cinst.$objs.RepeatInvoiceRef.$visible as kFalse
+	Calculate $cinst.$objs.TotalDue.$visible as kTrue
+	Calculate $cinst.$objs.TotalReceived.$visible as kTrue
+End If
+
+Do default

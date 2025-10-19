@@ -1,0 +1,32 @@
+Do plData.$cols.$findname('warningsIssued') Returns liColRef
+
+# add line number of list to each message returned
+Calculate llTemp as plValidationMessages
+Calculate llTemp.$line as 0
+While $Loop(llTemp)
+	If plData.$type=kList
+		Calculate llTemp.default as con('line ',plData.$line,' (',plData.[plData.icPrefix]VALUE,') ',llTemp.default)
+	Else
+		# do not add line references to message
+	End If
+End While
+# gather the messages together
+If plMessages.$linecount=0
+	Calculate plMessages as llTemp
+Else
+	Do plMessages.$merge(llTemp)
+End If
+
+# determine for each row whether warnings apply
+Do llTemp.$search($ref.severity=0,1,0,0,0) Returns lbErrorsExist
+If not(lbErrorsExist)
+	Do llTemp.$search($ref.severity=1,1,0,0,0) Returns lbWarningsExist
+	If liColRef
+		If lbWarningsExist&plData.warningsIssued
+			Calculate plData.warningsIssued as kFalse ## warnings already issued so ignore this time around
+		Else
+			Calculate plData.warningsIssued as kTrue ## new warning
+			Calculate pbNewWarning as kTrue
+		End If
+	End If
+End If

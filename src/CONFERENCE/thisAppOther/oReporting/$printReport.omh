@@ -61,6 +61,25 @@ Switch plDisplayList.reportCode
 			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,DG_SEQ,PX_ROLE,PX_NAME,PX_0_NIGHT,PX_0_BFAST,PX_0_LUNCH,PX_0_DINNER,PX_1_NIGHT,PX_1_BFAST,PX_1_LUNCH,PX_1_DINNER,PX_2_NIGHT,PX_2_BFAST,PX_2_LUNCH,PX_2_DINNER,PX_3_NIGHT,PX_3_BFAST,PX_3_LUNCH,PX_3_DINNER,PX_4_NIGHT,PX_4_BFAST,PX_4_LUNCH,PX_4_DINNER,PX_5_NIGHT,PX_5_BFAST,PX_5_LUNCH,PX_5_DINNER,PX_6_NIGHT,PX_6_BFAST,PX_6_LUNCH,PX_6_DINNER') Returns iReportText
 		End If
 		
+	Case 'PAX2'
+		# in PAX2 the the accommodation column PX_0_NIGHT is for day before, not day after (original PAX repport)
+		
+		Do method dataPAX (plSearch1,ilData,irTotal)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpPAX2.$open('*',plSearch1,ilData,irTotal) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,DG_SEQ,PX_ROLE,PX_NAME,PX_0_NIGHT,PX_0_BFAST,PX_0_LUNCH,PX_0_DINNER,PX_1_NIGHT,PX_1_BFAST,PX_1_LUNCH,PX_1_DINNER,PX_2_NIGHT,PX_2_BFAST,PX_2_LUNCH,PX_2_DINNER,PX_3_NIGHT,PX_3_BFAST,PX_3_LUNCH,PX_3_DINNER,PX_4_NIGHT,PX_4_BFAST,PX_4_LUNCH,PX_4_DINNER,PX_5_NIGHT,PX_5_BFAST,PX_5_LUNCH,PX_5_DINNER,PX_6_NIGHT,PX_6_BFAST,PX_6_LUNCH,PX_6_DINNER') Returns iReportText
+		End If
+		
+	Case 'PAX_NIGHT_NAME'
+		Do method dataPaxPerNightNames (plSearch1)
+		
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpPAXperNight.$open('*',plSearch1,ilData,irTotal) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','date,DisplayName,DG_SEQ') Returns iReportText
+		End If
+		
 	Case 'DIETREQ'
 		Do method dataDietRequests (plSearch1)
 		If pnPrintDestination=0|pnPrintDestination=1
@@ -269,15 +288,24 @@ Switch plDisplayList.reportCode
 		Do $clib.$reports.r1.$open('*',,,'') Returns lReportInst
 		
 	Case 'TRAVEL_DEETS_IN'
-		Do method dataTravelInfoArrive (plSearch1)
+		Do method dataTravelInfoArrive (plSearch1,plDisplayList.reportCode)
 		If pnPrintDestination=0|pnPrintDestination=1
 			Do $clib.$reports.rpTravelInfo.$open('*',plSearch1,ilData,irOtherValues) Returns lReportInst
 		Else
 			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','TP_SHUTTLE,DG_GROUP,TP_LOCAL_ARR_TIME,TP_ARR_TIME,TP_ARR_POINT,SortName,TP_CARRIER,TP_FLIGHT_NO,TP_ARR_DATE,TP_CONNECT_HOW,TP_LOCAL_ARR_WHERE,TP_COMMENT') Returns iReportText
 		End If
 		
+	Case 'TRAVEL_DEETS_DG'
+		# same data, different presentation to TRAVEL_DEETS_IN
+		Do method dataTravelInfoArrive (plSearch1,plDisplayList.reportCode)
+		If pnPrintDestination=0|pnPrintDestination=1
+			Do $clib.$reports.rpTravelInfoToDG.$open('*',plSearch1,ilData,irOtherValues) Returns lReportInst
+		Else
+			Do $ctask.toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','TP_SHUTTLE,DG_GROUP,TP_LOCAL_ARR_TIME,TP_ARR_TIME,TP_ARR_POINT,SortName,TP_CARRIER,TP_FLIGHT_NO,TP_ARR_DATE,TP_CONNECT_HOW,TP_LOCAL_ARR_WHERE,TP_COMMENT') Returns iReportText
+		End If
+		
 	Case 'TRAVEL_DEETS_OT'
-		Do method dataTravelInfoDepart (plSearch1)
+		Do method dataTravelInfoDepart (plSearch1,plDisplayList.reportCode)
 		If pnPrintDestination=0|pnPrintDestination=1
 			Do $clib.$reports.rpTravelInfoDepart.$open('*',plSearch1,ilData,irOtherValues) Returns lReportInst
 		Else

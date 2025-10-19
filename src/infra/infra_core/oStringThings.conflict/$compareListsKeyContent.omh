@@ -1,0 +1,98 @@
+If pList1.$linecount=0&pList2.$linecount=0
+	# nothing to compare
+	Quit method
+End If
+If isclear(pcEvalUnique)
+	# no ability to distinguish
+	Quit method
+End If
+
+Do pList1.$search(0)
+Do pList2.$search(0)
+
+# initialise the result lists
+Do llSame.$cols.$add('key',kCharacter,kSimplechar,100)
+Do llDifferent.$cols.$add('key',kCharacter,kSimplechar,100)
+Do llDifferent.$cols.$add('differentColumns',kCharacter,kSimplechar,255)
+Calculate llDistinct1 as llSame
+Calculate llDistinct2 as llSame
+
+# build the calculation string to distinguish same entries
+Calculate lcTemp as pcEvalUnique
+While lcTemp<>''
+	Calculate lcToken as trim(strtok(nam(lcTemp),','))
+	If lcToken<>''
+		Calculate lcTestString1 as con(lcTestString1,pick(lcTestString1<>'','',",' > ',"),'pList1.',lcToken)
+		Calculate lcTestString2 as con(lcTestString2,pick(lcTestString2<>'','',",' > ',"),'pList2.',lcToken)
+	End If
+End While
+Calculate lcEval1 as con('con(',lcTestString1,')')
+Calculate lcEval2 as con('con(',lcTestString2,')')
+
+# This technique is very efficient for processing two loops.
+# The predicate is that both loops are sorted into the same order.
+
+# step through each row in list finding matching entries according to unique key
+
+Calculate pList1.$line as 1
+Calculate pList2.$line as 1
+
+Repeat
+	Calculate lcUnique1 as eval(lcEval1)
+	Calculate lcUnique2 as eval(lcEval2)
+	
+	If pList1.$line>=pList1.$linecount
+		Calculate lbOneListHasBeenFinished as kTrue
+	End If
+	If pList2.$line>=pList2.$linecount
+		Calculate lbOneListHasBeenFinished as kTrue
+	End If
+	
+	If lcUnique1=lcUnique2
+		# matching entries
+		Calculate pList1.[pList1.$line].$selected as kTrue
+		Calculate pList2.[pList2.$line].$selected as kTrue
+		
+		# these rows have same unique code, now see of they are different
+		Do method $HasRowBeenModified (pList1,pList2,kTrue,pcExcludeCols) Returns lcDifferentColumns
+		If lcDifferentColumns<>''
+			Do llDifferent.$add(lcUnique1,lcDifferentColumns)
+		Else
+			Do llSame.$add(lcUnique1)
+		End If
+		
+		Calculate pList1.$line as pList1.$line+1
+		Calculate pList2.$line as pList2.$line+1
+		
+	Else If lcUnique1<lcUnique2
+		# increment line in one list so comparison tries to stay in line sync with corresponding mate
+		Calculate pList1.$line as pList1.$line+1
+		
+	Else If lcUnique1>lcUnique2
+		# increment line in other list so comparison tries to stay in line with corresponding mate
+		Calculate pList2.$line as pList2.$line+1
+		
+	End If
+Until lbOneListHasBeenFinished
+
+For pList1.$line from 1 to pList1.$linecount step 1
+	If pList1.[pList1.$line].$selected
+		# already reported in either llSame or llDifferent
+	Else
+		Do llDistinct1.$add(eval(lcEval1))
+	End If
+End For
+
+For pList2.$line from 1 to pList2.$linecount step 1
+	If pList2.[pList2.$line].$selected
+		# already reported in either llSame or llDifferent
+	Else
+		Do llDistinct2.$add(eval(lcEval2))
+	End If
+End For
+
+# we are finished - return the result
+Calculate pretSame as llSame
+Calculate pretDifferent as llDifferent
+Calculate pretDistinct1 as llDistinct1
+Calculate pretDistinct2 as llDistinct2

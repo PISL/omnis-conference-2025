@@ -1,0 +1,33 @@
+{
+	"ident": 1034,
+	"order": 16389,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(kColorBackFill,255)",
+		"backpattern": 15,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "CtrlLabel",
+		"font": 2,
+		"fontsize": 0,
+		"fontstyle": "kPlain",
+		"forecolor": "RGBA(kColorForeFill,255)",
+		"height": 16,
+		"left": 240,
+		"linestyle": 1,
+		"objlink": 131074,
+		"text": "ISO 3",
+		"textcolor": "kColorWindowText",
+		"top": 0,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 40
+	}
+}

@@ -1,0 +1,21 @@
+Calculate lnChunkSize as 75-len(pcAttribute)
+Calculate lcDescription as pcContent
+
+# This description could easily be more than 75 characters.
+# this phenomenon was detected using the validator referenced below.
+# we need to fold the line by starting next line with a space
+Calculate lcChunk as mid(lcDescription,1,lnChunkSize)
+Calculate lcDescription as mid(lcDescription,lnChunkSize+1,99999)
+
+Text:[pcAttribute][lcChunk](Carriage return,Linefeed)
+
+# chunk size after attribute set is 75
+# make it 74 to consider the beginning space
+Calculate lnChunkSize as 74
+
+While lcDescription<>''
+	Calculate lcChunk as mid(lcDescription,1,lnChunkSize)
+	Calculate lcDescription as mid(lcDescription,lnChunkSize+1,99999)
+	# subsequent lines must start with a space
+	Text:[kSp][lcChunk](Carriage return,Linefeed)
+End While

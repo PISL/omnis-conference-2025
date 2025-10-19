@@ -1,0 +1,4 @@
+# 2025-05-20  RSM  added a facility to set excuse errors without a direct parameter call
+
+# This method can be used to set or clear the exceptions
+Calculate icDoNotReportTheseErrors as pcDoNotReportTheseErrors

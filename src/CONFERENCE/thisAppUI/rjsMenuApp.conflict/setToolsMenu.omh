@@ -1,0 +1,58 @@
+# The tools menu appears to the user as 4 separate menus.
+# The actions menu is the first and has to be modifiable from the container form below because it may have additional command options.
+If pcForm<>''
+	Do ilFormMenuOptions.$search($ref.formName=pcForm,1,0,0,0) Returns lbFound
+	If lbFound
+		# Do ilFormMenuOptions.$add(pcForm,plAddActions,plAddNotifications,plAddSearch,plAddHelp)
+		Calculate plAddActions as ilFormMenuOptions.action
+		Calculate plAddNotifications as ilFormMenuOptions.notification
+		Calculate plAddSearch as ilFormMenuOptions.search
+		Calculate plAddHelp as ilFormMenuOptions.help
+	End If
+End If
+
+Do ilToolsMenu.$copydefinition(ilNavMenu)
+Do llCascade.$copydefinition(ilNavMenu)
+# ACTIONS
+Do llCascade.$add(kNavMenuTypeEntry,'New record',con('Create a new record    Ctrl-Shift-',irKeyPress.insert),0,1001)
+Do llCascade.$add(kNavMenuTypeEntry,'Edit record',con('Modify the current record    Ctrl-Shift-',irKeyPress.edit),0,1002)
+Do llCascade.$add(kNavMenuTypeEntry,'Delete record',con('Permanently remove the current record    Ctrl-Shift-',irKeyPress.delete),0,1003)
+If plAddActions.$linecount>0
+	Do llCascade.$merge(plAddActions)
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,unichr('U+1F6E0'),'',1,1000,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+# NOTIFICATIONS
+Do llCascade.$clear()
+Do llCascade.$add(kNavMenuTypeEntry,'Notifications','Currently unavailable',0,2001)
+If plAddNotifications.$linecount>0
+	Do llCascade.$merge(plAddNotifications)
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,unichr('U+1F4E8'),'',1,2000,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+# SEARCH
+Do llCascade.$clear()
+Do llCascade.$add(kNavMenuTypeEntry,'Search','Currently unavailable',0,3001)
+If plAddSearch.$linecount>0
+	Do llCascade.$merge(plAddSearch)
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,unichr('U+1f50D'),'',1,3000,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+# HELP
+Do llCascade.$clear()
+Do llCascade.$add(kNavMenuTypeEntry,'Help','Currently unavailable',0,4001)
+Do toStrings.$StringTableEntry('FORM_USERINPUT',lcTranslation,'Send feedback')
+Do llCascade.$add(kNavMenuTypeEntry,lcTranslation,con('send comments or suggestions',kCr,' to the developers'),0,4002,'infra.rjsDevFeedback')
+If plAddHelp.$linecount>0
+	Do llCascade.$merge(plAddHelp)
+End If
+Do ilToolsMenu.$add(kNavMenuTypeCascade,'?','',1,4000,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,eval(inBackAlpha)))
+
+If pcForm<>''
+	Do ilFormMenuOptions.$search($ref.formName=pcForm,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Do ilFormMenuOptions.$add(pcForm,plAddActions,plAddNotifications,plAddSearch,plAddHelp)
+	End If
+End If
+
+Quit method kTrue

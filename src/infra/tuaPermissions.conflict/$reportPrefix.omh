@@ -1,0 +1,39 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcKey),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do llData.$cols.$add('PER_PREFIX',kCharacter,kSimplechar,10)
+Do llData.$cols.$add('count',kInteger,k32bitint)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select substring(PER_LABEL,1,3), count(*)
+Sta:from  [$cinst.$servertablenames]
+Sta:group by substring(PER_LABEL,1,3)
+End statement
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.PER_PREFIX,0)
+
+Quit method llData

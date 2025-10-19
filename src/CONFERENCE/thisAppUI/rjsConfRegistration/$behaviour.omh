@@ -24,6 +24,11 @@ Calculate $cinst.$objs.PagedPane.$objs.ilPersons.$visible as lbMultipleDelegates
 
 Calculate $cinst.$objs.PagedPane.$objs.label_PSN_SPOUSE_NAME.$visible as inExtras=ikExtraSpouse
 Calculate $cinst.$objs.PagedPane.$objs.PSN_SPOUSE_NAME.$visible as inExtras=ikExtraSpouse
+Calculate $cinst.$objs.PagedPane.$objs.PID_UNIT_PRICE_Extras.$visible as inExtras=ikExtraSpouse
+Calculate $cinst.$objs.PagedPane.$objs.PriceExtrasTax.$visible as inExtras=ikExtraSpouse
+Calculate $cinst.$objs.PagedPane.$objs.PriceExtrasTotal.$visible as inExtras=ikExtraSpouse
+Calculate $cinst.$objs.PagedPane.$objs.label_plus_Extras.$visible as inExtras=ikExtraSpouse
+Calculate $cinst.$objs.PagedPane.$objs.label_equals_Extras.$visible as inExtras=ikExtraSpouse
 
 Calculate $cinst.$objs.label_FullPrice.$visible as icPriceFull<>''
 # Calculate $cinst.$objs.icPriceParticipation.$visible as icPriceFull<>'' ## icPriceParticipation does not exist???
@@ -45,8 +50,6 @@ Calculate $cinst.$objs.PagedPane.$objs.label_FullTotal.$visible as irFullPrice.P
 Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_6.$visible as irFullPrice.PRD_SEQ>0
 
 # Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_7.$visible as irPriceExtras.PRD_SEQ>0
-Calculate $cinst.$objs.PagedPane.$objs.label_plus_Extras.$visible as irPriceExtras.PRD_SEQ>0
-Calculate $cinst.$objs.PagedPane.$objs.label_equals_Extras.$visible as irPriceExtras.PRD_SEQ>0
 
 # Calculate $cinst.$objs.PagedPane.$objs.CF_CURRENCY_8.$visible as irPriceMembership.PRD_SEQ>0
 Calculate $cinst.$objs.PagedPane.$objs.label_plus_Membership.$visible as irPriceMembership.PRD_SEQ>0

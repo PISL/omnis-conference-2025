@@ -7,7 +7,7 @@ If icMode<>''
 	Calculate lnUnique as eval(lrFieldAttributes.unique)
 End If
 
-If inCurrentTab=cnTabDelegate
+If inCurrentTab=cnTabDGPerson
 	# set attributes for Unique and Mandatory fields
 	
 	Calculate $cinst.$objs.DG_REG_DATE.$linestyle as lnlinestyle
@@ -20,6 +20,27 @@ If inCurrentTab=cnTabDelegate
 	
 	Calculate $cinst.$objs.DG_COMMENT.$backcolor as lnEnterable
 	
-Else If inCurrentTab=cnTabTopics
+Else If inCurrentTab=cnTabTopicsConf
 	# error lines removed
+	
+Else If inCurrentTab=cnTabTopicEditor
+	Calculate $cinst.$objs.TPC_TITLE.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.TPC_TITLE.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.TPC_TITLE.$effect as lneffect
+	Calculate $cinst.$objs.TPC_TITLE.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.TPC_ABSTRACT.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.TPC_ABSTRACT.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.TPC_ABSTRACT.$effect as lneffect
+	Calculate $cinst.$objs.TPC_ABSTRACT.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.TPC_DESC.$linestyle as lnlinestyle
+	# Calculate $cinst.$objs.TPC_DESC.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.TPC_DESC.$effect as lneffect
+	Calculate $cinst.$objs.TPC_DESC.$backcolor as lnEnterable
+	
+	Calculate $cinst.$objs.TPC_DURN_MINS.$backcolor as lnEnterable
+	Calculate $cinst.$objs.TPC_BACKCOLOR.$backcolor as lnEnterable ## droplist
+	Calculate $cinst.$objs.TPC_TEXTCOLOR.$backcolor as lnEnterable ## droplist
+	
 End If

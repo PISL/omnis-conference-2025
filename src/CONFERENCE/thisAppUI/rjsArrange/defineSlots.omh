@@ -2,7 +2,7 @@ Do $DefineList(ilDay1AM,'tArrangements')
 Do ilDay1AM.$AddLinkedCols("TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS",kTrue)
 Do ilDay1AM.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL",kTrue)
 Do ilDay1AM.$AddLinkedCols("FCY_NAME,FCY_LOCATION",kTrue)
-Do ilDay1AM.$addDisplayName("FCY_NAME,FCY_LOCATION",kTrue)
+Do ilDay1AM.$addDisplayName()
 
 Do ilDay1AM.$cols.$findname('DisplayName') Returns liColRef
 Calculate ilDay1PM as ilDay1AM

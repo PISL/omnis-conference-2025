@@ -1,0 +1,30 @@
+On evClick
+	#   irJobAttributes   irEmailConfig
+	Do irJobAttributes.$cols.$findname('instruction') Returns liColRef
+	If liColRef
+		Calculate lrTemp as irCurrentRecord
+		Do lrTemp.$clear()
+		Do lrTemp.$fetch_pk(irCurrentRecord.DG_SEQ)
+		If lrTemp.DG_SEQ>0
+			Calculate lrTemp.DG_EMAIL_TRAVEL_SENT as #D
+			
+			Do lrTemp.$update() Returns lbOK
+			If lbOK
+				# in case the current line on display does not match the record being updated because of asyncronous delay
+				If ilDisplayRecords.DG_SEQ=lrTemp.DG_SEQ
+					# list and row are in alignment
+					Do ilDisplayRecords.$assignrow(lrTemp,kTrue)
+				Else
+					Calculate lnCurrentLine as ilDisplayRecords.$line
+					Do ilDisplayRecords.$search($ref.DG_SEQ=lrTemp.DG_SEQ,1,0,0,0) Returns lbFound
+					If lbFound
+						Do ilDisplayRecords.$assignrow(lrTemp,kTrue)
+					End If
+					Calculate ilDisplayRecords.$line as lnCurrentLine
+				End If
+				
+			End If
+		End If
+	Else
+		Breakpoint Something needs looking into.
+	End If

@@ -1,0 +1,21 @@
+Do inherited
+
+If pcREF_CLASS='DG_OCCUPANCY' ## Conference
+	Do pList.$add(,pcREF_CLASS,'I','Single',1,2)
+	Do pList.$add(,pcREF_CLASS,'H','Shared',2,2)
+	Do pList.$add(,pcREF_CLASS,'P','Speaker',3,2)
+	Do pList.$add(,pcREF_CLASS,'F','Family',4,2)
+	Do pList.$add(,pcREF_CLASS,'U','Spouse',5,2)
+	Do pList.$add(,pcREF_CLASS,'N','No accommodation',6,2)
+	Do pList.$add(,pcREF_CLASS,'D','24hr rate',7,2)
+	Do pList.$add(,pcREF_CLASS,'W','Wait list',8,2) ## this is really a status but we offer Occupancy to people who register
+	
+Else If pcREF_CLASS='DG_STATUS' ## Conference
+	Do pList.$add(,pcREF_CLASS,'ENQUIRY','Enquiry',1,2)
+	Do pList.$add(,pcREF_CLASS,'REG_UNPAID','Registered, unpaid',2,2)
+	Do pList.$add(,pcREF_CLASS,'REG_PARTPAID','Registered, part paid',3,2)
+	Do pList.$add(,pcREF_CLASS,'PAID','Paid in full',4,2)
+	Do pList.$add(,pcREF_CLASS,'DISPUTE','Disputed',5,2)
+	Do pList.$add(,pcREF_CLASS,'SPEAKER','Speaker',6,2)
+	
+End If

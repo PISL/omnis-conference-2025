@@ -1,0 +1,13 @@
+If irUserRights.canInsert&icMode='' ## copied from $behaviour()
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'IV' ## insert venue
+	
+	Do irCurrentRecord.$clear()
+	Calculate ilTZregion.$line as 0
+	Calculate ilTZcity.$line as 0
+	Do method DisplayTimezone
+	
+	Calculate $cinst.$objs.TabControl_VEN.$currenttab as 1
+	
+	Do $cinst.$behaviour()
+End If

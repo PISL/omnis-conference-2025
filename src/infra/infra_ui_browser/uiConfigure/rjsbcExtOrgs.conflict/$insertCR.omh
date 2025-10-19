@@ -1,0 +1,12 @@
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_EO.$currenttab as inCurrentTab
+Do irOrgLink.$clear()
+
+Do inherited
+
+# extra default value
+Calculate irCurrentRecord.EO_CO_ISO3_REF as irDefaultCountry.RFO_CHAR
+Do ilCountries.$search($ref.CO_ISO3=irCurrentRecord.EO_CO_ISO3_REF,1,0,0,0)
+
+Calculate icField as 'EO_NAME'
+Do $cinst.$setcurfield(icField,kTrue)

@@ -1,0 +1,38 @@
+Calculate irConference as prConference
+Calculate irOtherValues as prOtherValues
+Do inherited
+
+Calculate icReportTitle as con('Travel info (brief) for delegates requiring shuttle to  ',irConference.CF_TITLE)
+Calculate icReportSubTitle as 'use this to become aware of delegates arriving at similar time'
+
+# 2025-09-25  RSM - request for easier to read report for delegate arrival times for shuttle pickup
+
+# This report is sorted by TP_LOCAL_ARR_TIME
+# but sometimes a delegate will leave this blank.  If this is the case then we want to sort by TP_ARR_TIME.
+
+Do plData.$cols.$add('sortTime',kDate,kTime)
+Calculate plData.$line as 0
+While $Loop(plData)
+	# report presents when prioritized by TP_LOCAL_ARR_TIME
+	# this DOES improve the sort presentation but it doesn't get it exactly right
+	If plData.TP_LOCAL_ARR_TIME>tim('00:00')
+		Calculate plData.sortTime as plData.TP_LOCAL_ARR_TIME
+	Else If plData.TP_ARR_TIME>tim('00:00')
+		Calculate plData.sortTime as plData.TP_ARR_TIME
+	Else
+		Calculate plData.sortTime as plData.TP_ARR_TIME
+	End If
+End While
+Do plData.$sort($ref.sortTime,0,$ref.DisplayName,0)
+
+
+Calculate ilData as plData
+
+# Do $cinst.$printsection(kSubtotalhead1)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While
+
+# Do $cinst.$printtotals()

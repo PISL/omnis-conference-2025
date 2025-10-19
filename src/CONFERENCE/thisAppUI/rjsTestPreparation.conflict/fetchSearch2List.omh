@@ -1,0 +1,27 @@
+# Do ilSearch2.$define(ilDisplayRecords.DisplayDate,ilDisplayRecords.ARR_DATE,ilDisplayRecords.ARR_DAYNO)
+# Do ilSearch2.$merge(ilDisplayRecords,kTrue)
+# Calculate ilSearch2.$line as 0
+#
+# Do ilSearch2.$cols.DisplayDate.$removeduplicates(kTrue)
+# Do ilSearch2.$addbefore(1,'All',#NULL,#NULL)
+# Calculate ilSearch2.$line as 1
+
+Do $DefineList(llArrangements,'tArrangements')
+Do llArrangements.$AddLinkedCols("TPC_TITLE,TPC_ABSTRACT,TPC_DURN_MINS",kTrue)
+Do llArrangements.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL",kTrue)
+Do llArrangements.$AddLinkedCols("FCY_NAME,FCY_LOCATION",kTrue)
+Do llArrangements.$cols.$add('DisplayDate',kCharacter,kSimplechar,100)
+Do llArrangements.$cols.$add('DisplayTime',kCharacter,kSimplechar,100)
+Do llArrangements.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+If ilSearch1.CF_SEQ>0
+	Do llArrangements.$fetch_fk(ilSearch1.CF_SEQ,'ARR_CF_REF')
+	Do llArrangements.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0,$ref.ARR_SLOT,0) ## most recent events at top of list
+End If
+Calculate llArrangements.$line as 0
+While $Loop(llArrangements)
+	Do llArrangements.$DisplayName()
+End While
+Do llArrangements.$addbefore(1)
+Calculate llArrangements.1.DisplayName as 'no arrangement'
+
+Calculate $cinst.ilSearch2 as llArrangements

@@ -1,6 +1,6 @@
 {
 	"ident": 1023,
-	"order": 24,
+	"order": 23,
 	"objtype": "kComponent",
 	"componentlib": "jsBack",
 	"componentctrl": "Background Control",
@@ -17,7 +17,7 @@
 		},
 		"contextmenu": "",
 		"cssclassname": "",
-		"desgroup": 0,
+		"desgroup": 11,
 		"designactive": true,
 		"deslock": false,
 		"disabledefaultcontextmenu": false,
@@ -40,58 +40,58 @@
 	},
 	"layout": {
 		"320": {
-			"left": 480,
-			"top": 344,
+			"left": 240,
+			"top": 64,
 			"width": 107,
 			"height": 112,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
-			"visible": false
+			"visible": true
 		},
 		"375": {
-			"left": 480,
-			"top": 344,
+			"left": 248,
+			"top": 80,
 			"width": 107,
 			"height": 112,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
-			"visible": false
+			"visible": true
 		},
 		"480": {
-			"left": 480,
-			"top": 260,
-			"width": 107,
-			"height": 112,
+			"left": 232,
+			"top": 64,
+			"width": 104,
+			"height": 120,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
-			"visible": false
+			"visible": true
 		},
 		"667": {
-			"left": 601,
-			"top": 260,
+			"left": 240,
+			"top": 72,
 			"width": 107,
-			"height": 112,
+			"height": 120,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
-			"visible": false
+			"visible": true
 		},
 		"768": {
 			"left": 24,
-			"top": 696,
+			"top": 584,
 			"width": 120,
 			"height": 112,
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
 		"1024": {
-			"left": 24,
-			"top": 344,
+			"left": 16,
+			"top": 360,
 			"width": 120,
 			"height": 112,
 			"dragborder": false,
@@ -100,8 +100,8 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 24,
-			"top": 344,
+			"left": 16,
+			"top": 368,
 			"width": 120,
 			"height": 112,
 			"dragborder": false,

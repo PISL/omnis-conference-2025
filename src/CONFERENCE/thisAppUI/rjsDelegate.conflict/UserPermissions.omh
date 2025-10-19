@@ -1,0 +1,16 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('dg_insert','canInsert')
+Do llPrivsUsedInThisForm.$add('dg_delete','canDelete')
+Do llPrivsUsedInThisForm.$add('dg_update','canEdit')
+Do llPrivsUsedInThisForm.$add('dg_del_cascade','canDeleteCascade')
+# Modifying a delegate means you can alter delegate children records. ## RSM 4 APR 19
+Do llPrivsUsedInThisForm.$add('dg_update_child','canInsertChild')
+Do llPrivsUsedInThisForm.$add('dg_update_child','canEditChild')
+Do llPrivsUsedInThisForm.$add('dg_update_child','canDeleteChild')
+# other admin functions
+Do llPrivsUsedInThisForm.$add('dg_email_inv','canEmailInvoice')
+Do llPrivsUsedInThisForm.$add('dg_email_trav','canEmailTravel')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

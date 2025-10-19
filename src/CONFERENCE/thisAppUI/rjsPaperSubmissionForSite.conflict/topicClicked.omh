@@ -1,0 +1,9 @@
+Calculate irTopic as ilTopics
+Calculate irTopicOrig as irTopic
+
+Do ilDurations.$search($ref.RFO_VALUE=irTopic.TPC_DURN_MINS,1,0,0,0) Returns lbFound
+
+Do ioTags.$getTagsRecord(irTopic) Returns ilTagsDisplay
+Calculate ilTagsOrig as ilTagsDisplay
+
+Do ioTags.$readSpecialTag(icConferenceTag) Returns ibConferenceTagSet

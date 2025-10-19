@@ -1,0 +1,58 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Prompt for input Search for: Returns lcSearch
+	If flag true
+		# 2024-07-05  RSM  USING FIND NOW FETCHES FRO ALL REFERENCE TABLES.
+		Do ilData.$clear()
+		Do method clearExtraSearch
+		
+		Calculate lcWhereClause as con("where ",icColPrefix,"CLASS ilike '%",lcSearch,"%' or ",icColPrefix,"DESC ilike '%",lcSearch,"%' or ",icColPrefix,"CHAR ilike '%",lcSearch,"%' ")
+		
+		Do ilData.$fetch_(lcWhereClause)
+		# If ilData.$linecount=0
+		If icColPrefix='RFG_'
+			Calculate lcWhereLocal as replaceall(lcWhereClause,icColPrefix,'RFL_')
+			Do ilSysLocal.$fetch_(lcWhereLocal)
+			Calculate lcWhereOrg as replaceall(lcWhereClause,icColPrefix,'RFO_')
+			Do ilSysOrg.$fetch_(lcWhereOrg)
+			Calculate lcWhereUser as replaceall(lcWhereClause,icColPrefix,'RFU_')
+			# Do ilSysUser.$fetch_(lcWhereUser)
+			
+		Else If icColPrefix='RFL_'
+			Calculate lcWhereGlobal as replaceall(lcWhereClause,icColPrefix,'RFG_')
+			Do ilSysGlobal.$fetch_(lcWhereGlobal)
+			Calculate lcWhereOrg as replaceall(lcWhereClause,icColPrefix,'RFO_')
+			Do ilSysOrg.$fetch_(lcWhereOrg)
+			Calculate lcWhereUser as replaceall(lcWhereClause,icColPrefix,'RFU_')
+			# Do ilSysUser.$fetch_(lcWhereUser)
+			
+		Else If icColPrefix='RFO_'
+			Calculate lcWhereGlobal as replaceall(lcWhereClause,icColPrefix,'RFG_')
+			Do ilSysGlobal.$fetch_(lcWhereGlobal)
+			Calculate lcWhereLocal as replaceall(lcWhereClause,icColPrefix,'RFL_')
+			Do ilSysLocal.$fetch_(lcWhereLocal)
+			Calculate lcWhereUser as replaceall(lcWhereClause,icColPrefix,'RFU_')
+			# Do ilSysUser.$fetch_(lcWhereClause)
+			
+		Else If icColPrefix='RFU_'
+			Calculate lcWhereGlobal as replaceall(lcWhereClause,icColPrefix,'RFG_')
+			Do ilSysGlobal.$fetch_(lcWhereGlobal)
+			Calculate lcWhereLocal as replaceall(lcWhereClause,icColPrefix,'RFL_')
+			Do ilSysLocal.$fetch_(lcWhereLocal)
+			Calculate lcWhereOrg as replaceall(lcWhereClause,icColPrefix,'RFO_')
+			Do ilSysOrg.$fetch_(lcWhereOrg)
+			
+		End If
+		
+		Do method summariseResult ## icSummaryGlobal icSummaryLocal icSummaryOrg icSummaryUser
+		
+		If icSummaryGlobal=''&icSummaryLocal=''&icSummaryOrg=''&icSummaryUser=''&ilData.$linecount=0
+			Sound bell
+		Else
+			
+		End If
+		# End If
+		Do ilData.$sort($ref.[icColPrefix]CLASS,0,$ref.[icColPrefix]ORDER,0,$ref.[icColPrefix]VALUE,0)
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

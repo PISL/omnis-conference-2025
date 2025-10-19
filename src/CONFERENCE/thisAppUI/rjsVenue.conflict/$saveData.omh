@@ -1,0 +1,68 @@
+If icMode='IV' ## insert venue
+	# Calculate irCurrentRecord.PER_LABEL as icNewUser
+	Do irCurrentRecord.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+	Else
+		Calculate irCurrentRecord.VEN_GO_REF as $ctask.trGroupOrg.GO_SEQ
+		Do irCurrentRecord.$insert() Returns lbOK
+		If lbOK
+			Do method FetchUsers
+			Do ilDisplayRecords.$search($ref.VEN_SEQ=irCurrentRecord.VEN_SEQ,1,0,0,0)
+			
+			Calculate icMode as ''
+		Else
+			# Calculate icMode as '' ## remain in insert mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='EV' ## edit venue
+	Do irCurrentRecord.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+	Else
+		Do irCurrentRecord.$update() Returns lbOK
+		If lbOK
+			Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+			Calculate icMode as ''
+		Else
+			# Calculate icMode as '' ## remain in edit mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='IF' ## insert Facility
+	Calculate irFacility.FCY_VEN_REF as irCurrentRecord.VEN_SEQ
+	Do irFacility.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irFacility.icValidationMessage
+	Else
+		Do irFacility.$insert() Returns lbOK
+		If lbOK
+			Do ilFacilities.$add()
+			Calculate ilFacilities.$line as ilFacilities.$linecount
+			Calculate ilFacilities.[ilFacilities.$line] as irFacility
+			Calculate icMode as ''
+		Else
+			Calculate icDisplayMessage as irFacility.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='EF' ## edit Facility
+	Do irFacility.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irFacility.icValidationMessage
+	Else
+		Do irFacility.$update() Returns lbOK
+		If lbOK
+			Calculate ilFacilities.[ilFacilities.$line] as irFacility
+			Calculate icMode as ''
+		Else
+			Calculate icDisplayMessage as irFacility.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+End If
+
+Do $cinst.$behaviour()

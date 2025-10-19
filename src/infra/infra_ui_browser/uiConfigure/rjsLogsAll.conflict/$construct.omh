@@ -1,0 +1,48 @@
+Calculate llAllowed as tlPermissions
+
+Do llAllowed.$search(low($ref.FormPrefix)='slv',1,0,0,0) Returns lbEventsTab
+Do llAllowed.$search(low($ref.FormPrefix)='sle',1,0,0,0) Returns lbErrorsTab
+Do llAllowed.$search(low($ref.FormPrefix)='ae',1,0,0,0) Returns lbAsyncEmailsTab
+Do llAllowed.$search(low($ref.FormPrefix)='smh',1,0,0,0) Returns lbRecordLocksTab
+
+
+Calculate $cinst.$objs.TabControl_Logs.$selectedtab as 1
+Calculate $cinst.$objs.TabControl_Logs.$tabvisible as lbEventsTab
+
+Calculate $cinst.$objs.TabControl_Logs.$selectedtab as 2
+Calculate $cinst.$objs.TabControl_Logs.$tabvisible as lbErrorsTab
+
+Calculate $cinst.$objs.TabControl_Logs.$selectedtab as 3
+Calculate $cinst.$objs.TabControl_Logs.$tabvisible as lbAsyncEmailsTab
+
+Calculate $cinst.$objs.TabControl_Logs.$selectedtab as 4
+Calculate $cinst.$objs.TabControl_Logs.$tabvisible as lbRecordLocksTab
+
+If lbEventsTab
+	Calculate inCurrentTab as 1
+	Do $ctask.$setCurrentForm('code','FORM_SLV')
+Else If lbErrorsTab
+	Calculate inCurrentTab as 2
+	Do $ctask.$setCurrentForm('code','FORM_SLE')
+Else If lbAsyncEmailsTab
+	Calculate inCurrentTab as 3
+	Do $ctask.$setCurrentForm('code','FORM_AE')
+Else If lbAsyncEmailsTab
+	Calculate inCurrentTab as 3
+	Do $ctask.$setCurrentForm('code','FORM_SEMAPH')
+End If
+Calculate $cinst.$objs.TabControl_Logs.$currenttab as inCurrentTab
+
+Set reference irefContainer to $cinst.$container
+
+Do method TranslateText
+Do method setTabColours
+
+# initialise the panes list to handle ToolsMenu switching
+Do ilBreadcrumbs.$cols.$add('pane',kInteger,kShortint)
+Do ilBreadcrumbs.$cols.$add('form',kCharacter,kSimplechar,50)
+Do ilPanes.$copydefinition(ilBreadcrumbs)
+Do ilPanes.$add(cnPageLogEvents,'rjslogEvents')
+Do ilPanes.$add(cnPageLogErrors,'rjslogErrors')
+Do ilPanes.$add(cnPageLogAsyncEmails,'rjslogAsyncEmails')
+Do ilPanes.$add(cnPageSysSemaphores,'rjsSysSemaphores')

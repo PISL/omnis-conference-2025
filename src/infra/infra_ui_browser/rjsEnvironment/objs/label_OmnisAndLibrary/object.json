@@ -48,7 +48,7 @@
 	"layout": {
 		"320": {
 			"left": 8,
-			"top": 88,
+			"top": 144,
 			"width": 175,
 			"height": 26,
 			"align": "kLeftJst",
@@ -59,7 +59,7 @@
 		},
 		"375": {
 			"left": 8,
-			"top": 88,
+			"top": 160,
 			"width": 175,
 			"height": 26,
 			"align": "kLeftJst",
@@ -70,7 +70,7 @@
 		},
 		"480": {
 			"left": 8,
-			"top": 88,
+			"top": 120,
 			"width": 175,
 			"height": 26,
 			"align": "kLeftJst",
@@ -81,7 +81,7 @@
 		},
 		"667": {
 			"left": 8,
-			"top": 88,
+			"top": 136,
 			"width": 175,
 			"height": 26,
 			"align": "kLeftJst",
@@ -92,7 +92,7 @@
 		},
 		"768": {
 			"left": 8,
-			"top": 64,
+			"top": 112,
 			"width": 175,
 			"height": 26,
 			"align": "kRightJst",
@@ -103,7 +103,7 @@
 		},
 		"1024": {
 			"left": 8,
-			"top": 64,
+			"top": 112,
 			"width": 175,
 			"height": 26,
 			"align": "kRightJst",
@@ -114,7 +114,7 @@
 		},
 		"1700": {
 			"left": 8,
-			"top": 64,
+			"top": 112,
 			"width": 175,
 			"height": 26,
 			"align": "kRightJst",

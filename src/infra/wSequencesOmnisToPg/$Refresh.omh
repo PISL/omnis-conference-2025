@@ -1,0 +1,14 @@
+Do ioDBA.$fetchMaxValue() Returns ilMaxValues
+Do ilMaxValues.$sort($ref.name,0)
+
+Do ioDBA.$fetchSequence() Returns ilSequences
+Do ilSequences.$sort($ref.name,0)
+
+Calculate ibListsAligned as kFalse
+
+If ioSession.$state=kSessionStateLoggedOn
+	# Do oDBA.$updateSequence()
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

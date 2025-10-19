@@ -1,0 +1,30 @@
+Calculate icValidationMessage as ''
+Do ilValidation.$clear()
+
+If $cinst.GRL_PREFIX<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'GRL_PREFIX missing')
+	Do ilValidation.$add('GRL_PREFIX_LBL','VAL_MISSING','GRL_PREFIX missing',0)
+End If
+
+If $cinst.GRL_PKEY>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'GRL_PKEY missing')
+	Do ilValidation.$add('GRL_PKEY_LBL','VAL_MISSING','GRL_PKEY missing',0)
+End If
+
+If $cinst.GRL_TYPE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'GRL_TYPE missing')
+	Do ilValidation.$add('GRL_TYPE_LBL','VAL_MISSING','GRL_TYPE missing',0)
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

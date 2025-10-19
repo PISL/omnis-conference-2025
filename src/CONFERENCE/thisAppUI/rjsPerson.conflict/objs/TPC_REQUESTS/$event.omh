@@ -1,0 +1,18 @@
+On evAfter
+	# continue
+	
+On evKeyPress
+	# systemkey=30=backspace
+	If pKeyList.1.systemKey=0 ## printabe character
+		# continue
+	Else
+		#  pKeyList.1.systemkey=30  =  backspace (to remove char)
+		If pKeyList.1.systemkey=27&pKeyList.1.modifiers=0 ## tab
+			# nothing to manipulate
+			
+		Else If pKeyList.1.systemkey=27&pKeyList.1.modifiers=1 ## shift tab
+			Calculate $cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$currenttab as 3
+			Do $cinst.$setcurfield($cinst.$objs.TabControl_PERSON.$objs.TabControl_TOPIC.$objs.TPC_DESC)
+			
+		End If
+	End If

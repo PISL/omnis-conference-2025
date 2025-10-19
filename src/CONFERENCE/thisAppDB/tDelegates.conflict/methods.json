@@ -1,0 +1,1218 @@
+[
+	{
+		"name": "$construct",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$validation",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessage",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			}
+		]
+	},
+	{
+		"name": "$Links",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llLinks",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrCustomer",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "infra.sentExtOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegateInvoiceLink",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "sDelegateInvoiceLinks",
+				"sublen": 0
+			},
+			{
+				"name": "lrGroupOrg",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "infra.sentGroupOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrInvoiceHeader",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "infra.sfinInvoiceOutH",
+				"sublen": 0
+			},
+			{
+				"name": "lrPaymentsIn",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "sPaymentsIn",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrRefOrg",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "infra.ssysReferenceOrg",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopic",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopicPersonLink",
+				"order": 8,
+				"type": "kRow",
+				"subtype": "sTopicPersonLink",
+				"sublen": 0
+			},
+			{
+				"name": "lrVenue",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "sVenue",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$ForeignKeys",
+		"order": 4,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llForeignKeyList",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrPaymentsIn",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "sPaymentsIn",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetchForConference",
+		"order": 5,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcSearchText",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 2
+			},
+			{
+				"name": "pcExtraCriteria",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCriteria",
+				"order": 8,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lcFromClause",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "liColRef",
+				"order": 10,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$reportPaxForConference",
+		"order": 6,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcExtraCriteria",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCriteria",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "liColRef",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 8,
+				"type": "kList",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrPax",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "sPAX",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetchForConfPayments",
+		"order": 7,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcSearchText",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 2
+			},
+			{
+				"name": "pcExtraCriteria",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 9,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCriteria",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "liColRef",
+				"order": 5,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 3,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$reportNotForConference",
+		"order": 8,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcExtraCriteria",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcCriteria",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "liColRef",
+				"order": 6,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 8,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrCompany",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "infra.sentExtOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrDgInvLink",
+				"order": 13,
+				"type": "kRow",
+				"subtype": "sDelegateInvoiceLinks",
+				"sublen": 0
+			},
+			{
+				"name": "lrFinvoice",
+				"order": 14,
+				"type": "kRow",
+				"subtype": "infra.sfinInvoiceOutH",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$displayName",
+		"order": 9,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$defaults",
+		"order": 10,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$fetchUnique",
+		"order": 11,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pnPSN_SEQ",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcFromClause",
+				"order": 5,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100000000
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$fetchUnInvoicedForConference",
+		"order": 12,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		],
+		"empty": true
+	},
+	{
+		"name": "$delegateCount",
+		"order": 13,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcInClauseStatus",
+				"order": 9,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 2
+			},
+			{
+				"name": "pcWhereClause",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 3,
+				"desc": "mutually exclusive with pcInClauseStatus"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCount",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$reportFeedback",
+		"order": 14,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 5,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrArrangements",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sArrangements",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrFeedback",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "sAttendeeFeedback",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopics",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$countTravelLinksSent",
+		"order": 15,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pcInClauseStatus",
+				"order": 7,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "ldDate",
+				"order": 8,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0,
+				"initval": "'1 JAN 2010'"
+			},
+			{
+				"name": "lnCount",
+				"order": 5,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$statsConference",
+		"order": 16,
+		"pvardefs": [
+			{
+				"name": "pnCF_SEQ",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 9,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCount",
+				"order": 5,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 15,
+				"type": "kRow",
+				"subtype": "sDelegates",
+				"sublen": 0
+			},
+			{
+				"name": "lrDgInvLink",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "sDelegateInvoiceLinks",
+				"sublen": 0
+			},
+			{
+				"name": "lrInvDetail",
+				"order": 14,
+				"type": "kRow",
+				"subtype": "infra.sfinInvoiceOutD",
+				"sublen": 0
+			},
+			{
+				"name": "lrInvHdr",
+				"order": 13,
+				"type": "kRow",
+				"subtype": "infra.sfinInvoiceOutH",
+				"sublen": 0
+			},
+			{
+				"name": "lrPax",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "sPAX",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 8,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			},
+			{
+				"name": "lrProduct",
+				"order": 11,
+				"type": "kRow",
+				"subtype": "sProducts",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$countSpecialEventsOnDate",
+		"order": 17,
+		"pvardefs": [
+			{
+				"name": "pFrom",
+				"order": 20,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0,
+				"param": 1,
+				"initval": "#D-7"
+			},
+			{
+				"name": "pTo",
+				"order": 21,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0,
+				"param": 2,
+				"initval": "#D"
+			},
+			{
+				"name": "pcExtraString",
+				"order": 22,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 3
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcForeign",
+				"order": 18,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 50
+			},
+			{
+				"name": "lcPrimary",
+				"order": 17,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 50
+			},
+			{
+				"name": "ldDate",
+				"order": 8,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0,
+				"initval": "'1 JAN 2010'"
+			},
+			{
+				"name": "ldEndOfDate",
+				"order": 15,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0
+			},
+			{
+				"name": "ldtStart",
+				"order": 10,
+				"type": "kDate",
+				"subtype": "kDatetime",
+				"sublen": 8
+			},
+			{
+				"name": "liColRefMwhen",
+				"order": 19,
+				"type": "kItemref",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCount",
+				"order": 5,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountCols",
+				"order": 13,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountDays",
+				"order": 14,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountInsert",
+				"order": 7,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnCountUpdate",
+				"order": 11,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrJoinTable",
+				"order": 16,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrResult",
+				"order": 12,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$InsertCols",
+		"order": 18,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$invoiceHasBeenEmailed",
+		"order": 19,
+		"pvardefs": [
+			{
+				"name": "pnDG_SEQ",
+				"order": 6,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "llData",
+				"order": 7,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCount",
+				"order": 5,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnDG_SEQ",
+				"order": 8,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "loSession",
+				"order": 1,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 2,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrDGinvoiceLinks",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "sDelegateInvoiceLinks",
+				"sublen": 0
+			},
+			{
+				"name": "lrFinInvoice",
+				"order": 10,
+				"type": "kRow",
+				"subtype": "infra.sfinInvoiceOutH",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 20,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	}
+]

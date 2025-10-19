@@ -1,0 +1,8 @@
+Do irSpecialTag.$clear()
+Do irSpecialTag.$fetch_fk(irParent.[irParent.icPrimaryKey],irParent.icPrefix,con(" TAG_VALUE = ",kSq,pcTag,kSq)) Returns lbOK
+
+If lbOK
+	Quit method pick(isclear(irSpecialTag.TAG_SEQ),1,0)
+Else
+	Quit method lbOK
+End If

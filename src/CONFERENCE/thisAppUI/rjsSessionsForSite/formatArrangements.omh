@@ -1,0 +1,364 @@
+Calculate lcTimeFormat as 'T:H:N' ## either T:H:N (0-24)  or  T:h:N (0-12 without AMPM)   or  T:h:N A (0-12 with AMPM)
+Calculate lcParaTagBegin as '<p>'
+
+# ********    prepare appropriate <tags>    *******
+
+If ibFormatBootstrap
+	Calculate lcRowStart as '<div class="row">'
+	# Calculate lcRowEnd as '</div> !! row' ## use this for debugging
+	Calculate lcRowEnd as '</div>'
+	
+	Calculate lcCellStart as '' ## requires a call to method bootstrapColSize
+	# Calculate lcCellEnd as '</div> !! cell' ## use this for debugging
+	Calculate lcCellEnd as '</div>'
+Else
+	Calculate lcRowStart as '<tr>'
+	Calculate lcRowEnd as '</tr>'
+	Calculate lcCellStart as '<td>'
+	Calculate lcCellEnd as '</td>'
+End If
+
+Calculate lcHyperLinkStart as '<a href="'
+Calculate lcHyperLinkTarget as '" target="_blank">'
+Calculate lcHyperLinkEnd as '</a>'
+
+Calculate icColourBlockTextAndBackStart1of3 as '<div style="background-color:'
+Calculate icColourBlockTextAndBackStart2of3 as '; color:'
+Calculate icColourBlockTextAndBackStart3of3 as ';">'
+
+Calculate icColourBlockBackStart1of2 as '<div style="background-color:'
+Calculate icColourBlockBackStart2of2 as ';">'
+
+Calculate icColourBlockTextStart1of2 as '<div style="color:'
+Calculate icColourBlockTextStart2of2 as ';">'
+
+Calculate icColourBlockEnd as '</div>'
+
+# There are two levels of breakpoint in the list:
+# first is change of date, the second is change of time (within the same date)
+
+# ********    process the list of arrangements    *******
+
+Begin text block
+If not(ibFormatBootstrap)
+	Line:<table>
+End If
+
+Calculate plArrangements.$line as 0
+While $Loop(plArrangements)
+	If not(ibFormatBootstrap)
+		# on new date this is changed so must be restored to original state
+		Calculate lcCellStart as '<td>'
+	End If
+	
+	# ********    breakpoints:   DATE  &  TIME    *******
+	
+	If plArrangements.$line=1
+		Calculate lnTableColNo as 1
+		Calculate lbNewDate as kTrue
+		Calculate lbNewTime as kTrue
+	Else
+		If plArrangements.ARR_DATE<>plArrangements.[plArrangements.$line-1].ARR_DATE
+			# breakpoint 1    new day of week
+			Calculate lbNewDate as kTrue
+			Calculate lbNewTime as kTrue
+		End If
+		If plArrangements.ARR_STARTTIME<>plArrangements.[plArrangements.$line-1].ARR_STARTTIME
+			# breakpoint 2    new time within the day
+			Calculate lbNewTime as kTrue
+		End If
+	End If
+	
+	If lbNewDate
+		If ibFormatBootstrap
+			Do method bootstrapColSize (lnColsFor1) Returns lcCellStart
+		Else
+			Calculate lcCellStart as '<td colspan="2">'
+		End If
+		Line:[lcRowStart]  <!-- row start -->  [lcCellStart]  <!-- column start -->
+		Line:<br>
+		Line:[lcH1begin] [jst(plArrangements.ARR_DATE,'D:w D m CY')] [lcH1end]
+		Line:[lcCellEnd] <!-- column end --> [lcRowEnd]  <!-- row end -->[kCr]
+		
+		# close off last table,  line with full date
+		# create new table
+		Calculate lnTableColNo as 2
+		If not(ibFormatBootstrap)
+			# restore non date width
+			Calculate lcCellStart as '<td>'
+		End If
+	End If
+	If lbNewTime
+		Calculate lnTableColNo as 1
+	End If
+	
+	If lnTableColNo=1
+		# new table for arrangements for this day
+		# firstly determine which rooms are being used
+		If lbNewDate
+			Calculate lnMaxSessionsAtTimeInDay as 0
+			# check for nuber of eventa starting on this DATE but not time.
+			# If there is a time slot with more than one event then we will display the rooms as a heading.
+			
+			# ********    How many arrangements are being displayed in this date block of rows?    *******
+			
+			Calculate llTemp as plArrangements
+			# Do llTemp.$search($ref.ARR_DATE=llArrangements.ARR_DATE&$ref.ARR_STARTTIME=llArrangements.ARR_STARTTIME,1,0,1,0)
+			Do llTemp.$search($ref.ARR_DATE=plArrangements.ARR_DATE,1,0,1,0)
+			Do llTemp.$remove(kListKeepSelected)
+			Calculate llTempSaveDay as llTemp
+			
+			# ********    How many start times are being displayed in this group of rows?    *******
+			
+			Calculate llTempStartTimes as llTempSaveDay
+			Do llTempStartTimes.$cols.ARR_STARTTIME.$removeduplicates(kTrue)
+			Calculate llTempStartTimes.$line as 0
+			While $Loop(llTempStartTimes)
+				Calculate llTemp as llTempSaveDay
+				Do llTemp.$search($ref.ARR_STARTTIME=llTempStartTimes.ARR_STARTTIME,1,0,1,1)
+				Do llTemp.$remove(kListKeepSelected)
+				If llTemp.$linecount>lnMaxSessionsAtTimeInDay
+					Calculate lnMaxSessionsAtTimeInDay as llTemp.$linecount
+					Calculate llNoOfSessionsMaxTimeSlot as llTemp
+				End If
+			End While
+			
+			# There should be 1 to 5 lines left in the list - one for each room being used
+			
+			# present the start of the row
+			
+			# heading row
+			Line:[lcRowStart]  <!-- row start -->
+			
+			If ibFormatBootstrap
+				Do method bootstrapColSize (lnColsForTime) Returns lcCellStart
+			End If
+			Line:    [lcCellStart][lcH2begin]Time[lcH2end][lcCellEnd]
+			
+			# ********    Heading row is made of Room names    *******
+			
+			# now provide arrangement details
+			If lnMaxSessionsAtTimeInDay=5
+				If ibFormatBootstrap
+					Do method bootstrapColSize (lnColsFor5) Returns lcCellStart
+				End If
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.1.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.2.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.3.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.4.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.5.FCY_NAME] [lcH2end] [lcCellEnd]
+				# Get text block #S1
+				
+			Else If lnMaxSessionsAtTimeInDay=4
+				If ibFormatBootstrap
+					Do method bootstrapColSize (lnColsFor4) Returns lcCellStart
+				End If
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.1.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.2.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.3.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.4.FCY_NAME] [lcH2end] [lcCellEnd]
+				
+			Else If lnMaxSessionsAtTimeInDay=3
+				If ibFormatBootstrap
+					Do method bootstrapColSize (lnColsFor3) Returns lcCellStart
+				End If
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.1.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.2.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin] [llNoOfSessionsMaxTimeSlot.3.FCY_NAME] [lcH2end] [lcCellEnd]
+				
+			Else If lnMaxSessionsAtTimeInDay=2
+				If ibFormatBootstrap
+					Do method bootstrapColSize (lnColsFor2) Returns lcCellStart
+				End If
+				Line:    [lcCellStart] [lcH2begin][llNoOfSessionsMaxTimeSlot.1.FCY_NAME] [lcH2end] [lcCellEnd]
+				Line:    [lcCellStart] [lcH2begin][llNoOfSessionsMaxTimeSlot.2.FCY_NAME] [lcH2end] [lcCellEnd]
+				
+			Else If lnMaxSessionsAtTimeInDay=1
+				If ibFormatBootstrap
+					Do method bootstrapColSize (lnColsFor1) Returns lcCellStart
+				End If
+				Line:    [lcCellStart][lcH2begin][llNoOfSessionsMaxTimeSlot.1.FCY_NAME][lcH2end][lcCellEnd]
+				
+			Else
+				Breakpoint
+			End If
+			
+			# ********    End of heading (room names) row    *******
+			
+			# Line: [lcCellEnd]
+			Line:[lcRowEnd]   <!-- row end -->[kCr]
+			# Get text block #S1
+			
+			Calculate lbNewDate as kFalse
+		End If
+		
+		If lbNewTime
+			# check for number of events starting at this time
+			Calculate llSessionsThisTimeSlot as llTempSaveDay
+			Do llSessionsThisTimeSlot.$search($ref.ARR_DATE=plArrangements.ARR_DATE&$ref.ARR_STARTTIME=plArrangements.ARR_STARTTIME,1,0,1,1)
+			Do llSessionsThisTimeSlot.$remove(kListKeepSelected)
+			# There should be 1 to 5 lines left in the list - one for each room being used
+			
+			# See how many arrangements are on at each time slot.
+			Calculate llTempStartTimes as llTempSaveDay
+			Do llTempStartTimes.$cols.ARR_STARTTIME.$removeduplicates(kTrue)
+			
+			# ********    Usually 09:00   <lunch>   14:00   <dinner>   20:00    *******
+			# ********    But could be an extra one    *******
+			
+			Calculate llTempStartTimes.$line as 0
+			While $Loop(llTempStartTimes)
+				Calculate llTemp as llTempSaveDay
+				Do llTemp.$search($ref.ARR_STARTTIME=llTempStartTimes.ARR_STARTTIME,1,0,1,1)
+				Do llTemp.$remove(kListKeepSelected)
+				If llTemp.$linecount>lnMaxSessionsAtTimeInDay
+					Calculate lnMaxSessionsAtTimeInDay as llTemp.$linecount
+					Calculate llNoOfSessionsMaxTimeSlot as llTemp
+				End If
+			End While
+			
+			# first column of row is Time, leaving 11 other bootstrap columns
+			If ibFormatBootstrap
+				Do method bootstrapColSize (lnColsForTime) Returns lcCellStart
+			End If
+			Line:[lcRowStart]  <!-- row start -->
+			Line:[lcCellStart][lcParaTagBegin][jst(plArrangements.ARR_STARTTIME,lcTimeFormat)][lcParaTagEnd][lcCellEnd]
+			# The time is in column 1: the session info to follow
+			
+			Calculate lbNewTime as kFalse
+		End If ## lbNewTime
+	End If ## lnTableColNo=1
+	# Get text block #S1
+	
+	# ********    Prepare for row of sessions for this particuar time slot    *******
+	
+	If ibFormatBootstrap
+		If llSessionsThisTimeSlot.$linecount=5
+			Do method bootstrapColSize (lnColsFor5) Returns lcCellStart
+			
+		Else If llSessionsThisTimeSlot.$linecount=4
+			Do method bootstrapColSize (lnColsFor4) Returns lcCellStart
+			
+		Else If llSessionsThisTimeSlot.$linecount=3
+			Do method bootstrapColSize (lnColsFor3) Returns lcCellStart
+			
+		Else If llSessionsThisTimeSlot.$linecount=2
+			Do method bootstrapColSize (lnColsFor2) Returns lcCellStart
+			
+		Else If llSessionsThisTimeSlot.$linecount=1
+			Do method bootstrapColSize (lnColsFor1) Returns lcCellStart
+		Else
+			Breakpoint
+			
+			# ********    The number of sessions for this time slot exceeds our visual maximum.    *******
+			# ********    How do we deal with this?    *******
+			# ********    Create another row in the display, place a blank for the time and display arrangements details.    *******
+			# ********    But we need t include the room name in the cell of info as it will inconsistent with the heading of room names.
+			
+		End If
+	End If
+	
+	If llSessionsThisTimeSlot.$linecount=1
+		If ibFormatBootstrap
+			# include exceptional centre alignment       lcJustifyCentre
+			Calculate lcCellStart as replace(lcCellStart,'>',con(lcAlignCentre,'>'))
+		Else
+			Calculate lcCellStart as '<td colspan="10" align="center" valign="top">'
+			# this will be reverted at end of loop
+		End If
+	End If
+	Line:[lcCellStart]  <!-- start column -->
+	# Get text block #S1
+	
+	# There are two different formats for presenting events.
+	# 1. There are more than one event at the same time in which case the event will show under the name of the room.
+	# 2. There is a time of day when only one event is on, in which case the room name must be included in the description.
+	If llSessionsThisTimeSlot.$linecount>=2&llSessionsThisTimeSlot.$linecount<=5
+		
+		# 2025-07-30  RSM working on Doug E;s request to have back and text colours for topics.
+		# He wants this for grouping topic themes.
+		
+		# The colour must be a hex colour.  The user may or may not have set the configuration correctly.
+		# Providing 2E33A5 instead of #2E33A5
+		
+		# ********    Each column may or may not have colouring applied    *******
+		
+		# Line:    <!-- colouring starts here -->
+		Do method colourBlockStart (plArrangements)
+		# Line:    <!-- Colouring ends here -->
+		
+		# ********    Speaker's name    *******
+		# ********    There *should* be a hyperlink for each speaker but f there isn't we still display Speaker name    *******
+		
+		# If the speaker has a weblink to the website, make it a hyperlink.
+		If plArrangements.PSN_WEBSITE_LINK<>''
+			Line:     [lcParaTagBegin][lcHyperLinkStart][plArrangements.PSN_WEBSITE_LINK][lcHyperLinkTarget][plArrangements.PSN_FIRST_NAME] [plArrangements.PSN_SURNAME][lcHyperLinkEnd][lcParaTagEnd]
+		Else
+			Line:     [lcParaTagBegin][plArrangements.PSN_FIRST_NAME] [plArrangements.PSN_SURNAME][lcParaTagEnd]
+		End If
+		
+		Line:     <h3>[plArrangements.TPC_TITLE] </h3>
+		Line:     [lcParaTagBegin][plArrangements.TPC_ABSTRACT][lcParaTagEnd]
+		
+		# Close off the colouring if it has been applied.
+		Do method colourBlockEnd (plArrangements)
+		
+		# Get text block #S1
+		
+	Else ## llSessionsThisTimeSlot.$linecount>=2&llSessionsThisTimeSlot.$linecount<=5
+		# only one arrangement at this time of day
+		# We don't expect this to be an individual speakers slot so hyperlinks and colour blocks not used.
+		
+		# ********    If there is only one event for the timeslot, a speaker doesn't apply but we label it Conference Committee    *******
+		Do method colourBlockStart (plArrangements)
+		
+		If plArrangements.PSN_WEBSITE_LINK<>''
+			Line:     [lcParaTagCentreBegin][lcHyperLinkStart][plArrangements.PSN_WEBSITE_LINK][lcHyperLinkTarget][plArrangements.PSN_FIRST_NAME] [plArrangements.PSN_SURNAME][lcHyperLinkEnd][lcParaTagEnd]
+		Else
+			Line:     [lcParaTagCentreBegin][plArrangements.PSN_FIRST_NAME] [plArrangements.PSN_SURNAME][lcParaTagEnd]
+		End If
+		
+		If plArrangements.FCY_NAME<>''
+			Line:     [lcParaTagCentreBegin][plArrangements.FCY_NAME][lcParaTagEnd]
+		End If
+		# Line:     [lcParaTagTitleBegin][plArrangements.TPC_TITLE][lcParaTagEnd]
+		Line:     <h3 class="text-center"> [plArrangements.TPC_TITLE] </h3>
+		Line:     [lcParaTagCentreBegin][plArrangements.TPC_ABSTRACT][lcParaTagEnd]
+		
+		Do method colourBlockend (plArrangements)
+		
+	End If
+	
+	Line:[lcCellEnd]
+	Get text block #S1
+	
+	Calculate lnTableColNo as lnTableColNo+1
+	
+	If lnTableColNo>llSessionsThisTimeSlot.$linecount
+		# end of row detected
+		Line:[lcRowEnd] <!-- end div class=row -->[kCr]
+		
+		If ibFormatBootstrap
+			# adding horizontal line in bootstrap works, but not when using <table>
+			Line:<hr>
+		Else
+			Line:[lcRowStart] <td colspan="4"> <hr> [lcCellEnd] [lcRowEnd]
+		End If
+	End If
+	
+	If llSessionsThisTimeSlot.$linecount=1&not(ibFormatBootstrap)
+		Calculate lcCellStart as '<td>'
+	End If
+	Get text block #S1
+	
+End While
+
+If not(ibFormatBootstrap)
+	#   close the HTML <table>
+	Line:</table>
+End If
+
+End text block
+Get text block #S1
+
+Quit method #S1

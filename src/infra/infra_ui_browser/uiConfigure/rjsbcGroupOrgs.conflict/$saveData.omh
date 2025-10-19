@@ -1,0 +1,122 @@
+# we need to do three inserts so start a transaction
+If inCurrentTab=cnTabStructure
+	# Altering the entOrgStructure record.
+	Do irCurrentStructure.$validation() Returns lbOK
+	If lbOK
+		# Calculate lbOK as kTrue
+		If icMode='I'
+			Do irCurrentStructure.$insert() Returns lbOK
+		Else If icMode='E'
+			Do toStrings.$HasRowBeenModified(irOrigStructure,irCurrentStructure) Returns lbModified
+			If lbModified
+				Do irCurrentStructure.$update() Returns lbOK
+			End If
+		End If
+		If lbOK
+			Calculate icMode as ''
+			# If irParentNode.$line
+			# Calculate irParentNode.ChildNodeCount as irParentNode.ChildNodeCount+1
+			# End If
+		Else
+			Calculate icDisplayMessage as irCurrentStructure.irErrorSQL.NativeErrorText
+			Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+		End If
+	Else
+		Calculate icDisplayMessage as irCurrentStructure.icValidationMessage
+		Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+	End If
+Else
+	# Editing the entGroupOrganisation record.
+	Do irCurrentRecord.$beginTransaction(#NULL,loSession,loStatement) Returns lbRunningAsTransaction
+	If lbRunningAsTransaction
+		Do irCurrentOrgName.$setSession(loSession,loStatement)
+		Do irUserOrgLink.$setSession(loSession,loStatement)
+	Else
+		Breakpoint
+		Quit method kFalse
+	End If
+	
+	Calculate lcMode as icMode ## Do inherited clears icMode
+	Calculate irCurrentOrgName.GON_NAME_FULL as irCurrentRecord.GO_NAME_FULL
+	Calculate irCurrentRecord.GO_NAME_FULL as #NULL
+	
+	Do inherited Returns lbOK
+	Calculate icMode as lcMode ## reset the instance variable
+	
+	If lbOK
+		If icMode='I' ## insert
+			Calculate irCurrentOrgName.GON_GO_REF as irCurrentRecord.GO_SEQ
+		End If
+		Do irCurrentOrgName.$validation() Returns lbOK
+		If not(lbOK)
+			Calculate icDisplayMessage as irCurrentOrgName.icValidationMessage
+			Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+		Else
+			If icMode='I' ## insert
+				Calculate irCurrentOrgName.GON_GO_REF as irCurrentRecord.GO_SEQ
+				Calculate irCurrentOrgName.GON_TYPE as 'I' ## internal name
+				Do irCurrentOrgName.$insert() Returns lbOK
+				If lbOK
+					Calculate irUserOrgLink.UGO_GO_REF as irCurrentRecord.GO_SEQ
+					Calculate irUserOrgLink.UGO_USR_REF as trCurrUser.USR_SEQ
+					Do irUserOrgLink.$insert() Returns lbOK
+					If not(lbOK)
+						Calculate icDisplayMessage as irUserOrgLink.irErrorSQL.NativeErrorText
+						Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+					End If
+				Else
+					Calculate icDisplayMessage as irCurrentOrgName.irErrorSQL.NativeErrorText
+					Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+				End If
+				
+			Else ## 'E'
+				Do $ctask.toStrings.$HasRowBeenModified(irOriginalName,irCurrentOrgName) Returns lbModified
+				If lbModified
+					Do irCurrentOrgName.$update() Returns lbOK
+				End If
+			End If
+		End If
+	Else
+		Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+	End If
+	
+	If lbOK
+		Calculate icMode as ''
+		Do irCurrentRecord.$commitTransaction(#NULL,loSession,loStatement)
+		
+		# Considered automatically assigning overhead accounts links.
+		# This has the benefit it eliminates a mandatory manual step which can be easily overlooked.
+		# See rjsohDefine
+		
+		If irAutoAddOverheads.RFO_ACTIVE
+			# Breakpoint This code has not been tested
+			# now connect new company record to all overhead accounts as a default.
+			# This is placed outside the transaction because it can be addressed elsewhere.
+			Do $DefineList(lrOhLink,'MEC.tohOrgLinks')
+			
+			Do $DefineList(llOverheadAccounts,'MEC.tohAccountH')
+			Do llOverheadAccounts.$fetch_all()
+			While $loop(llOverheadAccounts)
+				Do lrOhLink.$clear()
+				Calculate lrOhLink.OOL_GO_REF as irCurrentRecord.GO_SEQ
+				Calculate lrOhLink.OOL_OHH_REF as llOverheadAccounts.OHH_SEQ
+				Calculate lrOhLink.OOL_GS_REF as #NULL
+				Do lrOhLink.$insert() Returns lbOK
+			End While
+		End If
+		
+	Else
+		Calculate irCurrentRecord.GO_NAME_FULL as irCurrentOrgName.GON_NAME_FULL
+		If icMode='I'
+			Calculate irCurrentRecord.GO_SEQ as #NULL
+			Calculate irCurrentOrgName.GON_SEQ as #NULL
+		End If
+		Do irCurrentRecord.$rollbackTransaction(,loSession,loStatement)
+	End If
+	
+	Do irCurrentOrgName.$setSession(#NULL,#NULL,kTrue)
+	Do irUserOrgLink.$setSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

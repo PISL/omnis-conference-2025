@@ -168,12 +168,40 @@
 		],
 		"lvardefs": [
 			{
+				"name": "lbInsertOK",
+				"order": 7,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbModified",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
 				"name": "lbOK",
 				"order": 1,
 				"type": "kBoolean",
 				"subtype": 0,
 				"sublen": 0,
 				"initval": "kFalse"
+			},
+			{
+				"name": "lbUpdateOK",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcModifiedColumns",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
 			},
 			{
 				"name": "lrLink",
@@ -225,7 +253,7 @@
 	},
 	{
 		"name": "fetchDisplayList",
-		"order": 12,
+		"order": 11,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -249,7 +277,7 @@
 	},
 	{
 		"name": "assignEntryFieldProperties",
-		"order": 13,
+		"order": 12,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -306,7 +334,7 @@
 	},
 	{
 		"name": "UserPermissions",
-		"order": 14,
+		"order": 13,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -323,7 +351,7 @@
 	},
 	{
 		"name": "TranslateText",
-		"order": 15,
+		"order": 14,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -354,7 +382,7 @@
 	},
 	{
 		"name": "$Search1ListClick",
-		"order": 16,
+		"order": 15,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -365,18 +393,24 @@
 	},
 	{
 		"name": "$displayListClick",
-		"order": 18,
+		"order": 16,
 		"clientexec": false,
 		"pvardefs": [
 
 		],
 		"lvardefs": [
-
+			{
+				"name": "lbFound",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
 		]
 	},
 	{
 		"name": "ClearWorkArea",
-		"order": 19,
+		"order": 17,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -387,7 +421,7 @@
 	},
 	{
 		"name": "FetchAndPresentTopics",
-		"order": 20,
+		"order": 18,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -412,7 +446,7 @@
 	},
 	{
 		"name": "$ParseClipboard",
-		"order": 21,
+		"order": 19,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -430,7 +464,7 @@
 	},
 	{
 		"name": "$stringSearch",
-		"order": 22,
+		"order": 20,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -441,7 +475,7 @@
 	},
 	{
 		"name": "DropLists",
-		"order": 23,
+		"order": 21,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -452,7 +486,7 @@
 	},
 	{
 		"name": "PrintReceipt",
-		"order": 24,
+		"order": 22,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -463,7 +497,7 @@
 	},
 	{
 		"name": "printPDF",
-		"order": 25,
+		"order": 23,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -509,7 +543,7 @@
 	},
 	{
 		"name": "MarkTopicForThisConference",
-		"order": 26,
+		"order": 24,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -548,7 +582,7 @@
 	},
 	{
 		"name": "TopicsToText",
-		"order": 27,
+		"order": 25,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -581,7 +615,7 @@
 	},
 	{
 		"name": "handleShortcutKey",
-		"order": 28,
+		"order": 26,
 		"clientexec": true,
 		"pvardefs": [
 			{
@@ -605,7 +639,7 @@
 	},
 	{
 		"name": "handleMenuCall",
-		"order": 29,
+		"order": 27,
 		"clientexec": true,
 		"pvardefs": [
 			{
@@ -623,7 +657,7 @@
 	},
 	{
 		"name": "$insertCR",
-		"order": 30,
+		"order": 28,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -634,18 +668,31 @@
 	},
 	{
 		"name": "$editCR",
-		"order": 31,
+		"order": 29,
 		"clientexec": false,
 		"pvardefs": [
 
 		],
 		"lvardefs": [
-
+			{
+				"name": "lbOK",
+				"order": 1,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sPerson",
+				"sublen": 0
+			}
 		]
 	},
 	{
 		"name": "$deleteCR",
-		"order": 32,
+		"order": 30,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -691,7 +738,7 @@
 	},
 	{
 		"name": "arrangementsCheck",
-		"order": 33,
+		"order": 31,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -710,7 +757,7 @@
 	},
 	{
 		"name": "arrangementFree",
-		"order": 34,
+		"order": 32,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -768,7 +815,7 @@
 	},
 	{
 		"name": "$topicSubmissions",
-		"order": 35,
+		"order": 33,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -779,6 +826,30 @@
 				"order": 1,
 				"type": "kList",
 				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "changeDescriptionColour",
+		"order": 34,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lnColourBackground",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnColourText",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "k32bitint",
 				"sublen": 0
 			}
 		]

@@ -1,0 +1,105 @@
+Do ilTestCriteriaExists.$clear()
+Do ilTestCriteriaToBeProvided.$clear()
+
+#  the email server
+Calculate lcColName as nam(irCurrentRecord.ELC_SERVER)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If irCurrentRecord.ELC_SERVER<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_SERVER)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_SERVER)
+End If
+
+#  sender email
+Calculate lcColName as nam(irCurrentRecord.ELC_SENDER_ADDR)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If irCurrentRecord.ELC_SENDER_ADDR<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_SENDER_ADDR)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_SENDER_ADDR)
+End If
+
+# login account of sender
+Calculate lcColName as nam(irCurrentRecord.ELC_LOGIN_NAME)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If irCurrentRecord.ELC_LOGIN_NAME<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_LOGIN_NAME)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_LOGIN_NAME)
+End If
+
+#  login password
+Calculate lcColName as nam(irCurrentRecord.ELC_LOGIN_PW)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If irCurrentRecord.ELC_LOGIN_PW<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_LOGIN_PW)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_LOGIN_PW)
+End If
+
+#  email to
+Calculate lcColName as nam(irCurrentRecord.ELC_TO)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If irCurrentRecord.ELC_TO<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_TO)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_TO)
+End If
+
+#  subject
+Calculate lcColName as nam(ilLanguages.ELT_SUBJECT)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If ilLanguages.ELT_SUBJECT<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,ilLanguages.ELT_SUBJECT)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,ilLanguages.ELT_SUBJECT)
+End If
+
+# message
+Calculate lcColName as nam(ilLanguages.ELT_MSG_TEXT)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+If ilLanguages.ELT_MSG_TEXT<>''
+	# details exist
+	Do ilTestCriteriaExists.$add(lcColName,ilLanguages.ELT_MSG_TEXT)
+Else
+	Do ilTestCriteriaToBeProvided.$add(lcColName,ilLanguages.ELT_MSG_TEXT)
+End If
+
+# the following values will always be put in the criteria to be provided list so user can test different options
+
+#   ELC_SECURE
+# message
+Calculate lcColName as nam(irCurrentRecord.ELC_SECURE)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+# If irCurrentRecord.ELC_SECURE<>''
+# details exist
+# Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_SECURE)
+# Else
+Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_SECURE)
+# End If
+
+#   ELC_VFY_CERT
+# message
+Calculate lcColName as nam(irCurrentRecord.ELC_VFY_CERT)
+Calculate lcColName as mid(lcColName,rpos('.',lcColName)+1,99)
+# If irCurrentRecord.ELC_VFY_CERT<>''
+# details exist
+# Do ilTestCriteriaExists.$add(lcColName,irCurrentRecord.ELC_VFY_CERT)
+# Else
+Do ilTestCriteriaToBeProvided.$add(lcColName,irCurrentRecord.ELC_VFY_CERT)
+# End If
+
+
+# hide all email testing result
+Calculate $cinst.$objs.irEmailError_ErrorCode.$visible as kFalse
+Calculate $cinst.$objs.irEmailError_errorinfo.$visible as kFalse
+Calculate $cinst.$objs.irEmailError_log.$visible as kFalse
+Calculate $cinst.$objs.irEmailError_timestamp.$visible as kFalse
+
+Calculate $cinst.$objs.ilAsyncEmailQueue.$visible as kFalse

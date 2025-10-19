@@ -37,11 +37,24 @@ If inCurrentPage=cnPageSession
 End If
 
 # EurOmnis 2018 modified to allow registration/deregistration after the event
-# Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$enabled as ilArrangements.$line>0&(ibCloseEnoughToRegister|ibDuringConference)&not(ibDelegateIsPresenter)&not(ibMaxAttendeesReached)&not(ibDelegateAlreadyAttending)&not(ibDelegateAlreadyBookedForSelectedTime)&not(ibDelegateAlreadySpeakingInThisTimeSlot) ## &(ibTimeNow|ibTimeFuture)
-Calculate lbButtonEnabled as (ibWithinPreStartTime|ibWithinPostStartTime)&not(ibDelegateIsPresenter)&not(ibMaxAttendeesReached)&not(ibDelegateAlreadyAttending)&not(ibDelegateAlreadyBookedForSelectedTime)&not(ibDelegateAlreadySpeakingInThisTimeSlot)
+
+# 2025-09-09  RSM  Introducing a tolerance on maxAttendeesReached
+# We are now allowing delegates to overbook if they really want to, provided they have had a warning.
+# The button will appear as "max bookings" but it will now be enabled.
+
+# Before the test for lbButtonEnabled included   &not(ibMaxAttendeesReached)
+Calculate lbTotallyOverbooked as ilAttendees.$linecount>=ilArrangements.ARR_MAX_BOOKINGS+inSessionCountTolerance
+
+Calculate lbButtonEnabled as (ibWithinPreStartTime|ibWithinPostStartTime)&not(ibDelegateIsPresenter)&not(lbTotallyOverbooked)&not(ibDelegateAlreadyAttending)&not(ibDelegateAlreadyBookedForSelectedTime)&not(ibDelegateAlreadySpeakingInThisTimeSlot)
+
 Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$enabled as ilArrangements.$line>0&lbButtonEnabled ## &(ibTimeNow|ibTimeFuture)
 If ilArrangements.$line>0&lbButtonEnabled
-	Calculate $cinst.$objs.pbRegisterForSession.$text as 'Register'
+	If ilAttendees.$linecount>=ilArrangements.ARR_MAX_BOOKINGS
+		# The maximum has been reached but we must be within tolerance.
+		# Leave the button text as maximum reached (line 6)
+	Else
+		Calculate $cinst.$objs.pbRegisterForSession.$text as 'Register'
+	End If
 End If
 # the pbRemove button becomes disabled if delegate's session has already begun (with 20 minutes grace)
 # Calculate $cinst.$objs.PagedPane.$objs.pbRemove.$enabled as ilArrangements.$line>0&(ibDateToday|ibDateFuture)&(ibTimeNow|ibTimeFuture|ibCloseEnoughToRegister)&ilAttendees.ARA_DG_REF=irDelegate.DG_SEQ
@@ -91,3 +104,10 @@ If inFeedbackMinutes>0 ## configured to handle feedback
 End If
 
 Calculate $cinst.$objs.PagedPane.$objs.rg_inSlot.$enabled as ilDates.$line>0
+
+# If something is being displayed in icMessageDisplay, which is rare, make icSessionInfo invisible as they occuoy the same real estate.
+Calculate $cinst.$objs.icSessionInfo.$visible as icDisplayMessage=''
+
+# Calculate $cinst.$objs.icDisplayMessage.$visible as icDisplayMessage=''
+# Calculate $cinst.$objs.icDisplayMessage2.$visible as icDisplayMessage=''
+# Calculate $cinst.$objs.icDisplayMessage3.$visible as icDisplayMessage=''

@@ -1,0 +1,56 @@
+Calculate ilDisplayRecords as ''
+Do ilDisplayRecords.$cols.$add('reportGroup',kCharacter,kSimplechar,15) ## this will be used in determining privs for users to access only appropriate reports
+Do ilDisplayRecords.$cols.$add('reportCode',kCharacter,kSimplechar,15)
+Do ilDisplayRecords.$cols.$add('reportName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$cols.$add('reportAttributes',kRow)
+
+
+# organisation
+Do ilDisplayRecords.$add('DG','','DELEGATES','','')
+Do method reportDef_DELEGATES
+Do method reportDef_DG_SIMPLE
+Do method reportDef_DG_NAMES
+Do method reportDef_DG_EMAILS
+Do method reportDef_TRAVEL_DEETS_IN
+Do method reportDef_TRAVEL_DEETS_OT
+Do method reportDef_MUSICIANS
+
+Do ilDisplayRecords.$add('POST_CONF','','','','')
+Do ilDisplayRecords.$add('POST_CONF','','POST CONFERENCE','','')
+Do method reportDef_SESSION_FBACK
+Do method reportDef_GENERAL_FBACK
+Do method reportDef_ATTENDEE_LIST
+Do method reportDef_ATTENDEE_COUNT
+Do method reportDef_BOOKING_STATS
+Do method reportDef_SPKR_COMPL
+
+Do ilDisplayRecords.$add('SPEAKERS','','','','')
+Do ilDisplayRecords.$add('SPEAKERS','','SPEAKERS','','')
+Do method reportDef_SPEAKER_INVITE
+Do method reportDef_SPEAKERS
+Do method reportDef_SPKR_HIST
+Do method reportDef_TOPICS
+
+Do ilDisplayRecords.$add('VENUE','','','','')
+Do ilDisplayRecords.$add('VENUE','','VENUE','','')
+Do method reportDef_ROOM_ALLOC
+Do method reportDef_PAX
+Do method reportDef_DIETREQ
+Do method reportDef_SPKR_REQUESTS
+Do method reportDef_LABELS
+Do method reportDef_WELCOME
+
+Do ilDisplayRecords.$add('ADMINISTRATION','','','','')
+Do ilDisplayRecords.$add('ADMINISTRATION','','ADMINISTRATION','','')
+Do method reportDef_NOT_THIS_CONF
+Do method reportDef_MEMBERS
+Do method reportDef_EVENT_STATS
+Do method reportDef_TKT_BREAKDOWN
+Do method reportDef_VAT_RETURN
+
+Do ilDisplayRecords.$add('TECHNICAL','','','','')
+Do ilDisplayRecords.$add('TECHNICAL','','TECHNICAL','','')
+Do method reportDef_TASK_STATS
+Do method reportDef_TASK_STATS_DB
+
+Quit method ilDisplayRecords

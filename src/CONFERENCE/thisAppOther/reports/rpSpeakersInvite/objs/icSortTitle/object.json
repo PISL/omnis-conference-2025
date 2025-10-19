@@ -13,6 +13,7 @@
 		"desgroup": 0,
 		"deslock": false,
 		"dupblanks": false,
+		"enterable": false,
 		"fieldstyle": "reportH2",
 		"floating": false,
 		"font": 1,

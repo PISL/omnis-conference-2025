@@ -2,15 +2,17 @@ On evClick
 	Do $cinst.$saveData() Returns lbOK
 	If lbOK
 		# update lists
-		If inCurrentTab=cnTabDelegate
+		If inCurrentTab=cnTabDGPerson
 			Do method fetchDisplayList
 			
-		Else If inCurrentTab=cnTabTopics
+		Else If inCurrentTab=cnTabTopicsConf
 			# If icMode='IP'
 			# Do ilTopics.$add()
 			# Calculate ilTopics.$line as ilTopics.$linecount
 			# End If
 			# Calculate ilTopics.[ilTopics.$line] as irPax
+		Else If inCurrentTab=cnTabTopicEditor
+			Do method fetchDisplayList
 			
 		End If
 		

@@ -1,0 +1,162 @@
+Calculate lcRange as pcIpAddressIn
+If pbFormat
+	Calculate lcFormat as '-3P0'
+Else
+	Calculate lcFormat as ''
+End If
+
+# we want to support 12.55.1/24-12.55.2/24
+If pos('-',pcIpAddressIn)
+	# split two specific ip addresses into separate tokens
+	Calculate lcRange1 as strtok(nam(lcRange),'-')
+	Calculate lcRange2 as strtok(nam(lcRange),'-')
+Else
+	Calculate lcRange1 as lcRange
+End If
+
+For lnCount from 1 to 2 step 1
+	If lcRange[lnCount]<>''
+		
+		Calculate lcRange as lcRange[lnCount]
+		Calculate lcPostfixFrom as ''
+		Calculate lcPostfixTo as ''
+		
+		If pos('/',lcRange)
+			# 81.6.132/24   4.219/16   55.3.0.0/16   55.3.45.23/16
+			Calculate lcPostSlash as mid(lcRange,pos('/',lcRange)+1,99)
+			# truncate postSlash from lcRange
+			Calculate lcRange as mid(lcRange,1,pos('/',lcRange)-1)
+			
+			# someone could present 132/8  or 132.0.0.0/8
+			# therefore we must parse the string to get our format right
+			Begin text block
+			If lcPostSlash=8
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				
+				Calculate lcPostfixFrom as con('.',jst('0',lcFormat),'.',jst('0',lcFormat),'.',jst('0',lcFormat))
+				Calculate lcPostfixTo as '.255.255.255'
+				
+			Else If lcPostSlash=16
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				Text:.
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				
+				Calculate lcPostfixFrom as con('.',jst('0',lcFormat),'.',jst('0',lcFormat))
+				Calculate lcPostfixTo as '.255.255'
+				
+			Else If lcPostSlash=24
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				Text:.
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				Text:.
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				
+				Calculate lcPostfixFrom as con('.',jst('0',lcFormat))
+				Calculate lcPostfixTo as '.255'
+				
+			Else If lcPostSlash=32
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				Text:.
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				Text:.
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				Text:.
+				If lcRange<>''
+					Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+				Else
+					Text:[jst('0',lcFormat)]
+				End If
+				End text block
+				
+			Else
+				Breakpoint not handled
+			End If
+			End text block
+			Get text block lcPrefix
+			
+			Calculate lcIpFrom as con(lcPrefix,lcPostfixFrom)
+			Calculate lcIpTo as con(lcPrefix,lcPostfixTo)
+			
+		Else
+			# not a range, its a complete IP address
+			Begin text block
+			If lcRange<>''
+				Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+			Else
+				Text:[jst('0',lcFormat)]
+			End If
+			Text:.
+			If lcRange<>''
+				Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+			Else
+				Text:[jst('0',lcFormat)]
+			End If
+			Text:.
+			If lcRange<>''
+				Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+			Else
+				Text:[jst('0',lcFormat)]
+			End If
+			Text:.
+			If lcRange<>''
+				Text:[jst(strtok(nam(lcRange),'.'),lcFormat)]
+			Else
+				Text:[jst('0',lcFormat)]
+			End If
+			End text block
+			Get text block lcPrefix
+			
+			Calculate lcIpFrom as lcPrefix
+			Calculate lcIpTo as lcPrefix
+		End If
+		
+		If lnCount=1&lcRange2<>''
+			Calculate lcFirstIpFrom as lcIpFrom
+		End If
+	End If
+End For
+
+# return the results
+If lcRange2<>''
+	Calculate prefFrom as lcFirstIpFrom
+	Calculate prefTo as lcIpTo
+Else
+	Calculate prefFrom as lcIpFrom
+	Calculate prefTo as lcIpTo
+End If

@@ -1,0 +1,4 @@
+If len(plArrangements.TPC_BACKCOLOR)>0|len(plArrangements.TPC_TEXTCOLOR)>0
+	# close the colour block
+	Line:    [icColourBlockEnd]  <!-- end colour -->
+End If

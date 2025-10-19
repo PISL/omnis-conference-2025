@@ -1,0 +1,38 @@
+
+
+Calculate icTextForClipboard as ''
+Calculate llTopics as ilTopics
+Do llTopics.$sort($ref.TPF_SEQ,1)
+Begin text block
+Calculate llTopics.$line as 0
+While $Loop(llTopics)
+	If llTopics.TPF_SEQ>0&not(lbHeadingAnnounced)
+		Text:TOPICS FOR CONFERENCE [ilSearch1.CF_TITLE] : [ilDisplayRecords.PSN_FIRST_NAME] [ilDisplayRecords.PSN_SURNAME](Carriage return)
+		Text:(Carriage return)
+		Calculate lbHeadingAnnounced as kTrue
+	Else If llTopics.TPF_SEQ>0
+		# no further heading
+	Else If not(lnOtherTopicsAnnounced)
+		Text:(Carriage return)
+		Text:HISTORICAL TOPICS(Carriage return)
+		Text:(Carriage return)
+		Calculate lnOtherTopicsAnnounced as kTrue
+	End If
+	
+	Text:Title[kCr]=====(Carriage return)
+	Text:[llTopics.TPC_TITLE](Carriage return)
+	Text:(Carriage return)
+	Text:Short description[kCr]=================(Carriage return)
+	Text:[llTopics.TPC_ABSTRACT](Carriage return)
+	Text:(Carriage return)
+	Text:Full description[kCr]================(Carriage return)
+	Text:[llTopics.TPC_DESC](Carriage return)
+	Text:(Carriage return)
+	
+	If llTopics.$line<llTopics.$linecount
+		Text:[kCr]* * * * * * * * * * * * * * * * * * * * * * * * [kCr](Carriage return)
+	End If
+End While
+
+End text block
+Get text block icTextForClipboard

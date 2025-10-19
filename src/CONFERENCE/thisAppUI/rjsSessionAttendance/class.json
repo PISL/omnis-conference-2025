@@ -1,12 +1,12 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 301,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 381,
 	"superclass": "infra.rjsInfraBlank",
 	"designtaskname": "rtSessions",
-	"nextident": 1065,
-	"lastgroupident": 0,
+	"nextident": 1066,
+	"lastgroupident": 11,
 	"cvardefs": [
 		{
 			"name": "cnPageGeneralFeedback",
@@ -59,14 +59,6 @@
 	],
 	"ivardefs": [
 		{
-			"name": "ibArrangementBeforeToday",
-			"order": 11,
-			"type": "kBoolean",
-			"subtype": 0,
-			"sublen": 0,
-			"initval": "kFalse"
-		},
-		{
 			"name": "ibCanSeeFeedback",
 			"order": 9,
 			"type": "kBoolean",
@@ -77,13 +69,6 @@
 		{
 			"name": "ibDateTimePast",
 			"order": 53,
-			"type": "kBoolean",
-			"subtype": 0,
-			"sublen": 0
-		},
-		{
-			"name": "ibDateToday",
-			"order": 48,
 			"type": "kBoolean",
 			"subtype": 0,
 			"sublen": 0
@@ -189,27 +174,6 @@
 			"initval": "kFalse"
 		},
 		{
-			"name": "ibTimeFuture",
-			"order": 49,
-			"type": "kBoolean",
-			"subtype": 0,
-			"sublen": 0
-		},
-		{
-			"name": "ibTimeNow",
-			"order": 51,
-			"type": "kBoolean",
-			"subtype": 0,
-			"sublen": 0
-		},
-		{
-			"name": "ibTimePast",
-			"order": 50,
-			"type": "kBoolean",
-			"subtype": 0,
-			"sublen": 0
-		},
-		{
 			"name": "ibWithinCutoffTime",
 			"order": 66,
 			"type": "kBoolean",
@@ -238,7 +202,7 @@
 			"order": 23,
 			"type": "kCharacter",
 			"subtype": "kSimplechar",
-			"sublen": 20
+			"sublen": 60
 		},
 		{
 			"name": "icCancelURL",
@@ -262,6 +226,20 @@
 			"sublen": 255
 		},
 		{
+			"name": "icFCY_LOCATION",
+			"order": 63,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "icFCY_NAME",
+			"order": 54,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
 			"name": "icSessionInfo",
 			"order": 12,
 			"type": "kCharacter",
@@ -283,11 +261,25 @@
 			"sublen": 10
 		},
 		{
+			"name": "icTopicTitle",
+			"order": 11,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 100
+		},
+		{
 			"name": "idTestDate",
 			"order": 55,
 			"type": "kDate",
 			"subtype": "kDate2000",
 			"sublen": 0
+		},
+		{
+			"name": "idtFullyBookedWarning",
+			"order": 1,
+			"type": "kDate",
+			"subtype": "kDatetime",
+			"sublen": 7
 		},
 		{
 			"name": "idtTestTime",
@@ -445,6 +437,13 @@
 			"sublen": 0
 		},
 		{
+			"name": "inSessionCountTolerance",
+			"order": 18,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		},
+		{
 			"name": "inSlot",
 			"order": 45,
 			"type": "kInteger",
@@ -540,7 +539,7 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2017-10-30 11:44:12",
-		"currentlayoutbreakpoint": 375,
+		"currentlayoutbreakpoint": 320,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "",
 		"designguides": "",
@@ -559,10 +558,10 @@
 		"layouttype": "kLayoutTypeResponsive",
 		"left": 145,
 		"menulineheight": 0,
-		"moddate": "2024-12-09 17:19:25",
+		"moddate": "2025-10-10 16:01:38",
 		"okkeyobject": "",
 		"serverlessclient": false,
-		"showascheckedout": false,
+		"showascheckedout": true,
 		"showgrid": false,
 		"sizetogrid": false,
 		"startfield": 0,
@@ -570,7 +569,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 0,
+		"top": 13,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "2",
@@ -578,8 +577,8 @@
 		"vertscroll": false
 	},
 	"layout": {
-		"width": 1128,
-		"height": 826,
+		"width": 1450,
+		"height": 1039,
 		"320": {
 			"height": 0,
 			"padding": 2

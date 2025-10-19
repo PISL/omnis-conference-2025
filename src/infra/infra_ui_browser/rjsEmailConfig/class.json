@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 2592,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 2780,
 	"superclass": "rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1151,
+	"nextident": 1162,
 	"lastgroupident": 0,
 	"cvardefs": [
 		{
@@ -16,12 +16,60 @@
 			"sublen": 0
 		},
 		{
-			"name": "pnPageProductProcess",
+			"name": "cnPageProductProcess",
 			"order": 2,
 			"type": "kInteger",
 			"subtype": "kShortint",
 			"sublen": 0,
 			"initval": "4"
+		},
+		{
+			"name": "cnTabAddressee",
+			"order": 5,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnTabAttributes",
+			"order": 6,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "4"
+		},
+		{
+			"name": "cnTabConfig",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "1"
+		},
+		{
+			"name": "cnTabMessage",
+			"order": 4,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnTabTechnical",
+			"order": 7,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "5"
+		},
+		{
+			"name": "cnTabTest",
+			"order": 8,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "6"
 		}
 	],
 	"ivardefs": [
@@ -88,13 +136,6 @@
 			"type": "kCharacter",
 			"subtype": "kSimplechar",
 			"sublen": 10
-		},
-		{
-			"name": "icTestProtocol",
-			"order": 27,
-			"type": "kCharacter",
-			"subtype": "kSimplechar",
-			"sublen": 2000
 		},
 		{
 			"name": "idtEmailError",
@@ -209,15 +250,15 @@
 			"sublen": 0
 		},
 		{
-			"name": "inCurrentPane",
-			"order": 10,
+			"name": "inCurrentTab",
+			"order": 17,
 			"type": "kInteger",
 			"subtype": "kShortint",
 			"sublen": 0
 		},
 		{
-			"name": "inCurrentTab",
-			"order": 17,
+			"name": "inLangTextLine",
+			"order": 10,
 			"type": "kInteger",
 			"subtype": "kShortint",
 			"sublen": 0
@@ -249,6 +290,20 @@
 			"type": "kRow",
 			"subtype": "",
 			"sublen": 0
+		},
+		{
+			"name": "irLangText",
+			"order": 33,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irLangTextOrig",
+			"order": 34,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
 		}
 	],
 	"properties": {
@@ -269,7 +324,7 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2023-04-14 15:56:36",
-		"currentlayoutbreakpoint": 1024,
+		"currentlayoutbreakpoint": 768,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "",
 		"designguides": "",
@@ -286,12 +341,12 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 226,
+		"left": 93,
 		"menulineheight": 0,
-		"moddate": "2025-05-07 09:42:42",
+		"moddate": "2025-09-26 16:41:32",
 		"okkeyobject": "",
 		"serverlessclient": false,
-		"showascheckedout": true,
+		"showascheckedout": false,
 		"showgrid": false,
 		"sizetogrid": false,
 		"startfield": 0,
@@ -307,7 +362,7 @@
 		"vertscroll": false
 	},
 	"layout": {
-		"width": 1454,
+		"width": 1461,
 		"height": 751,
 		"320": {
 			"height": 0,

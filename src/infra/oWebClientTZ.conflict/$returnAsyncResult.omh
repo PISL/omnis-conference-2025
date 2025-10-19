@@ -1,0 +1,15 @@
+Calculate pErrorField as ''
+Do ioRest.$returnVal(irResponseHeaders,irResponse,pResultList) Returns icXML
+
+If irResponse.httpStatusCode<>200
+	# do some error reporting here
+	Calculate pErrorField as con(irResponse.httpStatusCode,'  ',irResponse.httpStatusText,': ',icXML)
+	Quit method ''
+Else
+	# irResponse.responseContent is a binary field that must be converted to text
+	# Calculate lbinResponse as irResponse.responseContent
+	#  Calculate lcJSON as uniconv()
+	Calculate lcJSON as utf8tochar(irResponse.responseContent)
+	Do OJSON.$jsontolistorrow(lcJSON) Returns lrResult
+	Quit method icXML
+End If

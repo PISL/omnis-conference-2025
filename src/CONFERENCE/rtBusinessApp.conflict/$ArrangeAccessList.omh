@@ -1,0 +1,160 @@
+Do $debugMessage(con($class().$name,' / ',$cmethod().$name,' - ',tlPermissions.$linecount,' permissions granted for ',trCurrUser.USR_NAME))
+
+Calculate llPermissions as $ctask.tlPermissions
+Do llPermissions.$cols.FormPrefix.$removeduplicates(kTrue)
+Calculate llPermissions.$line as 0
+While $Loop(llPermissions)
+	Switch low(llPermissions.FormPrefix)
+		Case 'dg' ## delegate
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_DG','Delegates','rjsParticipants',0,10,1,lcGroupFrequent)
+			End If
+		Case 'arr' ## speaker arrangements
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_SPKR','Speakers','rjsParticipants',0,20,1,lcGroupFrequent)
+				Do tlAuthorisedForms.$add('FORM_ARR','Arrangements','rjsParticipants',0,30,1,lcGroupFrequent)
+			End If
+		Case 'foh' ## financial invoice out
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_FOH','Financial invoices preparation','rjsSetup',0,40,1,lcGroupFrequent)
+			End If
+		Case 'mem' ## members
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_MEM','Members','rjsParticipants',0,50,1,lcGroupFrequent)
+			End If
+		Case 'rp' ## reports
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_REPORT','Reports','rjsConference',0,60,1,lcGroupFrequent)
+			End If
+			
+		Case 'crt' ## certificates
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_CRT','Certificates','rjsValidity',0,70,1,lcGroupFrequent)
+			End If
+		Case 'tst' ## tests - viewing results which may be used to assign certificates
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_TST','Test preparation','rjsValidity',0,80,1,lcGroupFrequent)
+			End If
+			
+		Case 'psn' ## persons
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_PSN','People','rjsConference',0,10,1,lcGroupAdmin)
+			End If
+		Case 'conf' ## conferences
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_CONF','Conferences','rjsConference',0,20,1,lcGroupAdmin)
+			End If
+		Case 'ven' ## conference venues
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_VEN','Venues','rjsConference',0,30,1,lcGroupAdmin)
+			End If
+		Case 'prd' ## product definition
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_PRD','Product definitions','rjsSetup',0,40,1,lcGroupAdmin)
+			End If
+		Case 'eo' ## external organisations - suppliers & customers
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_CUST','Customers','rjsSetup',0,50,1,lcGroupAdmin)
+				Do tlAuthorisedForms.$add('FORM_SUPP','Suppliers','rjsSetup',0,60,1,lcGroupAdmin)
+			End If
+			
+			# configuration
+		Case 'rfo' ## reference organisation
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_RFO','Organisation configuration','infra.rjsReferenceAll',0,10,1,lcGroupInfrequent)
+			End If
+		Case 'rfl' ## reference local
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_RFL','Site configuration','infra.rjsReferenceAll',0,20,1,lcGroupInfrequent)
+			End If
+		Case 'rfg' ## reference global
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_RFG','Global configuration','infra.rjsReferenceAll',0,30,1,lcGroupInfrequent)
+			End If
+			
+		Case 'go' ## group organisations
+			Do tlAuthorisedForms.$add('FORM_GO','Group organisations','infra.rfbcBusinessConfig',0,10,1,lcGroupGlobal)
+			
+			# user access
+		Case 'usr' ## users
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_USERS','Users','infra.rjsUserAccess',0,10,1,lcGroupLowLevel)
+			End If
+		Case 'rol' ## roles
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_ROLES','User access Roles','infra.rjsUserAccess',0,20,1,lcGroupLowLevel)
+			End If
+		Case 'per' ## permissions
+			If ibResponsive ## the responsive UI uses container forms
+				Do tlAuthorisedForms.$add('FORM_PERMISSIONS','User access Permissions','infra.rjsUserAccess',0,30,1,lcGroupLowLevel)
+			End If
+			
+		Case 'elc' ## emailconfig
+			Do tlAuthorisedForms.$add('FORM_EMCONFIG','Email configuration','infra.rjsEmailConfig',0,40,1,lcGroupLowLevel)
+			
+			# logs
+		Case 'sle' ## syslogerrors
+			Do tlAuthorisedForms.$add('FORM_ERRORS','System error logs','infra.rjsLogsAll',0,30,1,lcGroupLowLevel)
+		Case 'slv' ## syslogevents
+			Do tlAuthorisedForms.$add('FORM_EVENTS','System event logs','infra.rjsLogsAll',0,30,1,lcGroupLowLevel)
+		Case 'ae' ## syslogevents
+			Do tlAuthorisedForms.$add('FORM_ASYNCEM','System generated emails','infra.rjsLogsAll',0,30,1,lcGroupLowLevel)
+		Case 'smh' ## syslogevents
+			Do tlAuthorisedForms.$add('FORM_SEMAPH','Record locks (semaphores)','infra.rjsLogsAll',0,30,1,lcGroupLowLevel)
+			
+			# developer assistance
+		Case 'env' ## omnis environment details  RSM 2025-01-01
+			Do tlAuthorisedForms.$add('FORM_ENV','Environment','infra.rjsEnvironment',0,90,1,lcGroupGlobal)
+			
+			# add advisers; these are not database table related so only need a "xxx_view" permission
+		Case 'seq' ## sequences
+			# Do tlAuthorisedForms.$add('FORM_SEQ','Sequence numbers','infra.rfLowLevelConfig',0,20,1,lcGroupVeryLast)
+	End Switch
+	
+End While
+
+# add forms visible to all users, eg. system help
+Do tlAuthorisedForms.$add('FORM_SPK_SITE','Speakers on website','rjsPublicForms',0,10,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_VEN_SITE','Venue info website','rjsPublicForms',0,20,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_TPC1_SITE','Topics 1','rjsPublicForms',0,30,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_TPC2_SITE','Topics 2','rjsPublicForms',0,40,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_ARR_SITE','Scheduled presentations','rjsPublicForms',0,50,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_SUBM_SITE','Submissions','rjsPublicForms',0,60,1,lcGroupVeryLast)
+# Do tlAuthorisedForms.$add('FORM_HELP','Help with using the system','infra.rfAdvisers',0,90,1,lcGroupVeryLast)
+
+# sort for consistent arrangement
+Do tlAuthorisedForms.$sort($ref.group,0,$ref.order,0,$ref.desc,0) ## group added 21/3/14 RSM for aestetics
+
+# prepare for Organisational exceptions
+Calculate lcExceptionSuffix as $ctask.trGroupOrg.ExceptionSuffixSTB
+
+# localise the visible menu items
+Calculate tlAuthorisedForms.$line as 0
+While $Loop(tlAuthorisedForms)
+	# RSM  27 JUL 15 to support organisational exceptions in string tables
+	If lcExceptionSuffix<>''
+		Do toStrings.$StringTableEntry(con(tlAuthorisedForms.C1,'_',lcExceptionSuffix),tlAuthorisedForms.C2) Returns lbValid
+	Else
+		Calculate lbValid as kFalse
+	End If
+	If not(lbValid)
+		Do toStrings.$StringTableEntry(con(tlAuthorisedForms.C1),tlAuthorisedForms.C2) Returns lbValid
+	End If
+	
+	If tlAuthorisedForms.$line>1
+		If tlAuthorisedForms.group<>tlAuthorisedForms.[tlAuthorisedForms.$line-1].group
+			# insert a blank line above ## these lines must be marked VISIBLE
+			Do tlAuthorisedForms.$addbefore(tlAuthorisedForms.$line)
+			# does not change line no, so current line now points to blank line
+			Calculate tlAuthorisedForms.visible as kTrue ## set visibility, then increment current line
+			Calculate tlAuthorisedForms.$line as tlAuthorisedForms.$line+1
+		End If
+	End If
+End While
+
+# add invisible menu items, these will be called programmatically and not from the drop list
+# Do tlAuthorisedForms.$add('FORM_FEEDBACK','','infra.rfUserInput','0','999',0)
+
+Do tlAuthorisedForms.$search(0)
+
+Do $debugMessage(con($class().$name,' / ',$cmethod().$name,' - ',tlAuthorisedForms.$linecount,' forms listed for ',trCurrUser.USR_NAME))

@@ -1,0 +1,36 @@
+# The list ilGroupInvoices refers to a line with the transfer information.
+
+# 1.  transfer invoice details lines from one invoice to another.
+# 2.  change the sDelegateInvoiceLinks record to direct delegate to different invoice.
+# .  When doing this change the DIL_PRIMARY to 0
+# 3.  delete the invoice header
+
+# Breakpoint
+Do irInvoiceHeader.$beginTransaction(#NULL,loSession,loStatement) Returns lbRunningAsTransaction
+If lbRunningAsTransaction
+	# step 1
+	Do irInvoiceHeader.$transferLines(ilGroupInvoices.FOH_SEQ,ilInvoices.FOH_SEQ) Returns lnCount ## from , to  Return rows affected
+	If lnCount>0
+		# step 2
+		Do irInvoiceHeader.$transferLink(ilGroupInvoices.FOH_SEQ,ilInvoices.FOH_SEQ) Returns lnCount ## from , to Return rows affected
+		If lnCount>0
+			# step 3
+			Do irInvoiceHeader.$delete_pk(ilGroupInvoices.FOH_SEQ) Returns lbOK
+			If irInvoiceHeader.inCountDelete>0
+				# everything worked!
+				Do irInvoiceHeader.$commitTransaction(#NULL,loSession,loStatement)
+			Else
+				Calculate lbRollback as kTrue
+			End If
+		Else
+			Calculate lbRollback as kTrue
+		End If
+	Else
+		Calculate lbRollback as kTrue
+	End If
+End If
+
+If lbRollback
+	Do irInvoiceHeader.$rollbackTransaction()
+	Calculate icDisplayMessage as irInvoiceHeader.irErrorSQL.NativeErrorText
+End If

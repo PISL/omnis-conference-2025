@@ -1,0 +1,5 @@
+If $cinst.SMH_PKEY_I<>0
+	Calculate $cinst.DisplayName as con($cinst.SMH_OWNER,' @ ',$cinst.SMH_CWHEN,': ',$cinst.SMH_TABLE_PRFX,' ',$cinst.SMH_PKEY_I)
+Else
+	Calculate $cinst.DisplayName as con($cinst.SMH_OWNER,' @ ',$cinst.SMH_CWHEN,': ',$cinst.SMH_TABLE_PRFX,' ',$cinst.SMH_PKEY_C)
+End If

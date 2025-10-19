@@ -1,0 +1,28 @@
+If $ctask.trGroupOrg.GO_SEQ>0
+	# proceed
+Else
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()], concat('day ',ARR_DAYNO,': ',ARR_SLOT)
+
+Sta:from [$cinst.$servertablenames]
+Sta:join [lrArrangement.$servertablenames] on ARR_SEQ = ARA_ARR_REF
+
+Sta:where  ARR_CF_REF = @[pnCF_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

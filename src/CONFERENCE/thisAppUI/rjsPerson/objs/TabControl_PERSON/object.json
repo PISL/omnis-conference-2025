@@ -83,7 +83,7 @@
 		"visible": true
 	},
 	"multivalueproperties": {
-		"selected": 2,
+		"selected": 5,
 		"properties": [
 			{
 				"::tabiconid": 0,
@@ -172,7 +172,7 @@
 		"667": {
 			"left": 192,
 			"top": 176,
-			"width": 472,
+			"width": 488,
 			"height": 32,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -183,7 +183,7 @@
 		"768": {
 			"left": 200,
 			"top": 176,
-			"width": 570,
+			"width": 608,
 			"height": 32,
 			"align": "kCenterJst",
 			"dragborder": false,

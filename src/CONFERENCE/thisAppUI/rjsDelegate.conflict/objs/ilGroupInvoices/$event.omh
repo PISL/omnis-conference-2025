@@ -1,0 +1,3 @@
+On evClick
+	# Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ','?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$confirmTransferInvoice')
+	Do $cinst.$clientNoYesMsg(con('Are you sure you want to ',ilGroupInvoices.DisplayName,' ?  '),'IRREVERSIBLE OPERATION !','$confirmInvoiceTransfer')

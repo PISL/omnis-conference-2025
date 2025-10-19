@@ -1,0 +1,18 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate inMinutesBreak as pnFloorMinutes
+Calculate ilData as plData
+
+Calculate icReportTitle as con('Session connect summary',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as con('Summed every ',pnFloorMinutes,' minutes.')
+If pnCountHaving>0
+	Calculate icReportSubTitle as con(icReportSubTitle,'  With count > ',pnCountHaving,'.')
+End If
+
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

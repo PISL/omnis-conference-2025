@@ -140,6 +140,8 @@ If tWebParameters.param1='GTD'
 	Calculate $cinst.$objs.PagedPane.$objs.borderMembership.$visible as kFalse
 End If
 
+# The complex grids should be considered labels for setting properties.
+# The fields within the complex grids have their own attributes set.
 Calculate $cinst.$objs.PagedPane.$objs.cg_ilPersons.$showhorzheader as kTrue
 Calculate $cinst.$objs.PagedPane.$objs.cg_ilInvDetails.$showhorzheader as kTrue
 

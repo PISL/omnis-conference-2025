@@ -1,0 +1,17 @@
+
+# associate this new record to currently selected "node" as its parent
+Calculate irParentNode as irCurrentStructure
+If isclear(irParentNode.GS_SEQ)
+	Do irParentNode.$FetchRoot(ilOrgStructures.RFO_VALUE,irCurrentRecord.GO_SEQ)
+	Calculate irParentNode.GS_TYPE as 'TOPLEVEL'
+End If
+
+Do irCurrentStructure.$clear()
+Calculate irCurrentStructure.GS_GO_REF as irCurrentRecord.GO_SEQ
+Calculate irCurrentStructure.GS_SUPERIOR_GS_REF as irParentNode.GS_SEQ
+Calculate irCurrentStructure.GS_ACTIVE as 1
+
+# if RFO_JSON exists we will have allowed parents and RFO_DESC may have been cleared
+Do ilStructureType.$filter((pos(irParentNode.GS_TYPE,$ref.allowedParents)>0|isclear($ref.allowedParents))&len($ref.RFO_DESC)>0) Returns lnExcludedRowCount
+Calculate ilStructureType.$line as 1
+Calculate irCurrentStructure.GS_TYPE as ilStructureType.RFO_VALUE

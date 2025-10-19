@@ -1,0 +1,13 @@
+Do inherited
+# be sure to set "loadpagesetup" class property to kTrue
+
+Calculate irConference as prConference
+Calculate icReportTitle as con('Dietary Requests',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

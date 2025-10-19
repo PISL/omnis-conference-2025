@@ -1,0 +1,57 @@
+Do ilEmailConfigs.$search($ref.RFO_VALUE='SEND_INVOICE',1,0,0,0) Returns lbFound
+If not(lbFound)
+	Breakpoint
+	Calculate $cinst.$objs.splitButtonWorkflow.$errortext as con('email configuration missing for RFO: EMAIL_CONFIGS /  SEND_INVOICE')
+End If
+
+If ibManualWorkflow
+	# we now need to run a method on the client that saves ibinPDF to downloads file
+	Do $cinst.$pushdata(row(prJob))
+Else
+	# This method is being called from a callback method ($pdfcomplete) and not from the UI.
+	# The callback includes data from parameter prJob
+	Do method sendEmail (kTrue) Returns lbOK
+	Quit method lbOK
+	
+	
+	
+	
+	
+	If ilDisplayRecords.DG_INV_TO_EO_ONLY
+		Do ioNewOw3SendEmail.$primeConfig(ilEmailConfigs.RFO_CHAR,irCurrentRecord.EO_EMAIL) Returns lbOK
+	Else
+		Do ioNewOw3SendEmail.$primeConfig(ilEmailConfigs.RFO_CHAR,irCurrentRecord.PSN_EMAIL) Returns lbOK
+	End If
+	If lbOK
+		Calculate irEmailConfig as ioNewOw3SendEmail.irConfigEmail
+		
+		Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord)) Returns lbOK
+		If lbOK
+			# no need to attach a .ics file for the event
+			# Do ioNewOw3SendEmail.$getCalendarStructure() Returns lrCalendar
+			Do ioNewOw3SendEmail.$setCallback($cinst,ilEmailConfigs.callbackMethod,'$emailSendError',irCurrentRecord) Returns lbOK
+			If lbOK
+				Do ioNewOw3SendEmail.$attachFileBinary(ibinPdf,con('OmnisWorld_invoice_',irCurrentRecord.DG_SEQ,'.pdf'),'application/pdf','','base64','attachment') Returns lbOK
+				Do ioNewOw3SendEmail.$initialise() Returns lbOK
+				If lbOK
+					# fire the worker off
+					Calculate lbRunOnCurrentThread as kFalse
+					If lbRunOnCurrentThread
+						Do ioNewOw3SendEmail.$run() Returns lbOK
+					Else
+						Do ioNewOw3SendEmail.$start() Returns lbOK
+					End If
+				End If
+			End If
+		End If
+	End If
+	
+	
+	If not(lbOK)
+		If ioNewOw3SendEmail.icErrors<>''
+			# show user what went wrong
+			Breakpoint
+			Calculate icDisplayMessage as ioNewOw3SendEmail.icErrors
+		End If
+	End If
+End If

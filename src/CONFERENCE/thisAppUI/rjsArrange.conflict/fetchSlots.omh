@@ -1,0 +1,39 @@
+Do ilDay1AM.$clear()
+Do ilDay1PM.$clear()
+Do ilDay1EVE.$clear()
+
+Do ilDay2AM.$clear()
+Do ilDay2PM.$clear()
+Do ilDay2EVE.$clear()
+
+Do ilDay3AM.$clear()
+Do ilDay3PM.$clear()
+Do ilDay3EVE.$clear()
+
+Do ilDay4AM.$clear()
+Do ilDay4PM.$clear()
+Do ilDay4EVE.$clear()
+
+Do ilDay5AM.$clear()
+Do ilDay5PM.$clear()
+Do ilDay5EVE.$clear()
+
+Do ilDay1AM.$fetchSlot(ilSearch1.CF_SEQ,,1,'AM')
+Do ilDay1PM.$fetchSlot(ilSearch1.CF_SEQ,,1,'PM')
+Do ilDay1EVE.$fetchSlot(ilSearch1.CF_SEQ,,1,'EVE')
+
+Do ilDay2AM.$fetchSlot(ilSearch1.CF_SEQ,,2,'AM')
+Do ilDay2PM.$fetchSlot(ilSearch1.CF_SEQ,,2,'PM')
+Do ilDay2EVE.$fetchSlot(ilSearch1.CF_SEQ,,2,'EVE')
+
+Do ilDay3AM.$fetchSlot(ilSearch1.CF_SEQ,,3,'AM')
+Do ilDay3PM.$fetchSlot(ilSearch1.CF_SEQ,,3,'PM')
+Do ilDay3EVE.$fetchSlot(ilSearch1.CF_SEQ,,3,'EVE')
+
+Do ilDay4AM.$fetchSlot(ilSearch1.CF_SEQ,,4,'AM')
+Do ilDay4PM.$fetchSlot(ilSearch1.CF_SEQ,,4,'PM')
+Do ilDay4EVE.$fetchSlot(ilSearch1.CF_SEQ,,4,'EVE')
+
+Do ilDay5AM.$fetchSlot(ilSearch1.CF_SEQ,,5,'AM')
+Do ilDay5PM.$fetchSlot(ilSearch1.CF_SEQ,,5,'PM')
+Do ilDay5EVE.$fetchSlot(ilSearch1.CF_SEQ,,5,'EVE')

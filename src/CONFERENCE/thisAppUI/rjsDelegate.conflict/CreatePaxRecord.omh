@@ -1,0 +1,40 @@
+# create PAX recod to go along with it
+Do irPax.$clear()
+Calculate irPax.PX_DG_REF as irCurrentRecord.DG_SEQ
+Calculate irPax.PX_ROLE as 'DG'
+Do irPax.$defaults() ## run after PX_ROLE is set
+Do irPax.$insert() Returns lbOK
+
+# RSM  20 JULY 2016 after JM request
+# ilInvoices ## ilInvoiceDetails
+# ilMultipleDelegatesOnOneInvoice
+Calculate lbSpousePaidFor as kFalse
+Calculate llDetails as ilInvoiceDetails
+Do llDetails.$search(pos(ilSearch1.CF_PRODCODE_SPOUSE,$ref.PRD_INT_PRODCODE)>0,1,0,0,0) Returns lbSpousePaidFor
+If lbSpousePaidFor
+	Do irPax.$clear()
+	Calculate irPax.PX_DG_REF as irCurrentRecord.DG_SEQ
+	Calculate irPax.PX_ROLE as 'SPOUSE'
+	Do irPax.$defaults() ## run after PX_ROLE is set
+	Do irPax.$insert() Returns lbOK
+	
+	Do llDetails.$remove(llDetails.$line) ## remove spouse record from temp list
+	# because we will look for another delegate next and that delegate may have a spouse as well
+End If
+
+Calculate llMultipleDelegates as ilMultipleDelegatesOnOneInvoice
+If llMultipleDelegates.$line>0
+	# How about creating the PAX record for the other delegate?
+	# Do we assume that is one has been paid then the whole invoice is paid and the other is included also?
+	Breakpoint
+	Do llMultipleDelegates.$remove(llMultipleDelegates.$line) ## first remove the delegate that has just been covered.
+	
+	Calculate llMultipleDelegates.$line as 0
+	While $Loop(llMultipleDelegates)
+		Do irPax.$clear()
+		Calculate irPax.PX_DG_REF as llMultipleDelegates.DG_SEQ
+		Calculate irPax.PX_ROLE as 'DG'
+		Do irPax.$defaults() ## run after PX_ROLE is set
+		Do irPax.$insert() Returns lbOK
+	End While
+End If

@@ -1,0 +1,45 @@
+Calculate irConference as prParameters.C2
+Calculate ilData as prParameters.C3 ## irDelegate
+
+Do inherited
+
+# Enter your initialization code here
+
+# font page of letter
+Calculate lcText as ''
+Do toValues.$initOrg(prParameters.C1) Returns llContent
+While $Loop(llContent)
+	Calculate lcText as con(lcText,pick(lcText<>'','',kCr),llContent.RFO_CHAR)
+End While
+If lcText=''
+	Breakpoint
+End If
+Calculate $cinst.$objs.1108.$text as lcText
+
+# Calculate icReportTitle as con('Welcome letter to delegates',' - ',irConference.CF_TITLE)
+# Calculate icReportSubTitle as ''
+
+# Do $DefineList($cinst.ilData,'tDelegates')
+# Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY')
+# Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+# Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+# Do ilData.$addDisplayName()
+# Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+# Do ilData.$fetchForConference(irConference.CF_SEQ,," DG_STATUS <> 'CANCEL' and PSN_SEX <> 'O' ")
+
+# Do ilData.$cols.$add('Country',kCharacter,kSimplechar,50)
+
+If irConference.CF_LOGO_RFO_VALUE<>''
+	Do toValues.$initOrg('IMAGES',irConference.CF_LOGO_RFO_VALUE) Returns irLogoConference
+End If
+Do toValues.$initOrg('IMAGES','LOGO_INV_JPEG') Returns irLogoCompany
+
+Do ilData.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0)
+
+# now convert ilPreparation to ilData
+
+# and now the printing loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

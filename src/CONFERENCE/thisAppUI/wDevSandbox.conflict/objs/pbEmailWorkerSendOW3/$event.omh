@@ -1,0 +1,53 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# prepare some data for the message text
+	Calculate lcTo as 'mostyn@platformis.net'
+	Do $defineList(llConferences,'CONFERENCE.tConference')
+	Do llConferences.$fetchIncomplete()
+	Calculate llConferences.$line as 1
+	
+	Do $defineList(llDelegates,'CONFERENCE.tDelegates')
+	Do llDelegates.$addLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL,PSN_COUNTRY')
+	Do llDelegates.$fetchForConference(llConferences.CF_SEQ)
+	Do llDelegates.$search($ref.PSN_SURNAME='Mostyn',1,0,0,0) Returns lbFound
+	
+	Breakpoint
+	# prime the worker with a configuration
+	Do ioSmtpWorker.$primeConfig('TEST1',lcTo,lcText) Returns lbOK
+	# loWorker.irConfig
+	If ioSmtpWorker.icErrors<>''
+		Breakpoint
+	End If
+	If lbOK
+		# assuming the message has text to substitute
+		Do ioSmtpWorker.$messageSubstitute(#NULL,row(llConferences,trGroupOrg,llDelegates)) Returns lbOK
+		If ioSmtpWorker.icErrors<>''
+			Breakpoint
+		End If
+		If lbOK
+			# when email completes we will want to process result here, not in the worker object
+			# 3rd parameter is a fingerprint record that will be passed back to callback method
+			Do ioSmtpWorker.$setCallback($cinst,'$workerEmailCompleted',llDelegates) ## $completed is the default method name to callback on
+			If ioSmtpWorker.icErrors<>''
+				Breakpoint
+			End If
+			
+			# prepare for lift off
+			Do ioSmtpWorker.$initialise() Returns lbOK
+			If ioSmtpWorker.icErrors<>''
+				Breakpoint
+			End If
+			If not(lbOK)
+				Breakpoint
+			End If
+			
+			# fire the worker off
+			Calculate lbRunOnCurrentThread as kFalse
+			If lbRunOnCurrentThread
+				Do ioSmtpWorker.$run() Returns lbOK
+			Else
+				Do ioSmtpWorker.$start() Returns lbOK
+			End If
+		End If
+	Else
+		Breakpoint
+	End If

@@ -1,0 +1,6 @@
+If mod(#P,2)=1
+	# then its the first page of 2 page layout
+	Do default
+Else
+	# its the back page with instructions so skip page heading
+End If

@@ -91,8 +91,8 @@
 			"visible": true
 		},
 		"768": {
-			"left": 8,
-			"top": 2216,
+			"left": 160,
+			"top": 2264,
 			"width": 120,
 			"height": 16,
 			"align": "kLeftJst",
@@ -102,7 +102,7 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 384,
+			"left": 440,
 			"top": 1456,
 			"width": 120,
 			"height": 16,
@@ -113,7 +113,7 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 256,
+			"left": 368,
 			"top": 792,
 			"width": 120,
 			"height": 16,

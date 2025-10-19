@@ -1,0 +1,18 @@
+If $cinst.PER_SU
+	Calculate lcSuperUser as ' su '
+	Calculate lbAppend as kTrue
+End If
+
+If pcHowMuch='F' ## full description
+	If lbAppend
+		Calculate $cinst.DisplayName as con($cinst.PER_DESC_EN,' (',$cinst.PER_LABEL,lcSuperUser,')')
+	Else
+		Calculate $cinst.DisplayName as con($cinst.PER_DESC_EN,' (',$cinst.PER_LABEL,')')
+	End If
+	
+Else If pcHowMuch='E' ## enhanced description
+	Calculate $cinst.DisplayName as con($cinst.PER_DESC_EN,' (',$cinst.PER_LABEL,')')
+	
+Else
+	Calculate $cinst.DisplayName as con($cinst.PER_DESC_EN)
+End If

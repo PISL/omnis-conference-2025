@@ -1,9 +1,9 @@
 {
 	"classtype": "kSchema",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 11,
-	"nextident": 32158,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 12,
+	"nextident": 32160,
 	"properties": {
 		"componenticon": 0,
 		"componentinfo": {
@@ -16,7 +16,7 @@
 		"editor": "",
 		"editordata": "",
 		"external": true,
-		"moddate": "2023-03-13 16:08:51",
+		"moddate": "2025-10-05 22:27:39",
 		"servertablename": "conf.conference",
 		"showascheckedout": false,
 		"userinfo": "Copyright © 1999-2012 Platform Independent Systems Limited, registered company number 3155091, UK",

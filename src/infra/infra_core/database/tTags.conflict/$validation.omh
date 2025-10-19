@@ -1,0 +1,30 @@
+Calculate icValidationMessage as ''
+Do ilValidation.$clear()
+
+If $cinst.TAG_TABLE_PREFIX<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'TAG_TABLE_PREFIX missing')
+	Do ilValidation.$add('TAG_TABLE_PREFIX_LBL','VAL_MISSING','TAG_TABLE_PREFIX missing',0)
+End If
+
+If $cinst.TAG_PK<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'TAG_PK missing')
+	Do ilValidation.$add('TAG_PK_LBL','VAL_MISSING','TAG_PK missing',0)
+End If
+
+If $cinst.TAG_VALUE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'TAG_VALUE missing')
+	Do ilValidation.$add('TAG_VALUE_LBL','VAL_MISSING','TAG_VALUE missing',0)
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

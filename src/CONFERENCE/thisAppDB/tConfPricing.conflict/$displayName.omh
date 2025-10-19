@@ -1,0 +1,7 @@
+If pnFormat=1
+	Calculate $cinst.DisplayName as $cinst.CFP_NAME
+	
+Else If pnFormat=2
+	Calculate $cinst.DisplayName as con($cinst.CF_TITLE,': ',$cinst.CFP_NAME)
+	
+End If

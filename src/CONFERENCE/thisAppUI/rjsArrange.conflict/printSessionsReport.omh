@@ -1,0 +1,73 @@
+Begin reversible block
+	Calculate iAuthor as 'Platform Independent Systems Ltd'
+	Calculate iTitle as 'Sessions report'
+	Calculate iSubject as ''
+	Calculate ilInvoices.$line as 1
+End reversible block
+
+Calculate inCurrentTab as cnTabDisplayPDF
+
+Do $DefineList(lrSpeakers,'tArrangements')
+# Do lrSpeakers.$reportArrangementBookings(ilSearch1.CF_SEQ) Returns llDataRaw
+Do lrSpeakers.$reportArrangementCount(ilSearch1.CF_SEQ) Returns llDataRaw
+# PG / Omnis internal mismatch - required to bring dates and times into line with Omnis
+# If we don't do this then the $search method doesn't work !
+Do llDataRaw.$sendall($ref.ARR_STARTTIME.$assign(tim(llDataRaw.ARR_STARTTIME)))
+Do llDataRaw.$sendall($ref.ARR_DATE.$assign(dat(llDataRaw.ARR_DATE)))
+
+If ilSearch2.PSN_SEQ>0
+	# subset is speaker specific
+	Do llDataRaw.$search($ref.PSN_SEQ=ilSearch2.PSN_SEQ,1,0,1,0)
+	Do llDataRaw.$remove(kListKeepSelected)
+	Do llDataRaw.$search(0)
+	
+	Calculate lbFormatSpeaker as kTrue
+Else If ilSearch2.ARR_DAYNO>0&ilSearch2.ARR_STARTTIME>tim('00:00')
+	# subset by day number and time
+	If pos(' AM',ilSearch2.DisplayDate)
+		Do llDataRaw.$search($ref.ARR_DAYNO=ilSearch2.ARR_DAYNO&$ref.ARR_STARTTIME<tim('12:00'),1,0,1,0)
+	Else If pos(' PM',ilSearch2.DisplayDate)
+		Do llDataRaw.$search($ref.ARR_DAYNO=ilSearch2.ARR_DAYNO&$ref.ARR_STARTTIME>=tim('12:00')&ref.ARR_STARTTIME<tim('17:00'),1,0,1,0)
+	Else If pos(' EVE',ilSearch2.DisplayDate)
+		Do llDataRaw.$search($ref.ARR_DAYNO=ilSearch2.ARR_DAYNO&$ref.ARR_STARTTIME>=tim('17:00'),1,0,1,0)
+	End If
+	Do llDataRaw.$remove(kListKeepSelected)
+	Do llDataRaw.$search(0)
+Else If ilSearch2.ARR_DAYNO>0
+	# subset by day number
+	Do llDataRaw.$search($ref.ARR_DAYNO=ilSearch2.ARR_DAYNO,1,0,1,0)
+	Do llDataRaw.$remove(kListKeepSelected)
+	Do llDataRaw.$search(0)
+Else If ilSearch2.ARR_DATE>dat('1 JAN 2010')&ilSearch2.ARR_STARTTIME>tim('00:00')
+	# subset by date
+	If pos(' AM',ilSearch2.DisplayDate)
+		Do llDataRaw.$search($ref.ARR_DATE=ilSearch2.ARR_DATE&$ref.ARR_STARTTIME<tim('12:00'),1,0,1,0)
+	Else If pos(' PM',ilSearch2.DisplayDate)
+		Do llDataRaw.$search($ref.ARR_DATE=ilSearch2.ARR_DATE&$ref.ARR_STARTTIME>=tim('12:00')&ref.ARR_STARTTIME<tim('17:00'),1,0,1,0)
+	Else If pos(' EVE',ilSearch2.DisplayDate)
+		Do llDataRaw.$search($ref.ARR_DATE=ilSearch2.ARR_DATE&$ref.ARR_STARTTIME>=tim('17:00'),1,0,1,0)
+	End If
+	Do llDataRaw.$remove(kListKeepSelected)
+	Do llDataRaw.$search(0)
+Else If ilSearch2.ARR_DATE>dat('1 JAN 2010')
+	# subset by date
+	Do llDataRaw.$search($ref.ARR_DATE=ilSearch2.ARR_DATE,1,0,1,0)
+	Do llDataRaw.$remove(kListKeepSelected)
+	Do llDataRaw.$search(0)
+End If
+Do llDataRaw.$sort($ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0,$ref.SpeakerSort,0)
+
+Calculate lcdevice as $cdevice.$ident ## store current print destination
+Do $cdevice.$assign(kDevOmnisPDF)
+Do Omnis PDF Device.$settemp(kTrue,1) Returns lID
+Do Omnis PDF Device.$setdocinfo(iAuthor,iTitle,iSubject) Returns #F
+# Do $clib.$reports.rpSpeakers.$open('*',ilSearch1,,ilDisplayRecords) Returns lReportInst
+If lbFormatSpeaker
+	Do $clib.$reports.rpArrangementBookingsSpeaker.$open('*',ilSearch1,llDataRaw) Returns lReportInst
+Else
+	Do $clib.$reports.rpArrangementBookingsDate.$open('*',ilSearch1,llDataRaw) Returns lReportInst
+End If
+Do lReportInst.$endprint()
+Do $cdevice.$assign(lcdevice) ## restore print destination
+
+Do $cinst.$clientcommand("showpdf",row(lID))

@@ -9,6 +9,7 @@
 		"active": true,
 		"align": "kLeftJst",
 		"allowjsdraganddrop": false,
+		"allowscrollzoom": false,
 		"alpha": 255,
 		"applycss": false,
 		"backalpha": 255,

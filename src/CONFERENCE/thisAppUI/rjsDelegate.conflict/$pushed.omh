@@ -1,0 +1,28 @@
+Send to trace log colcount=[pRow.$colcount]
+
+If pRow.$colcount=1
+	# $pdfcomplete  EMAIL_INVOICE_OW3                         Do $cinst.$pushdata(row(prJob))
+	
+	
+Else If pRow.$colcount=2
+	# $emailcompleted              Do $cinst.$pushdata(presultSMTP,lrPush)
+	
+Else If pRow.$colcount=3
+	Calculate lrJob as pRow.C1
+	If lrJob.instruction='DOWNL_INVOICE'
+		#  row(prJob  , iFiles , irEmailConfig)
+		Calculate $cinst.$objs.pbDownloadFile.$visible as pRow.C2.$linecount>0
+		
+	Else If lrJob.instruction='SHOWPDF'
+		#  row(prJob  , iFiles , irEmailConfig)
+		
+	Else
+		# $pdfcomplete     Default
+		# row(prJob , pcPDFid , pcFilePath , prResult)
+		
+	End If
+	
+	
+	
+	
+End If

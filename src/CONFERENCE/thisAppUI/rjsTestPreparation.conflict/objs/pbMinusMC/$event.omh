@@ -1,0 +1,4 @@
+On evClick
+	Do ilMultipleChoiceOptions.$remove(ilMultipleChoiceOptions.$line)
+	Calculate ilMultipleChoiceOptions.$line as 0
+	Do $cinst.$behaviour()

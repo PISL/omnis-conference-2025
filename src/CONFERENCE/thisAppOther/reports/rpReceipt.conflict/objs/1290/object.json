@@ -1,0 +1,31 @@
+{
+	"ident": 1290,
+	"order": 14,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kBold",
+		"height": -1,
+		"left": 0.493,
+		"lineno": 8,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "Invoice no:",
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"visible": true,
+		"width": 3.068
+	}
+}

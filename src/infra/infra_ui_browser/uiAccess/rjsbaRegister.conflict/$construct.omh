@@ -1,0 +1,34 @@
+Do inherited
+Calculate irParameters as trParameters
+
+
+# Enter your initialization code here
+Do $DefineList(irCurrentRecord,'infra.tentGroupOrganisations')
+Do irCurrentRecord.$cols.$add('MECID',kCharacter,kSimplechar,20)
+Do irCurrentRecord.$cols.$add('email',kCharacter,kSimplechar,100)
+Do irCurrentRecord.$cols.$add('address',kCharacter,kSimplechar,255)
+Do irCurrentRecord.$cols.$add('postcode',kCharacter,kSimplechar,20)
+Do irCurrentRecord.$cols.$add('countryCode',kCharacter,kSimplechar,3)
+Do irCurrentRecord.$cols.$add('isShop',kInteger,kShortint)
+Calculate irCurrentRecord.MECID as con(mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),1,4),'-',mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),5,4),'-',mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),9,4),'-',mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),13,4))
+
+Do $DefineList(irCurrentOrgName,'infra.tentGroupOrgNames')
+
+Do toValues.$ReturnCountries() Returns ilCountries
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate $cinst.icFormHeading as $cell(clLabels,'objName','GO_Heading','label')
+Calculate $cinst.$objs.icFormHeading.$tooltip as $cell(clLabels,'objName','GO_Intro','label')
+
+Do method UserPermissions
+
+Calculate inCurrentForm as 1
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentForm
+
+# we need to put this here so that we do not display the menu from the previous form
+Do $cinst.$container().$initToolsMenu('') Returns llMenuCommands ## pass empty string because we do not need the default IED values
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Calculate icMode as 'I'
+Do $cinst.$behaviour()

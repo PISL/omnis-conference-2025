@@ -5,11 +5,11 @@ On evLayoutChanged
 	
 	Switch inBreakpoint
 		Case 320,375
-			Calculate $cinst.$objs.rg_Feedback.$columncount as 3 ## horizontally beneath ilFeedback
-			Calculate $cinst.$objs.rg_inSlot.$columncount as 2
+			# Calculate $cinst.$objs.rg_Feedback.$columncount as 3 ## horizontally beneath ilFeedback
+			# Calculate $cinst.$objs.rg_inSlot.$columncount as 2
 			
 		Default
-			Calculate $cinst.$objs.rg_Feedback.$columncount as 1 ## vertically to the right of ilFeedback
-			Calculate $cinst.$objs.rg_inSlot.$columncount as 1
+			# Calculate $cinst.$objs.rg_Feedback.$columncount as 1 ## vertically to the right of ilFeedback
+			# Calculate $cinst.$objs.rg_inSlot.$columncount as 1
 			
 	End Switch

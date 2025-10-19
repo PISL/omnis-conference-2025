@@ -1,8 +1,8 @@
 {
 	"classtype": "kTable",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 18,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 35,
 	"superclass": "tMaster",
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
@@ -38,7 +38,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2023-08-22 14:05:36",
+		"moddate": "2025-10-02 17:15:15",
 		"showascheckedout": false,
 		"sqlclassname": "sEmailText",
 		"userinfo": "",

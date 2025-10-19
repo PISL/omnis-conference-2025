@@ -1,0 +1,21 @@
+Calculate icSummaryGlobal as ''
+Calculate icSummaryLocal as ''
+Calculate icSummaryOrg as ''
+Calculate icSummaryUser as ''
+Calculate icSummaryAll as ''
+
+Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 1
+Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 0
+Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 2
+Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 0
+Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 3
+Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 0
+Calculate $cinst.$objs.TabPaneOtherRefTables.$currenttab as 4
+Calculate $cinst.$objs.TabPaneOtherRefTables.$tabiconid as 0
+
+Do $cinst.$objs.TabPaneOtherRefTables.$showpane(1,kFalse)
+Do $cinst.$objs.TabPaneOtherRefTables.$showpane(2,kFalse)
+Do $cinst.$objs.TabPaneOtherRefTables.$showpane(3,kFalse)
+Do $cinst.$objs.TabPaneOtherRefTables.$showpane(4,kFalse)
+
+Calculate $cinst.$objs.TabPaneOtherRefTables.$visible as kFalse

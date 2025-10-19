@@ -20,7 +20,7 @@
 		"contextmenu": "",
 		"cssclassname": "",
 		"dataname": "irCurrentRecord.ARR_BOOKING_REQD",
-		"defaultinactiveappearance": true,
+		"defaultinactiveappearance": false,
 		"desgroup": 0,
 		"designactive": true,
 		"deslock": false,
@@ -41,9 +41,9 @@
 		"removefromtaborder": false,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
-		"text": "required",
+		"text": "booking required",
 		"textcolor": "kColorDefault",
-		"tooltip": "",
+		"tooltip": "bookings for this session are required",
 		"userinfo": "",
 		"visible": true
 	},
@@ -61,7 +61,7 @@
 		"375": {
 			"left": 16,
 			"top": 600,
-			"width": 88,
+			"width": 104,
 			"height": 32,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -71,7 +71,7 @@
 		"480": {
 			"left": 16,
 			"top": 616,
-			"width": 144,
+			"width": 152,
 			"height": 32,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -81,7 +81,7 @@
 		"667": {
 			"left": 48,
 			"top": 536,
-			"width": 160,
+			"width": 168,
 			"height": 25,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -91,7 +91,7 @@
 		"768": {
 			"left": 48,
 			"top": 456,
-			"width": 160,
+			"width": 224,
 			"height": 25,
 			"dragborder": false,
 			"edgefloat": "kEFnone",

@@ -1,9 +1,13 @@
 On evClick
-	If inCurrentTab=cnTabDelegate
+	If inCurrentTab=cnTabDGPerson
 		Do method $displayListClick
 		
-	Else If inCurrentTab=cnTabTopics
+	Else If inCurrentTab=cnTabTopicsConf
 		Do method FetchAndPresentTopics
+		
+	Else If inCurrentTab=cnTabTopicEditor
+		# Do method $displayListClick
+		# Do method $displayListClick
 		
 	End If
 	

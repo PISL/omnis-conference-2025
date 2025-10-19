@@ -5,6 +5,7 @@
 	"componentlib": "jsNavMenu",
 	"componentctrl": "Navigation Menu Object",
 	"properties": {
+		"::iconcolor": "kColorDefault",
 		"active": true,
 		"alpha": 255,
 		"ariadescribedby": "",
@@ -16,6 +17,7 @@
 		"borderedges": "kNavMenuSideNone",
 		"borderradius": "0",
 		"borderwidth": 1,
+		"cascadeiconcolor": "kColorDefault",
 		"closeboxiconid": "k16x16+3009",
 		"componentinfo": {
 

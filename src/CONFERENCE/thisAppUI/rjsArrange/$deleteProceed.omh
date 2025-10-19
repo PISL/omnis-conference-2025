@@ -1,0 +1,87 @@
+# store local copy of row to be deleted
+Calculate lrDeleted as irCurrentRecord
+
+Do inherited
+
+# irCurrentRecord has been cleared now, after $delete, and removed from ilDisplayList
+# Do we have a row from one of the lists to remove?
+
+# DAY 1
+Do ilDay1AM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay1AM.$remove(ilDay1AM.$line)
+End If
+
+Do ilDay1PM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay1PM.$remove(ilDay1PM.$line)
+End If
+
+Do ilDay1EVE.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay1EVE.$remove(ilDay1EVE.$line)
+End If
+
+# DAY2
+Do ilDay2AM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay2AM.$remove(ilDay2AM.$line)
+End If
+
+Do ilDay2PM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay2PM.$remove(ilDay2PM.$line)
+End If
+
+Do ilDay2EVE.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay2EVE.$remove(ilDay2EVE.$line)
+End If
+
+# DAY 3
+Do ilDay3AM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay3AM.$remove(ilDay3AM.$line)
+End If
+
+Do ilDay3PM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay3PM.$remove(ilDay3PM.$line)
+End If
+
+Do ilDay3EVE.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay3EVE.$remove(ilDay3EVE.$line)
+End If
+
+# DAY 4
+Do ilDay4AM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay4AM.$remove(ilDay4AM.$line)
+End If
+
+Do ilDay4PM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay4PM.$remove(ilDay4PM.$line)
+End If
+
+Do ilDay4EVE.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay4EVE.$remove(ilDay4EVE.$line)
+End If
+
+# DAY 5
+Do ilDay5AM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay5AM.$remove(ilDay5AM.$line)
+End If
+
+Do ilDay5PM.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay5PM.$remove(ilDay5PM.$line)
+End If
+
+Do ilDay5EVE.$search($ref.ARR_SEQ=lrDeleted.ARR_SEQ,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilDay5EVE.$remove(ilDay5EVE.$line)
+End If

@@ -1,0 +1,4 @@
+# Enter your initialization code here
+Do $DefineList(ilParentTagsOrig,'infra.tTags')
+Do toValues.$initInherited('') Returns ilTagsAll
+Calculate irSpecialTag as ilParentTagsOrig

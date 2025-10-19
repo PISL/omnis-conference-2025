@@ -6,6 +6,11 @@ If pRow.$colcount=1
 	
 Else If pRow.$colcount=2
 	# $emailcompleted              Do $cinst.$pushdata(presultSMTP,lrPush)
+	If pRow.C1='$emailSendError'
+		Calculate $cinst.$objs.splitButtonWorkflow.$errortext as pRow.C2
+	Else If pRow.C1='emailSuccess'
+		Calculate irCurrentRecord as pRow.C2
+	End If
 	
 Else If pRow.$colcount=3
 	Calculate lrJob as pRow.C1

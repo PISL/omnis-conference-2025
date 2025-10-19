@@ -1,0 +1,13 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	If ilCities.$line>0
+		Do ilConferences.$search($ref.VEN_TOWN=ilCities.VEN_TOWN,1,0,1,0)
+		Do ilConferences.$remove(kListKeepSelected)
+		Do ilConferences.$search(0)
+		Calculate ilConferences.$line as 1
+		
+		Calculate $cinst.$objs.PagedPane.$currentpage as 1
+	Else
+		Calculate icDisplayMessage as 'You must select a city before proceeding to Registration page.'
+	End If
+	Do $cinst.$behaviour()

@@ -1,0 +1,12 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('psn_insert','canInsertPerson')
+Do llPrivsUsedInThisForm.$add('psn_update','canUpdatePerson')
+Do llPrivsUsedInThisForm.$add('psn_delete','canDeletePerson')
+
+Do llPrivsUsedInThisForm.$add('tpc_insert','canInsertTopic')
+Do llPrivsUsedInThisForm.$add('tpc_update','canUpdateTopic')
+Do llPrivsUsedInThisForm.$add('tpc_delete','canDeleteTopic')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

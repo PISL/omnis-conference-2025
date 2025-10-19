@@ -1,0 +1,6 @@
+On evClick
+	Calculate ilDayDisplay as ilDay2
+	Calculate inDayHighlight as 2
+	Do method setDayHighlight
+	Do method setGridExceptions
+	Do $cinst.$behaviour()

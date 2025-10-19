@@ -1,0 +1,133 @@
+[
+	{
+		"name": "$event",
+		"order": 1,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lbChangeOfState",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbFound",
+				"order": 9,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbInsert",
+				"order": 8,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 14,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lcObjName",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "ldtEndAM",
+				"order": 11,
+				"type": "kDate",
+				"subtype": "kTime",
+				"sublen": 0,
+				"initval": "tim('12:00')"
+			},
+			{
+				"name": "ldtEndEvening",
+				"order": 16,
+				"type": "kDate",
+				"subtype": "kTime",
+				"sublen": 0,
+				"initval": "tim('22:30')"
+			},
+			{
+				"name": "ldtEndPM",
+				"order": 13,
+				"type": "kDate",
+				"subtype": "kTime",
+				"sublen": 0,
+				"initval": "tim('17:00')"
+			},
+			{
+				"name": "ldtStartAM",
+				"order": 10,
+				"type": "kDate",
+				"subtype": "kTime",
+				"sublen": 0,
+				"initval": "tim('09:00')"
+			},
+			{
+				"name": "ldtStartEvening",
+				"order": 15,
+				"type": "kDate",
+				"subtype": "kTime",
+				"sublen": 0,
+				"initval": "tim('19:30')"
+			},
+			{
+				"name": "ldtStartPM",
+				"order": 12,
+				"type": "kDate",
+				"subtype": "kTime",
+				"sublen": 0,
+				"initval": "tim('14:00')"
+			},
+			{
+				"name": "lrArrangement",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConference",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sConference",
+				"sublen": 0
+			},
+			{
+				"name": "lrLinkTopicPerson",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrPerson",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrTopic",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "sTopics",
+				"sublen": 0
+			}
+		]
+	}
+]

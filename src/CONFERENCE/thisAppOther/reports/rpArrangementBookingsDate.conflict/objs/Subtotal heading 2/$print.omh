@@ -1,0 +1,7 @@
+If ibDateDisplayed
+	# do not print
+	Calculate $cinst.$objs.1189.$text as ''
+Else
+	Calculate $cinst.$objs.1189.$text as '==========='
+End If
+Do default

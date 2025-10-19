@@ -1,6 +1,6 @@
 {
 	"ident": 1026,
-	"order": 31,
+	"order": 27,
 	"objtype": "kComponent",
 	"componentlib": "jsBack",
 	"componentctrl": "Background Control",
@@ -11,7 +11,7 @@
 		"backalpha": 0,
 		"backcolor": "RGB(255,255,255)",
 		"backpattern": 0,
-		"bordercolor": "RGB(16,3,0)",
+		"bordercolor": "kColorDefault",
 		"componentinfo": {
 
 		},

@@ -63,7 +63,7 @@
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
@@ -74,7 +74,7 @@
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
@@ -85,7 +85,7 @@
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
@@ -96,7 +96,7 @@
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
@@ -107,29 +107,29 @@
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
 		"1024": {
 			"left": 112,
-			"top": 80,
+			"top": 64,
 			"width": 16,
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
 		"1700": {
 			"left": 112,
-			"top": 112,
+			"top": 56,
 			"width": 16,
 			"height": 16,
 			"align": "kCenterJst",
 			"dragborder": false,
-			"edgefloat": "kEFtopBottom",
+			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		}

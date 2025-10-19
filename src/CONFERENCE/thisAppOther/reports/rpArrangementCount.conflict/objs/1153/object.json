@@ -1,0 +1,35 @@
+{
+	"ident": 1153,
+	"order": 9,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportSmall",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 10,
+		"fontstyle": "kPlain",
+		"height": -1,
+		"left": 0.493,
+		"lineno": 5,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "speaker & topic"
+		},
+		"textcolor": "RGB(8,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 3.386
+	}
+}

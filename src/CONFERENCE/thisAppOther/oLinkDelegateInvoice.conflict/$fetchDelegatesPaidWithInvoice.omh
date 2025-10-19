@@ -1,0 +1,5 @@
+Do $DefineList(llLink,'tDelegateInvoiceLinks')
+Do llLink.$AddLinkedCols('DG_PSN_REF,DG_REG_DATE,DG_STATUS')
+Do llLink.$AddLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL')
+Do llLink.$fetch_fk(pnFOH_SEQ,'DIL_FOH_REF')
+Quit method llLink

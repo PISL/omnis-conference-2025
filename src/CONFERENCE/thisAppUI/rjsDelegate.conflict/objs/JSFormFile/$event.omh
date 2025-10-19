@@ -1,0 +1,26 @@
+# On evFileUploaded
+# Do iJSFileRow.$loadcols()
+
+# Do iJSMimeList.$search(low(iJSMimeList.name)='content-disposition',kTrue,kFalse,kFalse,kFalse)
+# If iJSMimeList.$line>0
+# Calculate lValue as iJSMimeList.value
+# While len(lValue)
+# Calculate lString as strtok('lValue',";")
+# Calculate lString as trim(lString) ## strip leading and trailing spaces
+# If mid(low(lString),1,8)='filename'
+# Calculate lFileName as strtok('lString',chr(34))
+# Calculate lFileName as strtok('lString',chr(34))
+# Break to end of loop
+# End If
+# End While
+
+# Do iFiles.$add(lFileName,binlength(tJSFileBinData),tJSFileBinData)
+# Do iFiles.$line.$assign(iFiles.$linecount)
+# End If
+
+On evDownloadSent
+	# for multiple files, download next file in list
+	Do iFiles.$next(iFileLineRef,kTrue,kFalse) Returns iFileLineRef
+	If iFileLineRef
+		Do method downloadFile
+	End If

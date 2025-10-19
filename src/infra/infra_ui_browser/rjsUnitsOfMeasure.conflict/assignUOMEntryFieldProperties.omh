@@ -1,0 +1,35 @@
+Calculate $cinst.$objs.UOM_CODE.$linestyle as lnlinestyle
+Calculate $cinst.$objs.UOM_CODE.$bordercolor as lnbordercolour
+Calculate $cinst.$objs.UOM_CODE.$effect as lneffect
+Calculate $cinst.$objs.UOM_CODE.$backcolor as lnUnique
+Calculate $cinst.$objs.UOM_CODE.$backalpha as pick(icMode<>"I",255,0)
+
+If icMode='E'|icMode='I'
+	Calculate lnlinestyle as 2
+	Calculate lrFieldAttributes as OJSON.$jsontolistorrow(trFormColours.FIELDCOLOURS)
+	Calculate lnbordercolour as eval(lrFieldAttributes.mandatory)
+	Calculate lneffect as kJSborderPlain
+	Calculate lnEnterable as eval(lrFieldAttributes.enterable)
+	Calculate lnUnique as eval(lrFieldAttributes.unique)
+End If
+
+If icMode='I' ## reset if we are inserting
+	Calculate $cinst.$objs.UOM_CODE.$linestyle as lnlinestyle
+	Calculate $cinst.$objs.UOM_CODE.$bordercolor as lnbordercolour
+	Calculate $cinst.$objs.UOM_CODE.$effect as lneffect
+	Calculate $cinst.$objs.UOM_CODE.$backcolor as lnUnique
+End If
+
+Calculate $cinst.$objs.UOM_DESC_EN.$linestyle as lnlinestyle
+Calculate $cinst.$objs.UOM_DESC_EN.$bordercolor as lnbordercolour
+Calculate $cinst.$objs.UOM_DESC_EN.$effect as lneffect
+Calculate $cinst.$objs.UOM_DESC_EN.$backcolor as lnEnterable
+Calculate $cinst.$objs.UOM_DESC_EN.$backalpha as pick(icMode<>"I"&icMode<>"E",255,0)
+
+
+
+Calculate $cinst.$objs.UOM_GROUP.$linestyle as lnlinestyle
+Calculate $cinst.$objs.UOM_GROUP.$bordercolor as lnbordercolour
+Calculate $cinst.$objs.UOM_GROUP.$effect as lneffect
+Calculate $cinst.$objs.UOM_GROUP.$backcolor as lnEnterable
+Calculate $cinst.$objs.UOM_GROUP.$backalpha as pick(icMode<>"I"&icMode<>"E",255,0)

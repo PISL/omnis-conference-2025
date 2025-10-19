@@ -3,18 +3,28 @@ Calculate icConfigToText as ''
 Calculate idtEmailError as #NULL
 Do irEmailError.$clear()
 Do ilAsyncEmailQueue.$clear()
+Do irLangText.$clear()
+Calculate irLangTextOrig as irLangText
 
-Calculate $cinst.$objs.pbTextLangDelete.$errortext as ''
+Do $cinst.$clientcommand('clearerrors')
 Do ilSelectLangChoose.$clear()
 
 Calculate irCurrentRecord as ilDisplayRecords
 If pbNoLanguageRefresh
 	# this is updating screen after edit.  If the language text has been edited we want to leave the ilLnaguages list in tact.
 	# do not refresh
+	Calculate irLangText as ilLanguages ## irLangText cleared line 6
+	Calculate irLangTextOrig as irLangText
 Else
 	Do irCurrentRecord.$fetchAllText() Returns ilLanguages
+	# ilLanguages was defined from a table class
+	# We cannot use $smartlist because it is used on client
+	# so we will maintain our own insert/edit status for subsequent handling in $saveData
+	Do ilLanguages.$cols.$add('modified',kBoolean)
 	Calculate ilLanguagesOriginal as ilLanguages ## used to replenish display on cancel
-	Calculate ilLanguages.$smartlist as kTrue ## for $dowork()
+	
+	Calculate irLangText as ilLanguages
+	Calculate irLangTextOrig as irLangText
 End If
 Do method jsonToLists (irCurrentRecord)
 

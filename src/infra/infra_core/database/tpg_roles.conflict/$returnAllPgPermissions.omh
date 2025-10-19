@@ -1,0 +1,219 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callInsert(llResult,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcUsername),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+If $cinst.$sessionobject.$damname='PGSQLDAM'
+	# code copied from   https://stackoverflow.com/questions/40759177/postgresql-show-all-the-privileges-for-a-concrete-user
+	# Calculate lcClauseThatOmnisHasDifficultyWith as "UNNEST(COALESCE(relacl::text[], FORMAT('{%s=arwdDxt/%s}', rolname, rolname)::text[)) acl, "
+	
+	Begin statement
+	Sta:WITH server_permissions AS (
+	Sta:        SELECT 
+	Sta:            r.rolname, 
+	Sta:            'Server_Permissions' AS "Level", 
+	Sta:            r.rolsuper, 
+	Sta:            r.rolinherit,
+	Sta:            r.rolcreaterole, 
+	Sta:            r.rolcreatedb, 
+	Sta:            r.rolcanlogin,
+	Sta:            ARRAY(
+	Sta:                SELECT b.rolname
+	Sta:                FROM pg_catalog.pg_auth_members m
+	Sta:                JOIN pg_catalog.pg_roles b ON m.roleid = b.oid
+	Sta:                WHERE m.member = r.oid
+	Sta:            ) AS memberof,
+	Sta:            r.rolbypassrls
+	Sta:        FROM pg_catalog.pg_roles r
+	Sta:        WHERE r.rolname !~ '^pg_'
+	Sta:    ),
+	Sta:
+	Sta:    db_ownership AS (
+	Sta:        SELECT 
+	Sta:            r.rolname, 
+	Sta:            'DB_Ownership' AS "Level", 
+	Sta:            d.datname
+	Sta:        FROM pg_catalog.pg_database d, pg_catalog.pg_roles r
+	Sta:        WHERE d.datdba = r.oid
+	Sta:    ),
+	Sta:
+	Sta:    schema_permissions AS (
+	Sta:        SELECT
+	Sta:            'Schema Permissions' AS "Level",
+	Sta:            r.rolname AS role_name,
+	Sta:            nspname AS schema_name,
+	Sta:            pg_catalog.has_schema_privilege(r.rolname, nspname, 'CREATE') AS create_grant,
+	Sta:            pg_catalog.has_schema_privilege(r.rolname, nspname, 'USAGE') AS usage_grant
+	Sta:        FROM pg_namespace pn, pg_catalog.pg_roles r
+	Sta:        WHERE array_to_string(nspacl, ',') LIKE '%' || r.rolname || '%' 
+	Sta:              AND nspowner > 1
+	Sta:    ),
+	Sta:
+	Sta:    table_ownership AS (
+	Sta:        SELECT 
+	Sta:            'Table Ownership' AS "Level",
+	Sta:            tableowner, 
+	Sta:            schemaname, 
+	Sta:            tablename
+	Sta:        FROM pg_tables
+	Sta:        GROUP BY tableowner, schemaname, tablename
+	Sta:    ),
+	Sta:
+	Sta:    object_permissions AS (
+	Sta:        SELECT  
+	Sta:            'Object Permissions' AS "Level",
+	# We have to excape s[1] to s[[1] for Omnis not to mess things up
+	Sta:            COALESCE(NULLIF(s[[1], ''), 'public') AS rolname,
+	Sta:            n.nspname,
+	Sta:            relname, 
+	Sta:            CASE 
+	Sta:                WHEN relkind = 'm' THEN 'Materialized View'
+	Sta:                WHEN relkind = 'p' THEN 'Partitioned Table'
+	Sta:                WHEN relkind = 'S' THEN 'Sequence'
+	Sta:                WHEN relkind = 'I' THEN 'Partitioned Index'
+	Sta:                WHEN relkind = 'v' THEN 'View'
+	Sta:                WHEN relkind = 'i' THEN 'Index'
+	Sta:                WHEN relkind = 'c' THEN 'Composite Type'
+	Sta:                WHEN relkind = 't' THEN 'TOAST table'
+	Sta:                WHEN relkind = 'r' THEN 'Table'
+	Sta:                WHEN relkind = 'f' THEN 'Foreign Table'
+	Sta:            END AS "Object Type",
+	# We have to excape s[2] to s[[2] for Omnis not to mess things up
+	Sta:            s[[2] AS privileges
+	Sta:        FROM
+	Sta:            pg_class c
+	Sta:            JOIN pg_namespace n ON n.oid = relnamespace
+	Sta:            JOIN pg_roles r ON r.oid = relowner,
+	# We have to excape text[] to text[[] for Omnis not to mess things up - twice in this line
+	Sta:            UNNEST(COALESCE(relacl::text[[], FORMAT('{%s=arwdDxt/%s}', rolname, rolname)::text[[])) acl,
+	Sta:            REGEXP_SPLIT_TO_ARRAY(acl, '=|/') s 
+	Sta:        WHERE relkind <> 'i' AND relkind <> 't'
+	Sta:    )
+	Sta:
+	Sta:    SELECT 
+	Sta:        "Level", 
+	Sta:        rolname AS "Role", 
+	Sta:        'N/A' AS "Object Name", 
+	Sta:        'N/A' AS "Schema Name", 
+	Sta:        'N/A' AS "DB Name", 
+	Sta:        'N/A' AS "Object Type", 
+	Sta:        'N/A' AS "Privileges", 
+	Sta:        rolsuper::text AS "Is SuperUser", 
+	Sta:        rolinherit::text,
+	Sta:        rolcreaterole::text, 
+	Sta:        rolcreatedb::text, 
+	Sta:        rolcanlogin::text,
+	Sta:        memberof::text,
+	Sta:        rolbypassrls::text 
+	Sta:    FROM server_permissions
+	Sta:
+	Sta:    UNION
+	Sta:
+	Sta:    SELECT 
+	Sta:        dow."Level", 
+	Sta:        dow.rolname,
+	Sta:        'N/A',  
+	Sta:        'N/A', 
+	Sta:        datname,
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A'
+	Sta:    FROM db_ownership AS dow 
+	Sta:
+	Sta:    UNION
+	Sta:
+	Sta:    SELECT
+	Sta:        "Level", 
+	Sta:        role_name, 
+	Sta:        'N/A', 
+	Sta:        schema_name, 
+	Sta:        'N/A', 
+	Sta:        'N/A',
+	Sta:        CASE 
+	Sta:            WHEN create_grant IS TRUE AND usage_grant IS TRUE THEN 'Usage+Create' 
+	Sta:            WHEN create_grant IS TRUE AND usage_grant IS FALSE THEN 'Create' 
+	Sta:            WHEN create_grant IS FALSE AND usage_grant IS TRUE THEN 'Usage' 
+	Sta:            ELSE 'None' 
+	Sta:        END, 
+	Sta:        'N/A', 
+	Sta:        'N/A', 
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A'
+	Sta:    FROM schema_permissions
+	Sta:
+	Sta:    UNION
+	Sta:
+	Sta:    SELECT 
+	Sta:        "Level", 
+	Sta:        tableowner, 
+	Sta:        tablename, 
+	Sta:        schemaname,
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A'
+	Sta:    FROM table_ownership
+	Sta:
+	Sta:    UNION
+	Sta:
+	Sta:    SELECT 
+	Sta:        "Level", 
+	Sta:        rolname, 
+	Sta:        relname,  
+	Sta:        nspname, 
+	Sta:        'N/A', 
+	Sta:        "Object Type", 
+	Sta:        privileges,
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A',
+	Sta:        'N/A'
+	Sta:    FROM object_permissions
+	Sta:    ORDER BY "Role"
+	End statement
+	Do $cinst.$executesqlandfetch(llResult) Returns lbOK
+	
+Else
+	Breakpoint
+End If
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llResult

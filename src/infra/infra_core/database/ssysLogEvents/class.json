@@ -1,7 +1,7 @@
 {
 	"classtype": "kSchema",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
 	"internalversion": 6,
 	"nextident": 32008,
 	"properties": {
@@ -16,7 +16,7 @@
 		"editor": "",
 		"editordata": "",
 		"external": true,
-		"moddate": "2025-05-07 09:41:42",
+		"moddate": "2025-10-14 10:47:55",
 		"servertablename": "infra.syslogevents",
 		"showascheckedout": false,
 		"userinfo": "",

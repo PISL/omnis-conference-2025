@@ -1,0 +1,21 @@
+If pcFormat='CODENAME'
+	If $cinst.PRD_INT_PRODCODE<>''
+		Calculate $cinst.DisplayName as con($cinst.PRD_INT_PRODCODE,' : ',$cinst.PRD_NAME)
+	Else
+		Calculate $cinst.DisplayName as con($cinst.PRD_SUPP_PRODCODE,' > ',$cinst.PRD_NAME)
+	End If
+Else If pcFormat='CODEPRICE'
+	If $cinst.PRD_INT_PRODCODE<>''
+		Calculate $cinst.DisplayName as con($cinst.PRD_INT_PRODCODE,' @ ',$cinst.PID_UNIT_PRICE)
+	Else
+		Calculate $cinst.DisplayName as con($cinst.PRD_SUPP_PRODCODE,' @ ',$cinst.PID_UNIT_PRICE)
+	End If
+	
+Else
+	# just the unique code
+	If $cinst.PRD_INT_PRODCODE<>''
+		Calculate $cinst.DisplayName as con($cinst.PRD_INT_PRODCODE)
+	Else
+		Calculate $cinst.DisplayName as con($cinst.PRD_SUPP_PRODCODE)
+	End If
+End If

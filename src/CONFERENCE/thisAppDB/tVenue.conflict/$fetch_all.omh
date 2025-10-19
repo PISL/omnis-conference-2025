@@ -1,0 +1,1 @@
+Do $cinst.$fetch_(con("where VEN_GO_REF = ",$ctask.trGroupOrg.GO_SEQ))

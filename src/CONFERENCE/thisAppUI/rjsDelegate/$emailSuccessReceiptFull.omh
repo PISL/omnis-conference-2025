@@ -1,0 +1,10 @@
+If prFingerPrint.DG_SEQ>0
+	Do method updateWorkflow (prFingerPrint.DG_SEQ,'DG_PAYMENT_ACK',prFingerPrint) Returns lbOK
+	If lbOK
+		# Do $cinst.$clientcommand('soundbell')
+		# Do $cinst.$clientOkCancelMsg(con("workflow record ",irEmailConfig.elc_code," has been updated"))
+		
+	End If
+Else
+	Breakpoint
+End If

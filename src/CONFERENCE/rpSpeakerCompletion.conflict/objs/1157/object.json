@@ -1,0 +1,58 @@
+{
+	"ident": 1157,
+	"order": 8,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+			"type": [
+				{
+					"name": "group",
+					"order": 1,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "iconid",
+					"order": 2,
+					"type": "kCharacter",
+					"subtype": "kSimplechar",
+					"sublen": 255
+				},
+				{
+					"name": "default",
+					"order": 3,
+					"type": "kBoolean",
+					"subtype": 0,
+					"sublen": 0
+				}
+			],
+			"data": {
+				"group": "Labels",
+				"iconid": "labelobject1+16x16",
+				"default": false
+			}
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 0.457,
+		"left": 0.478,
+		"lineno": 8,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "Dear",
+		"textcolor": "RGB(8,0,0)",
+		"userinfo": "",
+		"visible": true,
+		"width": 1.054
+	}
+}

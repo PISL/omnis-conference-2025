@@ -1,0 +1,30 @@
+Do $cinst.$cols.$findname('PRD_INT_PRODCODE') Returns liColRef
+If liColRef
+	# columns already added
+Else
+	For lnColNo from 1 to lrProducts.$colcount step 1
+		Set reference liColRef to lrProducts.$cols.[lnColNo].$ref
+		Do $cinst.$cols.$add(liColRef.$name,liColRef.$coltype,liColRef.$colsubtype,liColRef.$sublen)
+	End For
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()], [lrProducts.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+Sta:left outer join [lrProducts.$servertablenames()] on ( PRD_INT_PRODCODE = PX_INT_PRODCODE )
+Sta:where PX_DG_REF = @[pnDG_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

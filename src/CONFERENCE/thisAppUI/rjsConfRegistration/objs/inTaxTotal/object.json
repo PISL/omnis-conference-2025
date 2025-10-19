@@ -1,6 +1,6 @@
 {
 	"ident": 1111,
-	"order": 96,
+	"order": 92,
 	"objtype": "kComponent",
 	"componentlib": "jsEdit",
 	"componentctrl": "Edit Control",
@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(238,238,255)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -71,6 +72,8 @@
 		"objlink": 131073,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,

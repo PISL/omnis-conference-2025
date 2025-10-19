@@ -103,7 +103,7 @@
 		},
 		"1024": {
 			"left": 8,
-			"top": 16,
+			"top": 8,
 			"width": 120,
 			"height": 16,
 			"align": "kLeftJst",
@@ -114,7 +114,7 @@
 		},
 		"1700": {
 			"left": 8,
-			"top": 16,
+			"top": 8,
 			"width": 120,
 			"height": 16,
 			"align": "kLeftJst",

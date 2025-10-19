@@ -1,0 +1,5 @@
+On evClick
+	Do method TopicsToText
+	
+	Calculate inCurrentTab as cnTabTextForClipboard
+	Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab

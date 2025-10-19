@@ -1,0 +1,9 @@
+If isclear(pcForm)
+	Do ilPanes.$search($ref.pane=inCurrentTab,1,0,0,0)
+	Calculate pcForm as ilPanes.form
+End If
+
+Set reference lrefSubForm to $cinst.$objs.[pcForm].$subinst
+If lrefSubForm ## this will be null the first time a subform is instantiated
+	Do $cinst.$container().$adjustToolsMenu(lrefSubForm.$getMenuID())
+End If

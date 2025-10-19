@@ -1,0 +1,46 @@
+If icSearch<>''
+	If len(icSearch)>=2
+		If inCurrentTab=cnTabDelegate
+			Do method FetchDisplayList
+		Else If inCurrentTab=cnTabReceipts
+			# we want to fetch into DisplayList but the definitionin $construct expressly excludes a join to PaymentsIn
+			# So we will create a new definition that will be close to ilDisplayList but includes a join to PaymentsIn
+			Do $DefineList(llDisplayListPayments,'tDelegates')
+			Do llDisplayListPayments.$AddLinkedCols("PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY,PSN_EMAIL,PSN_SEX") ## PSN_SEX = 'O' used to hide non-human actor
+			Do llDisplayListPayments.$AddLinkedCols("CF_TITLE,CF_DATE_FROM,CF_DATE_TO",kFalse,'conf_now') ## don't need these columns but do need conference joined with an alias for first time subquery option
+			Do llDisplayListPayments.$AddLinkedCols("EO_NAME,EO_EMAIL",kTrue)
+			# Do ilDisplayRecords.$AddLinkedCols("FOH_INV_NO",kTrue)
+			Do llDisplayListPayments.$AddLinkedCols("PY_DATE") ## this returns multiple rows when multiple payments were made
+			# Do llDisplayListPayments.$cols.$add('paycount',kInteger,kShortint)
+			# Do llDisplayListPayments.$AddFunction(con(" ( select count(*) from ",lrPayments.$servertablenames," where PY_DG_REF = DG_SEQ ) as paycount"))
+			# Do ilDisplayRecords.$cols.$add('PY_AMOUNT',kNumber,k2dp)
+			# Do ilDisplayRecords.$AddFunction(con(" ( select sum(PY_AMOUNT) from ",lrPayments.$servertablenames," where PY_DG_REF = DG_SEQ ) as PY_AMOUNT"))
+			If llDisplayListPayments.icErrorMessage<>''
+				# Breakpoint
+			End If
+			Do llDisplayListPayments.$cols.$add('SortName',kCharacter,kSimplechar,100)
+			Do llDisplayListPayments.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+			Do llDisplayListPayments.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+			Do llDisplayListPayments.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+			
+			
+			Do llDisplayListPayments.$clear()
+			Do llDisplayListPayments.$fetchForConfPayments(ilSearch1.CF_SEQ,icSearch)
+			# now that we have PY_DATE added to the list (outer join) and some delegates make multiple (part) payments
+			# We will wind up with multiple DG records when multiple payment occur.
+			# It is also possible for a delegate to have a corporate invoice + a private invoice for spouses.
+			# Which can result in yet another duplicate!
+			Do llDisplayListPayments.$sort($ref.DG_SEQ,0,$ref.FOH_INV_NO,0,$ref.PY_DATE,0)
+			
+			Do ilDisplayRecords.$clear()
+			Do ilDisplayRecords.$merge(llDisplayListPayments,kTrue)
+		Else
+			Do method FetchDisplayList
+		End If
+	End If
+Else
+	Do method FetchDisplayList
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

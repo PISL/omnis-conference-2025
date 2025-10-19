@@ -1,0 +1,4 @@
+On evClick
+	# if only 1 window open this does not work - at least not on iOS
+	JavaScript:window.close();
+	# Do method closeTask

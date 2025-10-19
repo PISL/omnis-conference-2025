@@ -1,0 +1,27 @@
+Calculate pErrorField as ''
+Do ioRest.$returnVal(irResponseHeaders,irResponse,pResultList) Returns icXML
+
+If irResponse.httpStatusCode<>200
+	# do some error reporting here
+	Calculate pErrorField as con(irResponse.httpStatusCode,'  ',irResponse.httpStatusText,': ',icXML)
+	Quit method ''
+Else
+	# irResponse.responseContent is a binary field that must be converted to text
+	
+	Calculate lcJSON as utf8tochar(irResponse.responseContent)
+	Do OJSON.$jsontolistorrow(lcJSON) Returns lrResult
+	Calculate lrTemp as lrResult.zones
+	
+	# convert row of results into a list
+	For lnColCount from 1 to lrTemp.$colcount step 1
+		Calculate lrRow as lrTemp.___[lnColCount]
+		If lnColCount=1
+			Do llResult.$copydefinition(lrRow)
+		End If
+		Do llResult.$add()
+		Calculate llResult.$line as llResult.$linecount
+		Do llResult.$assignrow(lrRow)
+	End For
+	
+	Quit method llResult
+End If

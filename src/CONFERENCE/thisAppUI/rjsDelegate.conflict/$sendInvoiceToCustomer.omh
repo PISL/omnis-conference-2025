@@ -1,0 +1,11 @@
+Calculate icWorkerAction as pcMessageCode
+Do toValues.$initInherited(pcMessageCode,'MESSAGE') Returns lrMessage
+
+Calculate iPdfFilePath as ''
+Do method InvoicePDF (kTrue,pcMessageCode,pcReportClass) ## path of pdf is in     iPdfFilePath
+
+# when the pdf is generated, the worker calls $pdfcomplete which exists in this class
+
+Do $cinst.$clientcommand("openpush",row()) ## the worker will call back to $emailCompleted which will "push" the results to the client
+# instance variable iPdfFilePath will have the contents of the pdf file
+Quit method

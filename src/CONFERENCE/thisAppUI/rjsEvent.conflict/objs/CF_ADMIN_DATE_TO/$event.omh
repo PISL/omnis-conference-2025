@@ -1,0 +1,21 @@
+On evAfter
+	Calculate ldDate as irCurrentRecord.CF_ADMIN_DATE_TO
+	If ldDate>dat('1 JAN 2010')
+		# good
+		Calculate $cinst.$objs.CF_DATE_TO.$errortext as ''
+		Calculate $cinst.$objs.CF_ADMIN_DATE_TO as ''
+		
+		If irCurrentRecord.CF_DATE_TO>dat('1 JAN 2010')
+			If irCurrentRecord.CF_ADMIN_DATE_TO>=irCurrentRecord.CF_DATE_TO
+				# good
+			Else
+				Calculate $cinst.$objs.CF_DATE_TO.$errortext as ''
+				Calculate $cinst.$objs.CF_ADMIN_DATE_TO.$errortext as 'to date & admin date invalid'
+			End If
+		Else
+			# ignore
+		End If
+	Else
+		Calculate $cinst.$objs.CF_DATE_TO.$errortext as ''
+		Calculate $cinst.$objs.CF_ADMIN_DATE_TO.$errortext as 'bad format'
+	End If

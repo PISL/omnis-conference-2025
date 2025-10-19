@@ -1,0 +1,60 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	# Do ioDelegateInvoice.$fetchDelegatesPaidWithInvoice(irCurrentRecord.FOH_SEQ) Returns llPaid
+	Do $DefineList(lrMember,'tMembership')
+	
+	# only one person is recorded with membership, whether Personal or Corporate
+	# the difference is that a corporate vote can be assigned to anyoine from that organisation
+	Do ilInvoiceDetails.$search(pos('OW_MEMP',$ref.PRD_INT_PRODCODE)>0,1,0,0,0) Returns lbFound ## specifically personal membership
+	If not(lbFound)
+		Do ilInvoiceDetails.$search(pos('OW_MEMC',$ref.PRD_INT_PRODCODE)>0,1,0,0,0) Returns lbFound
+	End If
+	
+	If lbFound
+		# Calculate llPaid.$line as 1
+		# Do lrMember.$clear()
+		Calculate lrMember.MB_PSN_REF as irCurrentRecord.DG_PSN_REF
+		Calculate lrMember.MB_CURRENCY as ilInvoices.1.FOH_CURRENCY
+		Calculate lrMember.MB_AMOUNT as ilInvoiceDetails.FOD_QTY*(ilInvoiceDetails.FOD_UNIT_PRICE+ilInvoiceDetails.FOD_UNIT_TAX)
+		If ibCurrentMember
+			# let membership start after end of previous membership
+			Calculate lrMember.MB_FROM as dadd(kDay,1,dat(ilMembership.MB_TO)) ## day after current membership ends
+		Else
+			If ilPayments.1.PY_DATE>dat('1 JAN 2010')
+				Calculate lrMember.MB_FROM as dat(ilPayments.1.PY_DATE) ## payment date reflects start of membership
+			Else If ilInvoices.1.FOH_MWHEN>dat('1 JAN 2010')
+				Calculate lrMember.MB_FROM as ilInvoices.1.FOH_MWHEN ## last status change of invoice to PAID ?
+			Else If ilInvoices.1.FOH_DATE>dat('1 JAN 2010')
+				Calculate lrMember.MB_FROM as ilInvoices.1.FOH_DATE ## getting desperate for date !
+			Else
+				Breakpoint
+			End If
+		End If
+		Calculate lrMember.MB_TO as dim(lrMember.MB_FROM,12)-1
+		If pos('OW_MEMP',ilInvoiceDetails.PRD_INT_PRODCODE)
+			Calculate lrMember.MB_TYPE as 'P'
+		Else If pos('OW_MEMC',ilInvoiceDetails.PRD_INT_PRODCODE)
+			Calculate lrMember.MB_TYPE as 'C'
+		Else
+			Breakpoint
+			# leave MB_TYPE empty
+		End If
+		Do lrMember.$insert() Returns lbOK
+		If not(lbOK)
+			# if there is a duplicate key constraint error then return a user friendly message
+			If lrMember.irErrorSQL.NativeErrorCode='23505'
+				Do toStrings.$StringTableEntry('MSG_MEMBRECORDED',icDisplayMessage,'has already had membership recorded')
+				# Calculate icDisplayMessage as con(upp(llPaid.PSN_SURNAME),', ',upp(llPaid.PSN_FIRST_NAME),' ',lcMessage)
+			Else
+				Calculate icDisplayMessage as lrMember.irErrorSQL.NativeErrorText
+				If icDisplayMessage=''
+					# Calculate icDisplayMessage as lrMember.icValidationMessage
+				End If
+			End If
+		Else
+			Do method FetchAndPresentMembership
+		End If
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

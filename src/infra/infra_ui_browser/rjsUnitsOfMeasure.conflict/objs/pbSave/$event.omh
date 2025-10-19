@@ -1,0 +1,26 @@
+On evClick
+	Calculate lcMode as icMode ## store the mode as $savedata clears it on success
+	Do $cinst.$saveData() Returns lbOK ## icDisplayMessage and icMode explain the results of $saveData
+	If lbOK
+		If lcMode='IS'
+			Calculate irCurrentSynonym.display as con(irCurrentSynonym.UOS_CODE,' (x ',irCurrentSynonym.UOS_FACTOR,')')
+			Do ilSynonyms.$merge(irCurrentSynonym)
+			Do ilSynonyms.$sort(low($ref.UOS_CODE))
+			# Do ilSynonyms.$search($ref.UOS_CODE<>$ref.UOM_CODE&$ref.UOS_UOM_REF=irCurrentRecord.UOM_SEQ,1,0,1,1)
+		Else If lcMode='ES'
+			Calculate irCurrentSynonym.display as con(irCurrentSynonym.UOS_CODE,' (x ',irCurrentSynonym.UOS_FACTOR,')')
+			Do ilSynonyms.$assignrow(irCurrentSynonym)
+		Else
+			Do $cinst.$search1ListClick()
+			Do ilDisplayRecords.$search($ref.UOM_SEQ=irCurrentRecord.UOM_SEQ,1,0,0,0)
+			Do ilUOM_GROUP.$search($ref.RFG_VALUE=irCurrentRecord.UOM_GROUP,1,0,0,0)
+		End If
+		
+		
+	End If
+	
+	If lcMode="I"&lbOK
+		Do $cinst.$displayListClick()
+	Else
+		Do $cinst.$behaviour()
+	End If

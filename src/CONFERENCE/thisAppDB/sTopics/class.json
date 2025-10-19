@@ -1,9 +1,9 @@
 {
 	"classtype": "kSchema",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 5,
-	"nextident": 32022,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 8,
+	"nextident": 32024,
 	"properties": {
 		"componenticon": 0,
 		"componentinfo": {
@@ -16,7 +16,7 @@
 		"editor": "",
 		"editordata": "",
 		"external": true,
-		"moddate": "2020-01-20 21:15:49",
+		"moddate": "2025-07-30 18:39:27",
 		"servertablename": "conf.topics",
 		"showascheckedout": false,
 		"userinfo": "",

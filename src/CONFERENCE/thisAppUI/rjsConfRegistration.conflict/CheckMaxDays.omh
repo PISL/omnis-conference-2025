@@ -1,0 +1,23 @@
+If inDG_OCCUPANCY=ikOccupancyDailyRate ## 24 hr rate
+	Calculate lnMaxDays as ddiff(kDay,ilConferences.CF_DATE_FROM,ilConferences.CF_DATE_TO)
+	
+	If inNoDays>lnMaxDays-1
+		Calculate icDisplayMessage as con('No of days cannot exceed ',lnMaxDays-1)
+		Quit method kFalse
+	End If
+	If inNoDays>0
+		# valid entry
+		If icWhichDays=''
+			Calculate icDisplayMessage as 'You must specify arrival and departure days e.g. for 2 days enter Tue-Thu (arrive Tuesday, depart Thursday)'
+			Quit method kFalse
+		End If
+	Else
+		Calculate icDisplayMessage as con('No of days must be greater than 0 when 24hr rate is selected.')
+		Quit method kFalse
+	End If
+	
+	Quit method kTrue
+Else
+	# no further checks
+	Quit method kTrue
+End If

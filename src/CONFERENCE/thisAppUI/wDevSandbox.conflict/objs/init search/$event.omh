@@ -1,0 +1,7 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# Do ioCFF.$init() Returns ilDisplay
+	
+	Do method resetSearch
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

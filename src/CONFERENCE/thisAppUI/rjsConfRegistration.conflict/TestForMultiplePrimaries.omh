@@ -1,0 +1,14 @@
+If ilPersons.$linecount=0
+	If irRegistration.DIL_PRIMARY=1
+		Calculate lbMultiplePrimaries as kFalse
+	End If
+Else If ilPersons.$linecount=1
+	If ilPersons.1.PSN_EMAIL<>irRegistration.PSN_EMAIL&irRegistration.DIL_PRIMARY=1
+		Calculate lbMultiplePrimaries as kTrue
+	End If
+Else
+	# OK message  {[tot(ilPersons,ilPersons.DIL_PRIMARY)]}
+	Calculate lbMultiplePrimaries as tot(ilPersons,ilPersons.DIL_PRIMARY)>1
+End If
+
+Quit method lbMultiplePrimaries

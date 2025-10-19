@@ -1,0 +1,93 @@
+Do method clearErrorTextSlots
+If pcObjName<>'' ## e.g. ilDay1AM
+	Calculate pnDayTo as mid(pcObjName,6,1) ## 1 2 3 4
+	Calculate pcSession as right(pcObjName,2) ## AM PM VE
+	If pcSession='VE'
+		Calculate pcSession as 'EVE'
+	End If
+Else If pnDayTo>0&pcSession<>''
+	# we have required parameters
+Else
+	Calculate icDisplayMessage as 'Invalid parameters'
+	Quit method
+End If
+
+Calculate icDisplayMessage as ''
+# If irUserRights.canAddGroupOrg|irUserRights.canAddGroupOrgR
+# before moving, check there sin't a conflict
+Calculate lcDragTo as con('ilDay',pnDayTo,pcSession)
+Do [lcDragTo].$search($ref.ARR_PSN_REF=pDragValue.ARR_PSN_REF,1,0,0,0) Returns lbFound ## ilDay1AM  ilDay2AM  ilDay1PM  ilDay3EVE
+If lbFound
+	# conflicting slot for speaker
+	If irDragEvent.timestamp>dat('1 JAN 2010')
+		# a drag and drop has been attempted before
+		Calculate lnSecondsSinceLastEvent as ddiff(kSecond,irDragEvent.timestamp,#D)
+		If lnSecondsSinceLastEvent<10&pDragValue.ARR_PSN_REF=irDragEvent.speaker_ref
+			# User has been warned and is dragging arrangement again straigh away ## let it pass
+		Else
+			Calculate lbAnnounceWarning as kTrue
+		End If
+	Else
+		Calculate lbAnnounceWarning as kTrue
+	End If
+	If lbAnnounceWarning
+		Calculate icDisplayMessage as con('Speaker ',pDragValue.PSN_SURNAME,' is already booked for this slot.')
+		Calculate $cinst.$objs.PagedPane.$objs.[pcObjName].$errortext as icDisplayMessage
+	End If
+	
+	Calculate irDragEvent.timestamp as #D
+	Calculate irDragEvent.speaker_ref as pDragValue.ARR_PSN_REF
+	Calculate irDragEvent.from_slot_no as pDragValue.ARR_DAYNO
+	Calculate irDragEvent.from_slot_code as pick(pDragValue.ARR_STARTTIME<tim('12:00'),pick(pDragValue.ARR_STARTTIME<tim('18:00'),'EVE','PM'),'AM')
+	Calculate irDragEvent.to_slot_no as pnDayTo
+	Calculate irDragEvent.to_slot_code as pcSession
+	
+	If lbAnnounceWarning
+		Quit method
+	End If
+End If
+
+# Do $DefineList(lrTemp,'tuaGroupOrgLinks')
+# Do lrTemp.$assignrow(pDragValue) Returns lrTemp.UGO_GO_REF
+Calculate lrTemp as ilDay1AM
+Do lrTemp.$clear()
+Do lrTemp.$assignrow(pDragValue)
+
+Calculate lrTemp.ARR_DAYNO as pnDayTo
+If pcSession='AM'
+	Calculate lrTemp.ARR_STARTTIME as tim('09:00')
+	Calculate lrTemp.ARR_ENDTIME as tim('12:00')
+Else If pcSession='PM'
+	Calculate lrTemp.ARR_STARTTIME as tim('14:00')
+	Calculate lrTemp.ARR_ENDTIME as tim('17:00')
+Else If pcSession='EVE'
+	Calculate lrTemp.ARR_STARTTIME as tim('19:30')
+	Calculate lrTemp.ARR_ENDTIME as tim('22:00')
+End If
+If isclear(lrTemp.ARR_FCY_REF)
+	# 0 has been copied from pDragValue and ARR_FCY_REF is a foreign key that cannot have 0 as a value but can have #null
+	Calculate lrTemp.ARR_FCY_REF as #NULL
+End If
+
+Do lrTemp.$update() Returns lbOK
+If lbOK
+	# add updated row to this list
+	Do [$cobj.$name].$add()
+	Calculate [$cobj.$name].$line as [$cobj.$name].$linecount
+	Do [$cobj.$name].$assignrow(lrTemp)
+	# remove dragged row from original list
+	Do [pDragField].$remove([pDragField].$line)
+	Calculate [pDragField].$line as 0
+	
+	Do irDragEvent.$clear()
+	
+Else If lrTemp.icValidationMessage<>''
+	Calculate icDisplayMessage as lrTemp.icValidationMessage
+Else
+	Calculate icDisplayMessage as lrTemp.irErrorSQL.NativeErrorText
+End If
+# Else
+# Calculate icDisplayMessage as $cell(clLabels,'objName','not_authorised','label')
+# End If
+
+Quit method lbOK

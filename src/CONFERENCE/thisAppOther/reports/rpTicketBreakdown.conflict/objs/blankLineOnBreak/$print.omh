@@ -1,0 +1,8 @@
+If ilData.$line>1
+	If ilData.PRD_SIZE-ilData.[ilData.$line-1].PRD_SIZE>1
+		# there is a break in the sort order so display blank line
+		Do default
+	Else
+		# suppress blank line
+	End If
+End If

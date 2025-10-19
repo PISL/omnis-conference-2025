@@ -1,0 +1,90 @@
+Calculate pcString as upp(pcString)
+Calculate pcString as replaceall(pcString,' ','')
+
+#  https://en.wikipedia.org/wiki/List_of_postal_codes
+If len(pcString)=5&chk(pcString,'A00AA','Z99ZZ')
+	# N1 2AA
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+Else If len(pcString)=6&chk(pcString,'A000AA','Z999ZZ')
+	# B22 2AA
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+Else If len(pcString)=6&chk(pcString,'AA00AA','ZZ99ZZ')
+	# HP3 0AA
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+Else If len(pcString)=7&chk(pcString,'AA000AA','ZZ999ZZ')
+	# WC22 0AA
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+Else If len(pcString)=6&chk(pcString,'A0A0AA','Z9Z9ZZ')
+	# H2B 0AA - not seen this before, taken from wikipedia
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+Else If len(pcString)=7&chk(pcString,'AA0A0AA','ZZ9Z9ZZ')
+	# WC2A 3EF
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+Else If len(pcString)=6&chk(pcString,'AAA0AA','ZZZ9ZZ')
+	# not seen this format     FIL 0AA
+	Calculate lbBritishPostcodeFormat as kTrue
+	Calculate lcFormat as 'BRITISH'
+	
+Else If len(pcString)=8&chk(pcString,'AA-00000','ZZ-99999')
+	# European international format typically - some other countries use this format
+	Calculate lbEuroInternationalFormat as kTrue
+	Calculate lcFormat as 'EUROINT'
+Else If len(pcString)=7&chk(pcString,'AA00000','ZZ99999')
+	# European international format typically - some other countries use this format
+	Calculate lbEuroInternationalFormat as kTrue
+	Calculate lcFormat as 'EUROINT'
+	
+Else If len(pcString)=7&chk(pcString,'AA-0000','ZZ-9999')
+	# Latvian format
+	Calculate lbAlpha2DashNumber4 as kTrue
+	Calculate lcFormat as 'A2-N4'
+	
+Else If len(pcString)=7&chk(pcString,'AAA0000','ZZZ9999')
+	# Maltese format
+	Calculate lbAlpha3Number4 as kTrue
+	Calculate lcFormat as 'A3N4'
+Else If len(pcString)=5&chk(pcString,'000AA','999ZZ')
+	# Martinique and others format
+	Calculate lnNumber3Alpha2 as kTrue
+	Calculate lcFormat as 'N3A2'
+	
+Else If len(pcString)=7&chk(pcString,'AA00000','ZZ99999')
+	# Barbados format (everything starts BB)
+	Calculate lbAlpha2Number5 as kTrue
+	Calculate lcFormat as 'A2N5'
+Else If len(pcString)=6&chk(pcString,'AA0000','ZZ9999')
+	# Azerbaijan format
+	Calculate lbAlpha2Number4 as kTrue
+	Calculate lcFormat as 'A2N4'
+	
+Else If len(pcString)=10&chk(pcString,'00000-0000','99999-9999')
+	# typical Indian format
+	Calculate lbUSZipPlus4 as kTrue
+	Calculate lcFormat as 'USZIP+4'
+	
+	# conventional numeric formats
+Else If len(pcString)=7&chk(pcString,'0000000','9999999')
+	# typical Israeli format
+	Calculate lb7digit as kTrue
+	Calculate lcFormat as 'N7'
+Else If len(pcString)=6&chk(pcString,'000000','999999')
+	# typical Indian format - used in Russia as well
+	Calculate lb6digit as kTrue
+	Calculate lcFormat as 'N6'
+Else If len(pcString)=5&chk(pcString,'00000','99999')
+	# typical European or American format - used by many other countries
+	Calculate lb5digit as kTrue
+	Calculate lcFormat as 'N5'
+Else If len(pcString)=4&chk(pcString,'0000','9999')
+	# Australian format - used by many other countries
+	Calculate lb4digit as kTrue
+	Calculate lcFormat as 'N4'
+End If
+
+Quit method lcFormat

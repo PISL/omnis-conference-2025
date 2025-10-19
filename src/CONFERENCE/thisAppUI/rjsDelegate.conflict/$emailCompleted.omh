@@ -1,0 +1,33 @@
+# The problem with this method is that we cannot exploit instance variables. ## So all updates done in local variables.
+Calculate lnSeconds as ddiff(kSecond,idtStartEmailWorker,#D)
+Do lrPush.$cols.$add(lnSeconds)
+Calculate lrPush.lnSeconds as lnSeconds
+
+Do lrPush.$cols.$add(irEmailWorker.instruction)
+Calculate lrPush.instruction as irEmailWorker.instruction
+
+Do lrPush.$cols.$add(irCurrentRecord.DG_SEQ)
+Calculate lrPush.DG_SEQ as irEmailWorker.DG_SEQ
+
+If presultSMTP.errorCode<>0
+	Calculate #S1 as con('Problem with sending email: error code ',presultSMTP.errorCode,' - ',presultSMTP.errorInfo)
+	Calculate icDisplayMessage as #S1
+Else
+	
+	# DG record was updated in the spawned Task so we need to refresh this form.
+	If icMode=''
+		If lrPush.DG_SEQ=irCurrentRecord.DG_SEQ
+			# Do irCurrentRecord.$fetch_pk() ## but we cannot refer to instance variables !
+			# Do method $displayListClick ## ;;#  GRS this throws "Notation not supported errors"  I think it needs to be in $pushed
+		End If
+	End If
+End If
+
+# now get this asynchronous update displayed on the jsClient
+Do lrPush.$cols.$add(icDisplayMessage)
+Calculate lrPush.icDisplayMessage as icDisplayMessage
+
+Do lrPush.$cols.$add(idPseudoInvoiceEmailed)
+Calculate lrPush.idPseudoInvoiceEmailed as idPseudoInvoiceEmailed
+
+Do $cinst.$pushdata(presultSMTP,lrPush)

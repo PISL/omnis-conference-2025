@@ -1,8 +1,8 @@
 {
 	"classtype": "kTable",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 15,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 28,
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
 
@@ -83,6 +83,13 @@
 			"type": "kCharacter",
 			"subtype": "kSimplechar",
 			"sublen": 100
+		},
+		{
+			"name": "icDoNotReportTheseErrors",
+			"order": 59,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
 		},
 		{
 			"name": "icErrorMessage",
@@ -442,7 +449,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2025-04-09 17:13:20",
+		"moddate": "2025-05-23 15:17:49",
 		"showascheckedout": false,
 		"sqlclassname": "",
 		"userinfo": "",

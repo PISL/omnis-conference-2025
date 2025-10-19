@@ -1,0 +1,117 @@
+# code copied from Doug Easterbrook email to list 26-OCT-22
+Breakpoint NOT TESTED
+
+# Try and format the HTML in style similar to TemplateCleaner for readablity
+#
+# Parameters
+# pFieldName->Reference to the HTML field we are cleaning up .. if it in fact contains any HTML
+# pErrorMessage->Returned Error Message
+
+Calculate pErrorMessage as ''
+Calculate indentCharCount as 4 ## Number of characters to add to cause an indent
+
+# must be using latest TM objs 2.59 to get html words
+If $ctask.$OmnisVersion<='10.2.00031315'
+	Quit method kTrue
+End If
+
+# try and format the html and indent.   Remove any field tags by substituting for text.   we'll replace them back later
+# we don't want them showing up as HMTL hags
+Calculate originalContent as low(pFieldName)
+Do tStringFields.$replace(originalContent,'<field>','***=field=***',originalContent)
+Do tStringFields.$replace(originalContent,'</field>','---=field=---',originalContent)
+
+# $findtags uses regular expression using TMobjs.$findPatterns() to get all the tags in a trxt string.
+# there is no HTML to format - so quit.  that leave any markdown or non html stuff untouched.
+Calculate tagList as $cinst.$findHTMLTags(originalContent)
+If tagList.$linecount=0
+	Quit method kTrue
+End If
+
+# now try substitute the items from the 'taglist' and format/indent
+# there is a small trick to the indent. to make it work,  we add an indent for every tag that is not </ except BR's
+# and then we actually subract one every time we show the display... and that accounts for then  there should be no indent
+# level at all.
+
+Calculate content as originalContent
+Calculate contentNew as ''
+
+For tagList.$line from 1 to tagList.$linecount step 1
+	Calculate thisHTMLtag as mid(originalContent,tagList.start+1,tagList.end-tagList.start)
+	Calculate pos as pos(thisHTMLtag,low(content))
+	If pos=0
+		Calculate pErrorMessage as con('Unable to find tag ',thisHTMLtag,' when trying to format the HTML between positions ',tagList.start+1,' and ',tagList.end+1)
+		Quit method kFalse
+	End If
+	
+	# find out if there is anything preceeding the tag.   if so, its text and it needs to be indented the current indent amount
+	If pos>1
+		# for text, remove leading and trailing CR's and spaces.  they'll come back with indents and trailing CR in a moment
+		Calculate temp as left(content,pos-1)
+		Do commentList.$define(textWithNoHTML)
+		
+		# amongst the text with no html in it, there could be 'CR's.  Its fairlly common since web pages
+		# are there to display text.    Separate the text by CR's and then get rid of blank lines and strip leading and trailing spaces out
+		# of the text.      We'll put the leading spaces back in based on the 'indent' level we are currently at.
+		Do tStringFields.$stringtolist(temp,1,commentList,kCr,nam(textWithNoHTML),kFalse)
+		For commentList.$line from 1 to commentList.$linecount step 1
+			# strip leading and trailing spaces and figure out what we want to add .  it is n each line of commentlist.textWithNoHTML
+			Do tStringFields.$trim(commentList.textWithNoHTML,' ')
+			If len(commentList.textWithNoHTML)>0
+				Calculate indentChars as jst('',con(indent,'P '))
+				Calculate contentNew as con(contentNew,indentChars,commentList.textWithNoHTML,kCr)
+			End If
+		End For
+	End If
+	
+	# process tags we want to replace or pretty up.  currently only various incarnations of the <br> tag
+	Calculate stayAtSameLevel as kFalse
+	Calculate replaceHTMLtag as thisHTMLtag
+	If replaceHTMLtag='<br>'|replaceHTMLtag='</br>'|replaceHTMLtag='<br/>'
+		Calculate stayAtSameLevel as kTrue
+		Calculate replaceHTMLtag as '<br/>'
+	End If
+	
+	# now see if we want to indent.  this occurs if the first two chars are NOT </-
+	# <br/> do not cause an indent as they are standalone and not paired.
+	If not(stayAtSameLevel)
+		If left(replaceHTMLtag,2)<>'</'
+			Calculate indent as indent+indentCharCount
+		End If
+	End If
+	
+	# determine the number of characters to indent for this line of HTML
+	Calculate indentChars as jst('',con(indent-indentCharCount+stayAtSameLevel*indentCharCount,'P '))
+	Calculate contentNew as con(contentNew,indentChars,replaceHTMLtag,kCr)
+	
+	# chop the characters we just replaced from the original content based on length of original tag.
+	# so that we can process the nexxt group of characters
+	Calculate content as mid(content,pos+len(thisHTMLtag))
+	
+	# now see if we want to un-indent, but only if first two chars are </
+	# BR's dont' count, or anything that is deemed as 'stayAtSameLevel'
+	If not(stayAtSameLevel)
+		If left(replaceHTMLtag,2)='</'
+			Calculate indent as max(indent-indentCharCount,0)
+		End If
+	End If
+	
+End For
+
+# put the field tags back since they are plain text and reformatted
+Do tStringFields.$replace(contentNew,'***=field=***','<field>',contentNew)
+Do tStringFields.$replace(contentNew,'---=field=---','</field>',contentNew)
+
+# remove any double CR's from the updated html
+While pos(con(kCr,kCr),contentNew)
+	Do tStringFields.$replace(contentNew,con(kCr,kCr),kCr,contentNew)
+End While
+
+# trim out leading and trailing blank lines, if we find any and return the result
+Do tStringFields.$trim(contentNew,kCr)
+Calculate pFieldName as contentNew
+
+Quit method kTrue
+
+Calculate start as start
+Calculate end as end

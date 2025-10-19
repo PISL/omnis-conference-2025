@@ -1,0 +1,2 @@
+Calculate $cinst.ELT_ACTIVE as kTrue
+Calculate $cinst.ELT_MSG_HTML as con("<html><head>",kCr,kCr,"</head>",kCr,kCr,"<body>",kCr,kCr,"</body></html>")

@@ -1,0 +1,48 @@
+Calculate llStack as sys(192) ## method stack
+While $Loop(llStack)
+	# line 1 is this method which we want to ignore in the message
+	# line 2 is the method that calls this method which can be excluded also
+	If llStack.$line>2
+		Calculate llParams as llStack.params
+		Set reference liClassItem to llStack.classitem
+		# parameters may include passwords which we want to suppress for security reasons
+		While $Loop(llParams)
+			If pos('password',low(llParams.name))
+				Calculate llParams.value as '<suppressed>'
+			Else If pos('ppw',low(llParams.name))
+				Calculate llParams.value as '<suppressed>'
+			End If
+		End While
+		Calculate lcDiagnosticInfo as con(lcDiagnosticInfo,pick(lcDiagnosticInfo<>'','',kCr),liClassItem.$name(),'  ',llStack.object,'  mthd:',llStack.method,'  ln:',llStack.line,'  ',llStack.linetext,pick(llParams.$linecount>0,'',con(kCr,OJSON.$formatjson(OJSON.$listorrowtojson(llParams,kUniTypeCharacter,lcError)),kCr)))
+	End If
+End While
+
+# It is theoritically possible that this may be called from a remote task, although the control of that depends on the
+# source library.  HTMLp traps its $AppError within the rtBusinessApp but other libraries may differ.
+Do $ctask.$findname('trParameters') Returns lrStructure
+If lrStructure.$colcount>0
+	# Ultra thin page
+	For lnColNo from 1 to lrStructure.$colcount step 1
+		Calculate llTempStructure as ''
+		Set reference liColRef to lrStructure.$cols.[lnColNo].$ref
+		Calculate lcColType as liColRef.$coltype
+		Calculate lcColName as lrStructure.$cols.[lnColNo].$name
+		
+		If liColRef.$coltype=kList
+			Calculate llTempStructure as lrStructure.C[liColRef.$ident]
+			Calculate lcValue as OJSON.$listorrowtojson(llTempStructure,kUniTypeCharacter)
+			
+		Else If liColRef.$coltype=kRow
+			Calculate llTempStructure as lrStructure.C[liColRef.$ident]
+			Calculate lcValue as OJSON.$listorrowtojson(llTempStructure,kUniTypeCharacter)
+			
+		Else
+			Calculate lcValue as lrStructure.[lcColName]
+		End If
+		
+		Calculate lcParamsInfo as con(lcParamsInfo,pick(lcParamsInfo<>'','',kCr),lcColType,': ',lcColName,' = ',lcValue)
+	End For
+	Calculate lcDiagnosticInfo as con(lcDiagnosticInfo,kCr,kCr,'trParameters.',kCr,lcParamsInfo)
+End If
+
+Quit method lcDiagnosticInfo

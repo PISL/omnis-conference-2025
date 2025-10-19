@@ -1,0 +1,7 @@
+If isclear(irCurrentRecord.DG_SPKR_CHECKTOPICS)
+	
+	Do $cinst.$clientNoYesMsg('Proceed to send check topics email?','CONFIRM ACTION','$sendEmailTopicsCheck')
+Else
+	Do $cinst.$clientNoYesMsg(con('Proceed to send check topics email, even though it was already sent ',irCurrentRecord.DG_SPKR_CHECKTOPICS,'?'),'CONFIRM ACTION','$sendEmailTopicsCheck')
+	
+End If

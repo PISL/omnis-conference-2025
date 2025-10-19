@@ -1,0 +1,7 @@
+# Workaround for the issue of the browser not always displaying the new data
+# in instance variables when they are refreshed in a form/pane that is not currently visible
+# pcVarName =  the name if an instance variable which is passed to $pushed
+# which does the JS eqivalent of "Calculate iVar as iVar" to force a refresh
+
+Do $cinst.$clientcommand('openpush',row())
+Do $cinst.$pushdata(row('refreshVar',pcVarName),lcError)

@@ -1,7 +1,7 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
 	"internalversion": 125,
 	"superclass": "infra.rjsInfraMenu",
 	"designtaskname": "rtBusinessApp",
@@ -97,7 +97,7 @@
 		"layouttype": "kLayoutTypeResponsive",
 		"left": 44,
 		"menulineheight": 0,
-		"moddate": "2025-05-12 10:22:03",
+		"moddate": "2025-08-28 17:49:45",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,

@@ -1,8 +1,22 @@
 On evClick
+	Calculate ilDay5AM.$line as pLineNumber
+	Calculate irCurrentRecord as ilDay5AM
+	
 	Do method highlightSpeaker ($cobj().$name)
 	
-On evDoubleClick
 On evDrop
+	If pDragField=nam(ilDisplayRecords)
+		# The data has been dragged from ilDisplayRecords
+		Calculate icDraggedFrom as nam(ilDisplayRecords)
+		
+	Else If pDragField=nam(ilTopicsToDrag)
+		Calculate icDraggedFrom as nam(ilTopicsToDrag)
+		
+	Else If left(pDragField,5)='ilDay'
+		Calculate icDraggedFrom as pDragField
+	End If
+	
 	Do method moveArrangement ($cobj().$name) Returns lbOK
+	
 	Do $cinst.$behaviour()
 	Do $cinst.$redraw()

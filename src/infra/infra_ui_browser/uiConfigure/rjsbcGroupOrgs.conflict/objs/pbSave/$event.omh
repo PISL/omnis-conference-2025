@@ -1,0 +1,39 @@
+On evClick
+	Calculate lcMode as icMode ## $saveData clears icMode
+	Calculate $cinst.$objs.pbSave.$errortext as ''
+	
+	Do $cinst.$saveData() Returns lbOK ## icDisplayMessage and icMode explain the results of $saveData
+	If lbOK
+		# Do ilDisplayRecords.$fetch_all()
+		# Do ilDisplayRecords.$sendall($ref.MECID.$assign(con(mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),1,4),'-',mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),5,4),'-',mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),9,4),'-',mid(bintohex(binfromint64($sendallref.GO_MEC_ID)),13,4))))
+		# Do ilDisplayRecords.$sort($ref.GO_NAME_FULL,0)
+		
+		If inCurrentTab=cnTabCompany
+			Do method refreshDisplayList
+			Do ilDisplayRecords.$search($ref.GO_SEQ=irCurrentRecord.GO_SEQ,1,0,0,0)
+			Do method $displayListClick
+		Else If inCurrentTab=cnTabStructure
+			If lcMode='I'
+				If irParentNode.GS_SUPERIOR_GS_REF>0
+					# fetch all children of the parent node so we can identify the position the new node should be in
+					Do irParentNode.$treeFetchChildren(irParentNode.GS_SEQ) Returns llChildren
+					Do llChildren.$search($ref.nodeID=irCurrentStructure.GS_SEQ,1,0,1,1) Returns lnLine
+					Calculate lnPosn as pick(lnLine=1,llChildren.[lnLine-1].nodeID,-1)
+					Do llChildren.$remove(kListKeepSelected)
+					Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionAdd,irParentNode.GS_SEQ,lnPosn,llChildren)
+				Else
+					Do method fetchStructure
+				End If
+				Calculate $cinst.$objs.ilCorporateTree.$currentnodeident as irCurrentStructure.GS_SEQ
+				# Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionExpand,irParentNode.GS_SEQ)
+			Else
+				Calculate $cinst.$objs.ilCorporateTree.$nodeaction as row(kJSTreeActionRename,irCurrentStructure.GS_SEQ,irCurrentStructure.GS_DESC_FULL)
+			End If
+		End If
+	End If
+	
+	If isclear(irCurrentRecord.GO_MEC_ID)&ilCorpPersonCopy.$linecount>0 ## we were editing because of a failure in registration
+		Calculate ilCorporatePerson as ilCorpPersonCopy
+	End If
+	
+	Do $cinst.$behaviour()

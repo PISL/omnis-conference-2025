@@ -1,0 +1,20 @@
+Do $DefineList(ilData,'tDietRequests')
+Do ilData.$fetch_all()
+While $Loop(ilData)
+	Working message Obfuscating Diets... (Cancel button) {[ilData.$line] of [ilData.$linecount] records}
+	Redraw working message
+	Do method obfuscateText (ilData.DR_REQUEST) Returns lcTemp
+	Calculate ilData.DR_REQUEST as lcTemp
+	
+	Do method obfuscateText (ilData.DR_CBY) Returns lcTemp
+	Calculate ilData.DR_CBY as lcTemp
+	
+	Do method obfuscateText (ilData.DR_MBY) Returns lcTemp
+	Calculate ilData.DR_MBY as lcTemp
+	
+	Calculate lrUpdate as ilData
+	Do lrUpdate.$update() Returns lbOK
+	If not(lbOK)
+		Breakpoint
+	End If
+End While

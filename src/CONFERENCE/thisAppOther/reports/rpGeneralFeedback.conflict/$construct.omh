@@ -1,0 +1,17 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate ilData as plData
+
+Calculate icReportTitle as con('General Feedback',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+If ilData.$linecount=0
+	Do ilData.$add('no general feedback provided')
+End If
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

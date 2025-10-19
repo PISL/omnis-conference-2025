@@ -1,0 +1,58 @@
+If isclear(pnCF_SEQ)
+	If $cinst.CF_SEQ>0
+		Calculate pnCF_SEQ as $cinst.CF_SEQ
+	End If
+End If
+If isclear(pnCF_SEQ)
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select count(*)
+Sta:from [lrDelegate.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+Sta:and     DG_OCCUPANCY = 'H'
+# sharing females
+Sta:and     PSN_SEX = 'F'
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountSharingFemales) Returns lbOK
+
+Begin statement
+Sta:select count(*)
+Sta:from [lrDelegate.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+Sta:and     DG_OCCUPANCY = 'H'
+# sharing males
+Sta:and     PSN_SEX = 'M'
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountSharingMales) Returns lbOK
+
+Begin statement
+Sta:select count(*)
+Sta:from [lrDelegate.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+# not sharing
+Sta:and     DG_OCCUPANCY <> 'H'
+# no accommodation
+Sta:and     DG_OCCUPANCY <> 'N'
+End statement
+Do $cinst.$executesqlandfetchinto(lnCountSingles) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lnCountSharingFemales+lnCountSharingMales+lnCountSingles

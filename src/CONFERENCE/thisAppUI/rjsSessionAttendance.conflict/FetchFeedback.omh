@@ -1,0 +1,65 @@
+Do ilViewFeedbackToSpeaker.$clear()
+Do ilAttFeedback.$clear()
+Do ilAttFeedback.$fetch_fk(ilAttendees.ARA_SEQ)
+# Do ilAttFeedback.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0,$ref.AFB_RFO_VALUE,0)
+Calculate ilFeedback.$line as 0
+While $Loop(ilFeedback)
+	Calculate ilFeedback.AFB_SEQ as #NULL
+	Calculate ilFeedback.AFB_SCORE as 0
+	Calculate ilFeedback.score as ''
+	
+	# ilFeedbackValues
+	Do ilAttFeedback.$search($ref.AFB_RFO_VALUE=ilFeedback.RFO_VALUE,1,0,0,0) Returns lbFound
+	If lbFound
+		Do ilFeedbackValues.$search($ref.score=ilAttFeedback.AFB_SCORE,1,0,0,0) Returns lbFound
+		
+		Calculate ilFeedback.AFB_SEQ as ilAttFeedback.AFB_SEQ
+		Calculate ilFeedback.AFB_SCORE as ilAttFeedback.AFB_SCORE ## radio button value
+		Calculate ilFeedback.score as ilFeedbackValues.desc
+	End If
+End While
+Calculate ilFeedbackValues.$line as 0
+
+Do $DefineList(lrFeedback,'tAttendeeFeedback')
+Do lrFeedback.$reportFeedback(ilConferences.CF_SEQ,ilArrangements.ARR_SEQ) Returns ilViewFeedbackToSpeaker
+Do ilViewFeedbackToSpeaker.$sort($ref.PSN_SURNAME_DG,0,$ref.PSN_FIRST_NAME_DG,0,$ref.RFO_ORDER,0)
+
+Do ilViewFeedbackToSpeaker.$cols.$add('criteria',kCharacter,kSimplechar,100)
+Do ilViewFeedbackToSpeaker.$cols.$add('rating',kCharacter,kSimplechar,100)
+Do ilViewFeedbackToSpeaker.$cols.$add('comment',kBoolean)
+
+While $Loop(ilViewFeedbackToSpeaker)
+	If ilViewFeedbackToSpeaker.ARA_ANON
+		Calculate ilViewFeedbackToSpeaker.PSN_SURNAME_DG as 'Anonymous'
+		Calculate ilViewFeedbackToSpeaker.PSN_FIRST_NAME_DG as ''
+	End If
+	
+	If ilFeedback.RFO_VALUE=ilViewFeedbackToSpeaker.AFB_RFO_VALUE
+		# no need to search
+	Else
+		Do ilFeedback.$search($ref.RFO_VALUE=ilViewFeedbackToSpeaker.AFB_RFO_VALUE,1,0,0,0)
+	End If
+	Calculate ilViewFeedbackToSpeaker.criteria as ilFeedback.RFO_DESC
+	
+	If ilFeedbackValues.score=ilViewFeedbackToSpeaker.AFB_SCORE
+		# no need to search
+	Else
+		Do ilFeedbackValues.$search($ref.score=ilViewFeedbackToSpeaker.AFB_SCORE,1,0,0,0)
+	End If
+	Calculate ilViewFeedbackToSpeaker.rating as ilFeedbackValues.desc
+	
+	If ilViewFeedbackToSpeaker.$line=1
+		Calculate ilViewFeedbackToSpeaker.comment as ilViewFeedbackToSpeaker.ARA_COMMENTS<>''
+	Else If ilViewFeedbackToSpeaker.PSN_SEQ_DG<>ilViewFeedbackToSpeaker.[ilViewFeedbackToSpeaker.$line-1].PSN_SEQ_DG
+		Calculate ilViewFeedbackToSpeaker.comment as ilViewFeedbackToSpeaker.ARA_COMMENTS<>''
+	End If
+	
+	If ilViewFeedbackToSpeaker.$line<ilViewFeedbackToSpeaker.$linecount
+		# see if there is a change in delegate
+		If ilViewFeedbackToSpeaker.PSN_SEQ<>ilViewFeedbackToSpeaker.[ilViewFeedbackToSpeaker.$line+1].PSN_SEQ
+			# add blank line to separate feedback blocks
+			Do ilViewFeedbackToSpeaker.$addafter(ilViewFeedbackToSpeaker.$line) ## no content
+			Calculate ilViewFeedbackToSpeaker.$line as ilViewFeedbackToSpeaker.$line+1 ## to skip blank line on next iteration of loop
+		End If
+	End If
+End While

@@ -280,8 +280,51 @@
 		]
 	},
 	{
-		"name": "$displayListClick",
+		"name": "fetchSearch1List",
 		"order": 12,
+		"clientexec": false,
+		"pvardefs": [
+			{
+				"name": "pcSelect",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 50,
+				"param": 1,
+				"desc": "row value to select after fetching"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "llConferences",
+				"order": 2,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnCFref",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$Search1ListClick",
+		"order": 13,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$displayListClick",
+		"order": 14,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -312,7 +355,7 @@
 	},
 	{
 		"name": "$deletePSN",
-		"order": 13,
+		"order": 15,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -329,7 +372,7 @@
 	},
 	{
 		"name": "FetchRecords",
-		"order": 14,
+		"order": 16,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -340,7 +383,7 @@
 	},
 	{
 		"name": "$stringSearch",
-		"order": 15,
+		"order": 17,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -351,7 +394,7 @@
 	},
 	{
 		"name": "$deleteTPC",
-		"order": 16,
+		"order": 18,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -375,7 +418,7 @@
 	},
 	{
 		"name": "handleShortcutKey",
-		"order": 17,
+		"order": 19,
 		"clientexec": true,
 		"pvardefs": [
 			{
@@ -399,7 +442,7 @@
 	},
 	{
 		"name": "handleMenuCall",
-		"order": 18,
+		"order": 20,
 		"clientexec": true,
 		"pvardefs": [
 			{
@@ -417,7 +460,7 @@
 	},
 	{
 		"name": "$insertCR",
-		"order": 19,
+		"order": 21,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -428,7 +471,7 @@
 	},
 	{
 		"name": "$editCR",
-		"order": 20,
+		"order": 22,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -439,7 +482,7 @@
 	},
 	{
 		"name": "$deleteCR",
-		"order": 21,
+		"order": 23,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -485,7 +528,7 @@
 	},
 	{
 		"name": "TopicSelected",
-		"order": 22,
+		"order": 24,
 		"clientexec": false,
 		"pvardefs": [
 
@@ -496,7 +539,7 @@
 	},
 	{
 		"name": "transferTopic",
-		"order": 23,
+		"order": 25,
 		"clientexec": false,
 		"pvardefs": [
 			{
@@ -527,7 +570,7 @@
 	},
 	{
 		"name": "setGridExceptions",
-		"order": 24,
+		"order": 26,
 		"clientexec": true,
 		"pvardefs": [
 
@@ -538,6 +581,30 @@
 				"order": 1,
 				"type": "kInteger",
 				"subtype": "kShortint",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "changeDescriptionColour",
+		"order": 27,
+		"clientexec": false,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lnColourBackground",
+				"order": 2,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
+			},
+			{
+				"name": "lnColourText",
+				"order": 1,
+				"type": "kInteger",
+				"subtype": "k32bitint",
 				"sublen": 0
 			}
 		]

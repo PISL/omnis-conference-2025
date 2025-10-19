@@ -1,0 +1,24 @@
+
+If isclear(pIdentifier)|isclear(pErrors)
+	Quit method kFalse
+End If
+
+Do lvBinds.$cols.$add("application",kCharacter)
+Do lvBinds.$cols.$add("json",kCharacter)
+Do lvBinds.$cols.$add("logIdentifier",kCharacter)
+Calculate lvBinds.application as pApplicationId
+Calculate lvBinds.json as pErrors
+Calculate lvBinds.logIdentifier as pIdentifier
+
+Calculate lvStatement as "INSERT INTO sentry.omniscient (application, json, logIdentifier) VALUES (@[application], @[json], @[logIdentifier])"
+
+Do $cinst.$$instantiateRequest(pIdentifier,pErrors,lvStatement,lvBinds) Returns lvRequest
+Do $cinst.$onRequestStarted(lvRequest,pCallbackObj,pCallbackName) Returns lvRequestId
+
+If lvRequest.$start($cinst.$ref,"$onRequestFinished")
+	Quit method kTrue
+Else
+	Do code method cUtilities/$traceLog (lvRequest.$errortext)
+	Do $cinst.$onRequestFinished(lvRequestId,kFalse)
+	Quit method kFalse
+End If

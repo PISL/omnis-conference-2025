@@ -1,0 +1,40 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pnParentKey),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement (Linefeed,Carriage return)
+Sta:with gs as (select gs_desc_full, 0 as iconid, gs_seq, gs_type as tag, '' as tooltip, 0 as textColour, gs_order as sort
+Sta:            from [$cinst.$servertablenames]
+Sta:            where gs_superior_gs_ref = @[pnParentKey])
+Sta: select gs.gs_desc_full, iconid, gs.gs_seq, tag, tooltip, textColour
+Sta: , (select case when count(*) > 0 then [lnFlagHasChildren] else 0 end as flags
+Sta: from [$cinst.$servertablenames] c where c.gs_superior_gs_ref = gs.gs_seq)
+Sta: from gs
+Sta: order by sort
+
+End statement
+
+Do $cinst.$executesqlandfetch(llRoot) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llRoot

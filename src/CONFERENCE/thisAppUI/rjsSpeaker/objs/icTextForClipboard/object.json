@@ -1,6 +1,6 @@
 {
-	"ident": 1040,
-	"order": 45,
+	"ident": 1050,
+	"order": 35,
 	"objtype": "kComponent",
 	"componentlib": "jsEdit",
 	"componentctrl": "Edit Control",
@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(255,255,255)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -68,9 +69,11 @@
 		"negallowed": true,
 		"nexttabobject": "",
 		"numberformat": "",
-		"objlink": 327682,
+		"objlink": 393218,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,
@@ -85,10 +88,10 @@
 	},
 	"layout": {
 		"320": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
-			"height": 392,
+			"left": 0,
+			"top": 40,
+			"width": 200,
+			"height": 520,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -96,10 +99,10 @@
 			"visible": true
 		},
 		"375": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
-			"height": 392,
+			"left": 0,
+			"top": 40,
+			"width": 224,
+			"height": 520,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -107,10 +110,10 @@
 			"visible": true
 		},
 		"480": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
-			"height": 392,
+			"left": 0,
+			"top": 40,
+			"width": 312,
+			"height": 520,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -118,10 +121,10 @@
 			"visible": true
 		},
 		"667": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
-			"height": 392,
+			"left": 8,
+			"top": 40,
+			"width": 448,
+			"height": 536,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -129,10 +132,10 @@
 			"visible": true
 		},
 		"768": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
-			"height": 392,
+			"left": 0,
+			"top": 40,
+			"width": 560,
+			"height": 544,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -140,9 +143,9 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
+			"left": 8,
+			"top": 40,
+			"width": 784,
 			"height": 392,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -151,9 +154,9 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 21,
-			"top": 17,
-			"width": 688,
+			"left": 8,
+			"top": 40,
+			"width": 784,
 			"height": 392,
 			"align": "kLeftJst",
 			"dragborder": false,

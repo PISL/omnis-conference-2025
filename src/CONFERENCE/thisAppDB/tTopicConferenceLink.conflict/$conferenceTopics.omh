@@ -1,0 +1,41 @@
+Do llData.$cols.$add(lrPerson.PSN_SEQ)
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_SPEAKER_BIO)
+Do llData.$cols.$add('SpeakerSort',kCharacter,kSimplechar,100)
+
+Do llData.$cols.$add(lrTopics.TPC_SEQ)
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
+Do llData.$cols.$add(lrTopics.TPC_DESC)
+Do llData.$cols.$add(lrTopics.TPC_DURN_MINS)
+Do llData.$cols.$add(lrTopics.TPC_COMMENT)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select   PSN_SEQ, PSN_SURNAME, PSN_FIRST_NAME, PSN_SPEAKER_BIO
+Sta:, concat(upper(PSN_SURNAME),', ',upper(PSN_FIRST_NAME))
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC, TPC_DURN_MINS, TPC_COMMENT
+Sta:from [$cinst.$servertablenames()]
+# A speaker may have registered but we don't have their topic details yet.
+# We still want them to show up on the report.
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = TPF_CF_REF
+Sta:join [lrTopics.$servertablenames] on TPC_SEQ = TPF_TPC_REF
+Sta:left outer join [lrTopicPersonLink.$servertablenames()] on TPC_SEQ = TPP_TPC_REF
+Sta:left outer join [lrPerson.$servertablenames()] on TPP_PSN_REF = PSN_SEQ
+Sta:where  CF_SEQ = @[pnCF_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.SpeakerSort,0)
+Quit method llData

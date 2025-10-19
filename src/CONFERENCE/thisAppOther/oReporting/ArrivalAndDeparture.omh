@@ -38,7 +38,7 @@ While $Loop(ilData)
 			# In the case of Accommodation (NIGHT) the bill is incurred on a Monday, meaning the guest arrived the day before, Sunday.
 			For lnDayArrive from 0 to 6 step 1
 				If llPAX.PX_[lnDayArrive]_NIGHT
-					Calculate lbMealOrAccommodation as 2 ## arrived day before
+					Calculate lbMealOrAccommodation as 1 ## arrived day before
 					Break to end of loop
 				Else If llPAX.PX_[lnDayArrive]_BFAST
 					Calculate lbMealOrAccommodation as 1

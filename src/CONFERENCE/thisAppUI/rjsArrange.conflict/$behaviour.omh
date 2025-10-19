@@ -1,0 +1,63 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Calculate $cinst.$objs.ilSearch1.$enabled as $cinst.icMode=''
+Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+If inCurrentTab=cnTabArrangement ## Delegate
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.ARR_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.ARR_SEQ>0&icMode=''
+	
+Else If inCurrentTab=cnTabAttendees ## PAX
+	Calculate $cinst.$objs.pbInsert.$enabled as irUserRights.canInsert&icMode=''&irCurrentRecord.ARR_SEQ>0
+	Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irAttendee.ARA_SEQ>0&icMode=''
+	Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irAttendee.ARA_SEQ>0&icMode=''
+	
+End If
+
+Calculate lbOpenConference as ilSearch1.CF_DATE_FROM>#D
+
+Calculate $cinst.$objs.PagedPane.$objs.ARR_FCY_REF.$visible as icMode='EARR' ## remaining rooms only
+Calculate $cinst.$objs.PagedPane.$objs.ARR_FCY_REF_show.$visible as $cinst.icMode<>'EARR' ## all rooms
+Calculate $cinst.$objs.PagedPane.$objs.pbReduceFacilityList.$visible as $cinst.icMode='EARR' ## all rooms
+
+Calculate $cinst.$objs.pbPrintReport.$enabled as ilDisplayRecords.$linecount
+Calculate $cinst.$objs.pbAutoCreate.$visible as lbOpenConference&ilDisplayRecords.$linecount=0&pos('ALL',upp(ilSearch2.DisplayDate))
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+If inCurrentTab=cnTabArrangement
+	Calculate $cinst.$objs.ARR_TPC_REF.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_PSN_REF.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_LEADER.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_FCY_REF.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_FACILITY.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.ARR_FORMAT.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_DATE.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_DAYNO.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_STARTTIME.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_ENDTIME.$enabled as icMode<>''
+	
+	Calculate $cinst.$objs.ARR_BOOKING_REQD.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_MAX_BOOKINGS.$enabled as icMode<>''
+	
+Else If inCurrentTab=cnTabComments
+	Calculate $cinst.$objs.ARR_ORDER.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_SPECIFIC_EQUIPT.$enabled as icMode<>''
+	Calculate $cinst.$objs.ARR_COMMENT.$enabled as icMode<>''
+	
+Else If inCurrentTab=cnTabAttendees
+	Calculate $cinst.$objs.PagedPane.$objs.ilAttendees.$enabled as icMode=''
+	
+End If
+
+Calculate $cinst.$objs.TabControl_ARR.$enabled as icMode=''
+
+Do method assignEntryFieldProperties
+
+Do inherited ## handle objects in the navigation and results panes

@@ -1,0 +1,62 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	If inCurrentForm=1
+		# registering new company
+		Do $cinst.$saveData() Returns lbOK ## icDisplayMessage and icMode explain the results of $saveData
+		If lbOK
+			# company has been registered
+			# now login as admin/admin to get session id
+			# we now need to get new password to change admin / admin to admin / <new passowrd>
+			Calculate inCurrentForm as 2
+			Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentForm
+			
+		End If
+		Calculate icMode as 'I' ## keep this open!
+		
+	Else If inCurrentForm=2
+		
+		# getting new password
+		If icNewPassword<>''
+			If icNewPassword=icCheckPassword
+				If len(icNewPassword)>6
+					# good
+				Else
+					Do toStrings.$StringTableEntry('MSG_ADMINPWORD',icDisplayMessage,'administrator password must be at least 7 characters in length')
+					Quit event handler (Discard event)
+				End If
+			Else
+				Do toStrings.$StringTableEntry('MSG_PWORDMISMATCH',icDisplayMessage,'passwords do not match')
+				Quit event handler (Discard event)
+			End If
+			
+			# we have a good password
+			# change password ## tuaUsers.$changePassword()
+			# login to the default admin account to get the session ID
+			Do $DefineList(lrUser,'infra.tuaUsers')
+			Calculate lrUser.USR_NAME as 'admin'
+			Calculate lrUser.USR_HASHPASS as 'admin'
+			Do lrUser.$Login() Returns lbOK
+			If lbOK
+				Calculate $ctask.tcSessionID as lrUser.icID
+				# now reset the password
+				Do lrUser.$changePassword(icNewPassword) Returns lbOK
+				If lbOK
+					Calculate icMode as ''
+					# then go to user registration form ## ;;# 11/11/14 not implementing employee registration at this time
+					# so open our login form
+					Set reference liRef to irParameters.callingForm
+					Do liRef.$setLoginPane()
+				Else
+					Calculate icDisplayMessage as lrUser.irErrorSQL.NativeErrorText
+					
+				End If
+				
+			Else
+				Calculate icDisplayMessage as lrUser.irErrorSQL.NativeErrorText
+				
+			End If
+		End If
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

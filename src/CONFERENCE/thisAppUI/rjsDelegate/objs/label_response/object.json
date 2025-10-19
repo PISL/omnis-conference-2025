@@ -36,7 +36,7 @@
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"tagtype": "kJSLabelTypeLabel",
-		"text": " response",
+		"text": "payment rec'd",
 		"textcolor": "kColorDefault",
 		"textishtml": false,
 		"tooltip": "",
@@ -48,8 +48,8 @@
 	"layout": {
 		"320": {
 			"left": 8,
-			"top": 664,
-			"width": 152,
+			"top": 760,
+			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
 			"dragborder": false,
@@ -59,8 +59,8 @@
 		},
 		"375": {
 			"left": 8,
-			"top": 664,
-			"width": 152,
+			"top": 744,
+			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
 			"dragborder": false,
@@ -69,9 +69,9 @@
 			"visible": true
 		},
 		"480": {
-			"left": 8,
-			"top": 664,
-			"width": 152,
+			"left": 16,
+			"top": 720,
+			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
 			"dragborder": false,
@@ -81,8 +81,8 @@
 		},
 		"667": {
 			"left": 8,
-			"top": 664,
-			"width": 152,
+			"top": 712,
+			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
 			"dragborder": false,
@@ -92,7 +92,7 @@
 		},
 		"768": {
 			"left": 8,
-			"top": 688,
+			"top": 752,
 			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
@@ -103,7 +103,7 @@
 		},
 		"1024": {
 			"left": 8,
-			"top": 560,
+			"top": 624,
 			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
@@ -114,8 +114,8 @@
 		},
 		"1700": {
 			"left": 8,
-			"top": 576,
-			"width": 152,
+			"top": 632,
+			"width": 136,
 			"height": 16,
 			"align": "kRightJst",
 			"dragborder": false,

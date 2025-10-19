@@ -376,5 +376,61 @@
 			"primarykey": false,
 			"userinfo": ""
 		}
+	},
+	{
+		"name": "DG_REGN_CONFIRMED",
+		"ident": 32037,
+		"order": 28,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "when email confirming registration is sent",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_SPKR_INSTRUCTIONS",
+		"ident": 32038,
+		"order": 29,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "when email advising speaker of conference instructions is sent",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_SPKR_CHECKTOPICS",
+		"ident": 32039,
+		"order": 30,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "when email asking speaker to check their topics is sent",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "DG_PAYMENT_ACK",
+		"ident": 32040,
+		"order": 31,
+		"type": "kDate",
+		"subtype": "kDatetime",
+		"sublen": 7,
+		"properties": {
+			"desc": "when email acknowledging receipt of money has been received",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
 	}
 ]

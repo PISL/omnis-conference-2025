@@ -1,0 +1,33 @@
+For lnColCount from 1 to prAttributes.$colcount step 1
+	Calculate lcTranslation as ''
+	Calculate lcEvaluation as ''
+	Calculate lbTranslate as kFalse
+	Calculate lbEvaluate as kFalse
+	
+	Calculate lcColName as prAttributes.$cols.[lnColCount].$name
+	If lcColName<>''
+		If upp(lcColName)='TITLE'|upp(lcColName)='DESCRIPTION'
+			Do $ctask.toStrings.$StringTableEntry(upp(con(prAttributes.reportCode,'_',lcColName)),lcTranslation,prAttributes.[lcColName]) Returns lbFound
+			Calculate lbTranslate as kTrue
+			If upp(lcColName)='TITLE'
+				Calculate pcTitle as lcTranslation
+			End If
+			
+		Else If right(upp(lcColName),4)='_LBL'|right(upp(lcColName),3)='_TT'
+			Do $ctask.toStrings.$StringTableEntry(upp(con(prAttributes.reportCode,'_',lcColName)),lcTranslation,prAttributes.[lcColName]) Returns lbFound
+			Calculate lbTranslate as kTrue
+			
+		Else If right(upp(lcColName),4)='_MIN'|right(upp(lcColName),4)='_MAX'|right(upp(lcColName),8)='_DEFAULT'
+			Do eval(prAttributes.[lcColName]) Returns lcEvaluation
+			Calculate lbEvaluate as kTrue
+		End If
+		
+		If lbTranslate
+			Calculate prAttributes.[lcColName] as lcTranslation
+		Else If lbEvaluate
+			Calculate prAttributes.[lcColName] as lcEvaluation
+		End If
+	End If
+End For
+
+Do ilDisplayRecords.$add(pcGroup,pcCode,pcTitle,prAttributes)

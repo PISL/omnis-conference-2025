@@ -1,0 +1,196 @@
+# remove any extraneous character from beginning and end
+Calculate icPastedTextForBulkArrangements as trim(icPastedTextForBulkArrangements,kTrue,kTrue,kLf)
+Calculate icPastedTextForBulkArrangements as trim(icPastedTextForBulkArrangements,kTrue,kTrue,kCr)
+Calculate icPastedTextForBulkArrangements as trim(icPastedTextForBulkArrangements)
+
+# make sure there is content and a recognisable column delimiter
+If pos(kTab,icPastedTextForBulkArrangements)
+	Calculate lcColDelim as kTab
+Else If pos(kComma,icPastedTextForBulkArrangements)
+	Calculate lcColDelim as kComma
+Else
+	Calculate icPastedTextForBulkArrangements as ''
+	Quit method
+End If
+
+# initialise primary variables
+Calculate lrArrangement as irCurrentRecord
+Do lrArrangement.$clear()
+Calculate llArrangements as irCurrentRecord
+Do llArrangements.$clear()
+Calculate lnLineNo as 0
+
+While icPastedTextForBulkArrangements<>''
+	Calculate lcLineContent as strtok(nam(icPastedTextForBulkArrangements),kCr)
+	Calculate lcLineContent as trim(lcLineContent,kTrue,kTrue,kLf)
+	Calculate lnColNo as 0
+	Calculate lnLineNo as lnLineNo+1
+	
+	# each line is made up of these columns: date, start time, end time, topic title, room name
+	If lnLineNo=1&(pos('date',low(lcLineContent))>0&pos('date',low(lcLineContent))<10|(pos('day',low(lcLineContent))>0&pos('day',low(lcLineContent))<10))
+		# row one has column headers
+		# allow a row of column titles but don't process as data
+		Calculate lbRowIsData as kFalse
+		
+		While lcLineContent<>''
+			Calculate lnColNo as lnColNo+1
+			Calculate lcToken as strtok(nam(lcLineContent),lcColDelim)
+			Calculate lcToken as trim(lcToken)
+			
+			If pos('DATE',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'ARR_DATE'
+			Else If pos('DAY',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'ARR_DAYNO'
+			Else If pos('START',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'ARR_STARTTIME'
+			Else If pos('END',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'ARR_ENDTIME'
+				
+			Else If pos('TITLE',upp(lcToken))|pos('NAME',upp(lcToken))|pos('TOPIC',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'TPC_TITLE'
+			Else If pos('ROOM',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'FCY_NAME'
+			Else If pos('MAX',upp(lcToken))
+				Calculate lcColName[lnColNo] as 'ARR_MAX_BOOKINGS'
+			Else
+				Breakpoint
+			End If
+		End While
+		
+	Else If lnLineNo=1
+		# no column names have been provided
+		Calculate lbRowIsData as kTrue ## lcLineContent
+		
+		# Is the first column a day number or date?
+		# Test the value and figure from there.
+		Calculate lcTestFirstColumn as mid(lcLineContent,1,pos(lcColDelim,lcLineContent)-1)
+		If isnumber(lcTestFirstColumn)
+			Calculate lcColName1 as 'ARR_DAYNO'
+		Else
+			Calculate lcColName1 as 'ARR_DATE'
+		End If
+		Calculate lcColName2 as 'ARR_STARTTIME'
+		Calculate lcColName3 as 'ARR_ENDTIME'
+		Calculate lcColName4 as 'TPC_TITLE'
+		Calculate lcColName5 as 'FCY_NAME'
+		Calculate lcColName6 as 'ARR_MAX_BOOKINGS'
+	Else
+		Calculate lbRowIsData as kTrue
+	End If
+	
+	If lnLineNo=1
+		# define the row that will store the imported data
+		# fortunately ilDisplayRecords has ALL the columns we want to reference.
+		For lnColNo from 1 to 6 step 1
+			Calculate lcColName as lcColName[lnColNo]
+			If lcColName<>''
+				Do ilDisplayRecords.$cols.$findname(lcColName) Returns liColRef
+				If liColRef
+					Do lrImport.$cols.$add(liColRef.$name,liColRef.$coltype,liColRef.$colsubtype,liColRef.$colsublen)
+				Else
+					Breakpoint
+				End If
+			End If
+		End For
+	End If
+	
+	If lbRowIsData
+		# parse the data
+		Calculate lnColNo as 0
+		
+		# parse the line content and place values in lrImport
+		Do lrImport.$clear()
+		While lcLineContent<>''
+			Calculate lnColNo as lnColNo+1
+			Calculate lcToken as strtok(nam(lcLineContent),lcColDelim)
+			Calculate lcToken as trim(lcToken)
+			
+			Calculate lrImport.C[lnColNo] as lcToken
+		End While
+		
+		# the data is now imported into lrImport
+		# copy lrImport into lrArrangement
+		Do lrArrangement.$clear()
+		
+		Calculate lrArrangement.ARR_CF_REF as ilSearch1.CF_SEQ
+		# identify the TOPIC
+		Do ilTopics.$search(upp($ref.TPC_TITLE)=upp(lrImport.TPC_TITLE),1,0,0,0) Returns lbOK
+		If not(lbOK)
+			# what if we are comparing timezone awareness with time zone awareness?
+			Do ilTopics.$search(upp(replaceall($ref.TPC_TITLE,' ',''))=upp(replaceall(lrImport.TPC_TITLE,' ','')),1,0,0,0) Returns lbOK
+			If not(lbOK)
+				# Still no exact match... lets try a limited match
+				Do ilTopics.$search(mid(upp(replaceall($ref.TPC_TITLE,' ','')),1,20)=mid(upp(replaceall(lrImport.TPC_TITLE,' ','')),1,20),1,0,0,0) Returns lbOK
+			End If
+		End If
+		If lbOK
+			Calculate lrArrangement.ARR_TPC_REF as ilTopics.TPC_SEQ
+			Calculate lrArrangement.ARR_PSN_REF as ilTopics.PSN_SEQ
+		Else
+			# topic is whole point of this import along with date and times
+			Calculate lnErrors as lnErrors+1
+		End If
+		
+		# convert facility name to a foreign key
+		If lrImport.FCY_NAME<>''
+			Do ilFacilities.$search(upp($ref.FCY_NAME)=upp(lrImport.FCY_NAME),1,0,0,0) Returns lbOK
+			If not(lbOK)
+				# Still no exact match... lets try a limited match
+				Do ilFacilities.$search(upp(replaceall($ref.FCY_NAME,' ','')=upp(replaceall(lrImport.FCY_NAME,' ',''))),1,0,0,0) Returns lbOK
+				If not(lbOK)
+					# Still no exact match... lets try a limited match
+					Do ilFacilities.$search(mid(upp(replaceall($ref.FCY_NAME,' ','')),1,20)=mid(upp(replaceall(lrImport.FCY_NAME,' ','')),1,20),1,0,0,0) Returns lbOK
+				End If
+			End If
+			If lbOK
+				Calculate lrArrangement.ARR_FCY_REF as ilFacilities.FCY_SEQ
+			Else
+				# not found!  Don't raise an error.  The user can assign room later.
+				Calculate lnWarnings as lnWarnings+1
+			End If
+		End If
+		
+		Calculate lrArrangement.ARR_DATE as lrImport.ARR_DATE
+		Calculate lrArrangement.ARR_DAYNO as lrImport.ARR_DAYNO
+		Calculate lrArrangement.ARR_STARTTIME as lrImport.ARR_STARTTIME
+		Calculate lrArrangement.ARR_ENDTIME as lrImport.ARR_ENDTIME
+		Calculate lrArrangement.ARR_MAX_BOOKINGS as lrImport.ARR_MAX_BOOKINGS
+		
+		Do lrArrangement.$validation() Returns lbOK
+		If lbOK
+			# store low in a list for later processing
+			# If there are any obvious errors we will abort the import and alert the user.
+			Do llArrangements.$add()
+			Calculate llArrangements.$line as llArrangements.$linecount
+			Do llArrangements.$assignrow(lrArrangement)
+		Else
+			Calculate lnErrors as lnErrors+1
+			Calculate #S1 as lrArrangement.icValidationMessage
+		End If
+	End If
+End While
+
+If lnErrors=0
+	Calculate llArrangements.$line as 0
+	While $Loop(llArrangements)
+		Calculate lrArrangement as llArrangements
+		Do lrArrangement.$insert() Returns lbOK
+		If not(lbOK)
+			Breakpoint
+			Calculate lnErrors as lnErrors+1
+		End If
+	End While
+	
+	If lnErrors>0
+		Do $cinst.$clientOkCancelMsg(con(llArrangements.$linecount-lnErrors,' records imported'),'PARTIAL SUCCESS')
+	Else
+		Do $cinst.$clientOkCancelMsg(con(llArrangements.$linecount,' records imported'),'SUCCESS')
+	End If
+	
+Else If lnErrors>0
+	Do $cinst.$clientOkCancelMsg(con('There are ',lnErrors,' errors detected in the import data'),'FAILED OPERATION')
+	
+Else If lnWarnings>0
+	Do $cinst.$clientOkCancelMsg(con('There are ',lnWarnings,' warnings detected in the import data'),'DATA IMPORTED')
+	
+End If

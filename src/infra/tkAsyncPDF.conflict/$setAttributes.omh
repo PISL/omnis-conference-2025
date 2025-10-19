@@ -1,0 +1,3 @@
+Calculate irJobAttributes as prAttributes
+Calculate irReportData as prAttributes.reportData
+Calculate irJobIdentification as prAttributes.jobIdentification

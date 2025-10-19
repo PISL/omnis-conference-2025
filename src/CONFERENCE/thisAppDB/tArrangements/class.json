@@ -1,8 +1,8 @@
 {
 	"classtype": "kTable",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 52,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 54,
 	"superclass": "infra.tMaster",
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
@@ -46,7 +46,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2025-01-27 14:26:17",
+		"moddate": "2025-07-30 18:39:27",
 		"showascheckedout": false,
 		"sqlclassname": "sArrangements",
 		"userinfo": "",

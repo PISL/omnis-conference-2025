@@ -1,0 +1,41 @@
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnTabCertificate|inCurrentTab=cnTabComments|inCurrentTab=cnTabTechnical
+	Begin reversible block
+		Calculate icMode as mid(icMode,1,1) ## just I or E for inherited method
+	End reversible block
+	If icMode='I' ## insert  'ICRT'
+		Calculate irCurrentRecord.CRT_CF_REF as ilSearch1.CF_SEQ
+	End If
+	Do inherited Returns lbOK
+	
+Else If inCurrentTab=cnTabAwardedTo
+	If icMode='IAW' ## insert awardee
+		Calculate irAwardee.CSN_CRT_REF as irCurrentRecord.CRT_SEQ
+		Calculate irAwardee.CSN_DG_REF as ilDelegates.DG_SEQ
+	End If
+	Do irAwardee.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irAwardee.icValidationMessage
+	Else
+		If icMode='IAW' ## insert awardee
+			Do irAwardee.$insert() Returns lbOK
+		Else
+			Do irAwardee.$update() Returns lbOK
+		End If
+		If lbOK
+			# all good
+			Calculate ilDelegates.assigned as kTrue
+			Do ilDelegates.$assignrow(irAwardee,kTrue)
+		Else
+			Calculate icDisplayMessage as irAwardee.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+	Quit method lbOK
+	
+End If
+
+If lbOK
+	Calculate icMode as ''
+End If

@@ -1,0 +1,23 @@
+Calculate llTemp as tlPermissions
+Do llTemp.$sort($ref.PER_LABEL,0)
+
+Begin text block
+While $Loop(llTemp)
+	If llTemp.$line>1
+		Calculate lcSeparator as kComma
+		
+		If llTemp.FormPrefix<>llTemp.[llTemp.$line-1].FormPrefix
+			# new line for new prefix
+			Text:[kCr]
+			# if the current prefix begins with a different letter than previous then add additional kCr for easier reading
+			If left(llTemp.FormPrefix,1)<>left(llTemp.[llTemp.$line-1].FormPrefix,1)
+				Text:[kCr]
+			End If
+			
+			Calculate lcSeparator as ''
+		End If
+	End If
+	Text:[lcSeparator] [llTemp.PER_LABEL]
+End While
+End text block
+Get text block icPermissions

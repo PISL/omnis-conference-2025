@@ -13,8 +13,18 @@ Else
 End If
 
 Calculate icDisplayMessage as ''
-# If irUserRights.canAddGroupOrg|irUserRights.canAddGroupOrgR
-# before moving, check there sin't a conflict
+If icDraggedFrom=nam(ilDisplayRecords)&ibDragArrangementsOrTopics
+	# dragging from ilDisplayRecords while ibDragArrangementsOrTopics is kTrue is not allowed.
+	Do $cinst.$clientOkCancelMsg("You cannot drag an arrangement from ilDisplayRecords while dragging from ilTopics has been enabled.","ERROR")
+	Quit method kFalse
+End If
+
+# Do $DefineList(lrTemp,'tuaGroupOrgLinks')
+# Do lrTemp.$assignrow(pDragValue) Returns lrTemp.UGO_GO_REF
+Calculate lrTemp as ilDay1AM
+Do lrTemp.$clear()
+
+# before moving, check there isn't a conflict
 Calculate lcDragTo as con('ilDay',pnDayTo,pcSession)
 Do [lcDragTo].$search($ref.ARR_PSN_REF=pDragValue.ARR_PSN_REF,1,0,0,0) Returns lbFound ## ilDay1AM  ilDay2AM  ilDay1PM  ilDay3EVE
 If lbFound
@@ -45,14 +55,40 @@ If lbFound
 	If lbAnnounceWarning
 		Quit method
 	End If
+	
+End If
+If icDraggedFrom=nam(ilDisplayRecords)
+	# The list being dragged is ilDisplayRecords which is based on ARR_ and will result in a $update() to ARR_
+	# its probably ilTopicsToDrag   [icDraggedFrom]
+	Do lrTemp.$assignrow(ilDisplayRecords,kTrue)
+	
+	# we wantt o assign a room.  If user has not identifues a room, flag an error.
+	# If isclear(lrTemp.ARR_FCY_REF)&isclear(ilFacilitiesToDrag.FCY_SEQ)
+	# Do $cinst.$clientOkCancelMsg("You have dragged a topic to a time but have not assigned a room.  Please assign a room before dragging.","ERROR")
+	# Quit method kFalse
+	# End If
+	
+Else If icDraggedFrom=nam(ilTopicsToDrag)
+	# The list being dragged is based on TOPICS.  This will result in a $insert() into ARR_
+	# its probably ilTopicsToDrag   [icDraggedFrom]
+	Calculate lrTemp.ARR_CF_REF as ilSearch1.CF_SEQ
+	Calculate lrTemp.ARR_TPC_REF as ilTopicsToDrag.TPC_SEQ
+	Calculate lrTemp.ARR_PSN_REF as ilTopicsToDrag.PSN_SEQ
+	# some extra data required for $DisplayName()
+	Do lrTemp.$assignrow(ilTopicsToDrag,kTrue)
+	
+	# we wantt o assign a room.  If user has not identifues a room, flag an error.
+	If isclear(ilFacilitiesToDrag.FCY_SEQ)
+		Do $cinst.$clientOkCancelMsg("You have dragged a topic to a time but have not assigned a room.  Please assign a room before dragging.","ERROR")
+		Quit method kFalse
+	End If
+	
+Else If pos('ilDay',icDraggedFrom)=1
+	Do lrTemp.$assignrow([icDraggedFrom],kTrue)
+	
 End If
 
-# Do $DefineList(lrTemp,'tuaGroupOrgLinks')
-# Do lrTemp.$assignrow(pDragValue) Returns lrTemp.UGO_GO_REF
-Calculate lrTemp as ilDay1AM
-Do lrTemp.$clear()
-Do lrTemp.$assignrow(pDragValue)
-
+# when the event occurs is determined by list that was dropped on
 Calculate lrTemp.ARR_DAYNO as pnDayTo
 If pcSession='AM'
 	Calculate lrTemp.ARR_STARTTIME as tim('09:00')
@@ -64,30 +100,48 @@ Else If pcSession='EVE'
 	Calculate lrTemp.ARR_STARTTIME as tim('19:30')
 	Calculate lrTemp.ARR_ENDTIME as tim('22:00')
 End If
-If isclear(lrTemp.ARR_FCY_REF)
+
+# which room the event is on, determined by ilFacilitiesToDrag
+If ilFacilitiesToDrag.FCY_SEQ>0
 	# 0 has been copied from pDragValue and ARR_FCY_REF is a foreign key that cannot have 0 as a value but can have #null
+	Calculate lrTemp.ARR_FCY_REF as ilFacilitiesToDrag.FCY_SEQ
+	# some extra data required for $DisplayName()
+	Do lrTemp.$assignrow(ilFacilitiesToDrag,kTrue)
+	
+Else If lrTemp.ARR_FCY_REF>0
+	# no change required
+	
+Else
 	Calculate lrTemp.ARR_FCY_REF as #NULL
 End If
 
-Do lrTemp.$update() Returns lbOK
+# insert or update as appropriate
+If lrTemp.[lrTemp.icPrimaryKey]>0
+	Do lrTemp.$update() Returns lbOK
+Else
+	Do lrTemp.$insert() Returns lbOK
+End If
 If lbOK
 	# add updated row to this list
+	Do lrTemp.$displayName()
+	
 	Do [$cobj.$name].$add()
 	Calculate [$cobj.$name].$line as [$cobj.$name].$linecount
 	Do [$cobj.$name].$assignrow(lrTemp)
 	# remove dragged row from original list
-	Do [pDragField].$remove([pDragField].$line)
-	Calculate [pDragField].$line as 0
+	If icDraggedFrom=nam(ilDisplayRecords)|left(icDraggedFrom,5)='ilDay'
+		Do [pDragField].$remove([pDragField].$line)
+		Calculate [pDragField].$line as 0
+	End If
 	
 	Do irDragEvent.$clear()
 	
 Else If lrTemp.icValidationMessage<>''
-	Calculate icDisplayMessage as lrTemp.icValidationMessage
+	Calculate $cinst.icDisplayMessage as lrTemp.icValidationMessage
 Else
-	Calculate icDisplayMessage as lrTemp.irErrorSQL.NativeErrorText
+	Calculate $cinst.icDisplayMessage as lrTemp.irErrorSQL.NativeErrorText
 End If
-# Else
-# Calculate icDisplayMessage as $cell(clLabels,'objName','not_authorised','label')
-# End If
+
+Calculate icDraggedFrom as ''
 
 Quit method lbOK

@@ -1,8 +1,8 @@
 {
 	"classtype": "kObjectclass",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 7,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 17,
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
 
@@ -93,7 +93,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2019-06-07 10:46:42",
+		"moddate": "2025-08-27 09:52:49",
 		"selfcontained": false,
 		"showascheckedout": false,
 		"userinfo": "",

@@ -1,0 +1,32 @@
+# Do ilDisplayRecords.$add('','ADMINISTRATION','','')
+# Do ilDisplayRecords.$add('NOT_THIS_CONF','Previous delegates not attending','Previous delegates not attending the selected conference','sortOrder,outputText')
+
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "NOT_THIS_CONF"
+
+Text:, "title" : "Previous delegates not attending"
+Text:, "description" : "Previous delegates not attending the selected conference."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+Text:, "sortlist_lbl" : "sort options"
+Text:, "sortlist_tt" : "you can determine the sort order of your report here"
+Text:, "sortlist_default" : "1"
+Text:, "sortlist_column" : "sortName"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('ADMINISTRATION',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

@@ -1,0 +1,60 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+
+Calculate irCompany as trGroupOrg
+
+# get all URL options in single fetch and extract the VALUEs of interest
+Do toValues.$initInherited('URL') Returns llUrlOptions
+Do llUrlOptions.$search($ref.RFO_VALUE='EXIT',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icURLexit as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+If 1=0
+	#  exit/pre and post HTML for speaker images
+	Calculate icImageHtmlPre as "<div><img src=" ## default
+	Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_PRE',1,0,0,0) Returns lbFound
+	If lbFound
+		If not(isclear(llUrlOptions.RFO_CHAR))
+			Calculate icImageHtmlPre as llUrlOptions.RFO_CHAR
+		End If
+	End If
+	
+	Calculate icImageHtmlPost as "?w=1200&amp;ssl=1 </div>" ## default
+	Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_POST',1,0,0,0) Returns lbFound
+	If lbFound
+		If not(isclear(llUrlOptions.RFO_CHAR))
+			Calculate icImageHtmlPost as llUrlOptions.RFO_CHAR
+		End If
+	End If
+End If
+
+# apply a form backcolor if one has been set
+Do toValues.$initGlobal('FORMCOLOURS','ZC_FS_SESSIONS') Returns lrReference
+If lrReference.RFG_JSON<>''
+	Do OJSON.$jsontolistorrow(lrReference.RFG_JSON,lcTemp,kFalse) Returns lrJSON
+	Do lrJSON.$cols.$findname('backcolor') Returns liColRef
+	If liColRef
+		Calculate $cinst.$backcolor as eval(lrJSON.backcolor)
+	End If
+End If
+
+Calculate ibFormatBootstrap as kTrue ## default is bootstrap v2
+
+Do method TranslateText
+Do method fetchConferences
+## next method will populate ilArrangements and icBootstrap
+Do method fetchArrangements
+
+Calculate $cinst.$objs.label_SelectEvent.$visible as ilConferences.$linecount>1
+Calculate $cinst.$objs.ilConferences.$visible as ilConferences.$linecount>1
+
+Calculate $cinst.$objs.ibFormatBootstrap.$visible as (sys(2)=17)
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

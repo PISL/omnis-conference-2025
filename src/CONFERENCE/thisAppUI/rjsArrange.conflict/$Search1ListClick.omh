@@ -1,0 +1,31 @@
+Do method $fetchDisplayList
+Calculate ilDisplayRecords.$line as 1
+
+Do ilTopics.$clear()
+Do ilTopics.$fetchConferenceTopics($cinst.ilSearch1.CF_SEQ)
+While $Loop(ilTopics)
+	Do ilTopics.$DisplayName()
+End While
+Do method SortTopics
+
+Do ilPersons.$clear()
+Do ilPersons.$fetchSpeakers($cinst.ilSearch1.CF_SEQ)
+Do ilPersons.$addbefore(1,#NULL,#NULL,'not set')
+While $Loop(ilPersons)
+	Do ilPersons.$DisplayName()
+End While
+
+Do ilFacilities.$clear()
+Do ilFacilities.$fetchForConference($cinst.ilSearch1.CF_SEQ)
+Do ilFacilities.$sort($ref.FCY_TYPE,0,$ref.FCY_NAME,0)
+Do ilFacilities.$addbefore(1,#NULL,#NULL,'not set')
+While $Loop(ilFacilities)
+	Do ilFacilities.$DisplayName(1) ## 1 = include area
+End While
+
+Do ilAttendees.$clear()
+# Do ilAttendees.$fetch_fk($cinst.ilSearch1.CF_SEQ)
+
+Do method $displayListClick (kTrue) ## fetch slots
+
+Do $cinst.$behaviour

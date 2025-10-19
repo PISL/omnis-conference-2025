@@ -1,0 +1,22 @@
+# called from the subform(s) rfSubAddRemoveLine
+# prParams is a row variable contining whatever information necessary for this method
+
+Calculate icDisplayMessage as ''
+Do irCurrentSynonym.$checkChildren() Returns lnChildCount
+
+If lnChildCount=0
+	Do irCurrentSynonym.$delete_pk() Returns lbOK
+	If not(lbOK)
+		Calculate icDisplayMessage as irCurrentSynonym.irErrorSQL.NativeErrorText
+	Else
+		Do ilSynonyms.$remove(ilSynonyms.$line)
+		Calculate ilSynonyms.$line as 0
+		Do irCurrentSynonym.$clear()
+	End If
+Else
+	Do irCurrentSynonym.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren ## return a string
+	Do toStrings.$StringTableEntry('ERR_NODEL_CHILDREN',icDisplayMessage,'record has associated child records, delete those first')
+	Calculate icDisplayMessage as con(icDisplayMessage,':',kCr,lcTablesWithChildren)
+End If
+
+Do $cinst.$behaviour()

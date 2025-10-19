@@ -110,6 +110,9 @@ Else If inCurrentTab=cnTabReceipts
 		End If
 		If lbOK
 			# update llists in calling method
+			Do ilPayments.$add()
+			Calculate ilPayments.$line as ilPayments.$linecount
+			Do ilPayments.$assignrow(irPayment)
 		Else
 			Calculate icDisplayMessage as irPayment.irErrorSQL.NativeErrorText
 		End If

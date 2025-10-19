@@ -38,6 +38,9 @@ Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_DESC.$enabled as pos('T',icMod
 Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_REQUESTS.$enabled as pos('T',icMode)
 Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_COMMENT.$enabled as pos('T',icMode)
 
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.ilColoursBackground.$enabled as pos('T',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PagedPane_TOPIC.$objs.ilColoursText.$enabled as pos('T',icMode)
+
 Do method assignEntryFieldProperties
 
 Calculate $cinst.$objs.PagedPane_TOPIC.$objs.pbAddTopic.$enabled as icMode=''
@@ -54,6 +57,8 @@ Else
 	Do $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$html.$assign('') Returns lbOK
 	Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$visible as kFalse
 End If
+
+Calculate $cinst.$objs.ibDisplayTopicsForCurrentConference.$enabled as (ilSearch1.CF_SEQ>0)
 
 # Calculate $cinst.$objs.ilUserRoles.$enabled as icMode=''
 # Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''

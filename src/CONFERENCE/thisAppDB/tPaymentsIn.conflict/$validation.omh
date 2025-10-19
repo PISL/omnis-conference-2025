@@ -1,0 +1,26 @@
+Calculate icValidationMessage as ''
+
+If $cinst.PY_DG_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' delete reference (PY_DG_REF) missing')
+End If
+
+If $cinst.PY_DATE>dat('1 JAN 2010')
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' payment date (PY_DATE) missing')
+End If
+
+If $cinst.PY_AMOUNT<>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' payment amount (PY_AMOUNT) missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

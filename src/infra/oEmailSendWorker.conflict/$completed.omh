@@ -1,0 +1,23 @@
+# Breakpoint
+Calculate iResponse as pResults
+Calculate iErrorCode as pResults.errorCode
+Calculate iErrorText as pResults.errorInfo
+Calculate iFailedRecipients as iResponse.failedRecipients
+
+If isnull(irefCallingObject)
+	# no further action
+Else
+	If iErrorCode<>0
+		If irefCallingObject.[icCallbackMethodNameBad].$cando
+			Do irefCallingObject.[icCallbackMethodNameBad](pResults,irFingerPrint)
+		Else
+			Breakpoint
+		End If
+	Else
+		If irefCallingObject.[icCallbackMethodNameGood].$cando
+			Do irefCallingObject.[icCallbackMethodNameGood](pResults,irFingerPrint)
+		Else
+			Breakpoint
+		End If
+	End If
+End If

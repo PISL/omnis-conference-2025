@@ -1,0 +1,11 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	# Do irTopic.$fetch_pk() ## re-read from db
+	Do ioTopicPerson.$fetchUsingTopic(irTopic.[irTopic.icPrimaryKey],irTopic,irCurrentRecord,irLinkTP) Returns llJoined
+	If ioTopicPerson.icErrorMessage<>''
+		Calculate icDisplayMessage as ioTopicPerson.icErrorMessage
+	End If
+	Calculate icMode as 'ET' ## edit topic
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

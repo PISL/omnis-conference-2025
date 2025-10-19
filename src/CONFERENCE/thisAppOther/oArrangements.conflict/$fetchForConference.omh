@@ -1,0 +1,48 @@
+Calculate icMessage as ''
+
+Do ilArrangements.$clear()
+Do ilArrangements.$fetchConference(pnCF_SEQ)
+# if relative day no has been used, substitute actual DATES
+Calculate icTimeType as ''
+While $Loop(ilArrangements)
+	If ilArrangements.ARR_DAYNO=0
+		Calculate ilArrangements.ARR_DATE as $ctask.trCurrentConference.CF_DATE_FROM
+	Else If ilArrangements.ARR_DAYNO>0
+		Calculate ilArrangements.ARR_DATE as dadd(kDay,ilArrangements.ARR_DAYNO,$ctask.trCurrentConference.CF_DATE_FROM)
+	End If
+	If ilArrangements.ARR_STARTTIME>tim('00:00')
+		Calculate ilArrangements.ARR_STARTTIME as tim(ilArrangements.ARR_STARTTIME) ## postgres v. omnis date math anomoly
+		Calculate ilArrangements.DisplayWhen as tim(ilArrangements.ARR_STARTTIME,'H:N')
+		If icTimeType=''
+			Calculate icTimeType as 'time'
+		Else If icTimeType<>'time'
+			Calculate icTimeType as 'mixed'
+		End If
+	Else
+		Calculate ilArrangements.DisplayWhen as ilArrangements.ARR_SLOT
+		If icTimeType=''
+			Calculate icTimeType as 'slot'
+		Else If icTimeType<>'slot'
+			Calculate icTimeType as 'mixed'
+		End If
+	End If
+	Do ilArrangements.$DisplayName()
+	
+	Do ilBookings.$reportCounts(ilArrangements.ARR_SEQ,prDelegate.DG_SEQ) Returns lrBookingCounts
+	Calculate ilArrangements.countAll as lrBookingCounts.countAll
+	Calculate ilArrangements.countThisUser as lrBookingCounts.countThisUser
+	If ilArrangements.countThisUser
+		Calculate ilArrangements.displayThisUser as '☞' ## WHITE RIGHT POINTING INDEX𯿿Unicode: U+261E, UTF-8: E2 98 9E
+	Else If ilArrangements.ARR_PSN_REF=prDelegate.DG_PSN_REF
+		Calculate ilArrangements.displayThisUser as '☞'
+	End If
+	
+	If ilArrangements.ARR_MAX_BOOKINGS>0
+		Calculate ilArrangements.displayCount as con(lrBookingCounts.countAll,'/',ilArrangements.ARR_MAX_BOOKINGS)
+	Else
+		Calculate ilArrangements.displayCount as #NULL ## no limit
+	End If
+End While
+Do ilArrangements.$sort($ref.ARR_DATE,0,$ref.ARR_STARTTIME,0,$ref.ARR_ORDER,0,$ref.ARR_SLOT,0)
+
+Quit method ilArrangements

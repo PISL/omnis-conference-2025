@@ -1,0 +1,11 @@
+Do irDelegate.$clear()
+Do irLinkDelegateInvoice.$clear()
+Do irInvoiceHeader.$clear()
+Calculate ilInvoiceDetail.$clear() as
+
+Calculate pretDelegate as irDelegate
+Calculate pretLink as irLinkDelegateInvoice
+Calculate pretInvoiceHeader as irInvoiceHeader
+Calculate pretInvoiceDetail as ilInvoiceDetail
+
+Quit method kTrue

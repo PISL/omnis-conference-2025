@@ -1,0 +1,16 @@
+Do method ClearWorkArea
+
+Do ilDisplayRecords.$clear()
+Do ilDisplayRecords.$fetch_fk(ilSearch1.CF_SEQ,'CRT_CF_REF',pcSearch2,pcTextSearch)
+
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+Else
+	# Do ilDisplayRecords.$sort($ref.SortName,0)
+	Do ilDisplayRecords.$sort($ref.CRT_TITLE,0)
+End If
+
+Calculate ilDisplayRecords.$line as 0
+While $Loop(ilDisplayRecords)
+	Do ilDisplayRecords.$DisplayName()
+End While

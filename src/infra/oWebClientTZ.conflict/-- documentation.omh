@@ -1,0 +1,13 @@
+# https://timezonedb.com
+# to lookup by city costs $5 per month - PAID 15-JUL-2019 with auto renewal via PayPal
+
+# name=platformis
+# key=DNWER8BT9LQF
+
+# http://api.timezonedb.com/v2.1/get-time-zone
+
+# by=zone|position|city|ip
+
+# http://api.timezonedb.com/v2.1/get-time-zone?key=DNWER8BT9LQF&by=city
+
+# https://api.timezonedb.com/v2.1/get-time-zone?key=DNWER8BT9LQF&format=json&by=city&city=London&country=GB

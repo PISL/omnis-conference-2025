@@ -19,5 +19,7 @@ End If
 # Breakpoint
 
 Do $LogError('EMAIL_SEND','FAIL',con(rFingerprint.PSN_FIRST_NAME,' ',rFingerprint.PSN_SURNAME,kCr,lcMessage)) ## for the developer
-Do $cinst.$clientcommand('okcancelmessage',row(lcMessage,'Email failure')) ## for the user
+# Do $cinst.$clientcommand('okcancelmessage',row(lcMessage,'Email Failure','okConfirmed'))
 Calculate icDisplayMessage as lcMessage
+# Calculate $cinst.$objs.PagedPane.$objs.splitButtonWorkflow.$errortext as lcMessage
+Do $cinst.$pushdata(row('$emailSendError',lcMessage))

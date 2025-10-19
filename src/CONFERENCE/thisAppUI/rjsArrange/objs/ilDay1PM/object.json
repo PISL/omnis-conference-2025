@@ -24,7 +24,7 @@
 		"dataname": "ilDay1PM",
 		"dateformat": "kJSFormatNone",
 		"dateformatcustom": "",
-		"defaultdisabledappearance": true,
+		"defaultdisabledappearance": false,
 		"defaultinactiveappearance": true,
 		"desgroup": 0,
 		"designactive": true,
@@ -57,6 +57,9 @@
 		"pagesize": 0,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"rightclicksetsline": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"selectedlinecolor": "kColorDefault",
 		"selectedlinesonly": false,
 		"selectedlinetextcolor": "kColorDefault",
@@ -110,9 +113,9 @@
 			"visible": true
 		},
 		"768": {
-			"left": 8,
-			"top": 192,
-			"width": 423,
+			"left": 160,
+			"top": 240,
+			"width": 264,
 			"height": 152,
 			"dragborder": false,
 			"edgefloat": "kEFright",
@@ -120,9 +123,9 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 384,
+			"left": 440,
 			"top": 48,
-			"width": 360,
+			"width": 256,
 			"height": 152,
 			"dragborder": false,
 			"edgefloat": "kEFright",
@@ -130,9 +133,9 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 264,
+			"left": 376,
 			"top": 48,
-			"width": 248,
+			"width": 192,
 			"height": 152,
 			"dragborder": false,
 			"edgefloat": "kEFnone",

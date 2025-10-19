@@ -1,0 +1,4 @@
+If ibShowWhat
+	Do default
+End If
+# else this section is suppressed

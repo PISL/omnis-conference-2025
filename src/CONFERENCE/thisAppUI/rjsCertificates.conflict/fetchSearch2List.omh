@@ -1,0 +1,7 @@
+# Do ilSearch2.$define(ilDisplayRecords.DisplayDate,ilDisplayRecords.ARR_DATE,ilDisplayRecords.ARR_DAYNO)
+# Do ilSearch2.$merge(ilDisplayRecords,kTrue)
+# Calculate ilSearch2.$line as 0
+#
+# Do ilSearch2.$cols.DisplayDate.$removeduplicates(kTrue)
+# Do ilSearch2.$addbefore(1,'All',#NULL,#NULL)
+# Calculate ilSearch2.$line as 1

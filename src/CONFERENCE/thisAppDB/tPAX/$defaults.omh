@@ -9,43 +9,43 @@ If upp(trGroupOrg.GO_NAME_SHORT)='OMNISWORLD'
 	# special for import
 	If $cinst.PX_ROLE='DG'|$cinst.PX_ROLE='DELEGATE'
 		Calculate $cinst.PX_0_DINNER as 1
-		Calculate $cinst.PX_1_NIGHT as 1
+		Calculate $cinst.PX_0_NIGHT as 1
 		Calculate $cinst.PX_1_BFAST as 1
 		Calculate $cinst.PX_1_LUNCH as 1
 		Calculate $cinst.PX_1_DINNER as 1
-		Calculate $cinst.PX_2_NIGHT as 1
+		Calculate $cinst.PX_1_NIGHT as 1
 		Calculate $cinst.PX_2_BFAST as 1
 		Calculate $cinst.PX_2_LUNCH as 1
 		Calculate $cinst.PX_2_DINNER as 1
-		Calculate $cinst.PX_3_NIGHT as 1
+		Calculate $cinst.PX_2_NIGHT as 1
 		Calculate $cinst.PX_3_BFAST as 1
 		Calculate $cinst.PX_3_LUNCH as 1
 		Calculate $cinst.PX_3_DINNER as 1
-		Calculate $cinst.PX_4_NIGHT as 1
+		Calculate $cinst.PX_3_NIGHT as 1
 		Calculate $cinst.PX_4_BFAST as 1
 		Calculate $cinst.PX_4_LUNCH as 1
 		Calculate $cinst.PX_4_DINNER as 1
-		Calculate $cinst.PX_5_NIGHT as 1
+		Calculate $cinst.PX_4_NIGHT as 1
 		Calculate $cinst.PX_5_BFAST as 1
-	Else
+	Else ## spouse or family
 		Calculate $cinst.PX_0_DINNER as 1
-		Calculate $cinst.PX_1_NIGHT as 1
+		Calculate $cinst.PX_0_NIGHT as 1
 		Calculate $cinst.PX_1_BFAST as 1
 		# Calculate $cinst.PX_1_LUNCH as 1
 		Calculate $cinst.PX_1_DINNER as 1
-		Calculate $cinst.PX_2_NIGHT as 1
+		Calculate $cinst.PX_1_NIGHT as 1
 		Calculate $cinst.PX_2_BFAST as 1
 		# Calculate $cinst.PX_2_LUNCH as 1
 		Calculate $cinst.PX_2_DINNER as 1
-		Calculate $cinst.PX_3_NIGHT as 1
+		Calculate $cinst.PX_2_NIGHT as 1
 		Calculate $cinst.PX_3_BFAST as 1
 		# Calculate $cinst.PX_3_LUNCH as 1
 		Calculate $cinst.PX_3_DINNER as 1
-		Calculate $cinst.PX_4_NIGHT as 1
+		Calculate $cinst.PX_3_NIGHT as 1
 		Calculate $cinst.PX_4_BFAST as 1
 		# Calculate $cinst.PX_4_LUNCH as 1
 		Calculate $cinst.PX_4_DINNER as 1
-		Calculate $cinst.PX_5_NIGHT as 1
+		Calculate $cinst.PX_4_NIGHT as 1
 		Calculate $cinst.PX_5_BFAST as 1
 	End If
 End If

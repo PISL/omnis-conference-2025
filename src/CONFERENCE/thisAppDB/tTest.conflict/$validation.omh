@@ -1,0 +1,28 @@
+Calculate icValidationMessage as ''
+
+If $cinst.TST_ARR_REF>0
+	# good
+	# TST_ARR_REF and TST_CF_REF are mutually exclusive
+	Calculate $cinst.TST_CF_REF as #NULL
+Else
+	If $cinst.TST_CF_REF>0
+		# good
+		# TST_ARR_REF and TST_CF_REF are mutually exclusive
+		Calculate $cinst.TST_ARR_REF as #NULL
+	Else
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' either arrangement or conference must be set')
+	End If
+End If
+
+If $cinst.TST_TITLE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' title missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

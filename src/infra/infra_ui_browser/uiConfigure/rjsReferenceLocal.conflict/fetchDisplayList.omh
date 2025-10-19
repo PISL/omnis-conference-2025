@@ -1,0 +1,14 @@
+Do ilDisplayRecords.$clear()
+Do ilDisplayRecords.$add()
+Calculate ilDisplayRecords.$line as 1
+Calculate ilDisplayRecords.RFL_CLASS as pcSearch1
+
+Do ilDisplayRecords.$getparamsRow() Returns lrExtraParams
+Calculate lrExtraParams.pbIncludeNonActive as kTrue
+
+Do ilDisplayRecords.$FetchClass(ilSearch1.RFL_CLASS,,lrExtraParams)
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+End If
+
+Do method displaySearchCount

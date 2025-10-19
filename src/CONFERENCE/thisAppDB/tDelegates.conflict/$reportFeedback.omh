@@ -1,0 +1,30 @@
+Do llData.$cols.$add($cinst.DG_FEEDBACK)
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_EMAIL)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select   DG_FEEDBACK
+Sta:, DG.PSN_SURNAME, DG.PSN_FIRST_NAME, DG.PSN_EMAIL
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = DG_CF_REF
+# delegate
+Sta:join [lrPerson.$servertablenames()] as dg on dg.PSN_SEQ = DG_PSN_REF
+Sta:where  DG_CF_REF = @[pnCF_SEQ]
+Sta:and      DG_FEEDBACK is not null
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0)
+Quit method llData

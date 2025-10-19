@@ -1,0 +1,20 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	Do llPerson.$cols.$add('inDG_OCCUPANCY',kInteger,kShortint)
+	# Do lrPerson.$cols.$add('inExtras',kInteger,kShortint) ## spouse, family
+	# Do lrPerson.$cols.$add('inMembership',kInteger,kShortint)
+	Do llPerson.$add()
+	Calculate llPerson.$line as llPerson.$linecount
+	Calculate llPerson.inDG_OCCUPANCY as inPriceOccupancy
+	
+	Do ioResolve.$clearErrors()
+	Do ioResolve.$productResolution(irCurrentRecord,llPerson,#NULL,idPriceRegistration) Returns llInvoiceDetails
+	If ioResolve.ilResolveErrors.$linecount>0
+		Breakpoint
+	End If
+	Calculate icPriceProdCode as llInvoiceDetails.1.PRD_INT_PRODCODE
+	Calculate inPrice as llInvoiceDetails.1.PID_UNIT_PRICE
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

@@ -1,0 +1,24 @@
+Do $DefineList(ilData,'tTravelPlans')
+Do ilData.$addLinkedCols('DG_GROUP,DG_STATUS,DG_ROOM_ASSIGNMENT,DG_CF_REF') Returns #F ## DG_CF_REF required for $fetch_fk to work
+Do ilData.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_COMPANY') Returns #F
+Do ilData.$cols.$add('SortName',kCharacter,kSimplechar,100)
+Do ilData.$addFunction("upper(concat(psn_surname,', ',psn_first_name))")
+Do ilData.$addDisplayName()
+Do ilData.$addFunction("concat(psn_surname,', ',psn_first_name)")
+# Do ilData.$fetch_fk(prConference.CF_SEQ,'DG_CF_REF','TP_SHUTTLE > 0')
+Do ilData.$fetch_fk(prConference.CF_SEQ,'DG_CF_REF'," DG_STATUS <> 'CANCEL' and ( TP_DEP_POINT<>'' or TP_DEP_VENUE <> '' or TP_DEP_METHOD <> '' ) ")
+Do ilData.$cols.$add('SortDate',kDate,kDate2000)
+Do ilData.$cols.$add('SortTime',kDatetime,kTime)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Calculate ilData.SortTime as ilData.TP_DEP_VENUE
+End While
+
+If ilData.$linecount=0
+	Do ilData.$add()
+	Calculate ilData.$line as ilData.$linecount
+	Calculate ilData.DisplayName as 'no departure information available'
+Else
+	Do ilData.$sort($ref.SortTime,0,$ref.TP_DEP_METHOD,0)
+End If

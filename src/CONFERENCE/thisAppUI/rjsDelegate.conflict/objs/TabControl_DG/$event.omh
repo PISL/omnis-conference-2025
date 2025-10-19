@@ -1,0 +1,19 @@
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	
+	If inCurrentTab=cnTabPAX
+		Do method FetchAndPresentPax
+		
+	Else If inCurrentTab=cnTabReceipts
+		# we now rely on Pax being in memory to display amount due against amount outstanding
+		If ilPax.$linecount=0
+			Do method FetchAndPresentPax
+		End If
+		Do method FetchAndPresentPayments
+		
+	Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+		# Do method FetchAndPresentTravelPlan ## TP_MWHEN now fetched on main tab
+	End If
+	
+	Do $cinst.$behaviour
+	Do $cinst.$redraw()

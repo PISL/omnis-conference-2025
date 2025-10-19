@@ -1,0 +1,35 @@
+Calculate lnTotal as 0
+For lnCount from 0 to 6 step 1
+	If isnull($cinst.PX_[lnCount]_NIGHT)
+		Calculate $cinst.PX_[lnCount]_NIGHT as 0
+	End If
+	Calculate lnTotal as lnTotal+$cinst.PX_[lnCount]_NIGHT
+End For
+Calculate $cinst.totNight as lnTotal
+
+Calculate lnTotal as 0
+For lnCount from 0 to 6 step 1
+	If isnull($cinst.PX_[lnCount]_BFAST)
+		Calculate $cinst.PX_[lnCount]_BFAST as 0
+	End If
+	Calculate lnTotal as lnTotal+$cinst.PX_[lnCount]_BFAST
+End For
+Calculate $cinst.totBfast as lnTotal
+
+Calculate lnTotal as 0
+For lnCount from 0 to 6 step 1
+	If isnull($cinst.PX_[lnCount]_LUNCH)
+		Calculate $cinst.PX_[lnCount]_LUNCH as 0
+	End If
+	Calculate lnTotal as lnTotal+$cinst.PX_[lnCount]_LUNCH
+End For
+Calculate $cinst.totLunch as lnTotal
+
+Calculate lnTotal as 0
+For lnCount from 0 to 6 step 1
+	If isnull($cinst.PX_[lnCount]_DINNER)
+		Calculate $cinst.PX_[lnCount]_DINNER as 0
+	End If
+	Calculate lnTotal as lnTotal+$cinst.PX_[lnCount]_DINNER
+End For
+Calculate $cinst.totDinner as lnTotal

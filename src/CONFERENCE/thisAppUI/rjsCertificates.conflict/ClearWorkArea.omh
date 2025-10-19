@@ -1,0 +1,11 @@
+If inCurrentTab=cnTabCertificate
+	Do irCurrentRecord.$clear()
+	
+	Calculate ilDelegates.$line as 0
+	Calculate ilCertType.$line as 0
+End If
+
+If inCurrentTab=cnTabAwardedTo
+	Do irAwardee.$clear() ## NOT ilPax
+	
+End If

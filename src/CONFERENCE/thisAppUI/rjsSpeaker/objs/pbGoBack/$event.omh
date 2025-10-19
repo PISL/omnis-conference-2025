@@ -1,5 +1,5 @@
 On evClick
-	Calculate inCurrentTab as cnTabTopics
+	Calculate inCurrentTab as cnTabTopicsConf
 	Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
 	Calculate icMode as ''
 	

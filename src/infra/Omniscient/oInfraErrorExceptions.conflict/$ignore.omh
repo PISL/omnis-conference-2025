@@ -1,0 +1,29 @@
+
+#  check for errors that we are not interested in reporting and return boolean ignore
+If pos("LIBINI.$dbmsname",pcErrText)
+	# weird error coming from one of Omnis' internal libraries (Unrecognised custom attribute $root.$sessions.LIBNAME_LIBINI.$dbmsname)
+	Quit method kTrue
+Else If pos("$itasks.V40",pcErrText)
+	# another one appearing sometimes after offering the user a message (Yes/No, OK, etc)
+	Quit method kFalse
+End If
+
+# ok, let's examine the method stack
+Calculate ilStack as sys(192)
+# the first three lines will be the methods after the error
+For lnCount from 1 to 3 step 1
+	Do ilStack.$remove(1)
+End For
+Calculate ilStack.$line as 1
+
+If pnErrorCode=25207
+	#  eval()
+	If pos(" eval(",ilStack.linetext)
+		Quit method kTrue
+	End If
+Else If pnErrorCode=25215
+	# Unable to set up a table or object from disk𯿿The class name is updater_server.tVersion
+	# this error is occurring in updater_client when doing a "Calculate lrow as row_returned_by_updater_server" but execution continues
+End If
+
+Quit method kFalse

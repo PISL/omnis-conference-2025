@@ -1,0 +1,19 @@
+On evClick
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL.$errortext as ''
+	Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as ''
+	
+	Calculate icMode as ''
+	Calculate irPerson as irPersonOrig
+	Calculate ibModifiedPerson as kFalse
+	Do ilCountries.$search($ref.REF_VALUE=irPerson.PSN_COUNTRY,1,0,0,0) Returns lbFound
+	
+	Do method clearTopic
+	
+	# Calculate ibModifiedPerson as kFalse
+	Calculate ibModifiedTopic as kFalse
+	
+	If ilTopics.$line>0
+		Do method topicClicked
+	End If
+	
+	Do $cinst.$behaviour()

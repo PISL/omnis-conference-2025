@@ -1,0 +1,18 @@
+# Calculate inDayHighlight as pnDayNo
+
+Calculate $cinst.$objs.day1.$textcolor as pick(inDayHighlight=1,lnLowLight,lnHighlight)
+Calculate $cinst.$objs.day2.$textcolor as pick(inDayHighlight=2,lnLowLight,lnHighlight)
+Calculate $cinst.$objs.day3.$textcolor as pick(inDayHighlight=3,lnLowLight,lnHighlight)
+Calculate $cinst.$objs.day4.$textcolor as pick(inDayHighlight=4,lnLowLight,lnHighlight)
+Calculate $cinst.$objs.day5.$textcolor as pick(inDayHighlight=5,lnLowLight,lnHighlight)
+
+Calculate $cinst.$objs.pbDay1.$borderwidth as pick(inDayHighlight=1,0,2)
+Calculate $cinst.$objs.pbDay2.$borderwidth as pick(inDayHighlight=2,0,2)
+Calculate $cinst.$objs.pbDay3.$borderwidth as pick(inDayHighlight=3,0,2)
+Calculate $cinst.$objs.pbDay4.$borderwidth as pick(inDayHighlight=4,0,2)
+Calculate $cinst.$objs.pbDay5.$borderwidth as pick(inDayHighlight=5,0,2)
+
+Calculate icDaySelected as dat(iRowDays.day[inDayHighlight],'V D m')
+
+# Calculate $cinst.$objs.day1.$textcolor as
+# Calculate $cinst.$objs.pbDay1.$bordercolor as

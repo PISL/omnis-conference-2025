@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TPP_'
+Calculate icPrimarykey as 'TPP_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TPP_TPC_REF' ## also TPP_PSN_REF
+
+Do inherited

@@ -1,0 +1,81 @@
+# code copied from Doug Easterbrook email to list 26-OCT-22
+Breakpoint NOT TESTED
+
+Calculate tagList as $cinst.$findHTMLTags(originalContent)
+If tagList.$linecount=0
+	Quit method kTrue
+End If
+
+Calculate content as originalContent
+Calculate contentNew as ''
+
+# $findtags uses regular expression using TMobjs.$findPatterns() to get all the tags in a trxt string.
+# there is no HTML to format - so quit.  that leave any markdown or non html stuff untouched.
+Calculate tagList as $cinst.$findHTMLTags(pMessage)
+If tagList.$linecount=0
+	Quit method kTrue
+End If
+
+# find the <body     and </body tags and keep what is in between
+Do tagList.$search(low($ref.Content)='body',kTrue,kFalse,kTrue,kTrue)
+If tagList.$totc(#LSEL)<>2
+	Quit method kTrue
+End If
+Do tagList.$first(kTrue)
+Calculate start as tagList.end+1
+Do tagList.$next(0,kTrue)
+Calculate end as tagList.start+1
+Calculate pMessage as mid(pMessage,start,end-start)
+
+# if there are no other tags, then don't do anything to the text.  User supplied CR's will stay in place
+Calculate tagList as $cinst.$findHTMLTags(pMessage)
+If tagList.$linecount=0
+	Quit method kTrue
+End If
+
+# now parse the HMTL tags and do a reasonable job of turning HTML into plain text
+Calculate parsedContent as pMessage
+Calculate plainText as ''
+For tagList.$line from 1 to tagList.$linecount step 1
+	Calculate thisHTMLTag as low(mid(pMessage,tagList.start+1,tagList.end-tagList.start))
+	Calculate pos as pos(thisHTMLTag,low(parsedContent))
+	
+	# remove all leading and trailing spaces and CR's
+	Calculate beforeHTMLTag as left(parsedContent,pos-1)
+	Do $cinst.$trim(beforeHTMLTag,con(' ',kCr))
+	
+	# if we have anything left over and the last line ending is not a cr, append to existing string so that there
+	# is at least a word between things
+	If len(beforeHTMLTag)>0
+		If right(plainText,1)=kCr
+			Calculate plainText as con(plainText,beforeHTMLTag)
+		Else
+			Calculate plainText as con(plainText,' ',beforeHTMLTag)
+		End If
+	End If
+	
+	Calculate addCr as ''
+	If pos>0
+		If left(thisHTMLTag,2)='<p'
+			# a <p tag of any form is a doble CR since we want a blank line in bewteen
+			Calculate addCr as con(kCr,kCr)
+		Else If thisHTMLTag='<br>'|thisHTMLTag='<br/>'|thisHTMLTag='</br>'|thisHTMLTag='<br />'
+			# a <br> type tag is just a sngle line
+			Calculate addCr as kCr
+		End If
+		# if the tag, no matter what it is, has a cr after it, we don't want an additional cr on the final text
+		# expecially if it has been formatted using $formathtml
+		If mid(parsedContent,pos+len(thisHTMLTag),1)=kCr
+			Calculate thisHTMLTag as con(thisHTMLTag,kCr)
+		End If
+	End If
+	
+	# add in an CR's per above and strip off the html tag to get rady for the next one.
+	Calculate plainText as con(plainText,addCr)
+	Calculate parsedContent as mid(parsedContent,pos+len(thisHTMLTag))
+	
+End For
+
+Do $cinst.$trim(plainText,con(' ',kCr))
+Calculate pMessage as plainText
+Quit method kTrue

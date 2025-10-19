@@ -1,0 +1,8 @@
+
+If inCurrentTab=1
+	Do $cinst.$container().$adjustToolsMenu('Certs')
+	
+Else If inCurrentTab=2
+	Do $cinst.$container().$adjustToolsMenu('Tests')
+	
+End If

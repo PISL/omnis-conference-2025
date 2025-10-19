@@ -1,0 +1,17 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	Do ilSequences.$sendall($ref.found.$assign(''))
+	If pLineNumber>0 ## an actual data line
+		Calculate ilSequences.$line as pLineNumber
+	End If
+	Calculate ilSequences.found as icFound
+	Do $cobj.$redraw()
+	
+	Do ilMaxValues.$sendall($ref.found.$assign(''))
+	Do ilMaxValues.$search($ref.common=ilSequences.common,1,0,0,0) Returns lnFound
+	If lnFound
+		Calculate ilMaxValues.found as icFound
+	End If
+	Do $cinst.$objs.ilMaxValues.$redraw()
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

@@ -1,0 +1,34 @@
+If pos('.',pStringTableCode)=0
+	# prefix table entry with allstrings
+	Calculate pStringTableCode as con('allstrings.',pStringTableCode)
+	Calculate lbTableNameInserted as kTrue
+End If
+
+Calculate lcValMessage as StringTable.$gettext(pStringTableCode)
+If isclear(lcValMessage)
+	# 2024-04024  RSM  added lbTableNameInserted to get stringtables in remotemenus working
+	If lbTableNameInserted
+		# try a different table name - that of the current library
+		Calculate pStringTableCode as replace(pStringTableCode,'allstrings.',tcCurrentLibrary)
+		Calculate lcValMessage as StringTable.$gettext(pStringTableCode)
+	End If
+	If isclear(lcValMessage)
+		# treat as a string table error
+		Calculate lcValMessage as -1
+	End If
+End If
+If lcValMessage<0 ## -ve number is a string table error
+	# Calculate lcValMessage as StringTable.$gettext(con(pStringTableCode,'_LBL'))
+	# If lcValMessage<0 ## -ve number is a string table error
+	If pDefaultMessage<>''
+		Calculate pMessage as pDefaultMessage
+		Quit method kTrue
+	Else
+		Calculate pMessage as lcValMessage ## leave error message
+	End If
+	# End If
+Else
+	Calculate pMessage as lcValMessage
+	Quit method kTrue
+End If
+Quit method kFalse

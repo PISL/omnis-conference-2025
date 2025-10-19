@@ -1,0 +1,9 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('tst_insert','canInsert')
+Do llPrivsUsedInThisForm.$add('tst_delete','canDelete')
+Do llPrivsUsedInThisForm.$add('tst_update','canEdit')
+# Do llPrivsUsedInThisForm.$add('csn_add','canAddAwardee')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

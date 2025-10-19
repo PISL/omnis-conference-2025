@@ -1,0 +1,22 @@
+On evClick
+	Calculate $cobj.$errortext as ''
+	Calculate icDisplayMessage as ''
+	Calculate icPricingTrace as ''
+	
+	If inMembership=ikMembershipCorporate&ilPersons.$linecount>0
+		Calculate llCopy as ilPersons
+		Do llCopy.$search($ref.inMembership=ikMembershipCorporate,1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate inMembership as ilPersons.inMembership ## restore original value
+			Calculate icDisplayMessage as 'you cannot have two corporate memberships in the same application'
+			Quit method
+		End If
+	End If
+	
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.inMembership as inMembership
+	End If
+	
+	Do method DisplayPrice2
+	
+	Do $cinst.$behaviour()

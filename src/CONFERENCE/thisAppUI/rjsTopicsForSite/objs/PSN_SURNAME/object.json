@@ -18,6 +18,7 @@
 		"backalpha": 0,
 		"backcolor": "kJSThemeColorBackground",
 		"bordercolor": "RGB(0,0,0)",
+		"bordericonstyle": null,
 		"borderradius": "4",
 		"componentinfo": {
 
@@ -71,6 +72,8 @@
 		"objlink": 17039363,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,

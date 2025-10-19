@@ -1,0 +1,85 @@
+{
+	"classtype": "kTable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 163,
+	"superclass": "tMaster",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+		{
+			"name": "cbDefaultIsAllColumns",
+			"order": 1,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "#NULL"
+		},
+		{
+			"name": "kHash",
+			"order": 2,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 1,
+			"initval": "'#'",
+			"desc": "single octothorp character"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "ibIncludeAll",
+			"order": 4,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse",
+			"desc": "ktrue=fetch all our products including suppliers'"
+		},
+		{
+			"name": "inMeta",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "0",
+			"desc": "set by $setMeta; used in all tProducts $fetch... methods, ie. PRD_META = @[inMeta]; default to 0 for backward compatibility"
+		},
+		{
+			"name": "___ROW1",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW2",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-27 11:20:34",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2024-11-13 07:26:36",
+		"showascheckedout": false,
+		"sqlclassname": "sProducts",
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	},
+	"inheritedproperties": [
+		"designtaskname"
+	]
+}

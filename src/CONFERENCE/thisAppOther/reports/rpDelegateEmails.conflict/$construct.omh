@@ -1,0 +1,16 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate ilData as plData
+
+Calculate icReportTitle as con('Delegate email addresses',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+# If pnReportOutput=2
+# Do toStrings.$ExportList(ilData,'TAB',kTrue,'TEXT','','DisplayName,PSN_EMAIL') Returns prefTextOutput
+# Else
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While
+# End If

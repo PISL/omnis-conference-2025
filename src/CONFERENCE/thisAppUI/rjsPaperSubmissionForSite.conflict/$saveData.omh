@@ -1,0 +1,102 @@
+Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as ''
+
+Do irPerson.$validation() Returns lbProceed
+If lbProceed
+	If ibModifiedPerson
+		If irPerson.PSN_SEQ>0
+			Do irPerson.$update() Returns lbPersonOK
+		Else
+			# there has been modification to person record and this is ok so...
+			Do irPerson.$insert() Returns lbPersonOK
+		End If
+	Else
+		Calculate lbPersonOK as kTrue
+	End If
+	
+	If lbPersonOK
+		Calculate irOriginalPerson as irPerson
+		Calculate ibModifiedPerson as kFalse
+	Else
+		Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irPerson.irErrorSQL.NativeErrorText
+		
+	End If
+Else
+	Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irPerson.icValidationMessage
+End If
+
+If ibModifiedTopic
+	Do irTopic.$validation() Returns lbProceed
+	If lbProceed
+		If irTopic.TPC_SEQ>0
+			Do irTopic.$update() Returns lbTopicOK
+			If lbTopicOK
+				#update the list of topics
+				Calculate ilTopics.[ilTopics.$line] as irTopic
+				# the link record won't be touched
+				Calculate lbLinkOK as kTrue
+			End If
+		Else
+			Do irTopic.$insert() Returns lbTopicOK
+			If lbTopicOK
+				Do irTopic.$displayName()
+				Do irTopicPersonLink.$clear()
+				
+				Calculate irTopicPersonLink.TPP_TPC_REF as irTopic.TPC_SEQ
+				Calculate irTopicPersonLink.TPP_PSN_REF as irPerson.PSN_SEQ
+				Do irTopicPersonLink.$insert() Returns lbLinkOK
+				
+				If lbLinkOK
+					# add the new topic to the list of topics
+					Do ilTopics.$add()
+					Calculate ilTopics.$line as ilTopics.$linecount
+					Do ilTopics.$assignrow(irTopic)
+					Do ioTags.$setParent(irTopic) ## so any Tags can be saved
+				Else
+					Breakpoint
+				End If
+			End If
+		Else
+			Calculate lbTopicOK as kTrue
+			Calculate lbLinkOK as kTrue
+		End If
+		
+		If lbTopicOK&lbLinkOK
+			Calculate irOriginalTopic as irTopic
+			Calculate ibModifiedTopic as kFalse
+		Else
+			If irTopic.irErrorSQL.NativeErrorText<>''
+				Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irTopic.irErrorSQL.NativeErrorText
+			Else If irTopicPersonLink.irErrorSQL.NativeErrorText<>''
+				Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irTopicPersonLink.irErrorSQL.NativeErrorText
+			Else If irTopic.icValidationMessage<>''
+				Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irTopic.icValidationMessage
+			Else If irTopicPersonLink.icValidationMessage<>''
+				Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irTopicPersonLink.icValidationMessage
+			Else
+				Breakpoint
+			End If
+			
+		End If
+	Else
+		Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as irTopic.icValidationMessage
+	End If
+Else
+	Calculate lbTopicOK as kTrue
+	Calculate lbLinkOK as kTrue
+End If
+
+If lbPersonOK&lbTopicOK&ibModifiedTag
+	Do ioTags.$saveTags(ilTagsDisplay) Returns lbTagsOK
+	If lbTagsOK
+		Do ioTags.$getTagsRecord(irTopic) Returns ilTagsDisplay
+		Calculate ibModifiedTag as kFalse
+	Else
+		Breakpoint
+	End If
+Else
+	Calculate lbTagsOK as kTrue
+End If
+
+Calculate ilTagsDisplay.$line as 0
+
+Quit method (lbPersonOK&lbTopicOK&lbLinkOK&lbTagsOK)

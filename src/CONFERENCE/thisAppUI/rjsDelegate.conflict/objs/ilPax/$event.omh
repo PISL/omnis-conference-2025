@@ -1,0 +1,6 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Calculate irPax as ilPax
+	Do ilSpouse.$search($ref.RFO_VALUE=irPax.PX_ROLE,1,0,0,0)
+	Do method DisplayProductInfoFromPax
+	Do $cinst.$behaviour()

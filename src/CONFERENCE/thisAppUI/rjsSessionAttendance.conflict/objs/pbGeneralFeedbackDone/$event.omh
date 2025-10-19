@@ -1,0 +1,25 @@
+On evClick
+	If len(irDelegateOrig.DG_FEEDBACK)<>len(irDelegate.DG_FEEDBACK)
+		Calculate lbModified as kTrue
+	Else If irDelegateOrig.DG_FEEDBACK<>irDelegate.DG_FEEDBACK
+		Calculate lbModified as kTrue
+	End If
+	If lbModified
+		Do irDelegate.$update() Returns lbOK
+		If lbOK
+			Calculate irDelegateOrig as irDelegate
+			Calculate $cinst.$objs.PagedPane.$currentpage as cnPageSession
+			Do $cinst.$behaviour()
+		Else
+			If irDelegate.icValidationMessage<>''
+				Calculate icDisplayMessage as irDelegate.icValidationMessage
+			Else If irDelegate.irErrorSQL.NativeErrorText<>''
+				Calculate icDisplayMessage as irDelegate.irErrorSQL.NativeErrorText
+			Else
+				Calculate icDisplayMessage as 'Feedback did not save - sorry.'
+			End If
+		End If
+	Else
+		Calculate $cinst.$objs.PagedPane.$currentpage as cnPageSession
+		Do $cinst.$behaviour()
+	End If

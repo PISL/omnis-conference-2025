@@ -1,0 +1,63 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Calculate lbDisplayingPerson as inCurrentTab=cnTabContact|inCurrentTab=cnTabSpeakerBio|inCurrentTab=cnTabTechnical
+
+Calculate $cinst.$objs.pbInsert.$enabled as (irUserRights.canInsertPerson|irUserRights.canInsertTopic)&icMode=''&lbDisplayingPerson
+Calculate $cinst.$objs.pbEdit.$enabled as ((irUserRights.canUpdatePerson&ilDisplayRecords.PSN_SEQ>0)|(irUserRights.canUpdateTopic&ilTopics.TPC_SEQ>0))&icMode=''&lbDisplayingPerson
+Calculate $cinst.$objs.pbDelete.$enabled as ((irUserRights.canDeletePerson&ilDisplayRecords.PSN_SEQ>0)|(irUserRights.canDeleteTopic&ilTopics.TPC_SEQ>0))&icMode=''&lbDisplayingPerson
+
+# Calculate $cinst.$objs.TabControl_PERSON.$enabled as icMode=''
+Calculate $cinst.$objs.TabControl_PERSON.$enabled as (icMode='')|pos('P',icMode)
+
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+
+Calculate $cinst.$objs.PSN_FIRST_NAME.$enabled as pos('P',icMode) ## ;;# JSON export
+Calculate $cinst.$objs.PSN_SURNAME.$enabled as pos('P',icMode) ## ;;# JSON export
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_COMPANY.$enabled as pos('P',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_EMAIL.$enabled as pos('P',icMode) ## ;;# JSON export
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_PHONE.$enabled as pos('P',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_COUNTRY.$enabled as pos('P',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_SPOUSE_NAME.$enabled as pos('P',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_ACTIVE.$enabled as pos('P',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_SEX.$enabled as pos('P',icMode)
+
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_IMAGE_LINK.$enabled as pos('P',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_SPEAKER_BIO.$enabled as pos('P',icMode)
+
+Calculate $cinst.$objs.ilTopics.$enabled as icMode=''
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_TITLE.$enabled as pos('T',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_DURN_MINS.$enabled as pos('T',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_ABSTRACT.$enabled as pos('T',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_DESC.$enabled as pos('T',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_REQUESTS.$enabled as pos('T',icMode)
+Calculate $cinst.$objs.PagedPane_PERSON.$objs.TPC_COMMENT.$enabled as pos('T',icMode)
+
+Do method assignEntryFieldProperties
+
+Calculate $cinst.$objs.PagedPane_TOPIC.$objs.pbAddTopic.$enabled as icMode=''
+Calculate $cinst.$objs.PagedPane_TOPIC.$objs.pbEditTopic.$enabled as icMode=''&ilTopics.TPC_SEQ>0
+Calculate $cinst.$objs.PagedPane_TOPIC.$objs.pbDeleteTopic.$enabled as icMode=''&ilTopics.TPC_SEQ>0
+
+Calculate $cinst.$objs.pbHelpMarkdown.$visible as (inSubTabTopic=3)
+Calculate $cinst.$objs.icMarkdownHelp.$visible as ibDisplayMarkdownHelp
+
+If irCurrentRecord.PSN_IMAGE_LINK<>''
+	Do $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$html.$assign(con(icImageHtmlPre,kDq,irCurrentRecord.PSN_IMAGE_LINK,kDq,icImageHtmlPost)) Returns lbOK
+	Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$visible as kTrue
+Else
+	Do $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$html.$assign('') Returns lbOK
+	Calculate $cinst.$objs.PagedPane_PERSON.$objs.PSN_ImageLink.$visible as kFalse
+End If
+
+# Calculate $cinst.$objs.ilUserRoles.$enabled as icMode=''
+# Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+# Calculate $cinst.$objs.ilSearch1.$enabled as icMode=''
+# Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
+# Calculate $cinst.$objs.ilAuthorisedForms.$enabled as icMode=''
+Do inherited

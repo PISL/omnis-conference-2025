@@ -1,0 +1,34 @@
+Do ilConstants.$cols.$add('Name',kCharacter,kSimplechar,100)
+Do ilConstants.$cols.$add('Value',kCharacter,kSimplechar,10000)
+Do ilConstants.$cols.$add('Comment',kCharacter,kSimplechar,100)
+
+For lnColNo from 1 to tConstants.$colcount step 1
+	Calculate lcColName as tConstants.$cols.[lnColNo].$name
+	Switch tConstants.[lcColName].$type
+		Case kList
+			Calculate lcValue as con('list with ',tConstants.[lcColName].$linecount,' rows and ',tConstants.[lcColName].$colcount,' columns')
+		Case kRow
+			Do OJSON.$listorrowtojson(tConstants.[lcColName],kUniTypeCharacter) Returns lcValue
+			
+		Case kBinary
+			Calculate lcValue as con('binary of size ',binlength(tConstants.[lcColName]))
+		Case kPicture
+			Calculate lcValue as con('column of type picture')
+			
+		Case kObject
+			Calculate lcValue as con('column of type object')
+		Case kObjectref
+			Calculate lcValue as con('column of type objectref')
+			
+		Case kItemref
+			Calculate lcValue as con('column of type item reference')
+		Case kFieldreference
+			Calculate lcValue as con('column of type field reference')
+			
+		Default
+			Calculate lcValue as tConstants.[lcColName]
+			
+	End Switch
+	
+	Do ilConstants.$add(lcColName,lcValue)
+End For

@@ -1,0 +1,34 @@
+
+If $ctask.tConstants.$cols.$findname('LogTaskStats') ## avoid notation errors during startup
+	If $ctask.tConstants.LogTaskStats
+		If $cinst.$sessionobject.$damname='PGSQLDAM' ## we do not want to record requests to the SQLite libini DB
+			# Breakpoint
+			If $ctask.trTaskStats.$colcount ## notation error fix (REPORTER)
+				Calculate $ctask.trTaskStats.STS_DB_REQUESTS as $ctask.trTaskStats.STS_DB_REQUESTS+1
+				If isclear(icStatementType)|icStatementType='SELECT'
+					Calculate $ctask.trTaskStats.STS_FETCHES as $ctask.trTaskStats.STS_FETCHES+inRowsFetched
+				Else
+					Calculate $ctask.trTaskStats.STS_[icStatementType]S as $ctask.trTaskStats.STS_[icStatementType]S+inRowsAffected
+				End If
+				Calculate icStatementType as ''
+				# commented out the following code as even a simple RESTful call could result in accessing several tables, eg, GroupOrg, uaUsers, LogAccess, etc.
+				
+				# If trTaskStats.STS_TYPE='F'|trTaskStats.STS_TYPE='J' ## (F)at or (J)s client
+				# nothing
+				# Else
+				# Calculate trTaskStats.STS_TABLE_NAME as irefCurrentInstance.$class().$name ## no point recording this as it will always show the last table accessed (normally trLogAccess)
+				# End If
+				# Calculate trTaskStats.STS_TABLE_METHOD as pcMethod
+				# Calculate trTaskStats.STS_PARAMS as pcParams
+				
+				# we let RESTful methods set STS_TABLE_NAME, STS_TABLE_METHOD, STS_PARAMS
+				# and here we just record an entry for each table accessed
+				
+				If not($ctask.trTaskStats.STS_TYPE='F'|$ctask.trTaskStats.STS_TYPE='J') ## REST and SOAP services only
+					Calculate $ctask.trTaskStats.STS_TABLE_LIST as con($ctask.trTaskStats.STS_TABLE_LIST,pick(pos(con(irefCurrentInstance.$class().$name,','),$ctask.trTaskStats.STS_TABLE_LIST)>0,con(irefCurrentInstance.$class().$name,', '),''))
+				End If
+				
+			End If
+		End If
+	End If
+End If

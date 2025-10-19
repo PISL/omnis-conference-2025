@@ -1,0 +1,42 @@
+# Breakpoint DEBUGCODE
+
+If isclear(pcURI)<>''
+	# report error
+	Calculate lbOK as kFalse
+	Do ilErrors.$add('TRY_PING','attempt to PING when URL is missing')
+	
+Else
+	Calculate lbOK as kTrue
+	Calculate lcURI as con(pcURI,'ping')
+	
+	Do ioRest.$init(lcURI,kOW3httpMethodGet,ilHeaders,icContent)
+	
+	Calculate ldStartTime as #D
+	Do ioRest.$run() Returns lbStatus
+	Calculate inServiceCallTime as ddiff(kCentiSecond,ldStartTime,#D)*10 ## milliseconds
+	
+	If lbStatus
+		Do ioRest.$returnVal(irResponseHeaders,irResponse,irJSON) Returns icJSON
+		
+		Calculate prResponse as irResponse
+		
+		Do $itasks.[tcCurrentLibrary].$returnKey() Returns lcTheKey
+		Do oUnfoldParams.$initkey(lcTheKey) ## was encstr(lcTheKey)
+		Calculate lbinResponse as binfromhex(irJSON.data) ## convert the return to binary and put it into a row variable
+		Do $cinst.$extractData(lbinResponse) Returns lrResult ## decrypt and return the original server data row
+		If irResponse.httpStatusCode=200
+			# all is good
+			Calculate icClientIP as lrResult.IP
+		Else
+			Calculate lbOK as kFalse
+			Do ilErrors.$add('RESTCALL_FAIL',con('status code: ',irResponse.httpStatusCode,'; status text: ',irResponse.httpStatusText,kCr,'error code: ',irResponse.errorCode,'; error info: ',irResponse.errorInfo))
+		End If
+		
+	Else
+		Calculate lbOK as kFalse
+		Do ilErrors.$add('FAIL_PING','PING failed')
+		
+	End If
+End If
+
+Quit method lbOK

@@ -1,0 +1,72 @@
+# llData already defined from sArrAttendee
+Do llData.$definefromsqlclass('sAttendeeFeedback')
+
+Do llData.$cols.$add(lrAttendee.ARA_ANON)
+Do llData.$cols.$add(lrAttendee.ARA_COMMENTS)
+
+Do llData.$cols.$add(lrArrangements.ARR_LEADER)
+Do llData.$cols.$add(lrArrangements.ARR_FACILITY)
+Do llData.$cols.$add(lrArrangements.ARR_FORMAT)
+Do llData.$cols.$add(lrArrangements.ARR_DATE)
+Do llData.$cols.$add(lrArrangements.ARR_DAYNO)
+Do llData.$cols.$add(lrArrangements.ARR_STARTTIME)
+Do llData.$cols.$add(lrArrangements.ARR_ENDTIME)
+
+Do llData.$cols.$add(lrConference.CF_TITLE)
+Do llData.$cols.$add(lrConference.CF_DATE_FROM)
+Do llData.$cols.$add(lrConference.CF_DATE_TO)
+
+Do llData.$cols.$add('PSN_SEQ_DG',kInteger,k32bitint)
+Do llData.$cols.$add('PSN_SURNAME_DG',kCharacter,kSimplechar,100)
+Do llData.$cols.$add('PSN_FIRST_NAME_DG',kCharacter,kSimplechar,100)
+
+Do llData.$cols.$add('PSN_SEQ_SPKR',kInteger,k32bitint)
+Do llData.$cols.$add('PSN_SURNAME_SPKR',kCharacter,kSimplechar,100)
+Do llData.$cols.$add('PSN_FIRST_NAME_SPKR',kCharacter,kSimplechar,100)
+
+Do llData.$cols.$add(lrTopics.TPC_TITLE)
+Do llData.$cols.$add(lrRefFeedbackTitle.RFO_ORDER)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select   [$cinst.$selectnames()]
+Sta:, ARA_ANON, ARA_COMMENTS
+Sta:, ARR_LEADER, ARR_FACILITY, ARR_FORMAT, ARR_DATE, ARR_DAYNO, ARR_STARTTIME, ARR_ENDTIME
+Sta:, CF_TITLE, CF_DATE_FROM, CF_DATE_TO
+Sta:, DG.PSN_SEQ, DG.PSN_SURNAME, DG.PSN_FIRST_NAME
+Sta:, SPKR.PSN_SEQ, SPKR.PSN_SURNAME, SPKR.PSN_FIRST_NAME
+Sta:, TPC_TITLE
+Sta:, RFO_ORDER
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrAttendee.$servertablenames()] on ARA_SEQ = AFB_ARA_REF
+Sta:join [lrArrangements.$servertablenames()] on ARR_SEQ = ARA_ARR_REF
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = ARR_CF_REF
+Sta:join [lrDelegate.$servertablenames()]  on DG_SEQ = ARA_DG_REF
+# delegate
+Sta:join [lrPerson.$servertablenames()] as dg on dg.PSN_SEQ = DG_PSN_REF
+# delegate
+Sta:join [lrRefFeedbackTitle.$servertablenames()]  on RFO_CLASS = 'SPKR_FBACK' and RFO_VALUE = AFB_RFO_VALUE
+# speaker
+Sta:left outer join [lrPerson.$servertablenames()] as spkr on spkr.PSN_SEQ = ARR_PSN_REF
+Sta:left outer join [lrTopics.$servertablenames()]  on TPC_SEQ = ARR_TPC_REF
+If pnARR_SEQ<>0
+	# a specific Arrangement / session
+	Sta:where ARR_SEQ = @[pnARR_SEQ]
+Else
+	Sta:where  ARR_CF_REF = @[pnCF_SEQ]
+End If
+# Sta: and     ( ARA_RATING is not null or ARA_COMMENTS is not null )
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llData

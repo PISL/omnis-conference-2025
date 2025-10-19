@@ -1,8 +1,8 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 1628,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 1716,
 	"superclass": "infra.rjsInfraBlank",
 	"designtaskname": "rtRegistration",
 	"nextident": 1146,
@@ -565,9 +565,9 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 0,
+		"left": 20,
 		"menulineheight": 0,
-		"moddate": "2025-05-13 08:49:07",
+		"moddate": "2025-05-29 11:48:14",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -578,7 +578,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 1453,
+		"top": 0,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "80,443",
@@ -586,8 +586,8 @@
 		"vertscroll": false
 	},
 	"layout": {
-		"width": 1618,
-		"height": 1373,
+		"width": 1183,
+		"height": 930,
 		"320": {
 			"height": 0,
 			"padding": 2

@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(238,238,238)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -31,8 +32,8 @@
 		"datepickermode": null,
 		"datepickeroptions": "kJSDatePickerOptionsShowHeading,kJSDatePickerOptionsShowMonthNav",
 		"datepickerpopupstyle": null,
-		"defaultdisabledappearance": true,
-		"defaultinactiveappearance": true,
+		"defaultdisabledappearance": false,
+		"defaultinactiveappearance": false,
 		"desgroup": 0,
 		"designactive": true,
 		"deslock": false,
@@ -71,6 +72,8 @@
 		"objlink": 65537,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,
@@ -85,9 +88,9 @@
 	},
 	"layout": {
 		"320": {
-			"left": 48,
+			"left": 32,
 			"top": 496,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -96,9 +99,9 @@
 			"visible": true
 		},
 		"375": {
-			"left": 48,
+			"left": 32,
 			"top": 496,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -107,9 +110,9 @@
 			"visible": true
 		},
 		"480": {
-			"left": 64,
+			"left": 56,
 			"top": 512,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -120,7 +123,7 @@
 		"667": {
 			"left": 136,
 			"top": 456,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -131,7 +134,7 @@
 		"768": {
 			"left": 120,
 			"top": 376,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -142,7 +145,7 @@
 		"1024": {
 			"left": 288,
 			"top": 296,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -153,7 +156,7 @@
 		"1700": {
 			"left": 288,
 			"top": 296,
-			"width": 64,
+			"width": 80,
 			"height": 25,
 			"align": "kLeftJst",
 			"dragborder": false,

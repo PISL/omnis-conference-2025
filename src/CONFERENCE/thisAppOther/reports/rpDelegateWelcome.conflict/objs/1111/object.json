@@ -1,0 +1,35 @@
+{
+	"ident": 1111,
+	"order": 11,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportMedium",
+		"floating": true,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"height": 2.398,
+		"left": 0.0,
+		"lineno": 33,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "To access the session booking system your delegate number this year is [ilData.DG_SEQ].  \rYou use that along with your surname to get access to the session booking app using the following link (or scan the QR code at the top of this page): \r\r[irSessionURL.RFO_CHAR]"
+		},
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 18.273
+	}
+}

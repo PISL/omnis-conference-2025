@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.DIL_DG_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'DIL_DG_REF missing')
+End If
+
+If $cinst.DIL_FOH_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'DIL_FOH_REF missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

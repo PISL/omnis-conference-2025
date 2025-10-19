@@ -1,0 +1,33 @@
+Calculate icValidationMessage as ''
+
+If $cinst.ARA_ARR_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' arrangement missing')
+End If
+
+If $cinst.ARA_DG_REF>0
+	# good
+Else
+	# this may or may not be required ## depends on user experience and expectations
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' delegate missing')
+End If
+
+If isnull($cinst.ARA_RATING)
+	# good
+Else
+	# this check applied when field was an entry field.  Now its a drop list with values configured in sysReferenceOrg
+	
+	# If $cinst.ARA_RATING<=7 ## depends on user experience and expectations
+	# good
+	# Else
+	# Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' rating cannot be greater than 7 ')
+	# End If
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

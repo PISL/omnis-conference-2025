@@ -1,0 +1,7 @@
+On evBefore
+	
+On evAfter
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.PSN_SURNAME as irRegistration.PSN_SURNAME
+	End If
+	Do $cinst.$behaviour()

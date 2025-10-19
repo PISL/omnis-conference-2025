@@ -1,0 +1,6 @@
+Do $sessionpools.$findname(pPoolName) Returns lrefSessionPool
+If lrefSessionPool
+	Do $sessionpools.$remove(lrefSessionPool)
+	Quit method kTrue
+End If
+Quit method kFalse

@@ -1,0 +1,71 @@
+If pbFinancial
+	# send the email to the administrator of the company
+	If ilDisplayRecords.DG_INV_TO_EO_ONLY
+		Do ioNewOw3SendEmail.$primeConfig(ilEmailConfigs.RFO_CHAR,irCurrentRecord.EO_EMAIL) Returns lbOK
+	Else
+		Do ioNewOw3SendEmail.$primeConfig(ilEmailConfigs.RFO_CHAR,irCurrentRecord.PSN_EMAIL) Returns lbOK
+	End If
+Else
+	# send to delegate only
+	Do ioNewOw3SendEmail.$primeConfig(ilEmailConfigs.RFO_CHAR,irCurrentRecord.PSN_EMAIL) Returns lbOK
+End If
+
+If lbOK
+	Calculate irEmailConfig as ioNewOw3SendEmail.irConfigEmail
+	
+	If ilEmailConfigs.RFO_VALUE='SEND_TRAV_LINK'
+		Do method generateTravelLink (ilDisplayRecords) Returns icTravelLink
+		Calculate icDisplayMessage as icTravelLink
+		Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord,row(icTravelLink))) Returns lbOK
+	Else If ilEmailConfigs.RFO_VALUE='SEND_RCPTFULL'|ilEmailConfigs.RFO_VALUE='SEND_RCPTPART'
+		Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord,irPayment,row(inTotalAmountDue,inTotalAmountPaid,inTotalOutstanding))) Returns lbOK
+	Else
+		Do ioNewOw3SendEmail.$messageSubstitute(#NULL,row(ilSearch1,trGroupOrg,irCurrentRecord)) Returns lbOK
+	End If
+	
+	If lbOK
+		# no need to attach a .ics file for the event
+		# Do ioNewOw3SendEmail.$getCalendarStructure() Returns lrCalendar
+		Do ioNewOw3SendEmail.$setCallback($cinst,ilEmailConfigs.callbackMethod,'$emailSendError',irCurrentRecord) Returns lbOK
+		If lbOK
+			If ilEmailConfigs.RFO_VALUE='SEND_INVOICE'
+				Do ioNewOw3SendEmail.$attachFileBinary(ibinPdf,con('OmnisWorld_invoice_',irCurrentRecord.DG_SEQ,'.pdf'),'application/pdf','','base64','attachment') Returns lbOK
+			Else If ilEmailConfigs.RFO_VALUE='SEND_CONF'
+				# attach a calendar entry
+				Do $defineList(lrVenue,'tVenue')
+				Do lrVenue.$fetch_pk(ilSearch1.CF_VEN_REF)
+				
+				Do ioNewOw3SendEmail.$getCalendarStructure() Returns lrCalendarEntry
+				Calculate lrCalendarEntry.Title as ilSearch1.CF_TITLE
+				Calculate lrCalendarEntry.Location as con(lrVenue.VEN_NAME,'   ',lrVenue.VEN_TOWN,'   ',lrVenue.VEN_COUNTRY)
+				Calculate lrCalendarEntry.Start as ilSearch1.CF_DATE_FROM
+				# Calculate lrCalendarEntry.StartTimezone as
+				Calculate lrCalendarEntry.End as ilSearch1.CF_DATE_TO
+				Do ioNewOw3SendEmail.$attachCalendar(lrCalendarEntry,'Euromnis.ics') Returns lbOK
+			End If
+			
+			Do ioNewOw3SendEmail.$initialise() Returns lbOK
+			If lbOK
+				# fire the worker off
+				Calculate lbRunOnCurrentThread as kFalse
+				If lbRunOnCurrentThread
+					Do ioNewOw3SendEmail.$run() Returns lbOK
+				Else
+					Do ioNewOw3SendEmail.$start() Returns lbOK
+				End If
+			End If
+		End If
+	End If
+End If
+
+If not(lbOK)
+	# Breakpoint
+	
+	If ioNewOw3SendEmail.icErrors<>''
+		# show user what went wrong
+		Calculate icDisplayMessage as ioNewOw3SendEmail.icErrors
+		Calculate $cinst.$objs.splitButtonWorkflow.$errortext as icDisplayMessage
+	End If
+End If
+
+Quit method lbOK

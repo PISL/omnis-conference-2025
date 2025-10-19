@@ -14,6 +14,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(238,238,238)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "4",
 		"componentinfo": {
 
@@ -56,6 +57,8 @@
 		"objlink": 65539,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"seldataname": "",
 		"selectedlinecolor": "kColorDefault",
 		"selectedlinetextcolor": "kColorDefault",

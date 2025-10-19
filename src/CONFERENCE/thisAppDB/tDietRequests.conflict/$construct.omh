@@ -1,0 +1,6 @@
+Calculate icPrefix as 'DR_'
+Calculate icPrimarykey as 'DR_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'DR_PX_REF'
+
+Do inherited

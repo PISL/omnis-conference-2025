@@ -1,5 +1,6 @@
 Calculate $cinst.icDisplayMessage as ''
 Calculate irCurrentRecord as ilDisplayRecords
+Calculate icPastedTextForBulkArrangements as ''
 
 Do method DropLists
 
@@ -15,6 +16,10 @@ End If
 
 If inCurrentTab=cnTabOverview&pbFetchSlots
 	Do method fetchSlots
+	
+Else If inCurrentTab=cnTabOverview
+	Do ilTopicsToDrag.$fetch($ref.TPC_TITLE=ilDisplayRecords.TPC_TITLE,1,0,0,0) Returns lbFound
+	
 End If
 
 Do $cinst.$behaviour()

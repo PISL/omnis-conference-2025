@@ -83,7 +83,7 @@
 		"visible": true
 	},
 	"multivalueproperties": {
-		"selected": 4,
+		"selected": 2,
 		"properties": [
 			{
 				"::tabiconid": 0,
@@ -175,7 +175,7 @@
 		"768": {
 			"left": 232,
 			"top": 104,
-			"width": 578,
+			"width": 632,
 			"height": 32,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -186,7 +186,7 @@
 		"1024": {
 			"left": 232,
 			"top": 104,
-			"width": 578,
+			"width": 760,
 			"height": 32,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -197,7 +197,7 @@
 		"1700": {
 			"left": 232,
 			"top": 104,
-			"width": 578,
+			"width": 800,
 			"height": 32,
 			"align": "kCenterJst",
 			"dragborder": false,

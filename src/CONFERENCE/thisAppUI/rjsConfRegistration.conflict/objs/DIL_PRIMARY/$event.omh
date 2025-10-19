@@ -1,0 +1,6 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.DIL_PRIMARY as irRegistration.DIL_PRIMARY
+	End If
+	Do $cinst.$behaviour()

@@ -1,8 +1,17 @@
 Calculate lrText as ilLanguages
-Do lrText.$delete() Returns lbOK
+If lrText.ELT_SEQ>0
+	Do lrText.$delete() Returns lbOK
+Else
+	# deleting a line from ilLanguages beford is in database is ok
+	Calculate lbOK as kTrue
+End If
 If lbOK
 	Do ilLanguages.$remove(ilLanguages.$line)
 	Calculate ilLanguages.$line as 0
+	Calculate inLangTextLine as ilLanguages.$line
+	
+	Do irLangText.$clear()
+	Calculate irLangTextOrig as irLangText
 End If
 
 Do $cinst.$behaviour()

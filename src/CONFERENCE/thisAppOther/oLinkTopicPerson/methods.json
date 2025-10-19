@@ -128,6 +128,22 @@
 				"subtype": 0,
 				"sublen": 0,
 				"param": 3
+			},
+			{
+				"name": "pnTPC_SEQ",
+				"order": 10,
+				"type": "kInteger",
+				"subtype": "k64bitint",
+				"sublen": 0,
+				"param": 4
+			},
+			{
+				"name": "pnPSN_SEQ",
+				"order": 11,
+				"type": "kInteger",
+				"subtype": "k64bitint",
+				"sublen": 0,
+				"param": 5
 			}
 		],
 		"lvardefs": [
@@ -147,12 +163,26 @@
 				"initval": "kFalse"
 			},
 			{
+				"name": "lbPersonInserted",
+				"order": 9,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
 				"name": "lbProceed",
 				"order": 3,
 				"type": "kBoolean",
 				"subtype": 0,
 				"sublen": 0,
 				"initval": "kFalse"
+			},
+			{
+				"name": "lbTopicInserted",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
 			},
 			{
 				"name": "lrDetail",

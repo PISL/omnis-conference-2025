@@ -1,0 +1,35 @@
+# Calculate ilConferences as tlOpenConferences
+Do $defineList(ilConferences,'tConference')
+Do ilConferences.$fetchLatest(3) ## future (current), previous, 2nd previous  Adds Venue info
+Do ilConferences.$addDisplayName()
+Do ilConferences.$sort($ref.CF_DATE_FROM,1) ## most recent at top of list
+
+If ilConferences.$linecount>0
+	Calculate ilConferences.$line as 0
+	While $Loop(ilConferences)
+		Do ilConferences.$DisplayName(4)
+	End While
+	
+	# list of conferences could display a conference with no Arrangements (a future conference)
+	# so identify conference with most desirable content
+	Do ilConferences.$search($ref.countArrangements>5,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		# we could use trCurrentConference to set default line
+		Calculate ilConferences.$line as 1
+	End If
+End If
+
+If ilConferences.$linecount>20
+	Calculate ilCities as ilConferences
+	Do ilCities.$cols.VEN_TOWN.$removeduplicates(kTrue)
+	If ilCities.$linecount>10
+		Calculate $cinst.$objs.PagedPane.$currentpage as 5 ## allows user to filter available conference choice by city
+	End If
+	Do ilCities.$cols.$findname('VEN_TOWN') Returns liColRef
+	Calculate $cinst.$objs.ilCities.$listcolumn as liColRef.$ident
+End If
+
+Do ilConferences.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.ilConferences.$listcolumn as liColRef.$ident
+End If

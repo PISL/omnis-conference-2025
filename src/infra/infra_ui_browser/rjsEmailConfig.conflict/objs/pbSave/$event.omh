@@ -1,0 +1,10 @@
+On evClick
+	Do $cinst.$saveData() Returns lbOK ## icDisplayMessage and icMode explain the results of $saveData
+	If lbOK
+		Calculate lcPRD as irCurrentRecord.ELC_SEQ
+		# Do method $search2ListClick ## commented out RSM 12-JAN-20 messing up CONFERENCE behaviour
+		Do ilDisplayRecords.$search($ref.ELC_SEQ=lcPRD,1,0,0,0)
+		Do method $displayListClick (kTrue)
+	End If
+	
+	Do $cinst.$behaviour()

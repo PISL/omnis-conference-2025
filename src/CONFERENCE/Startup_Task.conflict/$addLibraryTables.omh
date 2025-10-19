@@ -1,0 +1,2 @@
+Do $ctask.tlTableClasses.$add()
+Do $ctask.tlTableClasses.[$ctask.tlTableClasses.$linecount].$assignrow(prLibTables)

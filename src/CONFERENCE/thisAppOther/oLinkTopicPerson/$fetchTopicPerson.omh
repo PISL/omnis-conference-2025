@@ -31,6 +31,18 @@ If irLinkRecord.TPP_SEQ>0
 	Calculate prLink as irLinkRecord
 Else
 	# Breakpoint
+	# Insert new link record.  No!  This is a fetch operation, not a $save
+	If pnTPC_SEQ>0
+		Do irOrigTopic.$fetch_pk(pnTPC_SEQ)
+		Calculate irTopic as irOrigTopic
+		Do prTopic.$assignrow(irTopic,kTrue)
+	End If
+	If pnPSN_SEQ>0
+		Do irOrigPerson.$fetch_pk(pnPSN_SEQ)
+		Calculate irPerson as irOrigPerson
+		Do prPerson.$assignrow(irPerson,kTrue)
+	End If
+	Calculate prLink as irLinkRecord
 End If
 
 # Quit method ilJoinedFetch

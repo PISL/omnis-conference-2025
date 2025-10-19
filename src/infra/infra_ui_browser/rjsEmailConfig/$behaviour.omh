@@ -39,8 +39,10 @@ Calculate $cinst.$objs.ELC_SENDER_ADDR.$enabled as icMode<>''
 Calculate $cinst.$objs.ELC_PRIORITY.$enabled as icMode<>''
 Calculate $cinst.$objs.ELC_IS_MAILSHOT.$enabled as icMode<>''
 Calculate $cinst.$objs.ELC_CALL_PROGRESS.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_ACTIVE.$enabled as icMode<>''
 Calculate $cinst.$objs.ELC_JSON.$enabled as icMode<>''
 
+Calculate $cinst.$objs.ELT_ACTIVE.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
 Calculate $cinst.$objs.ELT_MSG_TEXT.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
 Calculate $cinst.$objs.ELT_MSG_HTML.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
 Calculate $cinst.$objs.ELT_MSG_PFIX_TEXT.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
@@ -52,15 +54,30 @@ Calculate $cinst.$objs.ELT_MSG_SFIX_HTML.$enabled as icMode<>''&ilSelectLangChoo
 Calculate $cinst.$objs.ilLanguages.$enabled as kTrue
 
 # selecting a new language
+If irUserRights.canInsert
+	If icMode<>''
+		Calculate lbCanInsertLanguage as kTrue
+	Else If irCurrentRecord.ELC_SEQ>0
+		Calculate lbCanInsertLanguage as kTrue
+	End If
+End If
+If irUserRights.canDelete
+	If icMode<>''
+		Calculate lbCanDeleteLanguage as kTrue
+	Else If irCurrentRecord.ELC_SEQ>0
+		Calculate lbCanDeleteLanguage as kTrue
+	End If
+End If
 Calculate $cinst.$objs.ilSelectLangChoose.$visible as ilSelectLangChoose.$linecount
-Calculate $cinst.$objs.pbTextLangAdd.$enabled as icMode<>'I'
-Calculate $cinst.$objs.pbTextLangDelete.$enabled as ilLanguages.$line>0&icMode<>'I' ## enabled only when NOT editing
+Calculate $cinst.$objs.PagedPane.$objs.pbTextLangAdd.$enabled as lbCanInsertLanguage
+Calculate $cinst.$objs.PagedPane.$objs.pbTextLangDelete.$enabled as lbCanDeleteLanguage
 
 Calculate lnLine as ilTestCriteriaToBeProvided.$line
 Calculate ilTestCriteriaToBeProvided.$line as 0
 While $Loop(ilTestCriteriaToBeProvided)
 	Calculate lnCountLinesWithValue as lnCountLinesWithValue+not(isclear(ilTestCriteriaToBeProvided.value))
 End While
+
 Calculate $cinst.$objs.pbTestEmailDirect.$enabled as lnCountLinesWithValue=ilTestCriteriaToBeProvided.$linecount
 Calculate $cinst.$objs.pbTestEmailWorker.$enabled as lnCountLinesWithValue=ilTestCriteriaToBeProvided.$linecount
 Calculate $cinst.$objs.pbTestEmailAsynchronous.$enabled as lnCountLinesWithValue=ilTestCriteriaToBeProvided.$linecount
@@ -68,10 +85,10 @@ Calculate ilTestCriteriaToBeProvided.$line as lnLine
 
 Do method assignEntryFieldProperties
 
-If ilLanguages.$linecount>2
-	Calculate icLangCount as con('(',ilLanguages.$linecount,')')
-Else
-	Calculate icLangCount as ''
-End If
+# If ilLanguages.$linecount>2 ## irLangText
+Calculate icLangCount as con('(',ilLanguages.$linecount,')')
+# Else
+# Calculate icLangCount as ''
+# End If
 
 Do inherited ## handle objects in the navigation and results panes

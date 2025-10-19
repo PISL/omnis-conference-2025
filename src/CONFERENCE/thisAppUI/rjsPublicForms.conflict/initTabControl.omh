@@ -1,0 +1,56 @@
+# initialise the TabControl $enabled and select first enabled tab
+Calculate inTabCount as 1
+
+# all tabs are enabled on this form
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPageSpeakers
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPageVenueInfo
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPageTopics1
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPageTopics2
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPageArrangements
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPageSubmissions
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate $cinst.$objs.TabControl_Public.$selectedtab as cnPagePricing
+Calculate $cinst.$objs.TabControl_Public.$tabvisible as kTrue
+Do ilTabShortcuts.$add()
+Calculate ilTabShortcuts.[ilTabShortcuts.$linecount].key as inTabCount
+Calculate inTabCount as inTabCount+1
+
+Calculate inCurrentTab as 1
+Do $ctask.$setCurrentForm('code','FORM_SPK_SITE')
+# Do $ctask.$setCurrentForm('code','FORM_VEN_SITE')
+# Do $ctask.$setCurrentForm('code','FORM_TPC1_SITE')
+# Do $ctask.$setCurrentForm('code','FORM_TPC2_SITE')
+# Do $ctask.$setCurrentForm('code','FORM_ARR_SITE')
+# Do $ctask.$setCurrentForm('code','FORM_SUBM_SITE')
+
+Calculate $cinst.$objs.TabControl_Public.$currenttab as inCurrentTab

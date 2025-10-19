@@ -1,0 +1,31 @@
+Do $DefineList(ilOrganisations,'infra.tentGroupOrganisations')
+Do ilOrganisations.$fetch_all()
+If ilOrganisations.$linecount>0
+	Calculate ilOrganisations.$line as 1
+End If
+
+Do $DefineList(ilConferences,'CONFERENCE.tConference')
+
+Do ilSortOptions.$cols.$add('sortCode',kCharacter,kSimplechar,20)
+Do ilSortOptions.$cols.$add('sortName',kCharacter,kSimplechar,100)
+
+Do ilFilterOptions.$cols.$add('code',kCharacter,kSimplechar,15)
+Do ilFilterOptions.$cols.$add('desc',kCharacter,kSimplechar,100)
+
+# developer defence
+Do $ctask.trGroupOrg.$cols.$findname('GO_NAME_SHORT') Returns liColRef
+If liColRef
+	If $ctask.trGroupOrg.GO_NAME_SHORT<>''
+		# data exists
+	Else
+		Calculate lbDefineGroupOrg as kTrue
+	End If
+Else
+	Calculate lbDefineGroupOrg as kTrue
+End If
+If lbDefineGroupOrg
+	Do $DefineList($ctask.trGroupOrg,'infra.tentGroupOrganisations')
+	Do $ctask.trGroupOrg.$fetch_("where GO_NAME_SHORT = 'OmnisWorld' ")
+End If
+
+Do method $conferenceList ## ilConferences

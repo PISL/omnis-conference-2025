@@ -1,0 +1,32 @@
+Calculate icMessage as ''
+
+If pcToOrFromDB='T' ## to DB
+	Calculate plContent.$line as 0
+	While $Loop(plContent)
+		Calculate lcTemp as con(lcTemp,pick(lcTemp<>'','',kCr),'<',plContent.signal,'>',plContent.text,'</',plContent.signal,'>')
+	End While
+	If len(lcTemp)>255
+		Calculate icMessage as 'Too big!  Sum of characters exceeds 255 characters.'
+		# Calculate prQuestion.TSQ_MC_OPTIONS as '' ## to fail validation
+		Quit method '' ## to fail validation
+	Else
+		# Calculate prQuestion.TSQ_MC_OPTIONS as lcTemp
+		Quit method lcTemp
+	End If
+	
+Else If pcToOrFromDB='F' ## from DB
+	Do ilMultipleChoiceOptions.$clear()
+	Calculate lcTemp as prQuestion.TSQ_MC_OPTIONS
+	While lcTemp<>''
+		Calculate lcLine as strtok(nam(lcTemp),kCr)
+		If lcLine<>''
+			Do ilMultipleChoiceOptions.$add()
+			Calculate ilMultipleChoiceOptions.$line as ilMultipleChoiceOptions.$linecount
+			Calculate ilMultipleChoiceOptions.signal as mid(lcLine,2,1)
+			Calculate ilMultipleChoiceOptions.text as toStrings.$TagContent(lcLine,ilMultipleChoiceOptions.signal)
+		End If
+	End While
+	Calculate ilMultipleChoiceOptions.$line as 0
+	
+	Quit method ilMultipleChoiceOptions
+End If

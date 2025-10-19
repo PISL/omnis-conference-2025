@@ -1,0 +1,6 @@
+# if there is a non standard sort order then suppress this section
+If irSortOption.sortCode=''
+	# standard
+	Do ilOccupancy.$search($ref.RFO_VALUE=ilData.DG_OCCUPANCY,1,0,0,0) ## ilOccupancy.RFO_DESC
+	Do default
+End If

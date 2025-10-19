@@ -7,6 +7,7 @@ While $Loop(ilTopics)
 	Do ilTopics.$DisplayName()
 End While
 Do method SortTopics
+Calculate ilTopicsToDrag as ilTopics
 
 Do ilPersons.$clear()
 Do ilPersons.$fetchSpeakers($cinst.ilSearch1.CF_SEQ)
@@ -22,6 +23,8 @@ Do ilFacilities.$addbefore(1,#NULL,#NULL,'not set')
 While $Loop(ilFacilities)
 	Do ilFacilities.$DisplayName(1) ## 1 = include area
 End While
+Calculate ilFacilitiesToDrag as ilFacilities
+Do ilFacilitiesToDrag.$sort($ref.FCY_NAME,0)
 
 Do ilAttendees.$clear()
 # Do ilAttendees.$fetch_fk($cinst.ilSearch1.CF_SEQ)

@@ -1,0 +1,12 @@
+# Builds a list of foreign keys for the table
+Calculate llForeignKeyList as
+Do llForeignKeyList.$cols.$add('TABLE',kCharacter,kSimplechar,100)
+Do llForeignKeyList.$cols.$add('COLUMN',kCharacter,kSimplechar,100)
+Do llForeignKeyList.$cols.$add('FTABLE',kCharacter,kSimplechar,100)
+Do llForeignKeyList.$cols.$add('FCOLUMN',kCharacter,kSimplechar,100)
+
+Do llForeignKeyList.$add($cinst.$servertablenames(),'dg_cf_ref',lrConference.$servertablenames(),'cf_seq')
+Do llForeignKeyList.$add($cinst.$servertablenames(),'dg_psn_ref',lrPerson.$servertablenames(),'psn_seq')
+# Do llForeignKeyList.$add($cinst.$servertablenames(),'dg_occupancy','sysreferenceorg','rfo_class="DG_OCCUPANCY" and rfo_value=dg_occupancy')
+
+Quit method llForeignKeyList

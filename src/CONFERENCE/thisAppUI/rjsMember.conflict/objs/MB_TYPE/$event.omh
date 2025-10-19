@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.MB_TYPE as ilType.RFO_VALUE

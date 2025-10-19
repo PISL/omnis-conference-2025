@@ -1,0 +1,64 @@
+Calculate ilDisplayRecords as ''
+Do ilDisplayRecords.$cols.$add('reportCode',kCharacter,kSimplechar,15)
+Do ilDisplayRecords.$cols.$add('reportName',kCharacter,kSimplechar,100)
+Do ilDisplayRecords.$cols.$add('reportDesc',kCharacter,kSimplechar,255)
+Do ilDisplayRecords.$cols.$add('reportParams',kCharacter,kSimplechar,255)
+Do ilDisplayRecords.$cols.$add('paramText',kCharacter,kSimplechar,255)
+Do ilDisplayRecords.$cols.$add('otherInfo',kCharacter,kSimplechar,255)
+
+# organisation
+Do ilDisplayRecords.$add('','ORGANISATION','','')
+Do ilDisplayRecords.$add('DELEGATES','Delegates report - comprehensive','Lists all delegates with payment and receipts info.','sortOrder,checkbox1,checkbox2,outputText','<checkbox1>exclude Cancelled</checkbox1><checkbox2>suppress comments</checkbox2>')
+Do ilDisplayRecords.$add('DG_SIMPLE','Delegates report - simple','Lists all delegates - simple presentation','sortOrder,checkbox1,outputText','<checkbox1>exclude Cancelled</checkbox1>')
+Do ilDisplayRecords.$add('DG_NAMES','Delegates report - names only','Lists all delegates - names only for sharing with 3rd parties','outputText')
+Do ilDisplayRecords.$add('DG_EMAILS','Delegate email addresses','Lists delegates and their email addresses','outputText','')
+Do ilDisplayRecords.$add('TRAVEL_DEETS_IN','Travel details arrive','Lists arrival information provided by delegates',',outputText','')
+Do ilDisplayRecords.$add('TRAVEL_DEETS_OT','Travel details depart','Lists departure information provided by delegates',',outputText','')
+Do ilDisplayRecords.$add('MUSICIANS','Musicians','Lists delegates willing to play music.',',outputText','')
+# post conference
+Do ilDisplayRecords.$add()
+Do ilDisplayRecords.$add('','POST CONFERENCE','','')
+Do ilDisplayRecords.$add('SESSION_FBACK','Session feedback','Feedback from delegates on sessions is reported here.','outputText')
+Do ilDisplayRecords.$add('GENERAL_FBACK','General feedback','General (venue, facilities, organisation etc) feedback from delegates is reported here.','')
+Do ilDisplayRecords.$add('ATTENDEE_LIST','Attendee list','List of attendees at each arrangement/session.','')
+Do ilDisplayRecords.$add('ATTENDEE_COUNT','Attendee count','Count of attendees at each arrangement/session.','sortOrder,outputText')
+Do ilDisplayRecords.$add('BOOKING_STATS','Booking stats','Session booking statistics.','filterOption,outputText')
+
+# speakers
+Do ilDisplayRecords.$add()
+Do ilDisplayRecords.$add('','SPEAKERS','','')
+If sys(2)=17
+	Do ilDisplayRecords.$add('SPEAKER_INVITE','Speaker invitation',con('Will generate email messages in the Mail client.',kCr,'BE SURE TO SELECT THE DESIRED FROM ACCOUNT in the Mail client before starting.'),'outputText','')
+Else
+	Do ilDisplayRecords.$add('SPEAKER_INVITE','Speaker invitation','Pro forma email to past speakers inviting to speak again','outputText','')
+End If
+Do ilDisplayRecords.$add('SPEAKERS','Speakers and session report','Lists speakers and any scheduled sessions','checkbox1,outputText','<checkbox1>add topic title</checkbox1>')
+Do ilDisplayRecords.$add('SPKR_HIST','Speakers, historical','Lists all people who have presented at a conference','outputText')
+Do ilDisplayRecords.$add('TOPICS','Topics List','Lists speakers and their Topic information in full','','')
+
+# Do ilDisplayRecords.$add('','Certification','','')
+# Do ilDisplayRecords.$add()
+# hotel details
+Do ilDisplayRecords.$add()
+Do ilDisplayRecords.$add('','VENUE','','')
+Do ilDisplayRecords.$add('ROOM_ALLOC','Room allocations','Lists all delegates, grouping shared room pairings together.  For hotel.','outputText')
+Do ilDisplayRecords.$add('PAX','Pax report','Lists all people, including spouses and children, will be utilising conference resources',',outputText')
+Do ilDisplayRecords.$add('DIETREQ','Dietary Requests','Lists all dietary requests, including spouses, children etc.',',outputText')
+Do ilDisplayRecords.$add('SPKR_REQUESTS','Speaker requests','If a speaker has made a request for equipment or timings, this report shows them.  For hotel.','')
+Do ilDisplayRecords.$add('LABELS','Delegate name tags','','sortOrder,real1','<real1>label spacing</real1>','<saveParam>real1</saveParam>')
+Do ilDisplayRecords.$add('WELCOME','Welcome letters to delegates','','')
+
+# administration
+Do ilDisplayRecords.$add()
+Do ilDisplayRecords.$add('','ADMINISTRATION','','')
+Do ilDisplayRecords.$add('NOT_THIS_CONF','Previous delegates not attending','Previous delegates not attending the selected conference','sortOrder,outputText')
+Do ilDisplayRecords.$add('MEMBERS','Membership report','Lists all members as at a particular date','AS_AT_DATE,,outputText')
+Do ilDisplayRecords.$add('EVENTS_STATS','Multi event statistics','Sumary statistics across multiple events','checkbox1,outputText,<selectlist1>ilConferencesSelect</selectlist1><displayColumn1>CF_TITLE</displayColumn1>','<checkbox1>add graphs</checkbox1>')
+# Do ilDisplayRecords.$add('INVOICE','Invoice','Prepares an invoice for a specific delegate','')
+
+Do ilDisplayRecords.$add()
+Do ilDisplayRecords.$add('','TECHNICAL','','')
+Do ilDisplayRecords.$add('TASK_STATS','Concurrent remote tasks','List of concurrent remote task records.','filterOption,outputText')
+Do ilDisplayRecords.$add('TASK_STATS_DB','Concurrent remote tasks + db stats','List of concurrent remote task records with database statistics.','filterOption,outputText')
+
+Quit method ilDisplayRecords

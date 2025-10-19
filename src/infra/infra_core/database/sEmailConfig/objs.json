@@ -460,5 +460,19 @@
 			"primarykey": false,
 			"userinfo": ""
 		}
+	},
+	{
+		"name": "ELC_COMMENT",
+		"ident": 32067,
+		"order": 34,
+		"type": "kCharacter",
+		"subtype": "kSimplechar",
+		"sublen": 1000,
+		"properties": {
+			"desc": "comments on this particular connection",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
 	}
 ]

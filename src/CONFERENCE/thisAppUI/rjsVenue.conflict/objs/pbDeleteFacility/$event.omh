@@ -1,0 +1,11 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	Do irFacility.$checkChildren() Returns lnCountChildren
+	If lnCountChildren=0
+		Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',irFacility.FCY_NAME,'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteFCY')
+	Else
+		Do irFacility.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+		Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+		Do $cinst.$behaviour()
+	End If

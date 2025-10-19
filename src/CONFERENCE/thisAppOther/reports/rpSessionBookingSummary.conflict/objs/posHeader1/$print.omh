@@ -1,0 +1,6 @@
+If inMinutesBreak<60
+	# print the minutes column
+	Do default
+Else
+	# on hourly presentation, do not print this column
+End If

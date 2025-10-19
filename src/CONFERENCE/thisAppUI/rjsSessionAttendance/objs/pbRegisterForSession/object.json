@@ -1,6 +1,6 @@
 {
 	"ident": 1028,
-	"order": 29,
+	"order": 28,
 	"objtype": "kComponent",
 	"componentlib": "jsButton",
 	"componentctrl": "Button Control",
@@ -68,10 +68,10 @@
 			"visible": true
 		},
 		"375": {
-			"left": 250,
-			"top": 173,
+			"left": 248,
+			"top": 200,
 			"width": 110,
-			"height": 30,
+			"height": 19,
 			"align": "kCenterJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -79,9 +79,9 @@
 			"visible": true
 		},
 		"480": {
-			"left": 320,
+			"left": 376,
 			"top": 104,
-			"width": 70,
+			"width": 128,
 			"height": 30,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -90,9 +90,9 @@
 			"visible": true
 		},
 		"667": {
-			"left": 408,
+			"left": 392,
 			"top": 120,
-			"width": 88,
+			"width": 128,
 			"height": 30,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -103,7 +103,7 @@
 		"768": {
 			"left": 544,
 			"top": 120,
-			"width": 105,
+			"width": 128,
 			"height": 30,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -112,9 +112,9 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 704,
+			"left": 744,
 			"top": 56,
-			"width": 100,
+			"width": 120,
 			"height": 30,
 			"align": "kCenterJst",
 			"dragborder": false,
@@ -123,9 +123,9 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 704,
+			"left": 736,
 			"top": 56,
-			"width": 90,
+			"width": 112,
 			"height": 30,
 			"align": "kCenterJst",
 			"dragborder": false,

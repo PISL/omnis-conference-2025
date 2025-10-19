@@ -1,0 +1,8 @@
+Calculate ibActiveConference as #D<=ilSearch1.CF_ADMIN_DATE_TO
+Do method fetchDisplayList
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Calculate trCurrentConference as ilSearch1
+
+Do $cinst.$behaviour

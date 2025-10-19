@@ -1,0 +1,21 @@
+Do $DefineList(trLogAccess,'infra.tuaLogAccess')
+
+Calculate trLogAccess.ULA_USR_REF as trCurrUser.USR_SEQ
+Calculate trLogAccess.ULA_LOGIN as $ServerTime()
+Calculate trLogAccess.ULA_IP_ADDRESS as $ctask.$clientaddress()
+Calculate trLogAccess.ULA_GO_NAME as trGroupOrg.GO_NAME_SHORT
+Calculate trLogAccess.ULA_CONNECT_TIME as $ctask.$connectiontime
+Calculate trLogAccess.ULA_FORMS_VISITED as $cinst.$class().$name
+Calculate trLogAccess.ULA_COMMENT as con(ilVenues.VEN_NAME,' info')
+
+Do trLogAccess.$insert() Returns lbOK
+If not(lbOK)
+	Breakpoint
+End If
+
+If tConstants.LogTaskStats
+	# If LogTaskStats has been set in .ini file then trSysTaskStats will have been established by now
+	Calculate trTaskStats.STS_ULA_REF as trLogAccess.ULA_SEQ
+	Do trTaskStats.$update() Returns lbOK
+	# This record should be updated again on $destruct
+End If

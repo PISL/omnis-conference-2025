@@ -1,3 +1,21 @@
 On evClick
+	# Calculate lnOldLine as ilLanguages.$line
+	If inLangTextLine>0
+		Do toStrings.$HasRowBeenModified(irLangTextOrig,irLangText) Returns lbModified
+		If lbModified
+			Calculate irLangText.modified as kTrue
+			Do ilLanguages.[inLangTextLine].$assignrow(irLangText,kTrue)
+		Else
+			# no change
+		End If
+	End If
+	
+	Calculate ilLanguages.$line as pLineNumber
+	Calculate inLangTextLine as ilLanguages.$line
+	Calculate irLangText as ilLanguages
+	Calculate irLangTextOrig as irLangText
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$pushdata(row(nam(ilLanguages),ilLanguages.$line,irLangText))
 	
 On evDoubleClick

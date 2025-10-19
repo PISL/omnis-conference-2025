@@ -1,0 +1,64 @@
+Calculate icErrorMessage as ''
+
+# this method must be precede by a call to $fetchDelegateWithInvoice
+If pnDG_SEQ=irDelegate.DG_SEQ
+	If irLinkDelegateInvoice.DIL_DG_REF=irDelegate.DG_SEQ
+		If irLinkDelegateInvoice.DIL_FOH_REF=irInvoiceHeader.FOH_SEQ
+			If ilInvoiceDetail.1.FOD_FOH_REF=irInvoiceHeader.FOH_SEQ
+				Calculate lbDataInPlace as kTrue
+			Else If ilInvoiceDetail.$linecount=0
+				Calculate lbDataInPlace as kTrue
+			End If
+			If lbDataInPlace
+				# now make sure any busioness rules are not being broken
+				If pos('UNPAID',irDelegate.DG_STATUS)>0
+					Calculate lbProceed as kTrue
+				Else
+					Calculate icErrorMessage as 'Delegate must have an UNPAID status before deleting'
+				End If
+			End If
+		End If
+	End If
+End If
+
+If lbProceed
+	# it may be that there are several Delegates being paid from the one invoice
+	# if we delete this invoice then all delegate links should be deleted also
+	
+	# we have to delete DelegateInvoiceLink record(s) first to avoid foreign key constraints
+	Do irLinkDelegateInvoice.$delete_fk(irInvoiceHeader.FOH_SEQ,'DIL_FOH_REF') Returns lbOK
+	If lbOK
+		Do ilInvoiceDetail.$delete_fk(irInvoiceHeader.FOH_SEQ) Returns lbOK
+		If lbOK
+			Do irInvoiceHeader.$delete() Returns lbOK
+			If lbOK
+				Do irDelegate.$delete() Returns lbOK
+				If not(lbOK)
+					Calculate icErrorMessage as irDelegate.irErrorSQL.NativeErrorText
+				End If
+			Else
+				Calculate icErrorMessage as irInvoiceHeader.irErrorSQL.NativeErrorText
+			End If
+		Else
+			Calculate icErrorMessage as ilInvoiceDetail.irErrorSQL.NativeErrorText
+		End If
+	Else
+		Calculate icErrorMessage as irLinkDelegateInvoice.irErrorSQL.NativeErrorText
+	End If
+	
+	If lbOK
+		Do ilInvoiceDetail.$clear()
+		Do irInvoiceHeader.$clear()
+		Do irLinkDelegateInvoice.$clear()
+		Do irDelegate.$clear()
+		
+		Do ilOrigDetail.$clear()
+		Do irOrigHeader.$clear()
+		Do irOrigLinkDelegateInvoice.$clear()
+		Do irOrigDelegate.$clear()
+	End If
+	
+	Quit method lbOK
+End If
+
+Quit method lbProceed

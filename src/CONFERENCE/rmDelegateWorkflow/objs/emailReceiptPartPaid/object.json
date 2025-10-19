@@ -1,0 +1,18 @@
+{
+	"ident": 1008,
+	"order": 7,
+	"properties": {
+		"cascade": "",
+		"checked": false,
+		"commandid": 1008,
+		"enabled": true,
+		"iconcolor": "RGB(0,0,0)",
+		"iconid": 0,
+		"ischeckable": true,
+		"text": {
+			"type": 0,
+			"calc": "email receipt of funds - part paid"
+		},
+		"userinfo": ""
+	}
+}

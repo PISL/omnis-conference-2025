@@ -1,0 +1,6 @@
+On evAfter
+	Calculate icDisplayMessage as ''
+	Do method CheckMaxDays
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.inNoDays as inNoDays
+	End If

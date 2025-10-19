@@ -1,0 +1,4 @@
+If pData<>''
+	Calculate pData as con(pData,'%')
+End If
+Do default

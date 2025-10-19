@@ -1,0 +1,65 @@
+# If pos('DUNN',upp(ilData.PSN_SURNAME))
+# Breakpoint
+# End If
+Calculate lnHighlight as 0
+If ilData.TotalReceived>0
+	Calculate lnDiff as abs(ilData.TotalAmountDue-ilData.TotalReceived)
+	Calculate lnThreshold as ilData.TotalAmountDue*0.02 ## 2% threshold
+	If lnDiff>lnThreshold ## difference between the two is more than 2%
+		Calculate lbHighlight as kTrue
+	End If
+Else If ilData.TotalAmountDue>0&ilData.TotalReceived=0
+	Calculate lbHighlight as kTrue
+End If
+If not(lbHighlight)
+	If int(ilData.TotalAmountDue)<>int(ilData.TotalReceived) ## ignore pennies difference
+		Calculate lbLowlight as kTrue
+	End If
+End If
+
+If lbHighlight
+	If ilData.TotalReceived>ilData.TotalAmountDue
+		Calculate $cinst.$objs.1076.$backcolor as kCyan ## overpaid
+	Else
+		Calculate $cinst.$objs.1076.$backcolor as rgb(255,170,255) ## underpaid
+	End If
+Else If lbLowlight
+	Calculate $cinst.$objs.1076.$backcolor as rgb(238,238,238) ## grey
+Else
+	Calculate $cinst.$objs.1076.$backcolor as kWhite
+End If
+
+If ilData.RepeatInvoiceRef<>''
+	Calculate $cinst.$objs.RepeatInvoiceRef.$visible as kTrue
+	Calculate $cinst.$objs.TotalAmountDue.$visible as kFalse
+	Calculate $cinst.$objs.TotalReceived.$visible as kFalse
+Else
+	Calculate $cinst.$objs.RepeatInvoiceRef.$visible as kFalse
+	Calculate $cinst.$objs.TotalAmountDue.$visible as kTrue
+	Calculate $cinst.$objs.TotalReceived.$visible as kTrue
+End If
+
+If upp(ilData.PSN_SURNAME)='AL-KISHTINI'
+	# Breakpoint
+End If
+
+Calculate icAttributes as ''
+If ilData.DG_ROLE='SPEAKER'
+	# Calculate lcString as con(lcString,pick(lcString<>'','',' '),'Spkr')
+End If
+If ilData.countMembPersonal
+	# Calculate lcString as con(lcString,pick(lcString<>'','',' '),'memb: P')
+	Calculate lcString as con(lcString,pick(lcString<>'','',' '),'P')
+End If
+If ilData.countMembCorporate
+	# Calculate lcString as con(lcString,pick(lcString<>'','',' '),'memb: C')
+	Calculate lcString as con(lcString,pick(lcString<>'','',' '),'C')
+End If
+If ilData.countSpouse
+	# highlighting spouses is done using OCCUPANCY status of SPOUSE
+	# Calculate lcString as con(lcString,pick(lcString<>'','',' '),'+ spouse')
+End If
+
+Calculate icAttributes as lcString
+
+Do default

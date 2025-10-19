@@ -33,10 +33,10 @@ If irDelegate.DG_SEQ
 	If inCountDelegates+lnNonScheduledSpeakers<>0
 		Calculate lnPercent as 100*lnTotalSessionsBooked/(inCountDelegates+lnNonScheduledSpeakers)
 	End If
+	
 	Calculate icBookedTotal as ''
 	If lnPercent<>0
-		# Calculate icBookedTotal as con(lnTotalSessionsBooked,' of ',inCountDelegates+lnNonScheduledSpeakers,': ',lnPercent,'%')
-		Calculate icBookedTotal as con(lnTotalSessionsBooked,': ',lnPercent,'%')
+		Calculate icBookedTotal as con('timeslot bookings: ',lnTotalSessionsBooked,';   proportion: ',lnPercent,'%')
 	Else
 		# Calculate icBookedTotal as con(lnTotalSessionsBooked,' of ',inCountDelegates+lnNonScheduledSpeakers)
 	End If

@@ -1,0 +1,54 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# prepare some data for the message text
+	Calculate lcTo as 'mostyn@platformis.net'
+	Do $defineList(llConferences,'CONFERENCE.tConference')
+	Do llConferences.$fetchIncomplete()
+	Calculate llConferences.$line as 1
+	
+	Do $defineList(llDelegates,'CONFERENCE.tDelegates')
+	Do llDelegates.$addLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL,PSN_COUNTRY')
+	Do llDelegates.$fetchForConference(llConferences.CF_SEQ)
+	If 1=1
+		Do llDelegates.$search($ref.PSN_SURNAME='Mostyn',1,0,0,0) Returns lbFound
+	Else If 1=2
+		Do llDelegates.$search($ref.PSN_SURNAME='Meredith',1,0,0,0) Returns lbFound
+	Else If 1=3
+		Do llDelegates.$search($ref.PSN_SURNAME='Moteane',1,0,0,0) Returns lbFound
+	End If
+	
+	# Do $defineList(llDelegates,'CONFERENCE.tDelegates')
+	# Do llDelegates.$addLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL,PSN_COUNTRY')
+	Do loDelegateInvoice.$init(lrDelegate,lrLinkDgInvoice,lrInvHeader,llInvDetail)
+	Do loDelegateInvoice.$fetchDelegateWithInvoice(llDelegates.DG_SEQ,lrDelegate,lrInvHeader,llInvDetail,lrLinkDgInvoice) Returns llInvoice
+	
+	Breakpoint
+	# prime the worker with a configuration
+	
+	# Open task instance infra.tkAsyncPDF returns lrefAsyncPdf
+	Do $tasks.tkAsyncPdfApp.$open('*',tcCurrentLibrary,$cinst) Returns irefAsyncPdf
+	If irefAsyncPdf
+		Do irefAsyncPdf.$getAttributes() Returns lrAttributes
+		
+		Calculate lrAttributes.author as trGroupOrg.GO_NAME
+		Calculate lrAttributes.title as 'Customer Invoice'
+		Calculate lrAttributes.subject as 'Order confirmation'
+		Calculate lrAttributes.reportClass as 'rpInvoice' ## or infra.rpInvoice
+		Calculate lrAttributes.reportData as llInvDetail
+		Calculate lrAttributes.jobIdentification as llDelegates
+		Calculate lrAttributes.saveOnError as kTrue
+		Calculate lrAttributes.timeout as 10 ## minutes
+		
+		
+		Do irefAsyncPdf.$setAttributes(lrAttributes)
+		Do irefAsyncPdf.$setCallback($cinst,'$pdfcomplete',row(lrInvHeader,llInvDetail),lrDelegate)
+		Do irefAsyncPdf.$generatePdf()
+		
+		# our job is finished momentarily.
+		# a distinct task running from main server will take the attributes provided and generate a PDF
+		# when the PDF completes it will call method in the new task that will in turn call $pdfcomplete
+		
+	Else
+		Breakpoint
+		
+	End If
+	# irefAsyncPdf

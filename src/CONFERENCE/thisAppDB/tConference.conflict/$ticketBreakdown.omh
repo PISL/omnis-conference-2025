@@ -1,0 +1,56 @@
+Do llData.$cols.$add($cinst.CF_TITLE_CODE)
+Do llData.$cols.$add(lrProduct.PRD_SIZE) ## in CONFERENCE this is used to sort products - nothing to do with size!
+Do llData.$cols.$add(lrProduct.PRD_INT_PRODCODE)
+Do llData.$cols.$add(lrProduct.PRD_UNIT_PRICE)
+Do llData.$cols.$add('count',kInteger,k32bitint)
+Do llData.$cols.$add('lineTotal',kNumber,k2dp)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+# Because multiple people from same company are joined to same invoice
+# we are getting exaggerated counts because of counting twice with a regular joined sql statement.
+# So we will use a   SELECT  WITH  statement.
+
+# The memory table will hold distinct records, eliminating the double count of multiple delegates joined to same invoice.
+#   PRD_SIZE is used for sorting, it is not an actual product size in CONFERENCE
+
+Begin statement
+Sta:with products_purchased as
+Sta:  (select  distinct  CF_TITLE_CODE, FOH_SEQ, FOD_SEQ, PRD_SIZE, PRD_INT_PRODCODE, PRD_UNIT_PRICE
+Sta:
+Sta:  from [$cinst.$servertablenames()]
+Sta:
+Sta:  join [lrDelegate.$servertablenames()] on DG_CF_REF = CF_SEQ
+Sta:  join [lrDgInvLink.$servertablenames()] on DIL_DG_REF = DG_SEQ
+Sta:  join [lrInvHdr.$servertablenames()] on FOH_SEQ = DIL_FOH_REF
+Sta:  join [lrInvDetail.$servertablenames()] on FOD_FOH_REF = FOH_SEQ
+Sta:  join [lrProduct.$servertablenames()] on FOD_PRD_REF = PRD_SEQ
+Sta:
+Sta:  where DG_CF_REF = @[pnCF_SEQ]
+Sta:  and     DG_STATUS <> 'CANCEL'
+Sta:  )
+Sta:
+Sta:select CF_TITLE_CODE, PRD_SIZE, PRD_INT_PRODCODE, PRD_UNIT_PRICE, count(*)
+Sta:from products_purchased
+Sta:group by CF_TITLE_CODE, PRD_SIZE, PRD_INT_PRODCODE, PRD_UNIT_PRICE
+Sta:order by CF_TITLE_CODE, PRD_SIZE, PRD_INT_PRODCODE
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+While $Loop(llData)
+	Calculate llData.lineTotal as llData.PRD_UNIT_PRICE*llData.count
+End While
+
+# Do llData.$sort($ref.PRD_SIZE,0,$ref.PRD_INT_PRODCODE,0)
+
+Quit method llData

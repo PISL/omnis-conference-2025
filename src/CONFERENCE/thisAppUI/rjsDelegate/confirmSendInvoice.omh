@@ -1,0 +1,8 @@
+Calculate icSourceAsyncEvent as 'SEND_INVOICE'
+
+If isclear(irCurrentRecord.DG_EMAIL_INVOICE_SENT)
+	Do $cinst.$clientNoYesMsg('Proceed to send invoice email?','CONFIRM ACTION','$generateInvoicePdf')
+Else
+	Do $cinst.$clientNoYesMsg(con('Proceed to send invoice email, even though it was already sent ',irCurrentRecord.DG_EMAIL_INVOICE_SENT,'?'),'CONFIRM ACTION','$generateInvoicePdf')
+	
+End If

@@ -1,0 +1,5 @@
+On evMenuEntryClicked ## pLineIdent   pLineTag
+	# overload in the subclass
+	
+On evLoadCascade
+	# overload in the subclass

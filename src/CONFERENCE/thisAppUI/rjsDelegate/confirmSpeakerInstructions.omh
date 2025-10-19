@@ -1,0 +1,7 @@
+If isclear(irCurrentRecord.DG_SPKR_INSTRUCTIONS)
+	
+	Do $cinst.$clientNoYesMsg('Proceed to send confirmation of registration email?','CONFIRM ACTION','$sendEmailSpeakerInfo')
+Else
+	Do $cinst.$clientNoYesMsg(con('Proceed to send confirmation of registration email, even though it was already sent ',irCurrentRecord.DG_SPKR_INSTRUCTIONS,'?'),'CONFIRM ACTION','$sendEmailSpeakerInfo')
+	
+End If

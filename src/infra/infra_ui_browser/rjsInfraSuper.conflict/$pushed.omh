@@ -1,0 +1,11 @@
+# tell the browser to "Calculate iVar as iVar" to force a refresh
+# any subclass form which calls $refreshVar will need to overload this method
+# and copy over the following lines, replacing the "Else" section with form specific Javascript
+
+If pRow.C1='refreshVar'
+	JavaScript:__form.set(lcVarName,jOmnis.copyValue(__form.get(lcVarName)));
+Else
+	# form specific code goes here
+End If
+
+Do $cinst.$clientcommand("closepush",row())

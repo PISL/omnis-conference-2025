@@ -38,8 +38,6 @@ If cmd()
 End If
 
 Do $cinst.$Read_db_config() ## tlDatabases
-Calculate irConfigFile.UserName as 'conf_user'
-Calculate irConfigFile.password as 'Euromnis2025'
 
 Do method $cinst.$OpenSessionPool (tlDatabases.Name,tlDatabases.Host,irConfigFile.UserName,irConfigFile.password,tlDatabases.DAM,tlDatabases.poolSize) Returns lbConnected
 If not(lbConnected)
@@ -57,24 +55,6 @@ Do lrSemaphores.$delete_all()
 Do tConstants.$cols.$add('topBanner',kBinary) ## although not used in CONFERENCE, code in infra is expecting this column
 # Do tConstants.$cols.$add('topLeft',kBinary)
 # Do tConstants.$cols.$add('topRight',kBinary)
-
-# Do tConstants.$cols.$add('wsSessionID',kCharacter,kSimplechar,100) ## ;;# this is application specific
-
-If sys(2)=17
-	# do not start multiple threads
-Else
-	# If isclear(inMaxConnections)
-	# Calculate $root.$prefs.$serverstacks as 5
-	# Else
-	# Calculate $root.$prefs.$serverstacks as inMaxConnections
-	# End If
-	# Start server
-	# If flag true
-	# Send to trace log {Multiple threads started}
-	# Else
-	# Send to trace log {Failed to start multiple threads}
-	# End If
-End If
 
 Do $getFormColours() ## trFormColours
 

@@ -1,0 +1,5 @@
+On evAfter
+	Do ilPricingGrid.$unfilter()
+	If icSearchPricing<>''
+		Do ilPricingGrid.$filter(pos(upp(icSearchPricing),upp($ref.CFP_NAME))>0|pos(upp(icSearchPricing),upp($ref.CFP_CALC))>0|pos(upp(icSearchPricing),upp($ref.CFP_PROD_CODE))>0|pos(upp(icSearchPricing),upp($ref.CFP_COMMENT))>0)
+	End If

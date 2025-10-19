@@ -1,0 +1,108 @@
+# Do llData.$cols.$add('column',kCharacter,kSimplechar,30)
+Do llData.$cols.$add('conference',kCharacter,kSimplechar,30)
+Do llData.$cols.$add('value1',kCharacter,kSimplechar,30)
+Do llData.$cols.$add('value2',kCharacter,kSimplechar,30)
+Do llData.$cols.$add('count',kInteger,k32bitint)
+Do llData.$cols.$add('column_source',kCharacter,kSimplechar,30)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select    CF_TITLE_CODE, DG_ROLE, null, count(*), concat('DG_ROLE') as literal
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrConference.$servertablenames()] on DG_CF_REF = CF_SEQ
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+# organisational "person"
+Sta:and     PSN_SEX <> 'O'
+Sta:group by CF_TITLE_CODE, DG_ROLE
+End statement
+
+Do $cinst.$executesqlandfetch(llData,kTrue) Returns lbOK
+
+Begin statement
+Sta:select    CF_TITLE_CODE, DG_OCCUPANCY, null, count(*), concat('DG_OCCUPANCY') as literal
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrConference.$servertablenames()] on DG_CF_REF = CF_SEQ
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+# organisational "person"
+Sta:and     PSN_SEX <> 'O'
+Sta:group by  CF_TITLE_CODE, DG_OCCUPANCY
+End statement
+
+Do $cinst.$executesqlandfetch(llData,kTrue) Returns lbOK
+
+Begin statement
+Sta:select    CF_TITLE_CODE, date_part('year',DG_REG_DATE), date_part('month',DG_REG_DATE), count(*), concat('DG_REG_MO') as literal
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrConference.$servertablenames()] on DG_CF_REF = CF_SEQ
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+# organisational "person"
+Sta:and     PSN_SEX <> 'O'
+Sta:group by  CF_TITLE_CODE, date_part('year',DG_REG_DATE), date_part('month',DG_REG_DATE)
+End statement
+
+Do $cinst.$executesqlandfetch(llData,kTrue) Returns lbOK
+
+Begin statement
+Sta:select    CF_TITLE_CODE, DG_COUNTRY, null, count(*), concat('DG_COUNTRY') as literal
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrConference.$servertablenames()] on DG_CF_REF = CF_SEQ
+Sta:join [lrPerson.$servertablenames()] on DG_PSN_REF = PSN_SEQ
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and     DG_STATUS <> 'CANCEL'
+# organisational "person"
+Sta:and     PSN_SEX <> 'O'
+Sta:group by  CF_TITLE_CODE, DG_COUNTRY
+End statement
+
+Do $cinst.$executesqlandfetch(llData,kTrue) Returns lbOK
+
+# copied from tConference method $ticketBreakdown
+
+# Because multiple people from same company are joined to same invoice
+# we are getting exaggerated counts because of counting twice with a regular joined sql statement.
+# So we will use a   SELECT  WITH  statement.
+
+# The memory table will hold distinct records, eliminating the double count of multiple delegates joined to same invoice.
+
+Begin statement
+Sta:with products_purchased as
+Sta:  (select  distinct  CF_TITLE_CODE, FOH_SEQ, FOD_SEQ, PRD_SIZE, PRD_INT_PRODCODE, PRD_UNIT_PRICE
+Sta:
+Sta:  from [$cinst.$servertablenames()]
+Sta:
+Sta:  join [lrConference.$servertablenames()] on DG_CF_REF = CF_SEQ
+Sta:  join [lrDgInvLink.$servertablenames()] on DIL_DG_REF = DG_SEQ
+Sta:  join [lrInvHdr.$servertablenames()] on FOH_SEQ = DIL_FOH_REF
+Sta:  join [lrInvDetail.$servertablenames()] on FOD_FOH_REF = FOH_SEQ
+Sta:  join [lrProduct.$servertablenames()] on FOD_PRD_REF = PRD_SEQ
+Sta:
+Sta:  where DG_CF_REF = @[pnCF_SEQ]
+Sta:  and     DG_STATUS <> 'CANCEL'
+Sta:  )
+Sta:
+Sta:select CF_TITLE_CODE, PRD_INT_PRODCODE, null, count(*), concat('PRD_INT_PRODCODE') as literal
+Sta:from products_purchased
+#    PRD_SIZEis a sort orer for display purposes
+Sta:group by CF_TITLE_CODE, PRD_SIZE, PRD_INT_PRODCODE
+Sta:order by CF_TITLE_CODE, PRD_SIZE, PRD_INT_PRODCODE
+End statement
+
+Do $cinst.$executesqlandfetch(llData,kTrue) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llData

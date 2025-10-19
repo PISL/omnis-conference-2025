@@ -1,0 +1,2 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	Calculate icKeyCols as $ctask.toStrings.$ListToString(ilKeyCols,'colName',',',#NULL,kTrue)

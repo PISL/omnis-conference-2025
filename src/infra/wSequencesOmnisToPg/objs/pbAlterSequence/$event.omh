@@ -1,0 +1,23 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	If ilMaxValues.value>ilSequences.value
+		Calculate lnMax as ilMaxValues.value
+	Else If ilMaxValues.value<ilSequences.value
+		Calculate lnMax as ilSequences.value
+	Else
+		# Something isn't right.  Ignore.
+	End If
+	
+	If lnMax>0
+		No/Yes message Careful! {Are you sure you want to alter the sequence "[ilSequences.C2]" to [lnMax] ?}
+		If flag true
+			Do method alterSequence (lnMax) Returns lbOK
+			If lbOK
+				Do $cinst.$Refresh()
+			Else
+				
+			End If
+		End If
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

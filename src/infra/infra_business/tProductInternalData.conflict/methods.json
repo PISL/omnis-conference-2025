@@ -1,0 +1,119 @@
+[
+	{
+		"name": "--- COPYRIGHT ---",
+		"order": 1,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$construct",
+		"order": 2,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		]
+	},
+	{
+		"name": "$validation",
+		"order": 3,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcMessage",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255
+			}
+		]
+	},
+	{
+		"name": "$Links",
+		"order": 4,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llLinks",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrExtOrg",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sentExtOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrGroupOrg",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "sentGroupOrganisations",
+				"sublen": 0
+			},
+			{
+				"name": "lrOrgStructure",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "sentGroupOrgStructure",
+				"sublen": 0
+			},
+			{
+				"name": "lrProducts",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "sProducts",
+				"sublen": 0
+			},
+			{
+				"name": "lrReferenceLocal",
+				"order": 5,
+				"type": "kRow",
+				"subtype": "ssysReferenceLocal",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "$ForeignKeys",
+		"order": 5,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "llForeignKeyList",
+				"order": 1,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrOrgStructure",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "sentGroupOrgStructure",
+				"sublen": 0
+			},
+			{
+				"name": "lrProducts",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "sProducts",
+				"sublen": 0
+			}
+		]
+	}
+]

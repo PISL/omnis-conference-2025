@@ -1,4 +1,5 @@
 On evClick
+	
 	Do $cinst.$saveData() Returns lbOK ## icDisplayMessage and icMode explain the results of $saveData
 	If lbOK
 		Calculate lcPRD as irCurrentRecord.ELC_SEQ

@@ -1,0 +1,31 @@
+{
+	"ident": 1343,
+	"order": 18,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kRightJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportSmall",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 10,
+		"fontstyle": "kPlain",
+		"height": -1,
+		"left": 17.066,
+		"lineno": 8,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": "Total",
+		"textcolor": "RGB(0,0,0)",
+		"userinfo": "",
+		"visible": true,
+		"width": 1.511
+	}
+}

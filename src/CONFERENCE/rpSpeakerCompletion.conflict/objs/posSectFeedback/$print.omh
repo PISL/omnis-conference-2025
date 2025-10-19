@@ -1,0 +1,5 @@
+If ilData.dataSource='FB'
+	Do default
+Else
+	# suppress this section
+End If

@@ -1,0 +1,9 @@
+If irUserRights.canUpdate&icMode=''&ilDisplayRecords.VEN_SEQ>0 ## copied from $behaviour()
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'EV' ## edit venue
+	
+	Do irCurrentRecord.$fetch_pk()
+	Calculate irOriginalRecord as irCurrentRecord
+	
+	Do $cinst.$behaviour()
+End If

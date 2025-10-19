@@ -1,6 +1,6 @@
 {
-	"ident": 1023,
-	"order": 44,
+	"ident": 1049,
+	"order": 34,
 	"objtype": "kComponent",
 	"componentlib": "jsHtml",
 	"componentctrl": "HTML Object",
@@ -36,7 +36,7 @@
 		"html": "",
 		"linestyle": 1,
 		"nexttabobject": "",
-		"objlink": 393218,
+		"objlink": 458754,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
 		"showruntimepreview": true,
@@ -51,10 +51,10 @@
 	},
 	"layout": {
 		"320": {
-			"left": 1,
-			"top": 1,
-			"width": 628,
-			"height": 293,
+			"left": 0,
+			"top": 88,
+			"width": 200,
+			"height": 432,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -62,10 +62,10 @@
 			"visible": true
 		},
 		"375": {
-			"left": 1,
-			"top": 1,
-			"width": 628,
-			"height": 293,
+			"left": 8,
+			"top": 88,
+			"width": 216,
+			"height": 432,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -73,10 +73,10 @@
 			"visible": true
 		},
 		"480": {
-			"left": 1,
-			"top": 1,
-			"width": 628,
-			"height": 293,
+			"left": 8,
+			"top": 88,
+			"width": 304,
+			"height": 432,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -84,10 +84,10 @@
 			"visible": true
 		},
 		"667": {
-			"left": 1,
-			"top": 1,
-			"width": 628,
-			"height": 293,
+			"left": 8,
+			"top": 88,
+			"width": 448,
+			"height": 432,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -95,10 +95,10 @@
 			"visible": true
 		},
 		"768": {
-			"left": 1,
-			"top": 1,
-			"width": 628,
-			"height": 293,
+			"left": 8,
+			"top": 88,
+			"width": 552,
+			"height": 376,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -106,8 +106,8 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 1,
-			"top": 1,
+			"left": 24,
+			"top": 88,
 			"width": 628,
 			"height": 293,
 			"align": "kLeftJst",
@@ -117,8 +117,8 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 1,
-			"top": 1,
+			"left": 24,
+			"top": 88,
 			"width": 628,
 			"height": 293,
 			"align": "kLeftJst",

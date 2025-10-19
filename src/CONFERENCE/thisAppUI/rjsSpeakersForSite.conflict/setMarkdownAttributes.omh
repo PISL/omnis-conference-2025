@@ -1,0 +1,12 @@
+For lnColNo from 1 to prAttributes.$colcount step 1
+	Calculate lcColName as prAttributes.C[lnColNo].$name
+	Calculate lcValue as prAttributes.[lcColName]
+	
+	# We must use Do [complete Do expression].
+	# It seems to be the only syntax that works.
+	Calculate lcExpression as con('$cinst.$objs.PagedPane.$objs.',pcObjName,'.$',lcColName,'.$assign(',lcValue,')')
+	Do [lcExpression] Returns #F
+	If not(#F)
+		Breakpoint
+	End If
+End For

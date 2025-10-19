@@ -1,0 +1,14 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate idFrom as pdDate
+
+Calculate icReportTitle as con('Ticket Breakdown for ',plData.1.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

@@ -1,0 +1,36 @@
+{
+	"ident": 1067,
+	"order": 16387,
+	"objtype": "kText",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(kColorBackFill,255)",
+		"backpattern": 15,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "wpHeadText",
+		"font": 6,
+		"fontsize": 14,
+		"fontstyle": "kBold",
+		"forecolor": "RGBA(kColorForeFill,255)",
+		"height": 56,
+		"left": 16,
+		"linestyle": 1,
+		"objlink": 0,
+		"text": {
+			"type": 14,
+			"calc": "Only the owner of a sequence can alter the sequence"
+		},
+		"textcolor": "kColorWindowText",
+		"top": 0,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 168
+	}
+}

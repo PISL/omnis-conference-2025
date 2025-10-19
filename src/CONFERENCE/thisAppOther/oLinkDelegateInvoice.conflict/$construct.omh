@@ -1,0 +1,14 @@
+# Enter your initialization code here
+Do $DefineList(irDelegate,'tDelegates')
+Do $DefineList(irLinkDelegateInvoice,'tDelegateInvoiceLinks')
+Do $DefineList(irInvoiceHeader,'infra.tfinInvoiceOutH')
+Do $DefineList(ilInvoiceDetail,'infra.tfinInvoiceOutD')
+Do ilInvoiceDetail.$addSchemaColumns('infra.sProducts')
+Do ilInvoiceDetail.$addSchemaColumns('infra.sProductInternalData')
+Do ilInvoiceDetail.$addLinkedCols('RFL_NUMBER')
+Do ilInvoiceDetail.$addCalculatedColumns()
+
+Calculate irOrigDelegate as irDelegate
+Calculate irOrigLinkDelegateInvoice as irLinkDelegateInvoice
+Calculate irOrigHeader as irInvoiceHeader
+Calculate ilOrigDetail as ilInvoiceDetail

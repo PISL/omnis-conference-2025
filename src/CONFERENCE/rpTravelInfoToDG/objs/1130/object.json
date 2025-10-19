@@ -1,0 +1,29 @@
+{
+	"ident": 1130,
+	"order": 7,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "connecting how",
+		"align": "kLeftJst",
+		"backcolor": "kColorUser16",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "RGB(224,1,0)",
+		"height": 0.422,
+		"left": 10.152,
+		"lineno": 6,
+		"lineoffset": 0.0,
+		"rowid": "TP_CONNECT_HOW",
+		"textcolor": "RGB(128,0,0)",
+		"userinfo": "",
+		"width": 3.056
+	}
+}

@@ -1,0 +1,43 @@
+On evClick
+	# before registering, check session counts because many people could be entering data simultaneously
+	Do ilAttendees.$reportAllSessionCounts(ilConferences.CF_SEQ,irDelegate.DG_SEQ) Returns llCounts
+	Do llCounts.$search($ref.ARR_SEQ=ilArrangements.ARR_SEQ,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate ilArrangements.countAll as llCounts.countAll
+		Calculate ilArrangements.displayCount as con(ilArrangements.countAll,'/',ilArrangements.ARR_MAX_BOOKINGS)
+		If llCounts.countAll>=ilArrangements.ARR_MAX_BOOKINGS
+			Do method RefreshAttendees
+			Do method RefreshCounts
+			Calculate icDisplayMessage as con('Sorry... Maximum session count of ',ilArrangements.ARR_MAX_BOOKINGS,' has been reached.')
+			Do $cinst.$behaviour()
+			Quit method
+		End If
+	End If
+	
+	# register this delegate !
+	Do irAttendee.$clear()
+	Calculate ilRatings.$line as 0
+	Calculate irAttendee.ARA_ARR_REF as ilArrangements.ARR_SEQ
+	Calculate irAttendee.ARA_DG_REF as irDelegate.DG_SEQ
+	Calculate irAttendee.PSN_SURNAME as irDelegate.PSN_SURNAME
+	Calculate irAttendee.PSN_FIRST_NAME as irDelegate.PSN_FIRST_NAME
+	Do irAttendee.$insert() Returns lbOK
+	If lbOK
+		Do ilAttendees.$add()
+		Calculate ilAttendees.$line as ilAttendees.$linecount
+		Do ilAttendees.$assignrow(irAttendee)
+		Calculate ibDelegateAlreadyAttending as kTrue
+		Calculate irAttendeeOrig as irAttendee
+		Calculate ibFeedbackModified as kFalse
+		# refresh values
+		Do method RefreshAttendees
+		Do method RefreshCounts
+		# Calculate ilArrangements.countAll as ilArrangements.countAll+1 ## this is multi user should possibly refresh from db
+		# Calculate ilArrangements.countThisUser as 1
+		# Calculate ilArrangements.displayCount as con(ilArrangements.countAll,'/',ilArrangements.ARR_MAX_BOOKINGS)
+		# Calculate ilArrangements.displayThisUser as '☞'
+		
+	Else
+		Calculate icDisplayMessage as irAttendee.irErrorSQL.NativeErrorText
+	End If
+	Do $cinst.$behaviour()

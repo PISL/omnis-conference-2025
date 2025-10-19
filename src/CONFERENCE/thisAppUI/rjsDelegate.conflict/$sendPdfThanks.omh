@@ -1,0 +1,31 @@
+
+# first we need to see if we have a letter for the current attendee's role
+If irCurrentRecord.DG_ROLE='DG'
+	Calculate lcEventCode as 'PDF_THANKS_DG'
+Else If irCurrentRecord.DG_ROLE='SPEAKER'
+	Calculate lcEventCode as 'PDF_THANKS_SPK'
+Else If irCurrentRecord.DG_ROLE='DG_SPECIAL'
+	Calculate lcEventCode as 'PDF_THANKS_VIP'
+Else
+	Calculate icDisplayMessage as con('The system cannot send a thanks to someone with role ',ilRoles.RFO_DESC)
+	Do $cinst.$clientOkCancelMsg(icDisplayMessage,"Warning")
+	Quit method
+End If
+
+If pbSendToList
+	If ilSearch2.RFO_VALUE=irCurrentRecord.DG_ROLE ## list has been filtered on role
+		Do method allOrOne (lcEventCode,kTrue)
+	Else
+		Calculate icDisplayMessage as con("The list has not been filtered on role '",ilRoles.RFO_DESC,"'") ## ilRoles
+		Do $cinst.$clientOkCancelMsg(icDisplayMessage,"Warning")
+		Quit method
+	End If
+Else
+	Do ilDelegateLog.$search($ref.DSL_EVENT=lcEventCode,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate icDisplayMessage as con(mid(irCurrentRecord.DisplayName,pos(",",irCurrentRecord.DisplayName)+2)," has already been sent a thank you.")
+		Do $cinst.$clientOkCancelMsg(icDisplayMessage,"Warning")
+		Quit method
+	End If
+	Do method allOrOne (lcEventCode,kFalse)
+End If

@@ -1,0 +1,12 @@
+On evClick
+	# create new line in display list
+	Do ilLanguages.$add()
+	Calculate ilLanguages.$line as ilLanguages.$linecount
+	Do ilLanguages.$defaults()
+	Calculate ilLanguages.ELT_LANG as ilSelectLangChoose.LG_ISO2 ## displayed while editing
+	Calculate ilLanguages.ELT_ELC_REF as irCurrentRecord.ELC_SEQ ## foreign key
+	
+	# select language has done its job
+	Do ilSelectLangChoose.$clear() ##  to disappear
+	
+	Do $cinst.$behaviour()

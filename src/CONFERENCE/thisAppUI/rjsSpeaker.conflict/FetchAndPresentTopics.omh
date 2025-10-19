@@ -1,0 +1,21 @@
+Calculate icDisplayMessage as ''
+Calculate inTotalAmountDue as #NULL
+Do irTopic.$clear()
+
+Do ilTopics.$clear()
+Do ioTopicPerson.$fetchUsingPerson(irCurrentRecord.DG_PSN_REF,#NULL,#NULL,#NULL,ilSearch1.CF_SEQ) Returns llJoined
+If ioTopicPerson.icErrorMessage<>''
+	Calculate icDisplayMessage as ioTopicPerson.icErrorMessage
+End If
+Do ilTopics.$merge(llJoined,kTrue)
+If ilTopics.$linecount>0
+	# Do ilTopics.$sendall($ref.checked.$assign(pick(isnull(ilTopics.TPF_SEQ),ilTopics.TPF_CF_REF=ilSearch1.CF_SEQ,0)))
+	Do ilTopics.$sendall($ref.checked.$assign(pick(isnull(ilTopics.TPF_SEQ),1,0)))
+	Do ilTopics.$sort($ref.checked,1,$ref.TPC_TITLE,0)
+	
+	Calculate ilTopics.$line as 1
+	Calculate irTopic as ilTopics
+	Do method arrangementsCheck (pbAllForSpeaker)
+	Do ilArrangements.$search(0) ## highlight the sessions for this topic from list of all topics for this speaker
+	Do ilArrangements.$search($ref.ARR_TPC_REF=ilTopics.TPC_SEQ,1,0,1,0)
+End If

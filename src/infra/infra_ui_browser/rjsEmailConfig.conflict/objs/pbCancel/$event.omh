@@ -1,0 +1,18 @@
+On evClick
+	Do irCurrentRecord.$clear()
+	Do irOriginalRecord.$clear()
+	
+	Calculate ilLanguages as ilLanguagesOriginal
+	
+	Calculate icEmTo as ''
+	Calculate icEmCC as ''
+	Calculate icEmBCC as ''
+	Calculate icEmHeaders as ''
+	
+	Do ilSelectLangChoose.$clear()
+	
+	Calculate icDisplayMessage as ''
+	Calculate icMode as ''
+	Calculate $cinst.$objs.pbSave.$errortext as icDisplayMessage
+	
+	Do $cinst.$displayListClick()

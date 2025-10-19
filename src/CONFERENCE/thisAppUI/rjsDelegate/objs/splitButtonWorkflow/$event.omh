@@ -1,0 +1,5 @@
+On evClick
+	Do method splitButtonClicked
+	
+On evExecuteContextMenu
+	Do method splitMenuClicked (pCommandID)

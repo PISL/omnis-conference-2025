@@ -1,0 +1,30 @@
+Calculate icDisplayMessage as ''
+Calculate icConfigToText as ''
+Calculate idtEmailError as #NULL
+Do irEmailError.$clear()
+Do ilAsyncEmailQueue.$clear()
+
+Calculate $cinst.$objs.pbTextLangDelete.$errortext as ''
+Do ilSelectLangChoose.$clear()
+
+Calculate irCurrentRecord as ilDisplayRecords
+If pbNoLanguageRefresh
+	# this is updating screen after edit.  If the language text has been edited we want to leave the ilLnaguages list in tact.
+	# do not refresh
+Else
+	Do irCurrentRecord.$fetchAllText() Returns ilLanguages
+	Calculate ilLanguagesOriginal as ilLanguages ## used to replenish display on cancel
+	Calculate ilLanguages.$smartlist as kTrue ## for $dowork()
+End If
+Do method jsonToLists (irCurrentRecord)
+
+Do ilPriority.$search($ref.desc=irCurrentRecord.ELC_PRIORITY,1,0,0,0) Returns lbFound
+If not(lbFound)
+	Do ilPriority.$search($ref.code=irCurrentRecord.ELC_PRIORITY,1,0,0,0) Returns lbFound
+End If
+
+Do ilDebugLog.$search($ref.value=irCurrentRecord.ELC_DEBUGLOG,1,0,0,0) Returns lbFound
+
+Do method prepareTestDisplay
+
+Do $cinst.$behaviour()

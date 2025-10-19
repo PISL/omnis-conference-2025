@@ -1,0 +1,20 @@
+Calculate icValidationMessage as ''
+
+If $cinst.CSN_CRT_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' certificate missing')
+End If
+
+If $cinst.CSN_DG_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' delegate/person missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

@@ -20,15 +20,19 @@ If ibSendEmailAsWorker
 		Do lrParams.$assigncols(irEmailWorker.instruction,irEmailWorker.DG_SEQ)
 		Do irefWorkerTask.$setCompletionMethod("$delegateEmail",lrParams) ## $delegateEmail is in tkWorkerApp
 		
-		If irEmailWorker.instruction='EMAIL_INVOICE'
-			Calculate irEmailMessageServer.configCode as 'CONF_INVOICE'
-		Else If irEmailWorker.instruction='EMAIL_CHASEPAY'
-			Calculate irEmailMessageServer.configCode as 'CONF_INVOICE' ## same recipients as sending invoice
-		Else If irEmailWorker.instruction='EMAIL_TRAVEL'
-			Calculate irEmailMessageServer.configCode as 'CONF_TRAVEL'
-		Else ## PDF_THANKS_DG and others
-			Calculate irEmailMessageServer.configCode as 'GENERIC_MSG'
-		End If
+		# Do not confuse between the "instruction" and the email config code
+		# The instruction is hard coded from within this form.
+		# The applicable email config code is at current line in ilEmailConfigs
+		
+		# If irEmailWorker.instruction='EMAIL_INVOICE'
+		Calculate irEmailMessageServer.configCode as 'CONF_INVOICE'
+		# Else If irEmailWorker.instruction='EMAIL_CHASEPAY'
+		# Calculate irEmailMessageServer.configCode as 'CONF_INVOICE' ## same recipients as sending invoice
+		# Else If irEmailWorker.instruction='EMAIL_TRAVEL'
+		# Calculate irEmailMessageServer.configCode as 'CONF_TRAVEL'
+		# Else ## PDF_THANKS_DG and others
+		# Calculate irEmailMessageServer.configCode as 'GENERIC_MSG'
+		# End If
 		
 	End If
 	

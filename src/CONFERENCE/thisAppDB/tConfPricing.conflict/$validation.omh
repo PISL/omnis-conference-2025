@@ -1,0 +1,39 @@
+Calculate icValidationMessage as ''
+
+If $cinst.CFP_CF_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'foreign key to conference (CFP_CF_REF) missing')
+End If
+
+If $cinst.CFP_ORDER>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'evaluation order (CFP_ORDER) missing')
+End If
+
+If $cinst.CFP_CALC<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'calculation (CFP_CALC) missing')
+End If
+
+If $cinst.CFP_PROD_CODE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'product code (CFP_PROD_CODE) missing')
+End If
+
+If $cinst.CFP_START_DATE=''
+	Calculate $cinst.CFP_START_DATE as #NULL
+End If
+If $cinst.CFP_END_DATE=''
+	Calculate $cinst.CFP_END_DATE as #NULL
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

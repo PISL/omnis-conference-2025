@@ -10,12 +10,14 @@ Calculate ibCurrentMember as kFalse
 Do irDiet.$clear()
 Do ilMembership.$clear()
 Do ilDelegateLog.$clear()
+Calculate icSourceAsyncEvent as ''
 
 Calculate tbinFileUpload as #NULL
 Calculate ibinPdf as #NULL
 Do iFiles.$clear()
 
 Calculate $cinst.$objs.PagedPane.$objs.pbPrintInvoice.$errortext as ''
+Calculate $cinst.$objs.splitButtonWorkflow.$errortext as ''
 
 Do method DropLists ## ilWhoIsPaying
 

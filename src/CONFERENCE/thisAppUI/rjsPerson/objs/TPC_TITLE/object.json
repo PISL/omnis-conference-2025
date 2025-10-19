@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(255,255,255)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -71,6 +72,8 @@
 		"objlink": 65569,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,
@@ -109,7 +112,7 @@
 		"480": {
 			"left": 8,
 			"top": 32,
-			"width": 288,
+			"width": 360,
 			"height": 64,
 			"align": "kLeftJst",
 			"dragborder": false,

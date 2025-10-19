@@ -1,0 +1,32 @@
+If $ctask.trGroupOrg.GO_SEQ>0
+	# proceed
+Else
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+Sta:from [$cinst.$servertablenames]
+Sta:, [lrVenue.$servertablenames()]
+Sta:, [lrConference.$servertablenames()]
+# join Venue
+Sta:where FCY_VEN_REF = VEN_SEQ
+# join Conference
+Sta:and    VEN_SEQ = CF_VEN_REF
+# specified Conference
+Sta:and     CF_SEQ = @[pnCF_SEQ]
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

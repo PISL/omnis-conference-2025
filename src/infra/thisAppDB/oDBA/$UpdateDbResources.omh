@@ -1,0 +1,60 @@
+Calculate plIssues.$line as 0
+While $Loop(plIssues)
+	If plIssues.problem='schema class missing' ## table exists in db server but no corresponding schema class
+		# as the Omnis classes are the foundation of the application ## this should mean dropping the table on the db
+		# however it is possible that the local dba has created their own table for other use ## so we leave the table as is
+		
+	Else If plIssues.problem='column in schema class missing'
+		# postgres drop column ## ALTER TABLE contacts DROP COLUMN cp_bogus;
+		
+	Else If plIssues.problem='column in table missing'
+		# postgres new column ## ALTER TABLE contacts ADD COLUMN cp_bogus character varying(15);
+		
+	Else If plIssues.problem='primary key constraint missing'
+		# postgres add primary key constraint ## ALTER TABLE bankstmtd ADD CONSTRAINT bsd_seq PRIMARY KEY (bsd_seq);
+		
+	Else If plIssues.problem='schema column not marked as primary key'
+		
+	Else If plIssues.problem='column mismatch'
+		# postgres change column ## ALTER TABLE contacts ALTER cp_addr_town TYPE character varying(35);
+		
+	Else If plIssues.problem='db table missing'
+		# postgres new table
+		# -- Table: countries
+		# -- DROP TABLE countries;
+		# CREATE TABLE countries (   co_pkey character varying(3) NOT NULL,
+		# co_name character varying(50),
+		# co_iso2 character varying(2) NOT NULL,
+		# co_iso3 character varying(3),
+		# co_region character varying(4),
+		# co_continent character varying(4),
+		# co_code_other character varying(4),
+		# co_code_origin character varying(4),
+		# co_langs character varying(20),
+		# co_active smallint,
+		# co_name_local character varying(50),
+		# co_intl_dial_code character varying(4),
+		# co_pcode_format character varying(255),
+		# co_mm_office character varying(3),
+		# co_cby character varying(15),
+		# co_mwhen timestamp without time zone,
+		# co_mby character varying(15),
+		# co_cwhen timestamp without time zone,
+		# co_money_symb character varying(3),
+		# CONSTRAINT co_pkey PRIMARY KEY (co_pkey) ) WITH (   OIDS=FALSE );
+		# ALTER TABLE countries OWNER TO mostynrs;
+		# GRANT ALL ON TABLE countries TO mostynrs;
+		# GRANT SELECT, UPDATE, INSERT ON TABLE countries TO public;
+		# GRANT ALL ON TABLE countries TO developer;
+		Do iRow.$CreateTable(plIssues.schema)
+	Else
+		Breakpoint
+	End If
+End While
+
+
+
+
+
+# postgres add foreign key constraint ## ALTER TABLE bankstmtd ADD CONSTRAINT bsd_bshref FOREIGN KEY (bsd_bshref) REFERENCES bankstmth (bsh_seq) ON UPDATE NO ACTION ON DELETE NO ACTION;
+# ALTER TABLE bankstmtd ADD CONSTRAINT bsd_bshref FOREIGN KEY (bsd_bshref) REFERENCES bankstmth (bsh_seq) ON UPDATE NO ACTION ON DELETE CASCADE;

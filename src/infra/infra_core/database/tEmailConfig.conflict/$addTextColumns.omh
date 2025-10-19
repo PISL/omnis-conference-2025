@@ -1,0 +1,17 @@
+Do $cinst.$cols.$findname("ELT_MSG_TEXT") Returns liColRef
+If liColRef
+	# do not add columns again
+Else
+	Do $cinst.$cols.$add(lrEmailText.ELT_LANG)
+	Do $cinst.$cols.$add(lrEmailText.ELT_ACTIVE)
+	Do $cinst.$cols.$add(lrEmailText.ELT_SUBJECT)
+	Do $cinst.$cols.$add(lrEmailText.ELT_MSG_TEXT)
+	Do $cinst.$cols.$add(lrEmailText.ELT_MSG_HTML)
+	Do $cinst.$cols.$add(lrEmailText.ELT_MSG_PFIX_TEXT)
+	Do $cinst.$cols.$add(lrEmailText.ELT_MSG_SFIX_TEXT)
+	Do $cinst.$cols.$add(lrEmailText.ELT_MSG_PFIX_HTML)
+	Do $cinst.$cols.$add(lrEmailText.ELT_MSG_SFIX_HTML)
+	
+	Calculate icExtraColumns as "ELT_LANG, ELT_ACTIVE, ELT_SUBJECT, ELT_MSG_TEXT, ELT_MSG_HTML, ELT_MSG_PFIX_TEXT, ELT_MSG_SFIX_TEXT, ELT_MSG_PFIX_HTML, ELT_MSG_SFIX_HTML"
+End If
+Calculate  as

@@ -1,0 +1,10 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Do method DateShift (-1)
+	If irefFilterWindow.$canclose()
+		Do irefFilterWindow.$sendToWindow()
+	Else
+		Do method FetchData
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

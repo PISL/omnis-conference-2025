@@ -126,6 +126,13 @@
 		],
 		"lvardefs": [
 			{
+				"name": "lbConferenceInserted",
+				"order": 10,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
 				"name": "lbModified",
 				"order": 8,
 				"type": "kBoolean",
@@ -147,6 +154,13 @@
 				"subtype": 0,
 				"sublen": 0,
 				"initval": "kFalse"
+			},
+			{
+				"name": "lbTopicInserted",
+				"order": 9,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
 			},
 			{
 				"name": "lrDetail",
@@ -320,6 +334,60 @@
 		],
 		"lvardefs": [
 
+		]
+	},
+	{
+		"name": "$saveNewTopic",
+		"order": 10,
+		"pvardefs": [
+			{
+				"name": "prTopic",
+				"order": 1,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "prConference",
+				"order": 6,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbModified",
+				"order": 3,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lbOK",
+				"order": 4,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbProceed",
+				"order": 2,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbTopicInserted",
+				"order": 5,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			}
 		]
 	}
 ]

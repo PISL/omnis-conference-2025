@@ -8,3 +8,6 @@ Calculate $cinst.ELC_DEBUGLOG as kOW3logBasic
 Calculate $cinst.ELC_PRIORITY as 'normal'
 Calculate $cinst.ELC_OW3_OPTIONS as '{"verifyPeer": 0,"requireSecure": 1}'
 Calculate $cinst.ELC_DEFAULT_LANG as 'en'
+Calculate $cinst.ELC_KEEP_CONNECT_OPEN as kFalse
+Calculate $cinst.ELC_IS_MAILSHOT as kFalse
+Calculate $cinst.ELC_CALL_PROGRESS as kFalse

@@ -1,0 +1,69 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+# Enter your initialization code here
+Do $DefineList(ilDisplayRecords,'tTest')
+Do ilDisplayRecords.$cols.$add('DisplayName',kCharacter,kSimplechar,100)
+
+Calculate irCurrentRecord as ilDisplayRecords
+
+# Do $DefineList(ilDelegates,'tDelegates')
+# Do ilDelegates.$addLinkedCols('PSN_SURNAME,PSN_FIRST_NAME')
+# Do ilDelegates.$addDisplayName()
+# Do ilDelegates.$AddFunction("concat(psn_surname,', ',psn_first_name)")
+# Do ilDelegates.$cols.$add('SortName',kCharacter,kSimplechar,100)
+# Do ilDelegates.$AddFunction("upper(concat(psn_surname,', ',psn_first_name))")
+# Do ilDelegates.$cols.$findname('DisplayName') Returns liColRef
+# Calculate $cinst.$objs.PagedPane.$objs.CSN_PSN_REF.$listcolumn as liColRef.$ident
+
+Do $DefineList(ilQuestions,'tTestQuestions')
+Do ilQuestions.$addDisplayName()
+Do ilQuestions.$cols.$findname('DisplayName') Returns liColRef
+Calculate irQuestion as ilQuestions
+
+Do toValues.$initGlobal('TSQ_FORMAT') Returns ilQuestionType
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','MC_1','Multiple choice, 1 correct',1,1)
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','MC_ANY','Multiple choice, any correct',1,1)
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','MC_ALL','Multiple choice, all correct',1,1)
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','KW_1','Keyword, 1 correct',1,1)
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','KW_ANY','Keyword, any correct',1,1)
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','KW_ALL','Keyword, all correct',1,1)
+Do ilQuestionType.$add(#NULL,'TSQ_FORMAT','TEXT','Textual response',1,1)
+
+Do ilQuestionType.$cols.$findname('RFG_DESC') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.TSQ_FORMAT.$listcolumn as liColRef.$ident
+
+Do method fetchSearch1List ## Conferences  ilSearch1  line 1 current
+Do method $Search1ListClick
+Do method fetchSearch2List
+
+Do ilMultipleChoiceOptions.$cols.$add('signal',kCharacter,kSimplechar,2)
+Do ilMultipleChoiceOptions.$cols.$add('text',kCharacter,kSimplechar,100)
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as con($cell(clLabels,'objName','TST_Heading','label'))
+Calculate icFormIntro as $cell(clLabels,'objName','TST_Intro','label')
+
+Do method UserPermissions
+
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Calculate inMinSearchString as 0
+
+Do $cinst.$superText(kTrue,'text search')
+Do $cinst.$superSearchList1($cell(clLabels,'objName','sel_conference','label'),'CF_TITLE')
+Do $cinst.$superSearchList2($cell(clLabels,'objName','sel_arrangement','label'),'DisplayName')
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_values','label'),'DisplayName')
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_TST.$currenttab as inCurrentTab
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMenuID if this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do $cinst.$behaviour()

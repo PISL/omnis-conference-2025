@@ -1,0 +1,15 @@
+# Breakpoint
+Switch pcChartType
+	Case 'ACTIVITY'
+		Do method chartActivity Returns llTemp
+		
+	Case 'REGCOUNT'
+		Do method chartRegistrationCount Returns llTemp
+		
+	Default
+		# : ??
+End Switch
+
+Calculate ilChart as llTemp
+
+Quit method

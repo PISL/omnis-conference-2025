@@ -1,0 +1,151 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+Calculate $cinst.$objs.icFormIntro.$visible as kFalse
+
+Calculate cnTabHeader as 1
+Calculate cnTabConference as 2
+Calculate cnTabTechnical as 3
+Calculate cnTabSingleLine as 4
+
+Do ioRelationshipLogic.$defineParentAndChild('infra.tfinInvoiceOutH','infra.tfinInvoiceOutD')
+
+Do $defineList($cinst.ilSearch1,'infra.tentExtOrganisations')
+Do method fetchSearch1List
+# find correct column number to display in list
+Do ilSearch1.$cols.$findname('EO_NAME') Returns liColRef
+Calculate $cinst.$objs.ilSearch1.$listcolumn as liColRef.$ident
+If ilSearch1.$linecount=0 ## JS form throws an error if the list is empty
+	Do ilSearch1.$add()
+End If
+
+Calculate icCurrency as trGroupOrg.GO_CURRENCY
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Do toValues.$GetTimePeriods() Returns ilSearch2
+Do ilSearch2.$addbefore(1,'ALL',$cell(clLabels,'objName','TP_ALL','label'))
+Do toValues.$initInherited('DISPLAY_OPTIONS','DATE_RANGE_FOH') Returns lrReference
+If lrReference.RFO_SEQ>0
+	Do ilSearch2.$search($ref.code=lrReference.RFO_CHAR,1,0,0,0)
+End If
+# Do ilSearch2.$search($ref.code='THIS_MONTH',1,0,0,0)
+Calculate $cinst.$objs.ilSearch2.$listcolumn as 2
+
+Do $DefineList(ilCustomers,'infra.tentExtOrganisations',"'EO_SEQ','EO_NAME','EO_ADDR_BILL','EO_ADDR_SHIP','EO_INSTRUCTIONS'")
+Do ilCustomers.$merge(ilSearch1,kTrue,kFalse,kTrue)
+Do ilCustomers.$remove(1)
+Do ilCustomers.$cols.$findname('EO_NAME') Returns liColRef
+Calculate $cinst.$objs.FOH_CUST_NAME.$listcolumn as liColRef.$ident
+
+# Do $DefineList(ilStatusAll,'infra.tsysReferenceGlobal',"'RFG_VALUE'")
+Do $DefineList(ilStatusAll,'infra.tsysReferenceGlobal')
+Calculate ilStatusChoice as ilStatusAll
+Do toValues.$initGlobal('INV_STATUS') Returns llList
+Do ilStatusAll.$merge(llList,kTrue,kFalse,kTrue) ## byName=kTrue, selectedonly=kfalse, clearlist=ktrue
+
+Do $DefineList(ilDetails,'infra.tfinInvoiceOutD')
+Do ilDetails.$AddLinkedCols('PRD_GO_REF,PRD_EO_REF')
+Do ilDetails.$AddLinkedCols('PRD_SUPP_PRODCODE,PRD_INT_PRODCODE')
+Do ilDetails.$AddLinkedCols('PRD_BRAND,PRD_NAME,PRD_DESC')
+Do ilDetails.$AddLinkedCols('PRD_SIZE,PRD_UOS_CODE,PRD_UNIT_DIVISOR')
+Do ilDetails.$AddLinkedCols('PRD_ECOCOST_UOS_CODE,PRD_DISCONTINUED')
+Do ilDetails.$AddLinkedCols('PID_UNIT_PRICE,PID_TAX_BAND')
+Do ilDetails.$AddLinkedCols('RFL_NUMBER',kTrue) ## outer join for orgs not VAT registered
+If $cinst.$extendDetails.$cando
+	# add any function based columns from the subclass
+	Do $cinst.$extendDetails
+End If
+Do ilDetails.$addCalculatedColumns()
+Calculate irCurrentDetail as ilDetails
+
+Do $DefineList(ilChains,'infra.tfinInvoiceOutChain')
+Calculate irChain as ilChains
+
+Do $DefineList(ilDisplayRecords,'infra.tfinInvoiceOutH')
+Do ilDisplayRecords.$addDisplayName() ## displayName added here because tFinInvoiceOutH.$stringSearchCustomer puts a "null" in the SQL selected columns
+Do ilDisplayRecords.$addSchemaColumns("infra.sentExtOrganisations")
+Calculate irCurrentRecord as ilDisplayRecords
+Calculate irOriginalHeader as irCurrentRecord
+
+# Calculate $cinst.$objs.ilGroupOrgs.$listcolumn as liColRef.$ident
+
+# which tabs get displayed? ## Financial invoice, eco invoice, delegate links, technical
+Do toValues.$initInherited('INVOICE_TABS') Returns llTabsVisible
+If llTabsVisible.$linecount>0
+	While $Loop(llTabsVisible)
+		Calculate $cinst.$objs.TabControl_FOH.$selectedtab as llTabsVisible.RFO_VALUE ## tab number
+		If llTabsVisible.RFO_CHAR<>''
+			#     !!! this breaks from string table convention !
+			Do $cinst.$objs.TabControl_FOH.$tabtext.$assign(llTabsVisible.RFO_CHAR)
+		End If
+		Do $cinst.$objs.TabControl_FOH.$tabvisible.$assign(llTabsVisible.RFO_INT)
+	End While
+Else
+	# call lib specific code
+	If $cinst.$setTabs.$cando
+		Do $cinst.$setTabs
+	End If
+End If
+
+Do toValues.$setPeriodDates(ilSearch2,idFrom,idTo)
+
+
+# find correct column number to display in list
+Do ilDisplayRecords.$cols.$findname('DisplayName') Returns liColRef
+Calculate lnDisplayListCol as liColRef.$ident
+
+Do $DefineList(ilProducts,'infra.tProducts')
+Do ilProducts.$addSchemaColumns('infra.tProductInternalData')
+Do ilProducts.$addLinkedCols('RFL_VALUE,RFL_DESC,RFL_NUMBER') ## to add columns but not use $Sql
+Do ilProducts.$addDisplayName()
+Do ilProducts.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.PagedPane.$objs.ilProducts_after.$listcolumn as liColRef.$ident
+
+Do ilProducts.$fetchOurProducts(,,,,,irConference.CF_FILTER_BRAND,'rfl_value,rfl_desc,rfl_number',kTrue) Returns lnCount
+If lnCount<=20
+	Do ilProducts.$fetchOurProducts(,,,,,irConference.CF_FILTER_BRAND,'rfl_value,rfl_desc,rfl_number')
+End If
+
+While $Loop(ilProducts)
+	Do ilProducts.$displayName()
+End While
+Calculate $cinst.$objs.ilProducts_after.$::listheight as min(20,ilProducts.$linecount)
+
+Do toValues.$initInherited('VAT_RATE') Returns ilTaxRates
+Do ilTaxRates.$sendall($ref.RFO_NUMBER.$assign(0.00),isnull($ref.RFO_NUMBER))
+
+
+
+If ilSearch1.$linecount>40
+	# enough customers to warrant a text search option
+	Do $cinst.$superObjects($cell(clLabels,'objName','disp_cust_inv','label'),lnDisplayListCol,$cell(clLabels,'objName','sel_customer','label'),$cell(clLabels,'objName','sel_daterange','label'),'',kTrue,'text for customer')
+Else
+	Do $cinst.$superObjects($cell(clLabels,'objName','disp_cust_inv','label'),lnDisplayListCol,$cell(clLabels,'objName','sel_customer','label'),$cell(clLabels,'objName','sel_daterange','label'),'',kFalse,'')
+End If
+
+Calculate icFormHeading as $cell(clLabels,'objName','FOH_Heading','label')
+Calculate $cinst.$objs.icFormHeading.$tooltip as $cell(clLabels,'objName','FOH_Intro','label')
+
+Do method UserPermissions
+
+# Calculate $cinst.$objs.PagedPane.$objs.FOH_DATE.$dateformatcustom as $ctask.tk.FormatDateJS
+# Calculate $cinst.$objs.PagedPane.$objs.FOH_DATE.$::contenttip as mid($ctask.tk.FormatDateJS,1,pos('|',$ctask.tk.FormatDateJS)-1)
+
+Calculate inCurrentTab as cnTabHeader
+Calculate $cinst.$objs.TabControl_FOH.$currenttab as cnTabHeader
+Calculate $cinst.$objs.PagedPane.$currentpage as cnTabHeader
+
+Do $cinst.$container().$initToolsMenu() Returns ilMenuCommands ## use defaults
+Do ilMenuCommands.$add('FACT_DUP',1201)
+Do ilMenuCommands.$add('FACT_PRINT',1202)
+# check the subclass for extensions to the tools menu
+If $cinst.$extendToolsMenu.$cando
+	Do $cinst.$extendToolsMenu()
+End If
+
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Do method fetchDisplayList

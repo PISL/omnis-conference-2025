@@ -1,0 +1,46 @@
+If ibIncludeGraphs
+	Calculate llTemp as $cinst.ilData
+	Calculate lcGroupType as llTemp.groupCol
+	Do llTemp.$search($ref.groupCol=lcGroupType,1,0,1,0)
+	Do llTemp.$remove(kListKeepSelected)
+	Do llTemp.$search(0)
+	Calculate llTemp.$line as 0
+	
+	Calculate irXaxis as ''
+	# leave $maintitle blank to give more room to height of graph ## title is already at top of data grid
+	# If pos('_',lcGroupType)
+	# Calculate $cinst.$objs.ilGraphData.$maintitle as cap(mid(lcGroupType,pos('_',lcGroupType)+1,99))
+	# Else
+	# Calculate $cinst.$objs.ilGraphData.$maintitle as cap(lcGroupType)
+	# End If
+	
+	# Do toStrings.$TransposeList(llTemp,'groupCol','category') Returns ilGraphData
+	For lnColNo from llTemp.$colcount to 1 step -1
+		Calculate lcColName as llTemp.$cols.[lnColNo].$name
+		Set reference liColRef to llTemp.$cols.[lcColName].$ref
+		If pos('PERCENT',upp(lcColName))
+			Do llTemp.$cols.$remove(liColRef)
+		Else If pos('GROUPCOL',upp(lcColName))
+			Do llTemp.$cols.$remove(liColRef)
+		Else If pos('CUMCOUNT',upp(lcColName))
+			Do llTemp.$cols.$remove(liColRef)
+		Else
+			If pos('_',lcColName)
+				Calculate liColRef.$name as mid(lcColName,1,pos('_',lcColName)-1)
+			End If
+			
+			# cannot set irXaxis here because we are going in reverse
+			# Do irXaxis.$cols.$add(liColRef.$name,kCharacter,kSimplechar,100)
+			# Calculate irXaxis.[liColRef.$name] as liColRef.$name
+		End If
+	End For
+	
+	For lnColNo from 2 to llTemp.$colcount step 1 ## omit the first column
+		Calculate lcColName as llTemp.$cols.[lnColNo].$name
+		Set reference liColRef to llTemp.$cols.[lcColName].$ref
+		Do irXaxis.$cols.$add(liColRef.$name,kCharacter,kSimplechar,100)
+		Calculate irXaxis.[liColRef.$name] as liColRef.$name
+	End For
+	
+	Calculate ilGraphData as llTemp
+End If

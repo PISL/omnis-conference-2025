@@ -1,0 +1,23 @@
+# save the parameters so in case of failure we can create an asyncEmail record
+Calculate irServer as prServer
+Calculate irEmailAttributes as prAttributes
+Calculate irEmailBody as prBody
+If plExtraHeaders.$linecount
+	Do ilEmailHeaders.$merge(plExtraHeaders)
+End If
+Calculate ibSaveOnError as pbSaveOnError
+
+# pass the parameters to the email object
+Do ioSmtpWorker.$sendMail(prServer,prAttributes,prBody,plExtraHeaders,kFalse) Returns lbOK
+If not(lbOK)
+	Do ioSmtpWorker.$getVar("icErrorText") Returns lcMessage
+	
+	If ibSaveOnError
+		Do irefStartTask.$AppError(999000,lcMessage,'email worker failure when sending from Omnis')
+	End If
+	
+	Calculate pretError as lcMessage
+	
+	# no point in keeping this task open now
+	Do $cinst.$close()
+End If

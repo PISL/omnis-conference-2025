@@ -1,0 +1,29 @@
+{
+	"ident": 1114,
+	"order": 8,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "arr. point",
+		"align": "kLeftJst",
+		"backcolor": "kColorWindow",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "kBlack",
+		"height": 0.422,
+		"left": 17.285,
+		"lineno": 6,
+		"lineoffset": 0.0,
+		"rowid": "TP_ARR_POINT",
+		"textcolor": "kColorWindowText",
+		"userinfo": "",
+		"width": 1.524
+	}
+}

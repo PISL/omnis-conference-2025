@@ -1,0 +1,38 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select   count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+If pcWhereClause<>''
+	# e.g. DG_STATUS <> 'CANCEL'
+	Sta:and    [pcWhereClause]
+	
+Else If pcInClauseStatus<>''
+	If pos("'",pcInClauseStatus)=0
+		# programmer has provided a DG_STATUS value unsurrounded by single quotes
+		If pos(',',pcInClauseStatus)>0
+			# there are multiple status codes provided
+			Calculate pcInClauseStatus as replaceall(pcInClauseStatus,",","','")
+			Calculate pcInClauseStatus as con("'",pcInClauseStatus,"'")
+		Else
+			# single DG_STATUS value
+			Calculate pcInClauseStatus as con("'",pcInClauseStatus,"'")
+		End If
+	End If
+	
+	Sta:and    DG_STATUS in ( [pcInClauseStatus] )
+End If
+End statement
+
+Do $cinst.$executesqlandfetchinto(lnCount) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lnCount

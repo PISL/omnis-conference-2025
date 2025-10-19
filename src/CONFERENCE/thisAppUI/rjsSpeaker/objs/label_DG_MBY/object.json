@@ -1,6 +1,6 @@
 {
-	"ident": 1036,
-	"order": 35,
+	"ident": 1057,
+	"order": 42,
 	"objtype": "kComponent",
 	"componentlib": "jsLabel",
 	"componentctrl": "Label Object",
@@ -30,7 +30,7 @@
 		"horzpadding": 0,
 		"labelfor": "",
 		"nexttabobject": "",
-		"objlink": 262146,
+		"objlink": 327682,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
 		"sidepanel": false,
@@ -48,10 +48,10 @@
 	"layout": {
 		"320": {
 			"left": 8,
-			"top": 184,
+			"top": 248,
 			"width": 232,
 			"height": 25,
-			"align": "kRightJst",
+			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
@@ -59,40 +59,40 @@
 		},
 		"375": {
 			"left": 8,
-			"top": 184,
+			"top": 248,
 			"width": 232,
 			"height": 25,
-			"align": "kRightJst",
+			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
 		"480": {
-			"left": 8,
-			"top": 184,
+			"left": 40,
+			"top": 248,
 			"width": 232,
 			"height": 25,
-			"align": "kRightJst",
+			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
 		"667": {
-			"left": 8,
-			"top": 184,
+			"left": 40,
+			"top": 248,
 			"width": 232,
 			"height": 25,
-			"align": "kRightJst",
+			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
 			"errortextpos": "kJSErrorTextPosUnder",
 			"visible": true
 		},
 		"768": {
-			"left": 8,
-			"top": 184,
+			"left": 56,
+			"top": 160,
 			"width": 232,
 			"height": 25,
 			"align": "kRightJst",
@@ -102,8 +102,8 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 73,
-			"top": 181,
+			"left": 32,
+			"top": 160,
 			"width": 232,
 			"height": 25,
 			"align": "kRightJst",
@@ -113,8 +113,8 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 73,
-			"top": 181,
+			"left": 16,
+			"top": 160,
 			"width": 232,
 			"height": 25,
 			"align": "kRightJst",

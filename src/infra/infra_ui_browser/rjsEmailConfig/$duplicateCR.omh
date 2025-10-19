@@ -2,10 +2,21 @@ Calculate inCurrentTab as 1
 Calculate $cinst.$objs.TabControl_ELC.$currenttab as inCurrentTab
 
 Calculate icDisplayMessage as ''
-Calculate icMode as 'I' ## insert
+Calculate icMode as 'IC' ## insert
 Calculate irCurrentRecord.ELC_SEQ as #NULL
+Calculate irCurrentRecord.ELC_COMMENT as con('duplicated from ',irCurrentRecord.ELC_CODE,' ',#D)
 # do not apply defaults on $duplicate
 # Do irCurrentRecord.$defaults()
+
+# clone the messages as well, leaving originals as is
+# we have to reset the smartlist
+Calculate llTemp as ilLanguages
+Do llTemp.$sendall($ref.ELT_SEQ.$assign(#NULL))
+Do llTemp.$sendall($ref.ELT_ELC_REF.$assign(#NULL))
+Do llTemp.$sendall($ref.ELT_MCOUNT.$assign(0))
+Do ilLanguages.$clear()
+Calculate ilLanguagesOriginal as ilLanguages
+Do ilLanguages.$merge(llTemp)
 
 Calculate ilDisplayRecords.$line as 0
 

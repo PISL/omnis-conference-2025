@@ -1,0 +1,38 @@
+Calculate icValidationMessage as ''
+
+If $cinst.VEN_NAME<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' name missing')
+End If
+
+If $cinst.VEN_COUNTRY<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' country missing')
+End If
+
+If $cinst.VEN_STREET<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' street address missing')
+End If
+
+If $cinst.VEN_TOWN<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' town missing')
+End If
+
+If $cinst.VEN_POSTCODE<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' postcode missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

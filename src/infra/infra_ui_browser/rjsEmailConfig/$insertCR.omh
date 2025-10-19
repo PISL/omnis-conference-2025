@@ -1,14 +1,54 @@
+If inCurrentTab=cnTabConfig
+	Calculate inCurrentTab as cnTabConfig
+	Calculate $cinst.$objs.TabControl_ELC.$objs.2.$enabled as kFalse
+	
+Else If inCurrentTab=cnTabMessage
+	# current tab stays as is - all other tabs disabled
+	Calculate ilSelectLangChoose as ilSelectLangMaster
+	
+	# do not add line to ilLanguages yet.
+	# This happens when language is selected from ilSelectLangChoose
+	# Do ilLanguages.$add()
+	# Calculate ilLanguages.$line as ilLanguages.$linecount
+	Do irLangText.$clear()
+	Do irLangText.$defaults()
+	Calculate irLangText.ELT_ELC_REF as irCurrentRecord.ELC_SEQ
+	Calculate irLangText.ELT_LANG as irCurrentRecord.ELC_DEFAULT_LANG
+	
+	Calculate irLangTextOrig as irLangText
+	
+Else If inCurrentTab=cnTabAddressee
+	Calculate inCurrentTab as cnTabConfig
+	
+Else If inCurrentTab=cnTabAttributes
+	Calculate inCurrentTab as cnTabConfig
+	
+Else If inCurrentTab=cnTabTest
+	
+End If
 
-Calculate inCurrentTab as 1
 Calculate $cinst.$objs.TabControl_ELC.$currenttab as inCurrentTab
 
+# This will set icMode to 'I'
 Do inherited
+# we override to local version here
 
-Do ilLanguages.$clear()
-Calculate ilLanguages.$smartlist as kTrue
-
-Do ilLanguages.$add()
-Calculate ilLanguages.$line as ilLanguages.$linecount
-Calculate ilLanguages.ELT_LANG as irCurrentRecord.ELC_DEFAULT_LANG
+If inCurrentTab=cnTabConfig
+	Calculate icMode as 'IC'
+	
+Else If inCurrentTab=cnTabMessage
+	Calculate icMode as 'IM'
+	# current tab stays as is - all other tabs disabled
+	
+Else If inCurrentTab=cnTabAddressee
+	Calculate icMode as 'IC'
+	
+Else If inCurrentTab=cnTabAttributes
+	Calculate icMode as 'IC'
+	
+Else If inCurrentTab=cnTabTest
+	Calculate icMode as ''
+	
+End If
 
 Do $cinst.$setcurfield('ELC_CODE',kTrue)

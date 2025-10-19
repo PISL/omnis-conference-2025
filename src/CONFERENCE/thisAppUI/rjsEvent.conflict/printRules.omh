@@ -1,0 +1,37 @@
+Begin reversible block
+	Calculate iAuthor as 'Platform Independent Systems Ltd'
+	Calculate iTitle as 'Pricing Rules'
+	Calculate iSubject as ''
+End reversible block
+
+# Calculate inCurrentTab as cnTabDisplayPDF
+Calculate iPdfFilePath as ''
+
+Calculate lcdevice as $cdevice.$ident ## store current print destination
+Do $cdevice.$assign(kDevOmnisPDF)
+
+Calculate iPdfFilePath as "/tmp/"
+Calculate iPdfFilePath as con(iPdfFilePath,"pricingRules_",jst(#D,'D:CYMD'),".pdf")
+
+Do Omnis PDF Device.$setdocinfo(iAuthor,iTitle,iSubject) Returns #F
+Do Omnis PDF Device.$settemp(kTrue,2) Returns lID ## kTrue = use internal temp directory - for use by getpdf command
+# Do $root.$reportfile.$assign(iPdfFilePath) Returns #F
+# Do Omnis PDF Device.$settemp(kFalse) Returns lID ## kfalse = use $reportfile to take pdf
+Calculate iPdfFilePath as con(sys(115),'omnispdf/temp/',lID)
+
+Do $clib.$reports.rpPricingRules.$open('*',ilDisplayRecords,ilPricingGrid) Returns lReportInst
+Do lReportInst.$endprint()
+Do $cdevice.$assign(lcdevice) ## restore print destination
+
+# It seems that when we go to email the pdf, the fileOps command does not see the file, even though one can see it in the finder.
+# Is the code running too quickly for the PDF device writer? ## This only applies when emailing a PDF.
+If pbGetFileForEmail
+	# let calling method pickup pdf and email it
+Else If 1=1
+	Do $cinst.$clientcommand("showpdf",row(lID))
+Else
+	# Calculate inCurrentTab as 6
+	# Do $cinst.$objs.PagedPane.$currentpage.$assign(inCurrentTab)
+	# Do $cinst.$clientcommand("assignpdf",row("HTML","toolbar=1&zoom=100",lID,20))
+End If
+# End If

@@ -1,0 +1,62 @@
+{
+	"classtype": "kObjectclass",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 6,
+	"superclass": "oEncryptionSuper",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+		{
+			"name": "cnPrimeNo",
+			"order": 1,
+			"type": "kInteger",
+			"subtype": "k32bitint",
+			"sublen": 0,
+			"initval": "109"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "irCountry",
+			"order": 7,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "oSessionPCODES",
+			"order": 8,
+			"type": "kObject",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "oStatementPCODES",
+			"order": 9,
+			"type": "kObject",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-27 11:20:30",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2019-05-30 10:30:15",
+		"selfcontained": false,
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

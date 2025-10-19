@@ -1,0 +1,12 @@
+Do ilEmailConfigs.$search($ref.RFO_VALUE='SEND_CHASEPAY',1,0,0,0) Returns lbFound
+If not(lbFound)
+	Breakpoint
+	Calculate $cinst.$objs.splitButtonWorkflow.$errortext as con('email configuration missing for RFO: EMAIL_CONFIGS / SEND_CHASEPAY')
+End If
+
+If ibManualWorkflow
+	# we now need to run a method on the client that saves ibinPDF to downloads file
+	# Do $cinst.$pushdata(row(prJob))
+Else
+	Do method sendEmail (kTrue) Returns lbOK
+End If

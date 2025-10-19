@@ -1,0 +1,1 @@
+Calculate icPricingTrace as con(icPricingTrace,pick(icPricingTrace<>'','',kCr),pcMessage)

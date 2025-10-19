@@ -1,0 +1,48 @@
+Do llData.$cols.$add(lrArrangement.ARR_SEQ)
+Do llData.$cols.$add(lrArrangement.ARR_MAX_BOOKINGS)
+Do llData.$cols.$add(lrArrangement.ARR_DATE)
+Do llData.$cols.$add(lrArrangement.ARR_DAYNO)
+Do llData.$cols.$add(lrArrangement.ARR_STARTTIME)
+
+Do llData.$cols.$add(lrTopic.TPC_TITLE)
+
+Do llData.$cols.$add(lrSpeaker.PSN_SURNAME)
+Do llData.$cols.$add(lrSpeaker.PSN_FIRST_NAME)
+
+Do llData.$cols.$add('countAttended',kInteger,k32bitint)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select  distinct ARR_SEQ, ARR_MAX_BOOKINGS,ARR_DATE, ARR_DAYNO, ARR_STARTTIME
+Sta:,  TPC_TITLE
+Sta:, PSN_SURNAME, PSN_FIRST_NAME
+Sta:
+Sta:, ( select count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where  ARA_ARR_REF = ARR_SEQ
+Sta:)
+Sta:, ( select count(*)
+Sta:from [$cinst.$servertablenames()]
+Sta:where  ARA_ARR_REF = ARR_SEQ
+Sta:)
+
+Sta:from [lrArrangement.$servertablenames()]
+Sta:left outer join [$cinst.$servertablenames()] on ARA_ARR_REF = ARR_SEQ
+Sta:left outer join [lrTopic.$servertablenames] on ARR_TPC_REF = TPC_SEQ
+Sta:left outer join [lrSpeaker.$servertablenames] on ARR_PSN_REF = PSN_SEQ
+
+Sta:where  ARR_CF_REF = @[pnCF_SEQ]
+End statement
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llData

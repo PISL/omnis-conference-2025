@@ -1,0 +1,37 @@
+# the list returned may be all email addresses, or it could be in address/name pairs (every other line)
+If plHeaderRow.$linecount>1
+	# more than one lines in list, test for formatting
+	If pos('@',plHeaderRow.1.C1)>0&pos('@',plHeaderRow.2.C1)=0
+		# it is an email address with name pair
+		Calculate plHeaderRow.$line as 0
+		For plHeaderRow.$line from 1 to plHeaderRow.$linecount step 2
+			Do prefList.$add(plHeaderRow.C1,plHeaderRow.[plHeaderRow.$line+1].C1)
+		End For
+		
+	Else
+		# we will assume all lines are list a email addresses
+		Do prefList.$merge(plHeaderRow)
+	End If
+	
+Else If plHeaderRow.$linecount=1&plHeaderRow.C1.$type=kRow
+	# there could be two different formats here
+	For lnColNo from 1 to plHeaderRow.$colcount step 2
+		Calculate lRow1 as plHeaderRow.C[lnColNo] ## address
+		Calculate lRow2 as plHeaderRow.C[lnColNo+1] ## name
+		
+		Do lRow1.$cols.$findname('address') Returns liColRef
+		If liColRef
+			# the address/name pair are within the row
+			Do prefList.$add(lRow1.address,lRow1.name)
+			Do prefList.$add(lRow2.address,lRow2.name)
+			
+		Else
+			# the address/name pair are split between both rows
+			Do prefList.$add(lRow1.address,lRow2.name)
+		End If
+	End For
+	
+Else
+	# we will assume all lines are list a email addresses
+	Do prefList.$merge(plHeaderRow)
+End If

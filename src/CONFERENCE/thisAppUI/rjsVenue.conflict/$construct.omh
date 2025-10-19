@@ -1,0 +1,52 @@
+# Enter your initialization code here
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+Do $DefineList(ilDisplayRecords,'tVenue')
+Calculate irCurrentRecord as ilDisplayRecords
+Do ilDisplayRecords.$fetchOurVenues()
+
+
+
+# Do $DefineList(ilRoles,'infra.tuaRoles')
+# Do ilRoles.$fetch_all()
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','VENUE_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','VENUE_Intro','label')
+
+Do method UserPermissions
+
+Do $DefineList(ilFacilities,'tFacility')
+Calculate irFacility as ilFacilities
+
+Do toValues.$initInherited('FCY_TYPE') Returns ilFacilityType
+# Do ilFacilityType.$search($ref.FCY_TYPE='EXCLUDE',1,0,1,0)
+# Do ilFacilityType.$remove(kListDeleteSelected)
+Do ilFacilityType.$addbefore(1) ## blank line to clear values
+
+# no drop lists needed for this small group of records
+Do $cinst.$superText()
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_venues','label'),"VEN_NAME")
+
+Do $DefineList(ilTZcity,'infra.tvi_Timezones')
+Do ilTZcity.$fetch_all()
+Calculate ilTZregion as ilTZcity
+Do ilTZregion.$cols.REGION.$removeduplicates(kTrue)
+Do ilTZcity.$addDisplayName()
+Do ilTZcity.$sendall($ref.DisplayName.$assign(con(ilTZcity.ABBREV,': ',ilTZcity.TOOLTIP)))
+Do ilTZcity.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.ilTZcity.$listcolumn as liColRef.$ident
+Calculate ilTZcity.$line as 0
+Calculate ilTZcity.$smartlist as kTrue
+
+Calculate $cinst.$objs.TabControl_VEN.$currenttab as 1
+Calculate $cinst.$objs.PagedPane.$currentpage as 1
+
+Do $cinst.$container().$initToolsMenu() Returns ilMenuCommands ## use defaults, override $getMenuID if this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),ilMenuCommands)
+
+Do $cinst.$behaviour()

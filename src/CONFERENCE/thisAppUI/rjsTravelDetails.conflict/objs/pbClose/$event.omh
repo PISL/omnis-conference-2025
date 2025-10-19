@@ -1,0 +1,3 @@
+On evClick
+	# Do method closeTask ## just moving to next page leaves task open, but its only open for 2 mins so we'll leave it.
+	JavaScript:document.location.href=lcUrl;

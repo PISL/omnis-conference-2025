@@ -1,0 +1,11 @@
+# Do ilSearch1.$fetch_all() ## invalid for sysReferenceOrg
+Do ilOrganisations.$search($ref.GO_SEQ=pnGO_SEQ,1,0,0,0) Returns lbFound
+Begin reversible block
+	Calculate $ctask.trGroupOrg as ilOrganisations
+End reversible block
+Do ilConferences.$fetch_all()
+Do ilConferences.$sort($ref.CF_DATE_FROM,1) ## most recent events at top of list
+If ilConferences.$linecount>0
+	Calculate ilConferences.$line as 1
+End If
+Quit method ilConferences

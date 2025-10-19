@@ -1,0 +1,54 @@
+{
+	"classtype": "kObjectclass",
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 6,
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "ilOmnisSchemasInfra",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilOmnisSchemasThisLib",
+			"order": 3,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "iRow",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2025-05-23 15:00:26",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2025-05-23 15:11:21",
+		"selfcontained": false,
+		"showascheckedout": false,
+		"userinfo": "Copyright © 1999-2012 Platform Independent Systems Limited, registered company number 3155091, UK",
+		"vcsrevision": 0,
+		"version": "2"
+	}
+}

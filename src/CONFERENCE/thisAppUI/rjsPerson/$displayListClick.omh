@@ -6,6 +6,9 @@ Do ilTopics.$clear()
 Do ilTopicConferences.$clear()
 Do ilDelegates.$clear()
 Do ilMembership.$clear()
+Calculate ilColoursBackground.$line as 0
+Calculate ilColoursText.$line as 0
+
 If irCurrentRecord.PSN_SEQ>0
 	If irCurrentRecord.PSN_SEQ=irLastPerson.PSN_SEQ
 		# then do not update
@@ -17,12 +20,25 @@ Calculate irCurrentRecord as ilDisplayRecords
 
 Do irCurrentRecord.$fetch_pk() ## re-read from db - multi user application
 
-Do ioTopicPerson.$fetchUsingPerson(irCurrentRecord.PSN_SEQ) Returns llJoined
+# fetch the topics for the person selected
+If ibDisplayTopicsForCurrentConference&ilSearch1.CF_SEQ>0
+	# adding the CF_SEQ to fetch does not change the number of records returned... but it adds a value for TPF_SEQ which normally be left empty
+	Do ioTopicPerson.$fetchUsingPerson(irCurrentRecord.PSN_SEQ,#NULL,#NULL,#NULL,ilSearch1.CF_SEQ) Returns llJoined
+	
+	# reduce the list to selected conference
+	Do llJoined.$search($ref.TPF_SEQ>0,1,0,1,0)
+	Do llJoined.$remove(kListKeepSelected)
+	Do llJoined.$search(0)
+Else
+	Do ioTopicPerson.$fetchUsingPerson(irCurrentRecord.PSN_SEQ) Returns llJoined
+End If
+
 # If ioTopicPerson.irErrorSQL.NativeErrorText<>'' ## notation error !!!
 # Calculate icDisplayMessage as ilTopics.irErrorSQL.NativeErrorText
 # End If
 Do ilTopics.$merge(llJoined,kTrue)
 Do ilTopics.$sort($ref.TPC_TITLE,0)
+Calculate inCountTopics as ilTopics.$linecount
 
 Do ilDelegates.$fetch_fk(irCurrentRecord.PSN_SEQ,'DG_PSN_REF')
 Do ilMembership.$fetch_fk(irCurrentRecord.PSN_SEQ)

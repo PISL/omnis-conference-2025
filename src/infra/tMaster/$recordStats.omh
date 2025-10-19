@@ -1,6 +1,7 @@
 
 If $ctask.tConstants.$cols.$findname('LogTaskStats') ## avoid notation errors during startup
 	If $ctask.tConstants.LogTaskStats
+		# Calculate #S1 as $cinst.$sessionobject.$damname
 		If $cinst.$sessionobject.$damname='PGSQLDAM' ## we do not want to record requests to the SQLite libini DB
 			# Breakpoint
 			If $ctask.trTaskStats.$colcount ## notation error fix (REPORTER)

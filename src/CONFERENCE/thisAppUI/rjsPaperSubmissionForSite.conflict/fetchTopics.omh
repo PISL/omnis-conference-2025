@@ -1,0 +1,16 @@
+Do ilTopics.$clear()
+Do ilTopics.$fetch_fk(irPerson.PSN_SEQ,'PSN_SEQ')
+
+Calculate ilTopics.$line as 0
+While $Loop(ilTopics)
+	Do ilTopics.$DisplayName(kTrue) ## kTrue = suppress speaker name
+End While
+
+Do ilTopics.$sort($ref.DisplayName,0)
+Calculate ilTopics.$smartlist as kTrue
+
+Calculate lcTemp as $cell(clLabels,'objName','label_TopicTitle','label')
+If isclear(lcTemp)
+	Calculate lcTemp as 'Topic Titles'
+End If
+Calculate $cinst.$objs.label_TopicTitle.$text as con(ilTopics.$linecount,' ',lcTemp)

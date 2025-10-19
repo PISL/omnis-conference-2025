@@ -4,3 +4,7 @@ Do ilHeaders.$add("content-type","application/json")
 
 Do $libs.infra.$objects.oRest.$newref() Returns iorefRest
 
+# RSM re-established google account 18-JAN-2023
+# new API key 1 = AIzaSyDnilzUcg_g-VWYdwlrNJ5hSrZ4PZMIZtM
+# new API key 2 = AIzaSyCTY6pqxf3oCRrCUrjji8qHduv0fo4KOGk
+# previous keys:  'AIzaSyA07zycgimMP2Vrqm7R_MktQhjih0menN0' and !!! password !!!   old: 'AIzaSyDnilzUcg_g-VWYdwlrNJ5hSrZ4PZMIZtM'

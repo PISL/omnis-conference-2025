@@ -4,6 +4,7 @@ Do llSuperLabels.$cols.$add('objName',kCharacter,kSimplechar,50)
 
 Do llSuperLabels.$add('PERSON_Heading')
 Do llSuperLabels.$add('PERSON_Intro')
+Do llSuperLabels.$add('sel_conference')
 Do llSuperLabels.$add('disp_del_canc')
 Do llSuperLabels.$add('disp_child_nodelete')
 Do llSuperLabels.$add('disp_delete')

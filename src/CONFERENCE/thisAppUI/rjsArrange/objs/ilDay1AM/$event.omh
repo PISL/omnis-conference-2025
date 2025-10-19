@@ -1,14 +1,44 @@
 On evClick
+	Calculate ilDay1AM.$line as pLineNumber
+	Calculate irCurrentRecord as ilDay1AM
+	
 	Do method highlightSpeaker ($cobj().$name)
 	
-On evDoubleClick
+	# Calculate ilDay1AM.$line as 0
+	# Calculate ilDay1PM.$line as 0
+	# Calculate ilDay1EVE.$line as 0
+	
+	# Calculate ilDay2AM.$line as 0
+	# Calculate ilDay2PM.$line as 0
+	# Calculate ilDay2EVE.$line as 0
+	
+	# Calculate ilDay3AM.$line as 0
+	# Calculate ilDay3PM.$line as 0
+	# Calculate ilDay3EVE.$line as 0
+	
+	# Calculate ilDay4AM.$line as 0
+	# Calculate ilDay4PM.$line as 0
+	# Calculate ilDay4EVE.$line as 0
+	
+	# Calculate ilDay5AM.$line as 0
+	# Calculate ilDay5PM.$line as 0
+	# Calculate ilDay5EVE.$line as 0
+	
+	# Do ilDay1AM.$search($ref.ARR_SEQ=irCurrentRecord.ARR_SEQ,1,0,0,0)
 	
 On evDrop
-	# If pDragField=nam(ilChoiceOfGroupOrgs)
-	# user is ADDING this group org to users profile
+	If pDragField=nam(ilDisplayRecords)
+		# The data has been dragged from ilDisplayRecords
+		Calculate icDraggedFrom as nam(ilDisplayRecords)
+		
+	Else If pDragField=nam(ilTopicsToDrag)
+		Calculate icDraggedFrom as nam(ilTopicsToDrag)
+		
+	Else If left(pDragField,5)='ilDay'
+		Calculate icDraggedFrom as pDragField
+	End If
+	
 	Do method moveArrangement ($cobj().$name) Returns lbOK
+	
 	Do $cinst.$behaviour()
 	Do $cinst.$redraw()
-	# Else
-	# Calculate icDisplayMessage as 'Invalid drop object'
-	# End If

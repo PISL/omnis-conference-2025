@@ -1,0 +1,33 @@
+# bindvars	A list containing bind variable values. Bind variables are matched by name. If the list contains multiple rows, the query is re-executed for each row.
+Do bindvars.$define(bindVarName,bindVarValue)
+# SQL instructions
+Do work.$define(query,bindvars)
+
+If pcFormat='pool'
+	# poolname	The name of an existing session pool. The worker will take a session object from this pool, returning it upon completion.
+	Do lrWorkerParams.$define(poolname)
+	Calculate lrWorkerParams.poolname as tlDatabases.Name
+	
+Else If pcFormat='session'
+	# session	A session object or object reference. The session must be logged-on and in a useable state.
+	Do lrWorkerParams.$define(session)
+	
+Else If pcFormat='login'
+	# hostname	The hostname/IP address of the database server.
+	Do lrWorkerParams.$cols.$add('hostname',kCharacter,kSimplechar,100)
+	# database	The database name to use for a logon.
+	Do lrWorkerParams.$cols.$add('database',kCharacter,kSimplechar,100)
+	# username	The username to use for a logon.
+	Do lrWorkerParams.$cols.$add('username',kCharacter,kSimplechar,100)
+	# password	The password to use for a logon.
+	Do lrWorkerParams.$cols.$add('password',kCharacter,kSimplechar,100)
+	
+Else
+	Breakpoint
+End If
+
+# instructions.
+Do lrWorkerParams.$cols.$add(work)
+Calculate lrWorkerParams.work as work
+
+Quit method lrWorkerParams

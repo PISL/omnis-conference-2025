@@ -18,6 +18,7 @@
 		"componentinfo": {
 
 		},
+		"contentpadding": "0",
 		"contextmenu": "",
 		"cursor": 0,
 		"dataname": "ilIpAddressFilter",

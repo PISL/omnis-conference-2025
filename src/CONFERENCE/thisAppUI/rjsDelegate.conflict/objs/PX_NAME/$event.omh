@@ -1,0 +1,3 @@
+On evAfter
+	Do method DisplayProductInfoFromPax
+	Do $cinst.$redraw()

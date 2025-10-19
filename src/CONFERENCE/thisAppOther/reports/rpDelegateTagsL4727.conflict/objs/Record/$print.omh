@@ -1,0 +1,16 @@
+If ilData.DG_ROLE='SPEAKER' ## was DG_STATUS
+	Do $cinst.$objs.1010.$visible.$assign(kTrue)
+	Do $cinst.$objs.1010.$forecolor.$assign(kRed)
+	
+Else If pos('OMNIS_EVAN',upp(ilData.DG_ROLE)) ## i
+	Do $cinst.$objs.1010.$visible.$assign(kTrue)
+	Do $cinst.$objs.1010.$forecolor.$assign(kDarkGreen)
+	
+Else If pos('OMNIS SOFTWARE',upp(ilData.EO_NAME))>0
+	Do $cinst.$objs.1010.$visible.$assign(kTrue)
+	Do $cinst.$objs.1010.$forecolor.$assign(kBlue)
+	
+Else
+	Do $cinst.$objs.1010.$visible.$assign(kFalse)
+End If
+Do default

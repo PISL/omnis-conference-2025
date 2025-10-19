@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.DG_COUNTRY as ilCountries.REF_VALUE

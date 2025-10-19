@@ -1,0 +1,89 @@
+{
+	"classtype": "kTable",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 88,
+	"superclass": "tMaster",
+	"designtaskname": "Startup_Task",
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "ibInvisible",
+			"order": 5,
+			"type": "kBoolean",
+			"subtype": 0,
+			"sublen": 0,
+			"initval": "kFalse",
+			"desc": "passed to oFormat.$FormatRef so that a leading full stop is ignored; set by calling $setInvisible"
+		},
+		{
+			"name": "icClassesRequiringEvalCheckOnJSON",
+			"order": 6,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 255
+		},
+		{
+			"name": "idTestDate",
+			"order": 3,
+			"type": "kDate",
+			"subtype": "kDate2000",
+			"sublen": 0,
+			"initval": "dat('1 JAN 2010')"
+		},
+		{
+			"name": "ioFormatData",
+			"order": 4,
+			"type": "kObject",
+			"subtype": "oFormatData",
+			"sublen": 0
+		},
+		{
+			"name": "irParamsFetchClass",
+			"order": 7,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW1",
+			"order": 1,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "___ROW2",
+			"order": 2,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-27 11:20:35",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2023-02-17 11:39:05",
+		"showascheckedout": false,
+		"sqlclassname": "",
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2"
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon"
+	]
+}

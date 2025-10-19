@@ -106,7 +106,9 @@ If liColRefLanguages
 		Calculate prConfig.ELT_MSG_TEXT as prefMessage
 		
 	Else
-		Breakpoint something needs fixing here
+		Breakpoint Something needs fixing here.  It looks like there is no language/text content.
+		#  Assume we have a config record (irCurrentRecord) but there is no message text (ilLanguages).
+		#  And there should be!
 	End If
 Else
 	# only look in prConfig

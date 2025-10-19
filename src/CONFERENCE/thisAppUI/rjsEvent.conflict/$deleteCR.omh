@@ -1,0 +1,44 @@
+# these rules copied from $behaviour
+If inCurrentTab=cnConfInfo|inCurrentTab=cnConfPrices|inCurrentTab=cnConfTerms
+	If not(irUserRights.canDelete&irCurrentRecord.CF_SEQ>0&icMode='')
+		Quit method
+	End If
+	
+Else If inCurrentTab=cnConfStats
+	Quit method
+	
+Else If inCurrentTab=cnConfPriceRules
+	If not(irUserRights.canDeletePriceRule&irProductPriceRule.CFP_SEQ>0&(icMode=''))
+		Quit method
+	End If
+	
+End If
+
+Calculate icDisplayMessage as ''
+
+If inCurrentTab=cnConfArrangements
+	Do irTopic.$checkChildren() Returns lnCountChildren
+	If lnCountChildren=0
+		Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',irTopic.TPC_TITLE,'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteTPC')
+	Else
+		Do irTopic.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+		Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+		Do $cinst.$behaviour()
+		Do $cinst.$redraw()
+	End If
+	
+Else If inCurrentTab=cnConfPriceRules
+	Do method PricingRuleDelete
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()
+	
+Else
+	Do irCurrentRecord.$checkChildren() Returns lnCountChildren
+	If lnCountChildren=0
+		Do $cinst.$clientNoYesMsg(con($cell(clLabels,'objName','disp_delete','label'),' ',con(irCurrentRecord.CF_TITLE,': ',irCurrentRecord.CF_DATE_FROM,' - ',irCurrentRecord.CF_DATE_TO),'?  ',$cell(clLabels,'objName','disp_confirm','label')),$cell(clLabels,'objName','disp_respond','label'),'$deleteCF')
+	Else
+		Do irCurrentRecord.$getTablesWithChildren(kTrue) Returns lcTablesWithChildren
+		Calculate icDisplayMessage as con($cell(clLabels,'objName','disp_child_nodelete','label'),kCr,lcTablesWithChildren)
+		Do $cinst.$behaviour()
+	End If
+End If

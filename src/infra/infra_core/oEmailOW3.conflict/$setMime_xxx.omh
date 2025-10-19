@@ -1,0 +1,44 @@
+Calculate ibNoMIME as kTrue
+If len(prBody.html)|prBody.attachments.$linecount
+	Calculate ibNoMIME as kFalse
+End If
+# Now build the content
+If ibNoMIME
+	Calculate lbinContent as chartoutf8(prBody.text)
+Else
+	Do $cinst.$getMIMElist() Returns llMIME
+	Do llMIME.$add(0,"multipart","mixed")
+	Calculate lnLevel as 1
+	If not(len(prBody.html))
+		Do llMIME.$add(lnLevel,"text","plain","",prBody.text)
+	Else
+		Do llMIME.$add(lnLevel,"multipart","alternative",,,,,,"inline")
+		Do llMIME.$add(lnLevel+1,"text","plain","",prBody.text)
+		Do llMIME.$add(lnLevel+1,"text","html","",prBody.html)
+	End If
+	# Get the attachments if any are required
+	Calculate llAttachments as prBody.attachments
+	For llAttachments.$line from 1 to llAttachments.$linecount step 1
+		If len(llAttachments.lcContentType) ## assume the sender has done the work
+			Calculate llAttachments.lnLevel as lnLevel
+			Do llMIME.$add(llAttachments)
+		Else If len(llAttachments.lcFilename)
+			Calculate lrAttachment as llAttachments
+			Do $cinst.$prepareAttachment(lrAttachment) Returns lbOK
+			If lbOK
+				Calculate lrAttachment.lnLevel as lnLevel
+				# Calculate lrAttachment.lcFilename as "" ## lcFilename is reset in $prepareAttachment
+				Do llMIME.$add() Returns lrefLine
+				Do lrefLine.$assignrow(lrAttachment)
+			Else
+				Calculate lnErrorCount as lnErrorCount+1
+			End If
+		End If
+		If lnErrorCount>0
+			Calculate icErrorText as con("Failed to add attachment ",llAttachments.lcFilename)
+			Quit method kFalse
+		End If
+	End For
+End If
+
+Quit method kTrue

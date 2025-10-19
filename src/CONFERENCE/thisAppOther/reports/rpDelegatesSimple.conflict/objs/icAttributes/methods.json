@@ -1,0 +1,34 @@
+[
+	{
+		"name": "$print",
+		"order": 16384,
+		"pvardefs": [
+			{
+				"name": "pPos",
+				"order": 1,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 1
+			},
+			{
+				"name": "pData",
+				"order": 2,
+				"type": "kFieldreference",
+				"subtype": 0,
+				"sublen": 0,
+				"param": 2
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lcString",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20
+			}
+		],
+		"empty": true
+	}
+]

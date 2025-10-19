@@ -1,0 +1,12 @@
+Do ilAttendees.$clear()
+Do ilAttendees.$fetch_fk(ilArrangements.ARR_SEQ)
+Do ilAttendees.$search($ref.ARA_DG_REF=irDelegate.DG_SEQ,1,0,0,0) Returns ibDelegateAlreadyAttending
+If ibDelegateAlreadyAttending
+	Do irAttendee.$assignrow(ilAttendees,kTrue)
+	Do ilRatings.$search($ref.RFO_VALUE=irAttendee.ARA_RATING,1,0,0,0)
+Else
+	Do irAttendee.$clear()
+	Calculate ilRatings.$line as 0
+End If
+Calculate irAttendeeOrig as irAttendee
+Calculate ibFeedbackModified as kFalse

@@ -24,7 +24,7 @@
 		"dataname": "ilDay4EVE",
 		"dateformat": "kJSFormatNone",
 		"dateformatcustom": "",
-		"defaultdisabledappearance": true,
+		"defaultdisabledappearance": false,
 		"defaultinactiveappearance": true,
 		"desgroup": 0,
 		"designactive": true,
@@ -57,6 +57,9 @@
 		"pagesize": 0,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"rightclicksetsline": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"selectedlinecolor": "kColorDefault",
 		"selectedlinesonly": false,
 		"selectedlinetextcolor": "kColorDefault",
@@ -110,9 +113,9 @@
 			"visible": true
 		},
 		"768": {
-			"left": 8,
-			"top": 1992,
-			"width": 416,
+			"left": 160,
+			"top": 2040,
+			"width": 256,
 			"height": 120,
 			"dragborder": false,
 			"edgefloat": "kEFright",
@@ -120,9 +123,9 @@
 			"visible": true
 		},
 		"1024": {
-			"left": 8,
+			"left": 176,
 			"top": 1312,
-			"width": 360,
+			"width": 248,
 			"height": 136,
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -130,9 +133,9 @@
 			"visible": true
 		},
 		"1700": {
-			"left": 520,
+			"left": 576,
 			"top": 608,
-			"width": 248,
+			"width": 192,
 			"height": 168,
 			"dragborder": false,
 			"edgefloat": "kEFnone",

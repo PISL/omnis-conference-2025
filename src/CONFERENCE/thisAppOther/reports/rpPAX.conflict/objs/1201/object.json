@@ -1,0 +1,27 @@
+{
+	"ident": 1201,
+	"order": 104,
+	"objtype": "kRoundrect",
+	"properties": {
+		"backcolor": "RGBA(kColorUser16,255)",
+		"backpattern": 1,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "",
+		"floating": true,
+		"forecolor": "RGBA(kColorForeFill,255)",
+		"height": 0.704,
+		"left": 0.493,
+		"lineno": 24,
+		"lineoffset": 0.282,
+		"linestyle": 1,
+		"printontop": false,
+		"userinfo": "",
+		"vertextend": false,
+		"width": 26.424
+	}
+}

@@ -1,0 +1,6 @@
+Calculate $cinst.$objs.DRF_WHERE.$enabled as icMode<>''
+Calculate $cinst.$objs.DRF_ROW.$enabled as icMode<>''
+Calculate $cinst.$objs.DRF_COLUMN.$enabled as icMode<>''
+Calculate $cinst.$objs.DRF_RESP_PERSON.$enabled as icMode<>''
+Calculate $cinst.$objs.DRF_NAME.$enabled as icMode<>''
+Calculate $cinst.$objs.DRF_TYPE.$enabled as icMode<>''

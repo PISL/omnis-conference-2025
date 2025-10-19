@@ -1,0 +1,2 @@
+On evClick
+	Calculate irCurrentRecord.VEN_TIMEZONE as ilTZcity.TIMEZONE

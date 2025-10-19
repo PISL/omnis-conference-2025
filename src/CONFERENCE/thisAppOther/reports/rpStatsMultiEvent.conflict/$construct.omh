@@ -1,0 +1,73 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate idFrom as #D
+
+Calculate icReportTitle as con('Conference statistics  ')
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+Calculate ibIncludeGraphs as pbIncludeGraphs
+
+If ibIncludeGraphs
+	Calculate $cinst.$sorts.1.$newpage as kTrue
+Else
+	Calculate $cinst.$sorts.1.$newpage as kFalse
+End If
+# Calculate lnPosTop as 0
+# Calculate lnPosWidth as 1.0
+# Calculate lnPosHeight as 0.457
+# Calculate lnPosLeft as 3.5 ## changes in loop
+
+For lnColcount from 1 to ilData.$colcount step 1
+	Calculate lcColName as ilData.$cols.[lnColcount].$name
+	
+	If pos('_COUNT',upp(lcColName))&lnConfCount<5 ## e.g. EO2015_count
+		Calculate lnConfCount as lnConfCount+1
+		
+		# count column, heading section
+		Set reference liObjRefCount to $cinst.$objs.[pick(lnConfCount,0,1098,1100,1102,1104,1133)].$ref() ## count heading
+		Calculate liObjRefCount.$::text as 'count'
+		# percent column, heading section
+		Set reference liObjRefCount to $cinst.$objs.[pick(lnConfCount,0,1099,1101,1103,1105,1134)].$ref() ## % heading
+		Calculate liObjRefCount.$::text as '%'
+		# cum.count column, heading section
+		Set reference liObjRefCount to $cinst.$objs.[pick(lnConfCount,0,1156,1152,1153,1154,1155)].$ref() ## cc heading
+		Calculate liObjRefCount.$::text as 'cc'
+		
+		# count column, record section
+		Set reference liObjRefCount to $cinst.$objs.count[lnConfCount].$ref() ## count1, count2, count3, count4
+		Calculate liObjRefCount.$dataname as con(nam(ilData),'.',lcColName)
+		# count column, sub total section
+		Set reference liObjRefCount to $cinst.$objs.count[lnConfCount]st.$ref() ## sub total
+		Calculate liObjRefCount.$dataname as con(nam(ilData),'.',lcColName)
+		
+		# cumulative total column
+		Set reference liObjRefCumCount to $cinst.$objs.cumcount[lnConfCount].$ref() ## cumcount
+		Calculate lcColName as replace(lcColName,'_count','_cumcount')
+		Calculate liObjRefCumCount.$dataname as con(nam(ilData),'.',lcColName)
+		
+		# percent column, record section
+		Set reference liObjRefPercent to $cinst.$objs.percent[lnConfCount].$ref() ## percent
+		Calculate lcColName as replace(lcColName,'_cumcount','_percent')
+		Calculate liObjRefPercent.$dataname as con(nam(ilData),'.',lcColName)
+		
+		# percent column, sub total section
+		Set reference liObjRefPercent to $cinst.$objs.percent[lnConfCount]st.$ref() ## sub total
+		Calculate liObjRefPercent.$dataname as con(nam(ilData),'.',lcColName)
+		
+		# event heading
+		Calculate lnObjNoHeading as pick(lnConfCount,0,1106,1107,1108,1109,1135)
+		Calculate $cinst.$objs.[lnObjNoHeading].$::text as mid(lcColName,1,pos('_',lcColName)-1)
+		# event location
+		Calculate lnObjNoHeading as pick(lnConfCount,0,1137,1138,1139,1140,1141)
+		Calculate $cinst.$objs.[lnObjNoHeading].$::text as prLocation.C[lnConfCount]
+	End If
+End For
+
+Do ilData.$sort($ref.groupCol,0,$ref.category,0)
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

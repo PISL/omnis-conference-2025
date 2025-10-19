@@ -1,0 +1,33 @@
+# = = = = = = = = = = =        setup the remail worker      = = = = = = = = = = =
+
+If icErrors=''
+	# cURI  cUser  cPasswd  vFrom  lTo   lCC   lBCC   cSubject   lPriority   lHeaders  vContent   bMailshot
+	If ibNoMIME
+		# sending text message only
+		Calculate ibinContent as chartoutf8(irReference.RFO_CHAR)
+		If ibCombinedSenderAddressAndName
+			Do $cinst.$init(irConfig.server,irConfig.loginName,irConfig.loginPassword,row(irConfig.senderAddress,irConfig.senderName),ilTo,ilCC,ilBCC,irConfig.subject,inPriority,ilHeaders,ibinContent,ibMailshot) Returns lbOK
+		Else
+			Do $cinst.$init(irConfig.server,irConfig.loginName,irConfig.loginPassword,irConfig.senderAddress,ilTo,ilCC,ilBCC,irConfig.subject,inPriority,ilHeaders,ibinContent,ibMailshot) Returns lbOK
+		End If
+		
+	Else
+		# a mixture of text (presumably) and attachments
+		# sending text message only
+		Calculate ibinContent as chartoutf8(irReference.RFO_CHAR)
+		If ibCombinedSenderAddressAndName
+			Do $cinst.$init(irConfig.server,irConfig.loginName,irConfig.loginPassword,row(irConfig.senderAddress,irConfig.senderName),ilTo,ilCC,ilBCC,irConfig.subject,inPriority,ilHeaders,lMIMElist,ibMailshot) Returns lbOK
+		Else
+			Do $cinst.$init(irConfig.server,irConfig.loginName,irConfig.loginPassword,irConfig.senderAddress,ilTo,ilCC,ilBCC,irConfig.subject,inPriority,ilHeaders,lMIMElist,ibMailshot) Returns lbOK
+		End If
+		
+	End If
+	
+End If
+
+If not(lbOK)
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('error code :',$cinst.$errorcode,', error text :',$cinst.$errortext))
+	Breakpoint [$cinst.$errorcode]  [$cinst.$errortext]
+End If
+
+Quit method lbOK

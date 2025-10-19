@@ -1,0 +1,4 @@
+On evClick
+	Calculate ibDisplayShuttleInfo as not(ibDisplayShuttleInfo)
+	Calculate $cinst.$objs.PagedPane.$objs.icShuttleServiceInfo.$visible as ibDisplayShuttleInfo
+	Calculate $cobj.$text as pick(ibDisplayShuttleInfo,'shuttle info','clear')

@@ -1,0 +1,35 @@
+On evClick
+	Calculate $cobj.$errortext as ''
+	Calculate icDisplayMessage as ''
+	Calculate icPricingTrace as ''
+	
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.inDG_OCCUPANCY as inDG_OCCUPANCY
+	End If
+	If inDG_OCCUPANCY=ikOccupancyShared|inDG_OCCUPANCY=ikOccupancyNoAccomm|inDG_OCCUPANCY=ikOccupancySponsored
+		# this does not show up in the jsClient... that inExtras is Alone
+		Calculate inExtras as ikExtraAlone ## alone; $behaviour will disappear the extras radio group
+		# annoying but I can;t think how to deal with it just now
+		If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+			Calculate ilPersons.inExtras as inExtras
+		End If
+	End If
+	
+	If inDG_OCCUPANCY<>ikOccupancyDailyRate
+		Calculate inNoDays as 0
+		Calculate icWhichDays as ''
+		If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+			Calculate ilPersons.inNoDays as inNoDays
+			Calculate ilPersons.icWhichDays as icWhichDays
+		End If
+	End If
+	
+	Do method priceTrace (con(' inDG_occupancy = ',inDG_OCCUPANCY,' inExtras = ',inExtras,', inNoDays = ',inNoDays,', icWhichDays = ',icWhichDays))
+	
+	Do method DisplayPrice2
+	
+	If icDisplayMessage=''&icPricingTrace<>''&sys(2)=17
+		Calculate icDisplayMessage as icPricingTrace
+	End If
+	
+	Do $cinst.$behaviour()

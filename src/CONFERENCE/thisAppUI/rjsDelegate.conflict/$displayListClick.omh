@@ -1,0 +1,86 @@
+Calculate icDisplayMessage as ''
+Calculate irCurrentRecord as ilDisplayRecords
+Do irCurrentRecord.$fetch_pk() ## refresh from the DB, it may have been updated
+Do ilDisplayRecords.[ilDisplayRecords.$line].$assignrow(irCurrentRecord) ## refresh the list line
+Calculate irOriginalRecord as irCurrentRecord
+Do ilInvoices.$clear()
+Do ilMultipleDelegatesOnOneInvoice.$clear()
+Calculate icInvoiceNo as ''
+Calculate ibCurrentMember as kFalse
+Do irDiet.$clear()
+Do ilMembership.$clear()
+Do ilDelegateLog.$clear()
+
+Calculate tbinFileUpload as #NULL
+Calculate ibinPdf as #NULL
+Do iFiles.$clear()
+
+Calculate $cinst.$objs.PagedPane.$objs.pbPrintInvoice.$errortext as ''
+
+Do method DropLists ## ilWhoIsPaying
+
+Calculate idPseudoInvoiceEmailed as #NULL
+Do ilInvoices.$fetchInvoicesFromDelegate(irCurrentRecord.DG_SEQ)
+Do ilInvoices.$search($ref.DIL_DG_REF=irCurrentRecord.DG_SEQ,1,0,0,0) Returns #F
+Do ilMultipleDelegatesOnOneInvoice.$fetchDelegatesFromInvoice(ilInvoices.FOH_SEQ)
+# Graham's trigger TRG_INVOICE_SENT makes this code unneccessary as at 6 JUL 2017
+# However we are partially through a selling cycle and the missing DG_EMAIL_INVOICE_SENT values from non-primary delegates will mess things up.
+Calculate idPseudoInvoiceEmailed as irCurrentRecord.DG_EMAIL_INVOICE_SENT
+# Do irCurrentRecord.$invoiceHasBeenEmailed() Returns idPseudoInvoiceEmailed
+If ilInvoices.$linecount>0
+	Do ilMultipleDelegatesOnOneInvoice.$search($ref.DG_SEQ<>irCurrentRecord.DG_SEQ,1,0,1,0) ## select other delegates paid by this invoice
+	Do ilMultipleDelegatesOnOneInvoice.$search($ref.DG_SEQ=irCurrentRecord.DG_SEQ,1,0,0,0) ## current line for this Delegate
+	If ilMultipleDelegatesOnOneInvoice.$linecount>1
+		If isclear(ilMultipleDelegatesOnOneInvoice.DG_EMAIL_INVOICE_SENT)
+			# see if other delegate has had the invoice sent
+			Calculate lnCurrentLine as ilMultipleDelegatesOnOneInvoice.$line
+			Do ilMultipleDelegatesOnOneInvoice.$search($ref.DG_EMAIL_INVOICE_SENT>dat('1 JAN 2010'),1,0,0,0) Returns lbInvoiceEmailed
+			If lbInvoiceEmailed
+				Calculate idPseudoInvoiceEmailed as ilMultipleDelegatesOnOneInvoice.DG_EMAIL_INVOICE_SENT
+			End If
+			Calculate ilMultipleDelegatesOnOneInvoice.$line as lnCurrentLine
+		End If
+	End If
+End If
+
+Do method FetchAndPresentPayments ## inTotalAmountDue  inTotalAmountPaid  inTotalOutstanding
+Do ilMultipleDelegatesOnOneInvoice.$search($ref.DIL_DG_REF=irCurrentRecord.DG_SEQ,1,0,0,0) ## must be after FetchAndPresentPayments
+
+If inCurrentTab=cnTabDisplayPDF
+	Calculate inCurrentTab as cnTabDelegate
+	Do $cinst.$objs.PagedPane.$currentpage.$assign(inCurrentTab)
+End If
+
+If inCurrentTab=cnTabDelegate
+	Do method ChangeStatus?
+Else If inCurrentTab=cnTabPAX
+	Calculate trCurrentDelegate as irCurrentRecord
+Else If inCurrentTab=cnTabReceipts
+	Do method ChangeStatus?
+Else If inCurrentTab=cnTabTravelArrive|inCurrentTab=cnTabTravelDepart ## Travel plans
+	# Do method FetchAndPresentTravelPlan
+End If
+Do method FetchAndPresentPax ## ilPax  irPax  -  PX_MWHEN now displayed on main tab
+Do method FetchAndPresentTravelPlan ## TP_MWHEN now displayed on main tab
+Do method FetchAndPresentMembership
+Do ilDelegateLog.$fetch_fk(irCurrentRecord.DG_SEQ)
+Do ilDelegateLog.$sort($ref.DSL_CWHEN,0)
+
+Do ilGroupInvoices.$clear()
+If ilDisplayRecords.DG_GROUP<>''
+	Do ilGroupInvoices.$fetchGroupInvoices(ilSearch1.CF_SEQ,ilDisplayRecords.DG_GROUP)
+	# The above fetch will include the invoice for this delegate, so remove it from the list to offer OTHER invoices associated with the group.
+	Do ilGroupInvoices.$search($ref.FOH_SEQ=ilInvoices.FOH_SEQ,1,0,1,0) Returns lbFound
+	If not(lbFound)
+		Breakpoint
+	End If
+	Do ilGroupInvoices.$remove(kListDeleteSelected)
+	
+	Calculate ilGroupInvoices.$line as 0
+	While $Loop(ilGroupInvoices)
+		Calculate ilGroupInvoices.DisplayName as con('transfer invoice ',ilGroupInvoices.FOH_INV_NO,'(',ilGroupInvoices.DIL_CBY,')',' to ',ilInvoices.FOH_INV_NO)
+	End While
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

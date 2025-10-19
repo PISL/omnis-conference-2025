@@ -1,0 +1,14 @@
+If ilPricingGrid.$line>0
+	# insert and edit use irProductPriceRule as the "CRB", in alignment with ilPricingGrid
+	# delete removes the line from list but puts form into EditProductRule so user can back out and cancel.
+	# This all relies on ilPricingGrid being a smartlist .  And having ilOriginalGrid to refer to.
+	
+	Do ilPricingGrid.$remove(ilPricingGrid.$line)
+	Do irProductPriceRule.$clear()
+	
+	Calculate ilPricingGrid.$line as ilPricingGrid.$line-1
+	While $Loop(ilPricingGrid)
+		Calculate ilPricingGrid.CFP_ORDER as ilPricingGrid.$line
+	End While
+	Calculate icMode as 'DP' ## this will turn on Cancel and Save
+End If

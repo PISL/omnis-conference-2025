@@ -1,0 +1,116 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	If ilOptionList.code='DB_CONNECT'
+		# RSM added 28-SEP-20 for easier replication of DBconnections
+		Calculate llCurrentGroup as ilEditdata
+		Calculate llCurrentGroup.$smartlist as kTrue
+		Do llCurrentGroup.$unfilter()
+		
+		Do llCurrentGroup.$cols.DB_NO.$maximum() Returns lnNextGroup
+		Calculate lnNextGroup as lnNextGroup+1
+		Calculate lnNextLine as ilEditdata.$linecount+1
+		
+		If ilEditdata.$line=0
+			Calculate ilEditdata.$line as 1
+		End If
+		
+		Do llCurrentGroup.$filter($ref.DB_NO=ilEditdata.DB_NO)
+		Calculate llCurrentGroup.$line as 1
+		
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'Name')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'DAM')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'Host')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'DB')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'licence')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'autoBackupPath')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'InternalOmnisDbName')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'cloudDB')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'UserName')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'password')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'port')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'validif')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Do ilEditdata.$add(#NULL,lnNextGroup,'poolsize')
+		If ibDuplicateValues
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_VALUE as llCurrentGroup.DB_VALUE
+			Calculate ilEditdata.[ilEditdata.$linecount].DB_DESC as llCurrentGroup.DB_DESC
+			Calculate llCurrentGroup.$line as llCurrentGroup.$line+1
+		End If
+		
+		Calculate ilEditdata.$line as lnNextLine
+	Else
+		Do ilEditdata.$add()
+		Calculate ilEditdata.$line as ilEditdata.$linecount()
+	End If
+	Do $cinst.$redraw()

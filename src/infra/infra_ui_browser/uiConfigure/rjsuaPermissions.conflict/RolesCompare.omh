@@ -1,0 +1,49 @@
+If not(ibComparePermissions)
+	Quit method
+End If
+If irPreviousRecord.PER_SEQ
+	Calculate lcDelimiter as '* '
+	
+	If irCurrentRecord.PER_SEQ
+		Calculate icDistinctRolesCurrent as ''
+		Calculate icDistinctRolesPrevious as ''
+		Calculate icCommonRoles as ''
+		
+		# we could do this with SQL using intersect and subtract but we have all the data here in lists already...
+		Do ilPreviousRolePermissions.$search(0)
+		Do ilRolePermissions.$search(0)
+		# highlight the PER_LABEL entries common to both lists
+		Calculate ilPreviousRolePermissions.$line as 0
+		While $Loop(ilPreviousRolePermissions)
+			Do ilRolePermissions.$search($ref.ROL_NAME=ilPreviousRolePermissions.ROL_NAME,1,0,1,0) Returns lbFound
+			Calculate ilPreviousRolePermissions.[ilPreviousRolePermissions.$line].$selected as lbFound
+		End While
+		# anything unselected in each list is unique to that list
+		Calculate ilRolePermissions.$line as 0
+		While $Loop(ilRolePermissions)
+			If ilRolePermissions.[ilRolePermissions.$line].$selected
+				Calculate icCommonRoles as con(icCommonRoles,pick(icCommonRoles<>'','',kCr),lcDelimiter,ilRolePermissions.ROL_NAME)
+			Else
+				Calculate icDistinctRolesCurrent as con(icDistinctRolesCurrent,pick(icDistinctRolesCurrent<>'','',kCr),lcDelimiter,ilRolePermissions.ROL_NAME)
+			End If
+		End While
+		
+		Calculate ilPreviousRolePermissions.$line as 0
+		While $Loop(ilPreviousRolePermissions)
+			If ilPreviousRolePermissions.[ilPreviousRolePermissions.$line].$selected
+				# already recorded in icCommonPermissions
+			Else
+				Calculate icDistinctRolesPrevious as con(icDistinctRolesPrevious,pick(icDistinctRolesPrevious<>'','',kCr),lcDelimiter,ilPreviousRolePermissions.ROL_NAME)
+			End If
+		End While
+		
+		Do ilRolePermissions.$search(0)
+		Do ilPreviousRolePermissions.$search(0)
+		
+		#     !!! stb
+		Calculate $cinst.$objs.label_DistinctCurrentRoles.$text as con('Distinct roles: ',irCurrentRecord.PER_DESC_EN)
+		Calculate $cinst.$objs.label_CommonRoles.$text as con('Common roles ')
+		Calculate $cinst.$objs.label_DistinctPreviousRoles.$text as con('Distinct roles: ',irPreviousRecord.PER_DESC_EN)
+		
+	End If
+End If

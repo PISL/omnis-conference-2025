@@ -1,0 +1,3 @@
+# this table is designed as a log on specific records
+# e.g. sending an email on a share application for success or failure
+# there are no MWHEN and MBY columns

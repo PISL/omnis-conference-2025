@@ -1,0 +1,67 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Do toWeb.$callInsert(llResult,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcUsername),$cinst.$type,0,ilRESTextensions))
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+If $cinst.$sessionobject.$damname='PGSQLDAM'
+	# code copied from   https://stackoverflow.com/questions/40759177/postgresql-show-all-the-privileges-for-a-concrete-user
+	Calculate lcClauseThatOmnisHasDifficultyWith as "UNNEST(COALESCE(relacl::text[[], FORMAT('{%s=arwdDxt/%s}', rolname, rolname)::text[[])) acl, "
+	
+	Begin statement
+	Sta:        SELECT  
+	Sta:            'Object Permissions' AS "Level",
+	# We have to excape s[1] to s[[1] for Omnis not to mess things up
+	Sta:            COALESCE(NULLIF(s[[1], ''), 'public') AS rolname,
+	Sta:            n.nspname,
+	Sta:            relname, 
+	Sta:            CASE 
+	Sta:                WHEN relkind = 'm' THEN 'Materialized View'
+	Sta:                WHEN relkind = 'p' THEN 'Partitioned Table'
+	Sta:                WHEN relkind = 'S' THEN 'Sequence'
+	Sta:                WHEN relkind = 'I' THEN 'Partitioned Index'
+	Sta:                WHEN relkind = 'v' THEN 'View'
+	Sta:                WHEN relkind = 'i' THEN 'Index'
+	Sta:                WHEN relkind = 'c' THEN 'Composite Type'
+	Sta:                WHEN relkind = 't' THEN 'TOAST table'
+	Sta:                WHEN relkind = 'r' THEN 'Table'
+	Sta:                WHEN relkind = 'f' THEN 'Foreign Table'
+	Sta:            END AS "Object Type",
+	# We have to excape s[2] to s[[2] for Omnis not to mess things up
+	Sta:            s[[2] AS privileges
+	Sta:        FROM 
+	Sta:            pg_class c
+	Sta:            JOIN pg_namespace n ON n.oid = relnamespace
+	Sta:            JOIN pg_roles r ON r.oid = relowner,
+	# We have to excape text[] to text[[] for Omnis not to mess things up - twice in this line
+	Sta:            UNNEST(COALESCE(relacl::text[[], FORMAT('{%s=arwdDxt/%s}', rolname, rolname)::text[[])) acl,
+	Sta:            REGEXP_SPLIT_TO_ARRAY(acl, '=|/') s 
+	Sta:        WHERE relkind <> 'i' AND relkind <> 't'
+	End statement
+	Do $cinst.$executesqlandfetch(llResult) Returns lbOK
+	
+Else
+	Breakpoint
+End If
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method llResult

@@ -1,0 +1,12 @@
+# when in insert or edit mode, ELT columns and ELC columns must remain separate
+# We cannot use class variables while running on the client browser.
+For lnTabNo from 1 to 6 step 1
+	Calculate $cinst.$objs.TabControl_ELC.$selectedtab as lnTabNo
+	If lnTabNo=2 ## cnTabMessage
+		Do $cinst.$objs.TabControl_ELC.$tabenabled(icMode=''|icMode='IM'|icMode='EM')
+	Else If lnTabNo=6 ## cnTabTest
+		Do $cinst.$objs.TabControl_ELC.$tabenabled(icMode='')
+	Else
+		Do $cinst.$objs.TabControl_ELC.$tabenabled(icMode=''|icMode='IC'|icMode='EC')
+	End If
+End For

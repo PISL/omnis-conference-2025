@@ -1,0 +1,6 @@
+On evClick
+	Calculate irRegistration.PSN_COUNTRY as ilCountriesPSN.REF_VALUE
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.PSN_COUNTRY as irRegistration.PSN_COUNTRY
+	End If
+	Do $cinst.$behaviour()

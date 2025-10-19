@@ -1,0 +1,25 @@
+If plArrangements.TPC_BACKCOLOR<>''
+	# check that it is a colour hex string
+	If left(plArrangements.TPC_BACKCOLOR,1)<>'#'&chk(upp(plArrangements.TPC_BACKCOLOR),'000000','FFFFFF')
+		Calculate plArrangements.TPC_BACKCOLOR as con('#',plArrangements.TPC_BACKCOLOR)
+	End If
+End If
+If plArrangements.TPC_TEXTCOLOR<>''
+	# check that it is a colour hex string
+	If left(plArrangements.TPC_TEXTCOLOR,1)<>'#'&chk(upp(plArrangements.TPC_TEXTCOLOR),'000000','FFFFFF')
+		Calculate plArrangements.TPC_TEXTCOLOR as con('#',plArrangements.TPC_TEXTCOLOR)
+	End If
+End If
+
+# Now present the HTML utilising the TEXT and BACK colours if they have been provided.
+If plArrangements.TPC_BACKCOLOR<>''&plArrangements.TPC_TEXTCOLOR<>''
+	# open the colour block
+	Line:    [icColourBlockTextAndBackStart1of3][plArrangements.TPC_BACKCOLOR][icColourBlockTextAndBackStart2of3][plArrangements.TPC_TEXTCOLOR][icColourBlockTextAndBackStart3of3]
+	
+Else If plArrangements.TPC_BACKCOLOR<>''
+	Line:    [icColourBlockBackStart1of2][plArrangements.TPC_BACKCOLOR][icColourBlockBackStart2of2]
+	
+Else If plArrangements.TPC_TEXTCOLOR<>''
+	Line:    [icColourBlockTextStart1of2][plArrangements.TPC_TEXTCOLOR][icColourBlockTextStart2of2]
+	
+End If

@@ -35,6 +35,8 @@
 		"nexttabobject": "",
 		"objlink": 262145,
 		"preventlayoutanimation": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"tooltip": "",
@@ -95,7 +97,7 @@
 		"1024": {
 			"left": 8,
 			"top": 8,
-			"width": 760,
+			"width": 712,
 			"height": 512,
 			"dragborder": false,
 			"edgefloat": "kEFnone",

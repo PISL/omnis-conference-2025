@@ -1,0 +1,60 @@
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Calculate ldtStart as #D
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pnCF_SEQ,pdDate,pdNayNo,pcSlot),$cinst.$type,0,ilRESTextensions))
+	Calculate inServiceMS as ddiff(kCentiSecond,ldtStart,#D)*10
+	Calculate inRESTserverMS as toWeb.inServerTime
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+If pnCF_SEQ>0
+	Calculate lcCriteria as con(lcCriteria,pick(lcCriteria<>'','',' and '),'ARR_CF_REF = ',pnCF_SEQ)
+Else
+	Quit method kFalse
+End If
+If pdDate>dat('1 JAN 2010')
+	Calculate lcCriteria as con(lcCriteria,pick(lcCriteria<>'','',' and '),'ARR_DATE = ',pdDate)
+End If
+If pdNayNo>0
+	Calculate lcCriteria as con(lcCriteria,pick(lcCriteria<>'','',' and '),'ARR_DAYNO = ',pdNayNo)
+End If
+If upp(pcSlot)='AM'
+	Calculate lcCriteria as con(lcCriteria,pick(lcCriteria<>'','',' and '),"ARR_STARTTIME >= '",tim('08:00'),"' and ARR_STARTTIME < '",tim('12:00'),"'")
+Else If upp(pcSlot)='PM'
+	Calculate lcCriteria as con(lcCriteria,pick(lcCriteria<>'','',' and '),"ARR_STARTTIME >= '",tim('12:00'),"' and ARR_STARTTIME < '",tim('17:30'),"'")
+Else If upp(pcSlot)='EVE'
+	Calculate lcCriteria as con(lcCriteria,pick(lcCriteria<>'','',' and '),"ARR_STARTTIME >= '",tim('18:00'),"' and ARR_STARTTIME < '",tim('23:30'),"'")
+Else
+	Quit method kFalse
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Do $cinst.$Sql(,lcCriteria,0,0)
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do $cinst.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0)
+Calculate $cinst.$line as 0
+While $Loop($cinst)
+	Calculate $cinst.DisplayName as con($cinst.PSN_SURNAME,': ',$cinst.TPC_TITLE)
+End While
+
+Quit method lbOK

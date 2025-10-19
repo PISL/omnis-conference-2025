@@ -1,0 +1,2 @@
+Calculate trTaskStats.STS_TYPE as 'R'
+Calculate trTaskStats.STS_INIT_CLASS as $cinst.$class().$name

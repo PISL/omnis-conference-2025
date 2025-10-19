@@ -1,0 +1,8 @@
+Calculate icPrefix as 'RFU_'
+Calculate icPrimarykey as 'RFU_SEQ'
+Do inherited
+
+# 2023-11-20  RSM  adding support for developer to create user preferences for another user.
+# Superclass establishes row variable irParamsFetchClass
+# We need to add another column to this for user specified user seq.
+Do irParamsFetchClass.$cols.$add('pnAlt_USR_SEQ',kInteger,k32bitint)

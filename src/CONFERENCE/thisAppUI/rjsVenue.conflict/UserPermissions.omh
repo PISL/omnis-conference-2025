@@ -1,0 +1,12 @@
+Do llPrivsUsedInThisForm.$cols.$add('permission',kCharacter,kSimplechar,100)
+Do llPrivsUsedInThisForm.$cols.$add('colName',kCharacter,kSimplechar,100)
+
+Do llPrivsUsedInThisForm.$add('ven_insert','canInsert')
+Do llPrivsUsedInThisForm.$add('ven_update','canUpdate')
+Do llPrivsUsedInThisForm.$add('ven_delete','canDelete')
+
+Do llPrivsUsedInThisForm.$add('fcy_insert','canInsertFCY')
+Do llPrivsUsedInThisForm.$add('fcy_update','canUpdateFCY')
+Do llPrivsUsedInThisForm.$add('fcy_delete','canDeleteFCY')
+
+Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

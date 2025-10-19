@@ -1,0 +1,9 @@
+# download file from list
+
+Do iFiles.$loadcols()
+Calculate $ctask.tJSFileBinData as iFileBinary
+
+Do iJSFileRow.$define(iJSFileName,iJSMediaType,iJSVariableName)
+Do iJSFileRow.$assigncols(iFileName,'application/octet-stream','tJSFileBinData')
+
+# Do $cinst.$behaviour()

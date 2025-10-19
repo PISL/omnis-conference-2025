@@ -209,5 +209,87 @@
 				"sublen": 0
 			}
 		]
+	},
+	{
+		"name": "$fetchEmailRecord2",
+		"order": 8,
+		"pvardefs": [
+			{
+				"name": "pCode",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 255,
+				"param": 1
+			},
+			{
+				"name": "pcLanguage",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 2,
+				"param": 2,
+				"initval": "'en'"
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbImmediateSession",
+				"order": 6,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0,
+				"initval": "kFalse"
+			},
+			{
+				"name": "lbOK",
+				"order": 10,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "ldtStart",
+				"order": 1,
+				"type": "kDate",
+				"subtype": "kDatetime",
+				"sublen": 8
+			},
+			{
+				"name": "loSession",
+				"order": 4,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "loStatement",
+				"order": 5,
+				"type": "kObject",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrConfig",
+				"order": 7,
+				"type": "kRow",
+				"subtype": "sEmailConfig",
+				"sublen": 0
+			},
+			{
+				"name": "lrEmailRecord",
+				"order": 9,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lrText",
+				"order": 8,
+				"type": "kRow",
+				"subtype": "sEmailText",
+				"sublen": 0
+			}
+		]
 	}
 ]

@@ -1,0 +1,38 @@
+# Do $cinst.$showmessage(con('Remote Menu Clicked!//pCommandID=',pMenuLineCommandID),'Split Button')
+# Breakpoint
+If pMenuLineCommandID=1002
+	Do method confirmRegistrationConfirmed
+	# Do method $sendEmailRegnConf Returns lbOK
+	
+Else If pMenuLineCommandID=1003
+	# generate invoice first, which is then emailed
+	Do method confirmSendInvoice
+	# Do method $generateInvoicePdf Returns lbOK
+	
+Else If pMenuLineCommandID=1004
+	Do method confirmSendTravelLink
+	# Do method $sendEmailTravel Returns lbOK
+	
+Else If pMenuLineCommandID=1005
+	Do method confirmSpeakerTopics
+	# Do method $sendEmailTopicsCheck Returns lbOK
+	
+Else If pMenuLineCommandID=1006
+	Do method confirmSpeakerInstructions
+	# Do method $sendEmailSpeakerInfo Returns lbOK
+	
+Else If pMenuLineCommandID=1007
+	Do method confirmPaymentReceivedFull
+	# Do method $sendEmailReceiptFull Returns lbOK
+	
+Else If pMenuLineCommandID=1008
+	Do method confirmPaymentReceivedFull
+	# Do method $sendEmailReceiptPart Returns lbOK
+	
+Else If pMenuLineCommandID=1009
+	Do method confirmChasePayment
+	# Do method $sendEmailChasePay Returns lbOK
+	
+Else
+	Breakpoint
+End If

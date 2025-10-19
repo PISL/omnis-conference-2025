@@ -1,0 +1,20 @@
+Do ilMembershipHistory.$clear()
+Calculate ilType.$line as 0
+
+Do irCurrentRecord.$clear()
+If icSearch<>''
+	Do ilDisplayRecords.$fetchOnString(icSearch)
+Else
+	Do ilDisplayRecords.$fetch_all()
+End If
+If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
+	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
+End If
+
+Do ilDisplayRecords.$sort($ref.SortName,0)
+Calculate inSearchCount as ilDisplayRecords.$linecount
+
+Calculate ilDisplayRecords.$line as 0
+# While $Loop(ilDisplayRecords)
+# Do ilDisplayRecords.$DisplayName()
+# End While

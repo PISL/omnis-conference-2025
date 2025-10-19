@@ -1,0 +1,13 @@
+On evClick
+	Calculate $cinst.$objs.PagedPane.$objs.PSN_EMAIL.$errortext as ''
+	Calculate $cinst.$objs.PagedPane.$objs.pbSave.$errortext as ''
+	
+	Do $cinst.$saveData() Returns lbProceed
+	If lbProceed
+		#save has worked, return to read only state
+		Calculate icMode as ''
+	Else
+		# error has already been displayed
+	End If
+	
+	Do $cinst.$behaviour()

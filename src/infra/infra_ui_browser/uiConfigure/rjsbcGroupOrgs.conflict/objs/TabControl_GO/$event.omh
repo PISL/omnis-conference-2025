@@ -1,0 +1,10 @@
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	If inCurrentTab=cnTabStructure
+		Do method fetchStructure
+	Else If inCurrentTab=cnTabKill
+		Calculate icKillWarning as con($cell(clLabels,'objName','str_killwarn1','label'),'  ',$cell($cinst.clLabels,'objName','str_killwarn2','label'),'  ',$cell($cinst.clLabels,'objName','str_killwarn3','label'))
+		Calculate icKillWarning as replace(icKillWarning,'GON_NAME_FULL',trGroupOrg.GON_NAME_FULL)
+	End If
+	
+	Do $cinst.$behaviour

@@ -1,0 +1,35 @@
+# compose produce code key
+If irCurrentRecord.DG_ROLE='SPEAKER' ## lrPerson
+	Calculate lcProductCode as 'SPEAKER'
+Else
+	If irCurrentRecord.DG_OCCUPANCY='H'
+		Calculate lcProductCode as 'SH_M_'
+	Else ## single, family
+		Calculate lcProductCode as 'SI_M_'
+	End If
+	
+	# this assumes conference is always held in October
+	Switch dpart(kMonth,irCurrentRecord.DG_REG_DATE)
+		Case 5
+			Calculate lcProductCode as con(lcProductCode,'EB7')
+		Case 4
+			Calculate lcProductCode as con(lcProductCode,'EB6')
+		Case 5
+			Calculate lcProductCode as con(lcProductCode,'EB5')
+		Case 6
+			Calculate lcProductCode as con(lcProductCode,'EB4')
+		Case 7
+			Calculate lcProductCode as con(lcProductCode,'EB3')
+		Case 8
+			Calculate lcProductCode as con(lcProductCode,'EB2')
+		Case 9
+			Calculate lcProductCode as con(lcProductCode,'EB1')
+		Default
+			Calculate lcProductCode as con(lcProductCode,'F')
+	End Switch
+	If ilSearch1.CF_CURRENCY
+		Calculate lcProductCode as con(lcProductCode,right(ilSearch1.CF_RATE0_I,1))
+	End If
+End If
+
+Quit method lcProductCode

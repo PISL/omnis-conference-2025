@@ -1,8 +1,8 @@
 {
 	"classtype": "kObjectclass",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 191,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 225,
 	"superclass": "infra.oReportingSuper",
 	"designtaskname": "rtSuper",
 	"cvardefs": [
@@ -297,7 +297,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2023-11-16 15:09:20",
+		"moddate": "2025-10-09 13:43:05",
 		"selfcontained": false,
 		"showascheckedout": false,
 		"userinfo": "",

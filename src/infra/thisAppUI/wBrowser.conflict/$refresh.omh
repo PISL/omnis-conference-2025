@@ -1,0 +1,18 @@
+# if this method is invoked externally, pContent should be populated
+If len(pContent)
+	Calculate icHTML as pContent
+End If
+
+If pos('<html',low(icHTML))
+	Do $cinst.$objs.ReportBrowser.$setdataurl(icHTML,'text/html')
+	Calculate lnTitlePos as pos('<title>',low(icHTML))
+	If lnTitlePos
+		Calculate $cinst.$title as mid(icHTML,lnTitlePos+7,pos('</title>',low(icHTML))-1-lnTitlePos-6)
+	Else
+		Calculate $cinst.$title as 'Unknown Page'
+	End If
+Else
+	Do $cinst.$objs.ReportBrowser.$setdataurl(icHTML,'text/plain')
+	Calculate $cinst.$title as ''
+End If
+Do $cinst.$redraw()

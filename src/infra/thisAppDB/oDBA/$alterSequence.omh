@@ -1,0 +1,21 @@
+# Breakpoint
+# Calculate lcErrorCodeTableNotFound as '42P01'
+
+# ALTER SEQUENCE  infra.emailconfig_seq START 100;
+# ALTER SEQUENCE serial RESTART WITH 105;
+# SELECT setval('payments_id_seq', 21, true);  -- next value will be 22
+
+# None of these examples above seem to work.  This might be something to do with not owning the sequence
+# however I am a member of role _developers which *is* owner of sequence.
+
+# Calculate lcAlterSequence as con('select setval(',kSq,pcSequence,kSq,',',pnValue,',true)')
+Calculate lcAlterSequence as con('ALTER SEQUENCE ',pcSequence,' RESTART WITH ',pnValue+1)
+
+Do iRow.$Execute(lcAlterSequence,kFalse,kTrue) Returns lbOK
+If iRow.irErrorSQL.NativeErrorText<>''
+	Quit method con(iRow.irErrorSQL.NativeErrorCode,': ',iRow.irErrorSQL.NativeErrorText)
+Else
+	# Even though there is no error, the actual sequence value does not seem to change.
+	# I'm going around in circles here.
+	Quit method 'ok'
+End If

@@ -1,0 +1,44 @@
+Do ilArrangements.$unfilter(0) ## undo all filters
+If inSlot=0
+	Do ilArrangements.$filter($ref.ARR_DATE=ilDates.ARR_DATE)
+Else If inSlot=1
+	Do ilArrangements.$filter($ref.ARR_DATE=ilDates.ARR_DATE)
+	If icTimeType='time'
+		Do ilArrangements.$filter($ref.ARR_STARTTIME<tim('12:00'))
+	Else If icTimeType='slot'
+		Do ilArrangements.$filter(pos('AM',upp($ref.ARR_SLOT))|pos('MORNING',upp($ref.ARR_SLOT)))
+	Else If icTimeType='mixed'
+		# this is not reliable
+		Do ilArrangements.$filter($ref.ARR_STARTTIME<tim('12:00'))|(pos('AM',upp($ref.ARR_SLOT))|pos('MORNING',upp($ref.ARR_SLOT)))
+	End If
+Else If inSlot=2
+	Do ilArrangements.$filter($ref.ARR_DATE=ilDates.ARR_DATE)
+	If icTimeType='time'
+		Do ilArrangements.$filter($ref.ARR_STARTTIME>=tim('12:00')&$ref.ARR_STARTTIME<tim('17:00'))
+	Else If icTimeType='slot'
+		Do ilArrangements.$filter(pos('PM',upp($ref.ARR_SLOT))|pos('AFTERNOON',upp($ref.ARR_SLOT)))
+	Else If icTimeType='mixed'
+		# this is not reliable
+		Do ilArrangements.$filter($ref.ARR_STARTTIME>=tim('12:00')&$ref.ARR_STARTTIME<tim('17:00'))|(pos('PM',upp($ref.ARR_SLOT))|pos('AFTERNOON',upp($ref.ARR_SLOT)))
+	End If
+Else If inSlot=3
+	Do ilArrangements.$filter($ref.ARR_DATE=ilDates.ARR_DATE)
+	If icTimeType='time'
+		Do ilArrangements.$filter($ref.ARR_STARTTIME>=tim('17:00'))
+	Else If icTimeType='slot'
+		Do ilArrangements.$filter(pos('EVE',upp($ref.ARR_SLOT)))
+	Else If icTimeType='mixed'
+		# this is not reliable
+		Do ilArrangements.$filter($ref.ARR_STARTTIME>=tim('17:00')|(pos('EVE',upp($ref.ARR_SLOT))))
+	End If
+End If
+Do method RefreshCounts
+Calculate ilArrangements.$line as 0
+Calculate icSessionInfo as ''
+Do irAttendee.$clear()
+Calculate irAttendeeOrig as irAttendee
+Calculate ibFeedbackModified as kFalse
+Calculate ilRatings.$line as 0
+
+Do ilViewFeedbackToSpeaker.$clear()
+Do method TimeSlotCheck

@@ -1,0 +1,93 @@
+# this form resides in CORE library at the moment and therefore is limited to user access only
+# as CORE library is res;onsible for database access and security in general
+
+# Enter your initialization code here
+# trGroupOrg and tlConferences have been initialised in the task
+Calculate $cinst.$objs.PagedPane.$currentpage as cnPageLogin ## login
+
+Do $DefineList(ilConferences,'tConference','CF_SEQ,CF_TITLE,CF_DATE_FROM,CF_DATE_TO,CF_CONTACT_NAME,CF_LANG,CF_CURRENCY,CF_TITLE_CODE,CF_PROD_FAMILY,CF_ACTIVE,CF_LOGO_RFO_VALUE,CF_ADMIN_DATE_TO,CF_MAX_SPEAKERS,CF_MAX_DELEGATES')
+Do ilConferences.$AddLinkedCols('VEN_COUNTRY,VEN_POSTCODE,VEN_TOWN,VEN_NAME')
+Do ilConferences.$addDisplayName()
+Do ilConferences.$fetch_all()
+Do ilConferences.$sort($ref.CF_DATE_FROM,1)
+While $Loop(ilConferences)
+	Do ilConferences.$DisplayName()
+End While
+
+Do ilConferences.$search($ref.CF_DATE_TO>=#D,1,0,0,0)
+
+Calculate irCompany as trGroupOrg
+
+# get the exit/cancel URL
+Do toValues.$initInherited('URL','EXIT') Returns lrReference
+If not(isclear(lrReference.RFO_CHAR))
+	Calculate icURLexit as lrReference.RFO_CHAR
+End If
+
+Do ilConferences.$cols.$findname('DisplayName') Returns liColRef
+If liColRef
+	Calculate $cinst.$objs.PagedPane.$objs.ilConferences.$listcolumn as liColRef.$ident
+End If
+
+# =========  presenting images in html objects requires some pre and post HTML ===============
+# get all URL options in single fetch and extract the VALUEs of interest
+Do toValues.$initInherited('URL') Returns llUrlOptions
+Do llUrlOptions.$search($ref.RFO_VALUE='EXIT',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icURLexit as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+#  exit/pre and post HTML for speaker images
+Calculate icImageHtmlPre as "<div><img src=" ## default
+Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_PRE',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icImageHtmlPre as llUrlOptions.RFO_CHAR
+	End If
+End If
+
+Calculate icImageHtmlPost as "?w=1200&amp;ssl=1 </div>" ## default
+Do llUrlOptions.$search($ref.RFO_VALUE='SPK_IMG_POST',1,0,0,0) Returns lbFound
+If lbFound
+	If not(isclear(llUrlOptions.RFO_CHAR))
+		Calculate icImageHtmlPost as llUrlOptions.RFO_CHAR
+	End If
+End If
+# =========  end =============
+
+
+Do $DefineList(ilSpeakers,'tDelegates')
+Do ilSpeakers.$AddLinkedCols('PSN_FIRST_NAME,PSN_SURNAME,PSN_COMPANY,PSN_SPEAKER_BIO,PSN_IMAGE_LINK')
+Do ilSpeakers.$addDisplayName()
+Do ilSpeakers.$cols.$add('PSN_ImageLink',kCharacter,kSimplechar,1000)
+
+Do ilSpeakers.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.ilSpeakers.$listcolumn as liColRef.$ident
+
+Do method TranslateText ## must precede fetchSpeakers/fetchTopics
+
+Do method fetchSpeakers
+
+Do $DefineList(ilTopics,'tTopics')
+Do ilTopics.$AddLinkedCols('PSN_SURNAME,PSN_FIRST_NAME,PSN_SEQ')
+Do ilTopics.$addDisplayName()
+Do ilTopics.$cols.$findname('DisplayName') Returns liColRef
+Calculate $cinst.$objs.ilTopics.$listcolumn as liColRef.$ident
+
+Do method fetchTopics
+Do method markDownAttributes
+
+# if we're developing, set the timeout to a reasonable value - 2 hours
+If sys(2)=17
+	Do $setTimeout(120)
+Else
+	Do $setTimeout(10)
+End If
+
+# for some reason we need to push ilTopics when a topic is clicked
+Do $cinst.$clientcommand('openpush',row())
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

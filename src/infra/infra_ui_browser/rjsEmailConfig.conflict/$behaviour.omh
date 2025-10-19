@@ -1,0 +1,77 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Calculate $cinst.$objs.ilSearch1.$enabled as icMode=''
+Calculate $cinst.$objs.ilSearch2.$enabled as icMode=''
+Calculate $cinst.$objs.ilDisplayRecords.$enabled as icMode=''
+
+Calculate $cinst.$objs.pbAdd.$enabled as irUserRights.canInsert&icMode=''
+Calculate $cinst.$objs.pbDuplicate.$enabled as irUserRights.canInsert&icMode=''&irCurrentRecord.ELC_SEQ>0
+Calculate $cinst.$objs.pbEdit.$enabled as irUserRights.canEdit&irCurrentRecord.ELC_SEQ>0&icMode=''
+Calculate $cinst.$objs.pbDelete.$enabled as irUserRights.canDelete&irCurrentRecord.ELC_SEQ>0&icMode=''
+
+Calculate $cinst.$objs.pbCancel.$visible as icMode<>''
+Calculate $cinst.$objs.pbSave.$visible as icMode<>''
+
+Calculate $cinst.$objs.ELC_CODE.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_NAME.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_DESC.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_OW3_OPTIONS.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_LOGIN_NAME.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_LOGIN_PW.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_LOGIN_PW.$ispassword as icMode=''
+Calculate $cinst.$objs.ELC_TIMEOUT.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_HEADERS.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_DEBUGLOG.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_AUTHN.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_SECURE.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_ALWAYS_FINISH.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_KEEP_CONNECT_OPEN.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_VFY_CERT.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_SERVER.$enabled as icMode<>''
+Calculate $cinst.$objs.ELT_SUBJECT.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_TO.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_CC.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_BCC.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_SENDER_NAME.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_SENDER_ADDR.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_PRIORITY.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_IS_MAILSHOT.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_CALL_PROGRESS.$enabled as icMode<>''
+Calculate $cinst.$objs.ELC_JSON.$enabled as icMode<>''
+
+Calculate $cinst.$objs.ELT_MSG_TEXT.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
+Calculate $cinst.$objs.ELT_MSG_HTML.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
+Calculate $cinst.$objs.ELT_MSG_PFIX_TEXT.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
+Calculate $cinst.$objs.ELT_MSG_SFIX_TEXT.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
+Calculate $cinst.$objs.ELT_MSG_PFIX_HTML.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
+Calculate $cinst.$objs.ELT_MSG_SFIX_HTML.$enabled as icMode<>''&ilSelectLangChoose.$linecount=0
+
+# when editing a record only one language record can be modified at a time
+Calculate $cinst.$objs.ilLanguages.$enabled as kTrue
+
+# selecting a new language
+Calculate $cinst.$objs.ilSelectLangChoose.$visible as ilSelectLangChoose.$linecount
+Calculate $cinst.$objs.pbTextLangAdd.$enabled as icMode<>'I'
+Calculate $cinst.$objs.pbTextLangDelete.$enabled as ilLanguages.$line>0&icMode<>'I' ## enabled only when NOT editing
+
+Calculate lnLine as ilTestCriteriaToBeProvided.$line
+Calculate ilTestCriteriaToBeProvided.$line as 0
+While $Loop(ilTestCriteriaToBeProvided)
+	Calculate lnCountLinesWithValue as lnCountLinesWithValue+not(isclear(ilTestCriteriaToBeProvided.value))
+End While
+Calculate $cinst.$objs.pbTestEmailDirect.$enabled as lnCountLinesWithValue=ilTestCriteriaToBeProvided.$linecount
+Calculate $cinst.$objs.pbTestEmailWorker.$enabled as lnCountLinesWithValue=ilTestCriteriaToBeProvided.$linecount
+Calculate $cinst.$objs.pbTestEmailAsynchronous.$enabled as lnCountLinesWithValue=ilTestCriteriaToBeProvided.$linecount
+Calculate ilTestCriteriaToBeProvided.$line as lnLine
+
+Do method assignEntryFieldProperties
+
+If ilLanguages.$linecount>2
+	Calculate icLangCount as con('(',ilLanguages.$linecount,')')
+Else
+	Calculate icLangCount as ''
+End If
+
+Do inherited ## handle objects in the navigation and results panes

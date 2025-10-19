@@ -1,0 +1,14 @@
+If icMode='EM'|icMode='IM' ## We are creating or editing a User record so override the defaults
+	Calculate lnlinestyle as 2
+	Calculate lrFieldAttributes as OJSON.$jsontolistorrow(trFormColours.FIELDCOLOURS)
+	Calculate lnbordercolour as eval(lrFieldAttributes.mandatory)
+	Calculate lneffect as kJSborderPlain
+	Calculate lnEnterable as eval(lrFieldAttributes.enterable)
+	Calculate lnUnique as eval(lrFieldAttributes.unique)
+End If
+
+Calculate $cinst.$objs.MB_FROM.$backcolor as lnEnterable
+Calculate $cinst.$objs.MB_TO.$backcolor as lnEnterable
+Calculate $cinst.$objs.MB_CURRENCY.$backcolor as lnEnterable
+Calculate $cinst.$objs.MB_AMOUNT.$backcolor as lnEnterable
+Calculate $cinst.$objs.MB_TYPE.$backcolor as lnEnterable

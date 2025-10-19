@@ -1,0 +1,16 @@
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Calculate idFrom as pdDate
+Do $cinst.$Sql(,con('where @[idFrom] between MB_FROM and MB_TO'),0,0,lcFromClause) ## only load the models with the latest version number for the current Group Org
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Quit method lbOK

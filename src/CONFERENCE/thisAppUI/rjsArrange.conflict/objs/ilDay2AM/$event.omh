@@ -1,0 +1,10 @@
+On evClick
+	Do method highlightSpeaker ($cobj().$name)
+	
+On evDoubleClick
+	
+	
+On evDrop
+	Do method moveArrangement ($cobj().$name) Returns lbOK
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

@@ -1,0 +1,162 @@
+{
+	"classtype": "kRemoteForm",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 164,
+	"superclass": "rjsInfraSuper",
+	"designtaskname": "rtBusinessApp",
+	"nextident": 1008,
+	"lastgroupident": 0,
+	"cvardefs": [
+		{
+			"name": "clLabels",
+			"order": 7,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "cnPageLogAsyncEmails",
+			"order": 3,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnPageLogErrors",
+			"order": 9,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "2"
+		},
+		{
+			"name": "cnPageLogEvents",
+			"order": 4,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "eval(1)"
+		},
+		{
+			"name": "cnPageSysSemaphores",
+			"order": 8,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "4"
+		}
+	],
+	"ivardefs": [
+		{
+			"name": "inCurrentTab",
+			"order": 1,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"aligntogrid": false,
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"contextmenu": "",
+		"createdate": "2018-02-12 17:03:10",
+		"currentlayoutbreakpoint": 1024,
+		"defaultappearance": "kAppearanceiOS",
+		"desc": "UI container",
+		"designguides": "",
+		"disabledefaultcontextmenu": false,
+		"editor": "",
+		"editordata": "",
+		"external": false,
+		"horzgrid": 8,
+		"inheritedorder": 0,
+		"issupercomponent": false,
+		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
+		"layouttype": "kLayoutTypeResponsive",
+		"left": 46,
+		"menulineheight": 0,
+		"moddate": "2025-01-03 15:29:27",
+		"serverlessclient": false,
+		"showascheckedout": false,
+		"showgrid": false,
+		"sizetogrid": false,
+		"title": {
+			"type": 0,
+			"calc": "rjsInfraSuper subclass"
+		},
+		"top": 0,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "",
+		"vertgrid": 8
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon",
+		"events",
+		"height",
+		"width",
+		"horzscroll",
+		"vertscroll",
+		"backcolor",
+		"backpattern",
+		"forecolor",
+		"backgroundtheme",
+		"effect",
+		"startfield",
+		"iconpages",
+		"okkeyobject",
+		"cancelkeyobject",
+		"alwaysenabledobject",
+		"backgroundskin",
+		"backgroundskinalign",
+		"openinwindow",
+		"designshowmobiletitle",
+		"backalpha",
+		"alpha",
+		"stringtabledata",
+		"stringtabledesignform",
+		"resizemode",
+		"layoutminheight",
+		"animatelayouttransitions"
+	],
+	"layout": {
+		"width": 1905,
+		"height": 894,
+		"320": {
+			"height": 0,
+			"padding": 2
+		},
+		"375": {
+			"height": 0,
+			"padding": 2
+		},
+		"480": {
+			"height": 0,
+			"padding": 2
+		},
+		"667": {
+			"height": 0,
+			"padding": 2
+		},
+		"768": {
+			"height": 0,
+			"padding": 2
+		},
+		"1024": {
+			"height": 0,
+			"padding": 2
+		},
+		"1700": {
+			"height": 0,
+			"padding": 2
+		}
+	}
+}

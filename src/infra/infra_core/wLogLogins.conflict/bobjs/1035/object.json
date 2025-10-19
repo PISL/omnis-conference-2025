@@ -1,0 +1,33 @@
+{
+	"ident": 1035,
+	"order": 16388,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kRightJst",
+		"backcolor": "kColorBackFill",
+		"backpattern": 15,
+		"bordercolor": "RGB(0,0,0)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFtopBottom",
+		"effect": "kBorderNone",
+		"fieldstyle": "CtrlLabel",
+		"font": 3,
+		"fontsize": 0,
+		"fontstyle": "kPlain",
+		"forecolor": "kColorForeFill",
+		"height": 13,
+		"left": 280,
+		"linestyle": 1,
+		"objlink": 0,
+		"text": "task connect",
+		"textcolor": "kColorWindowText",
+		"top": 335,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": true,
+		"width": 88
+	}
+}

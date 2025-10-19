@@ -1,0 +1,4 @@
+On evClick
+	Calculate irTravelDetails.TP_MUSIC_PLAYER as ilMusic.RFO_VALUE
+	Do method DataModified
+	Do $cinst.$behaviour()

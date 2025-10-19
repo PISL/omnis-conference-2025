@@ -1,0 +1,21 @@
+On evClick ## Event Parameters - pRow ( Itemreference )
+	# all data including modified data held in memory until Saved
+	
+	# RSM added 28-SEP-20
+	If ilOptionList.code='LIB_INIT'
+		# there is no subSelect list
+	Else If ilOptionList.code='DB_CONNECT'
+		Do ilEditdata.$unfilter(0)
+	Else If ilOptionList.code='SITE_CONFIG'
+		# there is no subSelect list
+	End If
+	
+	Calculate [ilOptionList.[inCurrentOption].listVar] as ilEditdata
+	
+	# now change the display option
+	Calculate inCurrentOption as ilOptionList.$line
+	
+	Do method WhichSpecialActions
+	Do method SubSelection
+	
+	Do $cinst.$behaviour()

@@ -1,0 +1,29 @@
+{
+	"ident": 1102,
+	"order": 20,
+	"objtype": "kBackComponent",
+	"componentlib": "StringTable",
+	"componentctrl": "String Label",
+	"properties": {
+		"::text": "PAX count",
+		"align": "kLeftJst",
+		"backcolor": "kColorWindow",
+		"backpattern": 1,
+		"componentinfo": {
+
+		},
+		"fieldstyle": "reportMedium",
+		"font": 3,
+		"fontsize": 8,
+		"fontstyle": "kPlain",
+		"forecolor": "kBlack",
+		"height": 0.422,
+		"left": 0.478,
+		"lineno": 15,
+		"lineoffset": 0.0,
+		"rowid": "label_PAXcount",
+		"textcolor": "kColorWindowText",
+		"userinfo": "",
+		"width": 2.014
+	}
+}

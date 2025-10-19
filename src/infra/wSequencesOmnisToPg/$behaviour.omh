@@ -1,0 +1,26 @@
+If ilMaxValues.$line>0&ilSequences.$line>0
+	If ilMaxValues.common=ilSequences.common
+		If ilMaxValues.value=ilSequences.value
+			Calculate lbEnabledAlterSequence as kFalse
+		Else
+			Calculate lbEnabledAlterSequence as kTrue
+		End If
+	Else
+		Calculate lbEnabledAlterSequence as kFalse
+	End If
+Else
+	Calculate lbEnabledAlterSequence as kFalse
+End If
+Calculate $cinst.$objs.pbAlterSequence.$enabled as lbEnabledAlterSequence
+
+If ioSession.$state=kSessionStateLoggedOn
+	Calculate $cinst.$objs.pbLogin.$text as 'connected'
+	Calculate $cinst.$objs.pbLogin.$enabled as kFalse
+Else
+	Calculate $cinst.$objs.pbLogin.$text as 'logon'
+	Calculate $cinst.$objs.pbLogin.$enabled as (icLogin<>''&icPassword<>'')
+End If
+
+Calculate $cinst.$objs.pbRefresh.$enabled as kTrue
+Calculate $cinst.$objs.pbCompare.$enabled as kTrue
+Calculate $cinst.$objs.pbAlign.$enabled as (ilMaxValues.$linecount>0&ilSequences.$linecount>0)&(ilMaxValues.$linecount<>ilSequences.$linecount)

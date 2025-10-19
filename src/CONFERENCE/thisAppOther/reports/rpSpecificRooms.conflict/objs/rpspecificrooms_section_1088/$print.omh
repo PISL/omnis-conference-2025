@@ -1,0 +1,19 @@
+Calculate #1 as 0 ## no blank line
+If ilData.$line>1
+	If ilData.DG_ROOM_ASSIGNMENT<>''
+		If ilData.DG_ROOM_ASSIGNMENT=ilData.[ilData.$line+1].DG_ROOM_ASSIGNMENT
+			# no blank line
+		Else
+			Calculate #1 as 1 ## blank line
+		End If
+	Else
+		# no blank line
+		# unless there is a change in date
+		If ilData.Arriving=ilData.[ilData.$line+1].Arriving
+			# no blank line
+		Else
+			Calculate #1 as 1 ## blank line
+		End If
+	End If
+End If
+Do default

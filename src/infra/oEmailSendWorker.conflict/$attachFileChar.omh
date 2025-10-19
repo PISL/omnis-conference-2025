@@ -1,0 +1,16 @@
+If len(prefCharContent)=0
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('file content is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+If isclear(pcFilename)
+	Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('filename is empty'))
+	Calculate lbErrorDetected as kTrue
+End If
+If lbErrorDetected
+	Quit method kFalse
+End If
+
+# assumption here is level 1
+Do ilMimeAppend.$add(1,'text','plain',pcFilename,prefCharContent)
+
+Quit method kTrue

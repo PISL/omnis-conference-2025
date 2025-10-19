@@ -1,0 +1,211 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	# prepare some data for the message text
+	Do $defineList(llConferences,'CONFERENCE.tConference')
+	Do llConferences.$fetch_all()
+	Do llConferences.$search($ref.CF_TITLE_CODE='EO2024',1,0,0,0)
+	# Calculate llConferences.$line as 1
+	
+	Do $defineList(lrArrangement,'CONFERENCE.tArrangements')
+	Do lrArrangement.$reportArrangementsByRoom(llConferences.CF_SEQ) Returns llArrangements
+	
+	Calculate lbFormatBootstrap as kTrue
+	# Calculate lbFormatBootstrap as kFalse
+	
+	Calculate lcTimeFormat as 'T:H:N' ## either T:H:N (0-24)  or  T:h:N (0-12 without AMPM)   or  T:h:N A (0-12 with AMPM)
+	
+	If lbFormatBootstrap
+		Calculate lcRowStart as '<div class="row">'
+		# Calculate lcRowEnd as '</div> !! row' ## use this for debugging
+		Calculate lcRowEnd as '</div>'
+		
+		Calculate lcCellStart as '' ## requires a call to method bootstrapColSize
+		# Calculate lcCellEnd as '</div> !! cell' ## use this for debugging
+		Calculate lcCellEnd as '</div>'
+	Else
+		Calculate lcRowStart as '<tr>'
+		Calculate lcRowEnd as '</tr>'
+		Calculate lcCellStart as '<td>'
+		Calculate lcCellEnd as '</td>'
+	End If
+	
+	# There are two levels of breakpoint in the list:
+	# first is change of date
+	# the second is change of time (within the same date)
+	Begin text block
+	If not(lbFormatBootstrap)
+		Line:<table>
+	End If
+	
+	While $Loop(llArrangements)
+		If pos('Plenary',llArrangements.TPC_TITLE)
+			# Breakpoint
+		End If
+		
+		If llArrangements.$line=1
+			Calculate lnTableColNo as 1
+			Calculate lbNewDate as kTrue
+			Calculate lbNewTime as kTrue
+		Else
+			If llArrangements.ARR_DATE<>llArrangements.[llArrangements.$line-1].ARR_DATE
+				# breakpoint 1    new day of week
+				Calculate lbNewDate as kTrue
+				Calculate lbNewTime as kTrue
+			End If
+			If llArrangements.ARR_STARTTIME<>llArrangements.[llArrangements.$line-1].ARR_STARTTIME
+				# breakpoint 2    new time within the day
+				Calculate lbNewTime as kTrue
+			End If
+		End If
+		
+		If lbNewDate
+			If lbFormatBootstrap
+				Do method bootstrapColSize (lnColsFor1) Returns lcCellStart
+			End If
+			Line:[lcRowStart][lcCellStart]
+			Line:<br>
+			Line:<p>[jst(llArrangements.ARR_DATE,'D:w D m CY')]</p>
+			Line:[lcCellEnd][lcRowEnd][kCr]
+			
+			# close off last table,  line with full date
+			# create new table
+			Calculate lnTableColNo as 1
+		End If
+		If lbNewTime
+			Calculate lnTableColNo as 1
+		End If
+		
+		If lnTableColNo=1
+			# new table for arrangements for this day
+			# firstly determine which rooms are being used
+			If lbNewDate
+				Calculate lnMaxSessionsAtTimeInDay as 0
+				# check for nuber of eventa starting on this DATE but not time.
+				# If there is a time slot with more than one event then we will display the rooms as a heading.
+				Calculate llTemp as llArrangements
+				# Do llTemp.$search($ref.ARR_DATE=llArrangements.ARR_DATE&$ref.ARR_STARTTIME=llArrangements.ARR_STARTTIME,1,0,1,0)
+				Do llTemp.$search($ref.ARR_DATE=llArrangements.ARR_DATE,1,0,1,0)
+				Do llTemp.$remove(kListKeepSelected)
+				Calculate llTempSaveDay as llTemp
+				
+				# See how many arrangements are on at each time slot.
+				Calculate llTempStartTimes as llTempSaveDay
+				Do llTempStartTimes.$cols.ARR_STARTTIME.$removeduplicates(kTrue)
+				Calculate llTempStartTimes.$line as 0
+				While $Loop(llTempStartTimes)
+					Calculate llTemp as llTempSaveDay
+					Do llTemp.$search($ref.ARR_STARTTIME=llTempStartTimes.ARR_STARTTIME,1,0,1,1)
+					Do llTemp.$remove(kListKeepSelected)
+					If llTemp.$linecount>lnMaxSessionsAtTimeInDay
+						Calculate lnMaxSessionsAtTimeInDay as llTemp.$linecount
+						Calculate llNoOfSessionsMaxTimeSlot as llTemp
+					End If
+				End While
+				# There should be 1 to 3 lines left in the list - one for each room being used
+				
+				# present the start of the table
+				
+				# heading row
+				Line:[lcRowStart]
+				
+				If lbFormatBootstrap
+					Do method bootstrapColSize (lnColsForTime) Returns lcCellStart
+				End If
+				Line:[lcCellStart]<p>Time</p>[lcCellEnd]
+				
+				# now provide arrangement details
+				If lnMaxSessionsAtTimeInDay=3
+					If lbFormatBootstrap
+						Do method bootstrapColSize (lnColsFor3) Returns lcCellStart
+					End If
+					Line:[lcCellStart] <p>[llNoOfSessionsMaxTimeSlot.1.FCY_NAME]</p> [lcCellEnd]
+					Line:[lcCellStart] <p>[llNoOfSessionsMaxTimeSlot.2.FCY_NAME]</p> [lcCellEnd]
+					Line:[lcCellStart] <p>[llNoOfSessionsMaxTimeSlot.3.FCY_NAME]</p> [lcCellEnd]
+					
+				Else If lnMaxSessionsAtTimeInDay=2
+					If lbFormatBootstrap
+						Do method bootstrapColSize (lnColsFor2) Returns lcCellStart
+					End If
+					Line:[lcCellStart] <p>[llNoOfSessionsMaxTimeSlot.1.FCY_NAME]</p> [lcCellEnd]
+					Line:[lcCellStart] <p>[llNoOfSessionsMaxTimeSlot.2.FCY_NAME]</p> [lcCellEnd]
+					
+				Else If lnMaxSessionsAtTimeInDay=1
+					If lbFormatBootstrap
+						Do method bootstrapColSize (lnColsFor1) Returns lcCellStart
+					End If
+					Line:[lcCellStart]<p>[llNoOfSessionsMaxTimeSlot.1.FCY_NAME]</p>[lcCellEnd]
+					
+				Else
+					Breakpoint
+				End If
+				
+				Line:[lcRowEnd][kCr]
+				
+				Calculate lbNewDate as kFalse
+			End If
+			
+			If lbNewTime
+				# check for number of events starting at this time
+				Calculate llSessionsThisTimeSlot as llArrangements
+				Do llSessionsThisTimeSlot.$search($ref.ARR_DATE=llArrangements.ARR_DATE&$ref.ARR_STARTTIME=llArrangements.ARR_STARTTIME,1,0,1,0)
+				Do llSessionsThisTimeSlot.$remove(kListKeepSelected)
+				# There should be 1 to 3 lines left in the list - one for each room being used
+				
+				If lbFormatBootstrap
+					Do method bootstrapColSize (lnColsForTime) Returns lcCellStart
+				End If
+				Line:[lcRowStart]
+				Line:[lcCellStart]<p>[jst(llArrangements.ARR_STARTTIME,lcTimeFormat)]</p>[lcCellEnd]
+				
+				Calculate lbNewTime as kFalse
+			End If
+		End If ## lbNewTime
+		
+		If lbFormatBootstrap
+			If llSessionsThisTimeSlot.$linecount=3
+				Do method bootstrapColSize (lnColsFor3) Returns lcCellStart
+			Else If llSessionsThisTimeSlot.$linecount=2
+				Do method bootstrapColSize (lnColsFor2) Returns lcCellStart
+			Else If llSessionsThisTimeSlot.$linecount=1
+				Do method bootstrapColSize (lnColsFor1) Returns lcCellStart
+			Else
+				Breakpoint
+			End If
+		End If
+		
+		Line:[lcCellStart]
+		# There are two different formats for presenting events.
+		# 1. There are more than one event at the same time in which case the event will show under the name of the room.
+		# 2. There is a time of day when only one event is on, in which case the room name must be included in the description.
+		If llSessionsThisTimeSlot.$linecount=3|llSessionsThisTimeSlot.$linecount=2
+			Line:     <p>[llArrangements.PSN_FIRST_NAME] [llArrangements.PSN_SURNAME]</p>
+			Line:     <p>[llArrangements.TPC_TITLE]</p>
+			Line:     <p>[llArrangements.TPC_ABSTRACT]</p>
+		Else
+			If llArrangements.PSN_SURNAME<>''&left(llArrangements.PSN_SURNAME,1)<>'_'
+				Line:     <p>[llArrangements.PSN_FIRST_NAME] [llArrangements.PSN_SURNAME]</p>
+			End If
+			If llArrangements.FCY_NAME<>''
+				Line:     <p>[llArrangements.FCY_NAME]</p>
+			End If
+			Line:     <p>[llArrangements.TPC_TITLE]</p>
+			Line:     <p>[llArrangements.TPC_ABSTRACT]</p>
+		End If
+		
+		Line:[lcCellEnd]
+		
+		Calculate lnTableColNo as lnTableColNo+1
+		
+		If lnTableColNo>llSessionsThisTimeSlot.$linecount
+			# end of row detected
+			Line:[lcRowEnd][kCr]
+		End If
+	End While
+	
+	If not(lbFormatBootstrap)
+		# Line:[lcRowEnd][kCr]
+		Line:</table>
+	End If
+	
+	End text block
+	# irefAsyncPdf
+	Get text block #S1

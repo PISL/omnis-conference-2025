@@ -1,0 +1,14 @@
+Do inherited ## populates delegate info into ilPreparation
+
+If pnRecordSpacing<>0
+	Calculate $cinst.$recordspacing as pnRecordSpacing
+End If
+
+# Calculate iList as pList
+Calculate ilData as ilPreparation
+
+# and now the printing loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

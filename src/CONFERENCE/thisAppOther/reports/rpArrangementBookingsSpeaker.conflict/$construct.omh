@@ -1,0 +1,23 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+Calculate ilData as plData
+
+Calculate icReportTitle as con('Session subset by speaker ',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+# print loop
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If ilData.$line>1
+		If ilData.SpeakerSort<>ilData.[ilData.$line-1].SpeakerSort
+			Do $cinst.$printsection(kSubtotalhead1)
+		End If
+		If ilData.ARR_SEQ<>ilData.[ilData.$line-1].ARR_SEQ
+			Do $cinst.$printsection(kSubtotalhead2)
+		End If
+	End If
+	
+	Do $cinst.$printrecord()
+End While

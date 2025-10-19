@@ -1,0 +1,10 @@
+Do ioDBA.$alterSequence(ilSequences.C2,pnValue) Returns lcError
+If lcError<>''&low(lcError)<>'ok'
+	# OK message FAILED {[lcError]}
+	# Calculate $cinst.$objs.pbAlterSequence.$errortext as lcError
+	Calculate icDbaResult as lcError
+Else
+	Calculate icDbaResult as lcError
+	Calculate lbOK as kTrue
+End If
+Quit method lbOK

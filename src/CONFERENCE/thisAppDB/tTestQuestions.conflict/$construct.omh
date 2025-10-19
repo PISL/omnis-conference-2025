@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TSQ_'
+Calculate icPrimarykey as 'TSQ_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TSQ_TST_REF'
+
+Do inherited

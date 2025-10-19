@@ -1,0 +1,24 @@
+# Enter your initialization code here
+Do $DefineList(irGeoLookup,'infra.tGeoLookup')
+Do $DefineList(iruaLogin,'tuaLogAccess')
+
+Do $DefineList(ilTaskStats,'infra.tsysTaskStats')
+Do ilTaskStats.$addCalculatedCols()
+Do ilTaskStats.$cols.$add(irGeoLookup)
+Do ilTaskStats.$cols.$add(iruaLogin)
+
+Do ilFilters.$cols.$add('code',kCharacter,kSimplechar,15)
+Do ilFilters.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilFilters.$cols.$add('count',kInteger,k32bitint)
+
+Do $cinst.$objs.TaskStats.$setcolumnalign(3,kRightJst)
+Do $cinst.$objs.TaskStats.$setcolumnalign(4,kRightJst)
+Do $cinst.$objs.TaskStats.$setcolumnalign(5,kRightJst)
+Do $cinst.$objs.TaskStats.$setcolumnalign(6,kRightJst)
+
+Calculate idFrom as #D
+Calculate idTo as #D
+
+Do method FetchData
+
+Do $cinst.$behaviour()

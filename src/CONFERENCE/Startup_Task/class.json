@@ -1,7 +1,7 @@
 {
 	"classtype": "kTask",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
 	"internalversion": 57,
 	"superclass": "infra.tkSuper",
 	"tvardefs": [
@@ -68,7 +68,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2025-05-07 10:51:43",
+		"moddate": "2025-10-17 11:49:23",
 		"showascheckedout": false,
 		"userinfo": "",
 		"vcsrevision": 0,

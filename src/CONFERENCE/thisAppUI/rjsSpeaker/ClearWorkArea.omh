@@ -1,4 +1,4 @@
-If inCurrentTab=cnTabDelegate
+If inCurrentTab=cnTabDGPerson
 	Do irCurrentRecord.$clear()
 	
 	Calculate ilStatus.$line as 0

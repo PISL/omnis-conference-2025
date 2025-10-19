@@ -1,0 +1,7 @@
+If irefContainer
+	Do irefContainer.$behaviour(icMode) ## set the TabControl $enabled
+End If
+
+Do inherited
+
+Do $cinst.$objs.ilDisplayRecords.$visible.$assign(kFalse) ## hide the superclass list box

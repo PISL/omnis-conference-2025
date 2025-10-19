@@ -1,0 +1,29 @@
+# This method was originally in rtWebSales, which is where it belongs, but copied here in order for page content from HTMLp.wPageContent to be generated.
+If pnStackDepth>0
+	If pnDelimiter=1
+		Calculate lcDepthMark as '. '
+	Else If pnDelimiter=2
+		Calculate lcDepthMark as '> '
+	Else If pnDelimiter=3
+		Calculate lcDepthMark as '< '
+	End If
+	
+	Repeat
+		Calculate lnCount as lnCount+1
+		Calculate lcMessagePrefix as con(lcMessagePrefix,lcDepthMark)
+	Until lnCount>=pnStackDepth
+End If
+
+If pnDelimiter=1
+	# typical mid method message - new line
+	Calculate lcNewLine as con(kCr)
+Else If pnDelimiter=2
+	# method start message - clear blank line before announcement
+	Calculate lcNewLine as con(kCr,kCr)
+Else If pnDelimiter=3
+	# method end message - simple new line
+	Calculate lcNewLine as con(kCr)
+	Calculate lcPostLine as kCr
+End If
+
+Calculate trPageTrace.PT_TRACE as con(trPageTrace.PT_TRACE,pick(trPageTrace.PT_TRACE<>'','',lcNewLine),lcMessagePrefix,pcMessage,lcPostLine)

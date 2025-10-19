@@ -1,0 +1,19 @@
+On evClick
+	Do ilAuthorisedForms.$search($ref.code='FORM_CUST',1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate tlAuthorisedForms.$line as ilAuthorisedForms.$line
+		# prepare parameters to be picked up by new form
+		Calculate trParameters as #NULL
+		Do trParameters.$cols.$add('instruction',kCharacter,kSimplechar,15)
+		Do trParameters.$cols.$add('Delegate',kRow)
+		
+		Calculate trParameters.instruction as 'NEW_CUST'
+		Calculate trParameters.Delegate as irCurrentRecord
+		
+		# unfortunately, $changeOfForm will re-write the trParameters row
+		Do $changeOfForm()
+		Calculate trCurrentForm as tlAuthorisedForms
+	End If
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

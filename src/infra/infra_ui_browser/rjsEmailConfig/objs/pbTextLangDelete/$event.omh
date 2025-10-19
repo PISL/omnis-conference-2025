@@ -1,8 +1,17 @@
 On evClick
-	Calculate $cinst.$objs.pbTextLangDelete.$errortext as ''
+	Do $cinst.$clientcommand('clearerrors')
 	
 	If ilLanguages.ELT_LANG=irCurrentRecord.ELC_DEFAULT_LANG
 		# user cannot delete record if it represents the default language of the email config record
+		# However if there is a duplicate language entry, then the delete can go ahead.
+		Calculate lnLine as ilLanguages.$line
+		Calculate lcLangToTest as ilLanguages.ELT_LANG
+		Do ilLanguages.$search($ref.ELT_LANG-lcLangToTest,1,0,1,0)
+		If tot(ilLanguages,#LSEL)>1
+			
+		End If
+		Calculate ilLanguages.$line as lnLine
+		
 		Calculate $cinst.$objs.pbTextLangDelete.$errortext as 'Cannot delete default language record.'
 	Else
 		Do toStrings.$StringTableEntry('MSG_WARN_LANG_DEL',lcMessage,'Are you sure you want to delete this email text record?.')

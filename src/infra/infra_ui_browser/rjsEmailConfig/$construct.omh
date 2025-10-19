@@ -22,6 +22,8 @@ Calculate icFormIntro as $cell(clLabels,'objName','ELC_Intro','label')
 
 Do method UserPermissions
 
+Do $cinst.$SetFormColours()
+
 Do ilPriority.$cols.$add('code',kInteger,kShortint)
 Do ilPriority.$cols.$add('desc',kCharacter,kSimplechar,100)
 Do ilPriority.$add(kOW3msgPriorityLowest,'lowest')
@@ -70,10 +72,25 @@ Do $cinst.$superFoundList('configurations','DisplayName')
 Do $cinst.$superText(kTrue,'search text')
 # Do $cinst.$superSearchList1()
 
-Calculate $cinst.$objs.TabControl_ELC.$currenttab as 1
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_ELC.$currenttab as inCurrentTab
 
 Calculate $cinst.$objs.PagedPane.$bordercolor as rgb(255,0,0)
 Calculate $cinst.$objs.PagedPane.$linestyle as kLineSolidWidth2
+# trFormColours.WORKAREA has attributes assigned to greyBackground in super class
+# Calculate lrAttributes as OJSON.$jsontolistorrow(trFormColours.WORKAREA)
+# For lnCount from 1 to lrAttributes.$colcount step 1
+# Calculate lcProperty as lrAttributes.$cols.[lnCount].$name
+# Calculate $cinst.$objs.PagedPane.$[lcProperty] as eval(lrAttributes.[lcProperty])
+# End For
+
+# There are some debugging fields on pane 2
+Calculate $cinst.$objs.icMode.$visible as sys(2)=17
+Calculate $cinst.$objs.ELT_SEQ.$visible as sys(2)=17
+Calculate $cinst.$objs.ELT_LANG.$visible as sys(2)=17
+Calculate $cinst.$objs.ELT_MCOUNT.$visible as sys(2)=17
+Calculate $cinst.$objs.ELT_MWHEN.$visible as sys(2)=17
+Calculate $cinst.$objs.langModified.$visible as sys(2)=17
 
 Do $cinst.$container().$initToolsMenu() Returns ilMenuCommands ## use defaults
 Do ilMenuCommands.$add('FACT_DUP',1201)
@@ -84,5 +101,9 @@ Do ilSelectLangMaster.$cols.$findname('DisplayName') Returns liColRef
 If liColRef
 	Calculate $cinst.$objs.ilSelectLangChoose.$listcolumn as liColRef.$ident
 End If
+
+Calculate inMinSearchString as 2 ## search on third character onward
+Calculate inMaxReturnCount as 20
+Calculate $cinst.$objs.icMode.$visible as sys(2)=17
 
 Do $cinst.$behaviour()

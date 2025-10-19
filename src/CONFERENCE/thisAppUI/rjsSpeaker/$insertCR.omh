@@ -2,15 +2,24 @@
 Calculate icDisplayMessage as ''
 Do method ClearWorkArea
 
-If inCurrentTab=cnTabDelegate
+If inCurrentTab=cnTabDGPerson
+	# This is dangerous.  Creating a delegate record does not cater for the invoice and invoice link records.
 	If irUserRights.canInsert&icMode='' ## taken from $behaviour()
 		Calculate icMode as 'ID' ## insert delegate
 		Calculate irCurrentRecord.DG_CF_REF as ilSearch1.CF_SEQ
 	End If
 	
-Else If inCurrentTab=cnTabTopics
+Else If inCurrentTab=cnTabTopicsConf
 	If irUserRights.canInsert&icMode=''&irCurrentRecord.DG_SEQ>0 ## taken from $behaviour()
-		Calculate icMode as 'IP' ## insert PAX
+		# Calculate icMode as 'IP' ## insert PAX
+	End If
+	
+Else If inCurrentTab=cnTabTopicEditor
+	If irUserRights.canInsert&icMode=''&irCurrentRecord.PSN_SEQ>0
+		Calculate icMode as 'IT' ## insert Topic
+		Do irTopic.$clear()
+		Calculate irTopic.TPC_GO_REF as trGroupOrg.GO_SEQ
+		Calculate irTopicOrig as irTopic
 	End If
 	
 Else If inCurrentTab=cnTabTextForClipboard

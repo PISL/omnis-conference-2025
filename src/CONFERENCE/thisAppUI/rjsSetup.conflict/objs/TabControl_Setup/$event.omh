@@ -1,0 +1,7 @@
+# cannot Execute on Client as we need to set trParameters for form rjsbcExtOrgs
+On evTabSelected
+	Calculate inCurrentTab as pTabNumber
+	Do method $adjustToolsMenu ## No use first time around.  $init in subform takes up the slack.
+	If inCurrentTab=2|inCurrentTab=3 ## rjsbcExtOrgs
+		Do $cinst.$setFormParams()
+	End If

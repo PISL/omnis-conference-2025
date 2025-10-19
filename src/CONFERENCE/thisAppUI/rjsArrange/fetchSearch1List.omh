@@ -25,3 +25,5 @@ End If
 
 Do ilFacilities.$fetchForConference($cinst.ilSearch1.CF_SEQ) ## ilSearch1.CF_SEQ
 Do ilFacilities.$sort($ref.FCY_TYPE,0,$ref.FCY_NAME,0)
+Calculate ilFacilitiesToDrag as ilFacilities
+Do ilFacilitiesToDrag.$sort($ref.FCY_NAME,0)

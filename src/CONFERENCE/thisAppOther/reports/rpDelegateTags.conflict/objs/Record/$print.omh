@@ -1,0 +1,16 @@
+If ilData.DG_ROLE_1='SPEAKER' ## was DG_STATUS
+	Do $cinst.$objs.DG_ROLE_1.$textcolor.$assign(kRed)
+Else If ilData.DG_ROLE_1='OMNIS_EVAN'
+	Do $cinst.$objs.DG_ROLE_1.$textcolor.$assign(kDarkGreen)
+Else If ilData.DG_ROLE_1<>'' ## tiger logic
+	Do $cinst.$objs.DG_ROLE_1.$textcolor.$assign(kBlue)
+End If
+If ilData.DG_ROLE_2='SPEAKER' ## was DG_STATUS
+	Do $cinst.$objs.DG_ROLE_2.$textcolor.$assign(kRed)
+Else If ilData.DG_ROLE_2='OMNIS_EVAN'
+	Do $cinst.$objs.DG_ROLE_2.$textcolor.$assign(kDarkGreen)
+Else If ilData.DG_ROLE_2<>'' ## tiger logic
+	Do $cinst.$objs.DG_ROLE_2.$textcolor.$assign(kBlue)
+End If
+
+Do default

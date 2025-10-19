@@ -1,0 +1,9 @@
+If icSearch<>''
+	If len(icSearch)>=2
+		Do method FetchDisplayList (icSearch)
+	End If
+Else
+	Do method FetchDisplayList
+End If
+
+Do $cinst.$behaviour()

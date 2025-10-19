@@ -1,0 +1,3 @@
+# called from super class' $construct
+# Note to developer:  this also means that handleMenuCall must be overloaded to accomodate the extra items
+Do ilMenuCommands.$add('FACT_MEMB',1203)

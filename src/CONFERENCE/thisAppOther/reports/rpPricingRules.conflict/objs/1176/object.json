@@ -1,0 +1,35 @@
+{
+	"ident": 1176,
+	"order": 10,
+	"objtype": "kText",
+	"properties": {
+		"align": "kCenterJst",
+		"componentinfo": {
+
+		},
+		"desgroup": 0,
+		"deslock": false,
+		"fieldstyle": "reportSmall",
+		"floating": false,
+		"font": 6,
+		"fontextra": 0,
+		"fontsize": 10,
+		"fontstyle": "kPlain",
+		"height": -1,
+		"left": 3.193,
+		"lineno": 4,
+		"lineoffset": 0.0,
+		"printontop": false,
+		"readingordergrp": 0,
+		"readingorderindex": 0,
+		"text": {
+			"type": 14,
+			"calc": "active"
+		},
+		"textcolor": "RGB(8,0,0)",
+		"userinfo": "",
+		"vertextend": false,
+		"visible": true,
+		"width": 0.457
+	}
+}

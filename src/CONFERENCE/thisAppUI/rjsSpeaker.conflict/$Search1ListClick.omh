@@ -1,0 +1,13 @@
+# Do ilPersons.$clear()
+# Do ilPersons.$fetchConfAttendees(ilSearch1.CF_SEQ)
+# While $Loop(ilPersons)
+# Do ilPersons.$DisplayName()
+# End While
+
+Do method fetchDisplayList
+Calculate ilDisplayRecords.$line as 1
+Do method $displayListClick
+
+Calculate trCurrentConference as ilSearch1
+
+Do $cinst.$behaviour

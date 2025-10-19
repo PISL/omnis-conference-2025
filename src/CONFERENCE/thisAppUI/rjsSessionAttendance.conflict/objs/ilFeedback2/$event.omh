@@ -1,0 +1,9 @@
+On evClick
+	# ilFeedbackValues.$search($ref.code=pCommandID,1,0,0,0)
+	If ilFeedback.AFB_SCORE>0
+		Do ilFeedbackValues.$search($ref.score=ilFeedback.AFB_SCORE,1,0,0,0) Returns lbFound
+	Else
+		Do ilFeedbackValues.$search($ref.score=0,1,0,0,0) Returns lbFound ## no comment / null
+	End If
+	
+	Calculate inFeedback as ilFeedbackValues.$line

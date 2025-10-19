@@ -1,0 +1,54 @@
+# for each arangement present attendance and feedback
+Do $defineList(llAttendance,'tArrAttendee')
+
+Do llAttendance.$summaryStatistics(prConference.CF_SEQ) Returns llCounts
+Do llAttendance.$reportFeedback(prConference.CF_SEQ) Returns llFeedback
+
+# we are reporting by Speaker so sort by speaker and arrangement date
+Do llCounts.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0,$ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0)
+Do llFeedback.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0,$ref.ARR_DATE,0,$ref.ARR_DAYNO,0,$ref.ARR_STARTTIME,0)
+
+Do llCounts.$cols.$add(llFeedback.ARA_ANON)
+
+Do llCounts.$cols.$add('dataSource',kCharacter,kSimplechar,20)
+Do llCounts.$sendall($ref.dataSource.$assign('ATT'))
+Do llCounts.$cols.$add('feedbackText',kCharacter,kSimplechar,1000)
+Do llCounts.$cols.$add('displayNameSpeaker',kCharacter,kSimplechar,100)
+Do llCounts.$cols.$add('displayNameFeedback',kCharacter,kSimplechar,100)
+Do llCounts.$cols.$add('percent',kInteger,kShortint)
+
+Do llCounts.$sendall($ref.displayNameSpeaker.$assign(con(llCounts.PSN_SURNAME,', ',llCounts.PSN_FIRST_NAME)))
+Do llCounts.$sendall($ref.percent.$assign(llCounts.countAttended/llCounts.ARR_MAX_BOOKINGS*100),llCounts.ARR_MAX_BOOKINGS>0)
+
+# remove the hidden sessions
+Do llCounts.$search(left($ref.PSN_SURNAME,1)='_',1,0,1,0)
+Do llCounts.$remove(kListDeleteSelected)
+
+# there could be various feedback criteria but at the moment only ine is used
+Do $ctask.toValues.$initOrg('SPKR_FBACK') Returns llCriteria
+
+# the feedback scores are a bit cack handed, defined in rjsSessionAttendance.initFeedbackValues
+#       20=poor, 30=good, 40=very good, 50=excellent
+Do llScores.$cols.$add('code',kCharacter,kSimplechar,10)
+Do llScores.$cols.$add('desc',kCharacter,kSimplechar,20)
+Do llScores.$add(20,'poor')
+Do llScores.$add(30,'good')
+Do llScores.$add(40,'very good')
+Do llScores.$add(50,'excellent')
+
+Calculate llFeedback.$line as 0
+While $Loop(llFeedback)
+	Do llCounts.$search($ref.ARR_SEQ=llFeedback.ARR_SEQ,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate lcSpeaker as con(llFeedback.PSN_SURNAME_SPKR,', ',llFeedback.PSN_FIRST_NAME_SPKR)
+		Calculate lcDelegate as pick(llFeedback.ARA_ANON,con(llFeedback.PSN_SURNAME_DG,', ',llFeedback.PSN_FIRST_NAME_DG),'anonymous')
+		
+		# add line for feedback entry
+		Do llCounts.$addafter(llCounts.$line,llFeedback.ARR_SEQ,#NULL,#NULL,#NULL,#NULL,con($cell(llCriteria,'RFO_VALUE',llFeedback.AFB_RFO_VALUE,'RFO_DESC'),': ',$cell(llScores,'code',llFeedback.AFB_SCORE,'desc')),llFeedback.PSN_SURNAME_DG,llFeedback.PSN_FIRST_NAME_DG,#NULL,llFeedback.ARA_ANON,'FB',llFeedback.ARA_COMMENTS,lcSpeaker,lcDelegate)
+	Else
+		# ignore this situation.  Some people put comments on sessions like the Gala Dinner and we have removed the reference to those Arrangements above
+		
+	End If
+End While
+
+Calculate ilData as llCounts

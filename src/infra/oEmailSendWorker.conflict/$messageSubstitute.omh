@@ -1,0 +1,212 @@
+# prExternalData is a row with columns of rows that contain data from the database or other values in memory.
+Calculate icErrors as ''
+
+# we need to be careful here
+# If the expression within [[...]] refers to values from another column within prExternalData
+# we have a problem parsing multiple times for each column.
+
+If kTrue ## this mod is designed to fix the issue referred to above
+	# 2023-08-22 new code that does away with the need for llColumns
+	
+	# build lRow from all rows in prExternal data
+	For lnColNoExternalData from 1 to prExternalData.$colcount step 1
+		Calculate lrTemp as prExternalData.C[lnColNoExternalData]
+		For lnColNoRow from 1 to lrTemp.$colcount step 1
+			Set reference lrefColumn to lrTemp.$cols.[lnColNoRow]
+			Do lRow.$cols.$add(lrefColumn.$name,lrefColumn.$coltype,lrefColumn.$colsubtype,lrefColumn.$colsublen)
+			Calculate lRow.[lrefColumn.$name] as lrTemp.[lrefColumn.$name]
+		End For
+	End For
+	
+	# parse the message text and resolve all [[...]] content
+	# 2023-06-29 GRS added ELT_SUBJECT
+	For lnCount from 1 to 7 step 1
+		Calculate lcMessage as ''
+		
+		If lnCount=1
+			If pcRefText<>''
+				Calculate lcTextToParse as pcRefText
+			Else
+				Calculate lcTextToParse as irConfigEmail.ELT_MSG_TEXT
+			End If
+		Else If lnCount=2
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_HTML
+		Else If lnCount=3
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_PFIX_TEXT
+		Else If lnCount=4
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_SFIX_TEXT
+		Else If lnCount=5
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_PFIX_HTML
+		Else If lnCount=6
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_SFIX_HTML
+		Else If lnCount=7
+			Calculate lcTextToParse as irConfigEmail.ELT_SUBJECT
+		End If
+		
+		If pos('pRow.',lcTextToParse)<>''
+			Calculate lcTextToParse as replaceall(lcTextToParse,'pRow.','lRow.')
+		End If
+		
+		While lcTextToParse<>''
+			Calculate lcChunk as ''
+			Calculate lcExpression as ''
+			
+			# locate [[...]] references
+			If pos('[[',lcTextToParse)
+				# extract the expression keeping before and after text in tact
+				Calculate lcChunk as mid(lcTextToParse,1,pos('[[',lcTextToParse)-1)
+				Calculate lcTextToParse as mid(lcTextToParse,pos('[[',lcTextToParse),kFetchAll)
+				Calculate lcExpression as mid(lcTextToParse,3,pos(']]',lcTextToParse)-1-2)
+				Calculate lcTextToParse as mid(lcTextToParse,pos(']]',lcTextToParse)+2,kFetchAll)
+			Else
+				# no expressions left to resolve
+				Calculate lcChunk as lcTextToParse
+				Calculate lcTextToParse as ''
+			End If
+			
+			If lcExpression<>''
+				# lcExpression may be a function so don't look for an exact match
+				
+				Test for valid calculation evalf(lcExpression)
+				If flag true
+					Calculate lcMessage as con(lcMessage,lcChunk,evalf(lcExpression))
+				Else
+					Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('expression ',kDq,lcExpression,kDq,' could not be evaluated.'))
+				End If
+				
+			Else
+				Calculate lcMessage as con(lcMessage,lcChunk)
+			End If
+		End While
+		
+		# store the resolved message back in irConfigEmail
+		If lnCount=1
+			If pcRefText<>''
+				Calculate pcRefText as lcMessage
+				Break to end of loop
+			Else
+				Calculate irConfigEmail.ELT_MSG_TEXT as lcMessage
+			End If
+		Else If lnCount=2
+			Calculate irConfigEmail.ELT_MSG_HTML as lcMessage
+		Else If lnCount=3
+			Calculate irConfigEmail.ELT_MSG_PFIX_TEXT as lcMessage
+		Else If lnCount=4
+			Calculate irConfigEmail.ELT_MSG_SFIX_TEXT as lcMessage
+		Else If lnCount=5
+			Calculate irConfigEmail.ELT_MSG_PFIX_HTML as lcMessage
+		Else If lnCount=6
+			Calculate irConfigEmail.ELT_MSG_SFIX_HTML as lcMessage
+		Else If lnCount=7
+			Calculate irConfigEmail.ELT_SUBJECT as lcMessage
+		End If
+	End For
+	
+Else ## this is the original code
+	# build a list of column names from each row passed in within prExternalData
+	Do llColumns.$cols.$add('columnNumber',kInteger,k32bitint)
+	Do llColumns.$cols.$add('columnName',kCharacter,kSimplechar,255)
+	
+	For lnColNoExternalData from 1 to prExternalData.$colcount step 1
+		Calculate lRow as prExternalData.C[lnColNoExternalData]
+		For lnColNoRow from 1 to lRow.$colcount step 1
+			Do llColumns.$add(lnColNoExternalData,lRow.$cols.[lnColNoRow].$name)
+		End For
+	End For
+	
+	# parse the message text and resolve all [[...]] content
+	# 2023-06-29 GRS added subject
+	For lnCount from 1 to 7 step 1
+		Calculate lcMessage as ''
+		
+		If lnCount=1
+			If pcRefText<>''
+				Calculate lcTextToParse as pcRefText
+			Else
+				Calculate lcTextToParse as irConfigEmail.ELT_MSG_TEXT
+			End If
+		Else If lnCount=2
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_HTML
+		Else If lnCount=3
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_PFIX_TEXT
+		Else If lnCount=4
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_SFIX_TEXT
+		Else If lnCount=5
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_PFIX_HTML
+		Else If lnCount=6
+			Calculate lcTextToParse as irConfigEmail.ELT_MSG_SFIX_HTML
+		Else If lnCount=7
+			Calculate lcTextToParse as irConfigEmail.ELT_SUBJECT
+		End If
+		
+		If pos('pRow.',lcTextToParse)<>''
+			Calculate lcTextToParse as replaceall(lcTextToParse,'pRow.','lRow.')
+		End If
+		
+		While lcTextToParse<>''
+			Calculate lcChunk as ''
+			Calculate lcExpression as ''
+			
+			# locate [[...]] references
+			If pos('[[',lcTextToParse)
+				# extract the expression keeping before and after text in tact
+				Calculate lcChunk as mid(lcTextToParse,1,pos('[[',lcTextToParse)-1)
+				Calculate lcTextToParse as mid(lcTextToParse,pos('[[',lcTextToParse),kFetchAll)
+				Calculate lcExpression as mid(lcTextToParse,3,pos(']]',lcTextToParse)-1-2)
+				Calculate lcTextToParse as mid(lcTextToParse,pos(']]',lcTextToParse)+2,kFetchAll)
+			Else
+				# no expressions left to resolve
+				Calculate lcChunk as lcTextToParse
+				Calculate lcTextToParse as ''
+			End If
+			
+			If lcExpression<>''
+				# lcExpression may be a function so don't look for an exact match
+				Calculate lcColName as replaceall(mid(lcExpression,pos('.',lcExpression)+1),')','') ## GRS added the replaceall for function expressions, eg. cap(lRow.CL_FIRSTNAMES)
+				Do llColumns.$search(pos($ref.columnName,lcExpression),1,0,0,0) Returns lbFound
+				If lbFound
+					Calculate lRow as prExternalData.C[llColumns.columnNumber]
+					
+					Test for valid calculation evalf(lcExpression)
+					If flag true
+						Calculate lcMessage as con(lcMessage,lcChunk,evalf(lcExpression))
+					Else
+						Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+						Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('expression ',kDq,lcExpression,kDq,' could not be evaluated.'))
+					End If
+				Else
+					Calculate icErrors as con(icErrors,pick(icErrors<>'','',kCr),con('expression ',kDq,lcExpression,kDq,' could not be resolved.'))
+					Calculate lcMessage as con(lcMessage,lcChunk,'<missing value>')
+				End If
+			Else
+				Calculate lcMessage as con(lcMessage,lcChunk)
+			End If
+		End While
+		
+		# store the resolved message back in irConfigEmail
+		If lnCount=1
+			If pcRefText<>''
+				Calculate pcRefText as lcMessage
+				Break to end of loop
+			Else
+				Calculate irConfigEmail.ELT_MSG_TEXT as lcMessage
+			End If
+		Else If lnCount=2
+			Calculate irConfigEmail.ELT_MSG_HTML as lcMessage
+		Else If lnCount=3
+			Calculate irConfigEmail.ELT_MSG_PFIX_TEXT as lcMessage
+		Else If lnCount=4
+			Calculate irConfigEmail.ELT_MSG_SFIX_TEXT as lcMessage
+		Else If lnCount=5
+			Calculate irConfigEmail.ELT_MSG_PFIX_HTML as lcMessage
+		Else If lnCount=6
+			Calculate irConfigEmail.ELT_MSG_SFIX_HTML as lcMessage
+		Else If lnCount=7
+			Calculate irConfigEmail.ELT_SUBJECT as lcMessage
+		End If
+	End For
+	
+End If
+
+Quit method (icErrors='')

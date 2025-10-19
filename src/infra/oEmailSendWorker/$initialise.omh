@@ -24,7 +24,7 @@ If icErrors=''
 		Do ilMIME.$add(0,'multipart','mixed')
 		# add the calendar event
 		If lcHTMLcontent<>''&irConfigEmail.ELT_MSG_TEXT<>''
-			Do ilMIME.$add(1,'multipart','alternative')
+			Do ilMIME.$add(1,'multipart','alternative',,,,,,'inline')
 			Do ilMIME.$add(2,'text','plain',,irConfigEmail.ELT_MSG_TEXT)
 			Do ilMIME.$add(2,'text','html',,irConfigEmail.ELT_MSG_HTML)
 			
@@ -35,17 +35,15 @@ If icErrors=''
 			Do ilMIME.$add(1,'text','plain',,irConfigEmail.ELT_MSG_TEXT)
 		End If
 		
-		If icEventSpec<>''
-			Do ilMIME.$add(1,'text','plain','event.ics',icEventSpec) ## refer to Omnis sample library for more sophisticated entry
-		End If
-		If icVcardSpec<>''
-			Do ilMIME.$add(1,'text','plain','ContactDetails.vcf',icVcardSpec)
-		End If
+		# 2025-08-30  RSM  adding events or vcards is now added to ilMimeAppend
+		# If icEventSpec<>''
+		# Do ilMIME.$add(1,'text','plain','event.ics',icEventSpec) ## refer to Omnis sample library for more sophisticated entry
+		# End If
+		# If icVcardSpec<>''
+		# Do ilMIME.$add(1,'text','plain','ContactDetails.vcf',icVcardSpec)
+		# End If
 		
 		# other files
-		# If binlength(ibinPDF)>0
-		# Do ilMIME.$add(1,'application','pdf','attachment.pdf',,ibinPDF)
-		# End If
 		Do ilMIME.$merge(ilMimeAppend)
 		
 		# sending text message only

@@ -1,6 +1,6 @@
 {
 	"ident": 1064,
-	"order": 103,
+	"order": 99,
 	"objtype": "kComponent",
 	"componentlib": "jsButton",
 	"componentctrl": "Button Control",

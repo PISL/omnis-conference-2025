@@ -1,4 +1,9 @@
 On evClick
 	Calculate icDisplayMessage as ''
+	Calculate icBookedTotal as ''
+	Calculate icFCY_NAME as ''
+	Calculate icFCY_LOCATION as ''
+	Calculate icTopicTitle as ''
+	
 	Do method ShowArrangements
 	Do $cinst.$behaviour()

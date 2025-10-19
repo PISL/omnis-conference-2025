@@ -1,4 +1,4 @@
-Breakpoint not tested
+# Breakpoint not tested
 Calculate icErrorMessage as ''
 
 Do irTopic.$clear()
@@ -15,9 +15,10 @@ If lbProceed
 		End If
 	Else
 		Do irTopic.$insert() Returns lbOK
+		Calculate lbTopicInserted as lbOK
 	End If
 	If lbOK
-		Do prTopic.$assignrow(irTopic) ## return result to calling object
+		Do prTopic.$assignrow(irTopic,kTrue) ## return result to calling object
 		
 		Do irPerson.$clear()
 		Do irPerson.$assignrow(prPerson)
@@ -33,54 +34,56 @@ If lbProceed
 				End If
 			Else
 				Do irPerson.$insert() Returns lbOK
-			End If
+				Calculate lbPersonInserted as lbOK
+			End If ## irPerson record either found or inserted
 			If lbOK
 				Do prPerson.$assignrow(irPerson)
 				
-				Do irLinkRecord.$clear()
-				Do irLinkRecord.$assignrow(prLinkRecord) ## TPF_STATUS may have changed
-				Calculate irLinkRecord.TPP_TPC_REF as irTopic.[irTopic.icPrimaryKey]
-				Calculate irLinkRecord.TPP_PSN_REF as irPerson.[irPerson.icPrimaryKey]
-				
-				Do irLinkRecord.$validation() Returns lbProceed
-				If lbProceed
-					If irLinkRecord.[irLinkRecord.icPrimaryKey]>0
-						Do toStrings.$HasRowBeenModified(irOrigLinkRecord,irLinkRecord) Returns lbModified
-						If lbModified
-							Do irLinkRecord.$update() Returns lbOK
+				# ignore irOrigLinkRecord
+				Do irLinkRecord.$fetch_ck(pnPSN_SEQ,pnTPC_SEQ)
+				If irLinkRecord.[irLinkRecord.icPrimaryKey]>0
+					# link record exists
+					Do prLinkRecord.$assignrow(irLinkRecord) ## return result to calling object
+				Else
+					Calculate irLinkRecord.TPP_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+					Calculate irLinkRecord.TPP_PSN_REF as irPerson.[irPerson.icPrimaryKey]
+					Do irLinkRecord.$insert() Returns lbOK
+					If not(lbOK)
+						If irLinkRecord.icValidationMessage<>''
+							Calculate icErrorMessage as con('validation error: ',irLinkRecord.icValidationMessage)
+						Else If irLinkRecord.irErrorSQL.NativeErrorText<>''
+							Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
 						Else
-							# no change
-							Calculate lbOK as kTrue
+							Breakpoint
 						End If
 					Else
-						Do irLinkRecord.$insert() Returns lbOK
+						Do prLinkRecord.$assignrow(irLinkRecord,kTrue) ## return result to calling object
 					End If
-					If lbOK
-						# good
-					Else
-						Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
-						Quit method kFalse
-					End If
-				Else
-					Calculate icErrorMessage as con('validation error: ',irLinkRecord.icValidationMessage)
-					Quit method kFalse
-				End If
+				End If ## irLinkRecord handled - either found or inserted
 			Else
-				Calculate icErrorMessage as irPerson.irErrorSQL.NativeErrorText
+				If irPerson.icValidationMessage<>''
+					Calculate icErrorMessage as con('validation error: ',irPerson.icValidationMessage)
+				Else If irPerson.irErrorSQL.NativeErrorText<>''
+					Calculate icErrorMessage as irPerson.irErrorSQL.NativeErrorText
+				Else
+					Breakpoint
+				End If
 				Quit method kFalse
-			End If ## not(lbOK) after irInvoiceHeader.$insert()
-		Else
-			Calculate icErrorMessage as con('validation error: ',irPerson.icValidationMessage)
+			End If ## irPerson was either found, updated or inserted
+			
+		Else ## not(lbOK) after irDelegate.$insert()
+			If irTopic.icValidationText<>''
+				Calculate icErrorMessage as irTopic.icValidationText
+			Else If irTopic.irErrorSQL.NativeErrorText<>''
+				Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+			End If
 			Quit method kFalse
-		End If ## not(lbProceed) after irInvoiceHeader.$validation()
+		End If
 		
-	Else ## not(lbOK) after irDelegate.$insert()
-		Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+	Else
+		Calculate icErrorMessage as con('validation error: ',irTopic.icValidationMessage)
 		Quit method kFalse
-	End If
-Else
-	Calculate icErrorMessage as con('validation error: ',irTopic.icValidationMessage)
-	Quit method kFalse
-End If
+	End If ## irTopic was either found or inserted
+End If ## irTopic passed validation
 
 Quit method kTrue

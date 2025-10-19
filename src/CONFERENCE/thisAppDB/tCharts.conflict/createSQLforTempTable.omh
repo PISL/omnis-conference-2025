@@ -1,0 +1,88 @@
+Begin statement (Carriage return,Linefeed)
+Sta:create temp table activity
+# make sure the table is dropped at the end of the transaction
+Sta:on commit drop
+Sta:as
+# generate the numbers 0-7 to generate the dates for a week ago up to and including today (8 days)
+Sta:(with x as (select generate_series(0,7) as num)
+# generate 8 pairs of dates for the week ending today, used for "between" comparison of MWHEN columns
+Sta:, dates as (select current_date - num as dt1, current_date - num + 1 as dt2 from x)
+# get the degate changes
+Sta:, dg as (select dgdt, count(dgins) dgins, count(dgupd) dgupd from
+Sta:(select dt1 as dgdt, case when dg_mwhen = dg_cwhen then 1 else null end as dgins, case when dg_mwhen > dg_cwhen then 1 else null end as dgupd from dates
+Sta:left join conf.delegates on dg_mwhen between dt1 and dt2 and dg_cf_ref = @[pConfSeq]  ) tmp
+Sta:group by 1)
+# get the PAX changes
+Sta:, px as (select pxdt, count(pxins) pxins, count(pxupd) pxupd from
+Sta:(select dt1 as pxdt, case when px_mwhen = px_cwhen then 1 else null end as pxins, case when px_mwhen > px_cwhen then 1 else null end as pxupd from dates
+Sta:left join conf.pax on px_mwhen between dt1 and dt2 left join conf.delegates on dg_seq = px_dg_ref and dg_cf_ref = @[pConfSeq]   ) tmp
+Sta:group by 1)
+# get travel plans
+Sta:, tp as (select tpdt, count(tpins) tpins, count(tpupd) tpupd from
+Sta:(select dt1 as tpdt, case when tp_mwhen = tp_cwhen then 1 else null end as tpins, case when tp_mwhen > tp_cwhen then 1 else null end as tpupd from dates
+Sta:left join conf.travelplans on tp_mwhen between dt1 and dt2 left join conf.delegates on dg_seq = tp_dg_ref and dg_cf_ref = @[pConfSeq]   ) tmp
+Sta:group by 1)
+# get payments rec'd
+Sta:, py as (select pydt, count(pyins) pyins, count(pyupd) pyupd from
+Sta:(select dt1 as pydt, case when py_mwhen = py_cwhen then 1 else null end as pyins, case when py_mwhen > py_cwhen then 1 else null end as pyupd from dates
+Sta:left join conf.paymentsin on py_mwhen between dt1 and dt2 left join conf.delegates on dg_seq = py_dg_ref and dg_cf_ref = @[pConfSeq]   ) tmp
+Sta:group by 1)
+# get topic conference links
+Sta:, tpf as (select tpfdt, count(tpfins) tpfins, count(tpfupd) tpfupd from
+Sta:(select dt1 as tpfdt, case when tpf_mwhen = tpf_cwhen then 1 else null end as tpfins, case when tpf_mwhen > tpf_cwhen then 1 else null end as tpfupd from dates
+Sta:left join conf.topicconferencelink on tpf_mwhen between dt1 and dt2 and tpf_cf_ref = @[pConfSeq]  ) tmp
+Sta:group by 1)
+# get status changes
+Sta:, dsl as (select dsldt, count(dslins) dslins, count(dslupd) dslupd from
+Sta:(select dt1 as dsldt, dsl_seq as dslins, null as dslupd from dates
+Sta:left join conf.dg_status_log on dsl_cwhen between dt1 and dt2 left join conf.delegates on dg_seq = dsl_dg_ref and dg_cf_ref = @[pConfSeq]   ) tmp
+Sta:group by 1)
+# get emailed invoices
+Sta:, inv as (select invdt, count(invsent) invsent from
+Sta:(select dt1 as invdt, dg_seq as invsent from dates
+Sta:left join conf.delegates on dg_email_invoice_sent between dt1 and dt2 and dg_cf_ref = @[pConfSeq]   ) tmp
+Sta:group by 1)
+# get travel plan emails sent
+Sta:, trav as (select travdt, count(travsent) travsent from
+Sta:(select dt1 as travdt, dg_seq as travsent from dates
+Sta:left join conf.delegates on dg_email_travel_sent between dt1 and dt2 and dg_cf_ref = @[pConfSeq]   ) tmp
+Sta:group by 1)
+# now join it all together to get the values from all tables
+Sta:, summ as (
+Sta:select dgdt dt, 'dgins' cat, dgins val from dg
+Sta:union
+Sta:select dgdt, 'dgupd', dgupd from dg
+Sta:union
+Sta:select pxdt, 'pxins', pxins from px
+Sta:union
+Sta:select pxdt, 'pxupd', pxupd from px
+Sta:union
+Sta:select tpdt, 'tpins', tpins from tp
+Sta:union
+Sta:select tpdt, 'tpupd', tpupd from tp
+Sta:union
+Sta:select pydt, 'pyins', pyins from py
+Sta:union
+Sta:select pydt, 'pyupd', pyupd from py
+Sta:union
+Sta:select tpfdt, 'tpfins', tpfins from tpf
+Sta:union
+Sta:select tpfdt, 'tpfupd', tpfupd from tpf
+Sta:union
+Sta:select dsldt, 'dslins', dslins from dsl
+Sta:union
+Sta:select dsldt, 'dslupd', dslupd from dsl
+Sta:union
+Sta:select invdt, 'invsent', invsent from inv
+Sta:union
+Sta:select travdt, 'travsent', travsent from trav)
+Sta:select dt, cat, val from summ
+Sta:union
+Sta:select '1900-01-01'::date, cat, sum(val)
+Sta:from summ
+Sta:group by cat
+Sta:order by 1, 2)
+# Sta: {;}
+End statement
+Get statement lcSQL
+Quit method lcSQL

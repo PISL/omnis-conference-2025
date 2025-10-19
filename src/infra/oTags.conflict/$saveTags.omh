@@ -1,0 +1,58 @@
+# While $Loop(ilKeywordsMaster)
+# Do ilKeywords.$search($ref.XXX_KEYWORD=ilKeywordsMaster.KEYWORD,1,0,0,0) Returns lbKeywordFound
+# If lbKeywordFound&ilKeywordsMaster.[ilKeywordsMaster.$line].$selected
+# display list checked and db entry exists - nothing to do
+
+
+# Calculate ilTagsAll.$line as 0
+For ilTagsAll.$line from 1 to ilTagsAll.$linecount step 1
+	Do plTagsUser.$search($ref.RFO_VALUE=ilTagsAll.RFO_VALUE,1,0,0,0) Returns lbFound
+	If lbFound
+		Calculate lbSelectedUser as plTagsUser.[plTagsUser.$line].$selected
+		Calculate lbSelectedOrig as ilTagsAll.[ilTagsAll.$line].$selected
+		
+		If lbSelectedUser=lbSelectedOrig
+			# keyword is in db and selected - no change
+		Else If lbSelectedUser&not(lbSelectedOrig)
+			# new tag - insert
+			# keyword is in not db and selected by user - insert keyword entry
+			Calculate lrRow as ilParentTagsOrig
+			Do lrRow.$clear()
+			
+			Calculate lrRow.TAG_PK as irParent.[irParent.icPrimaryKey]
+			Calculate lrRow.TAG_TABLE_PREFIX as irParent.icPrefix
+			Calculate lrRow.TAG_VALUE as ilTagsAll.RFO_VALUE
+			
+			Do lrRow.$insert() Returns lbOK
+			If not(lbOK)
+				Calculate lbError as kTrue
+				Breakpoint
+			End If
+			
+		Else If not(lbSelectedUser)&lbSelectedOrig
+			# deleted tag
+			
+			Do ilParentTagsOrig.$search($ref.TAG_VALUE=ilTagsAll.[ilTagsAll.$line].RFO_VALUE,1,0,0,0) Returns lbFound
+			If lbFound
+				Calculate lrRow as ilParentTagsOrig
+				Do lrRow.$delete() Returns lbOK
+				If lbOK
+					Do ilParentTagsOrig.$remove(ilParentTagsOrig.$line)
+				Else
+					Calculate lbError as kTrue
+					Breakpoint
+				End If
+			Else
+				Breakpoint ## theoretically impossible
+			End If
+		End If
+		
+	End If
+End For
+
+# Do method $getKeywords
+If lbError
+	Quit method kFalse
+Else
+	Quit method kTrue
+End If

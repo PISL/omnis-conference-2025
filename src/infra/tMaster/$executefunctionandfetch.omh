@@ -1,6 +1,11 @@
 Breakpoint this code is WIP and untested ## 2016-02-03
 Quit method
 
+# 2025-05-20  RSM  added a facility to set excuse errors without a direct parameter call
+If isclear(pDoNotReportTheseErrors)
+	Calculate pDoNotReportTheseErrors as icDoNotReportTheseErrors
+End If
+
 Do irErrorSQL.$clear()
 Do $cinst.$statementobject.$prepare() Returns lbPrepareOk ## tStatementObj
 If lbPrepareOk
@@ -19,30 +24,50 @@ If lbPrepareOk
 	Else
 		Do $cinst.$sql_error()
 		# Breakpoint {[#S1]  [#S2]}
-		If pos(con(',',irErrorSQL.NativeErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
-			# do not report error
-			Calculate lbExecuteOk as kTrue
-		Else If pos(con(',',irErrorSQL.ErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
-			# do not report error
-			Calculate lbExecuteOk as kTrue
+		
+		# 2025-05-21  RSM  Why am I getting weird errors like this?
+		# While developing wSequencesOmnisToPg I am getting situations where $prepare fails but $sql_error() returns weird shit
+		# resulting in ReportError being called which leads to nowhere because there is no error to report!
+		# Hence check using $findname()
+		Do irErrorSQL.$cols.$findname('NativeErrorCode') Returns liColRef
+		If liColRef
+			If pos(con(',',irErrorSQL.NativeErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
+				# do not report error
+				Calculate lbExecuteOk as kTrue
+			Else If pos(con(',',irErrorSQL.ErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
+				# do not report error
+				Calculate lbExecuteOk as kTrue
+			Else
+				Do method ReportError
+			End If
 		Else
-			Do method ReportError
+			Breakpoint $sql_error is not returning the row of data expected  2025-05-21  RSM
 		End If
 	End If
 Else
 	Calculate lbExecuteOk as kFalse
 	Do $cinst.$sql_error
 	# Breakpoint {[#S1]  [#S2]}
-	If pos(con(',',irErrorSQL.NativeErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
-		# do not report error
-	Else If pos(con(',',irErrorSQL.ErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
-		# do not report error
-	Else
-		If ibThisIsProductionServer
-			Do method ReportError
+	
+	# 2025-05-21  RSM  Why am I getting weird errors like this?
+	# While developing wSequencesOmnisToPg I am getting situations where $prepare fails but $sql_error() returns weird shit
+	# resulting in ReportError being called which leads to nowhere because there is no error to report!
+	# Hence check using $findname()
+	Do irErrorSQL.$cols.$findname('NativeErrorCode') Returns liColRef
+	If liColRef
+		If pos(con(',',irErrorSQL.NativeErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
+			# do not report error
+		Else If pos(con(',',irErrorSQL.ErrorCode,','),con(',',pDoNotReportTheseErrors,','))>0
+			# do not report error
 		Else
-			Breakpoint [irErrorSQL.ErrorText]:  [irErrorSQL.NativeErrorText]
+			If ibThisIsProductionServer
+				Do method ReportError
+			Else
+				Breakpoint [irErrorSQL.ErrorText]:  [irErrorSQL.NativeErrorText]
+			End If
 		End If
+	Else
+		Breakpoint $sql_error is not returning the row of data expected  2025-05-21  RSM
 	End If
 End If
 

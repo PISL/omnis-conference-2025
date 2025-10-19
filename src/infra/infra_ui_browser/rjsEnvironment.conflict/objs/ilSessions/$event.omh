@@ -1,0 +1,6 @@
+On evClick
+	Calculate ioSessionObject as ilSessions.C2
+	Calculate icDbConnection as con(ioSessionObject.$damname,'  host:',ioSessionObject.$hostname,'  state:',ioSessionObject.$state,'  username:',ioSessionObject.$username)
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()

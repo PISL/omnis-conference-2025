@@ -1,0 +1,52 @@
+Do $ctask.$tvars.$makelist($ref.$name,$ref.$type) Returns ilTaskVarNames
+
+Do ilTaskVarNames.$sort($ref.C2,0,$ref.C1,0)
+
+While $Loop(ilTaskVarNames)
+	Calculate lcVarName as ilTaskVarNames.C1
+	Calculate lcVarType as ilTaskVarNames.C2
+	
+	If lcVarName<>''&lcVarType<>''
+		# some entries come through with an empty name!
+		If lcVarType<>lcLastType
+			# provide a heading within the text block
+			If ilTaskVarNames.$line>1
+				If ilTaskVarNames.[ilTaskVarNames.$line-1].C1<>''
+					Do ilTaskVarNames.$addbefore(ilTaskVarNames.$line,'')
+					Calculate ilTaskVarNames.$line as ilTaskVarNames.$line+1
+				End If
+			End If
+			Do ilTaskVarNames.$addbefore(ilTaskVarNames.$line,con('Variable type ',upp(lcVarType)))
+			Calculate ilTaskVarNames.$line as ilTaskVarNames.$line+1
+		End If
+		
+		If lcVarType='list'
+			Do OJSON.$listorrowtojson([lcVarName],kUniTypeCharacter,lcError) Returns lcStructure
+			# make the structure easier to read
+			Calculate lcStructure as replaceall(lcStructure,con(']',kCr,'['),con(kCr,kCr))
+			Calculate lcStructure as replaceall(lcStructure,',',kCr)
+			# Text:[lcVarName] = [kCr][lcStructure][kCr]
+			Calculate lcLastType as ilTaskVarNames.C2
+			
+		Else If lcVarType='row'
+			Do OJSON.$listorrowtojson([lcVarName],kUniTypeCharacter,lcError) Returns lcStructure
+			Calculate lcStructure as replaceall(lcStructure,',',kCr)
+			# Text:[lcVarName] = [kCr][lcStructure][kCr]
+			Calculate lcLastType as ilTaskVarNames.C2
+			
+		Else If lcVarType='object'
+			# Text:[lcVarName] = not revealed[kCr]
+			Calculate lcLastType as ilTaskVarNames.C2
+			
+		Else If lcVarType='objref'
+			# Text:[lcVarName] = not revealed[kCr]
+			Calculate lcLastType as ilTaskVarNames.C2
+			
+		Else
+			# Text:[lcVarName] = [eval(lcVarName)][kCr]
+			Calculate lcLastType as ilTaskVarNames.C2
+			Calculate ilTaskVarNames.C2 as eval(lcVarName)
+		End If
+		
+	End If
+End While

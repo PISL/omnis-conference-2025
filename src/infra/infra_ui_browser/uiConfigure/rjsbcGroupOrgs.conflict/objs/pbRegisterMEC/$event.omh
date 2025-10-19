@@ -1,0 +1,4 @@
+On evClick
+	Do method Register
+	
+	Do $cinst.$behaviour()

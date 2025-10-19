@@ -1,0 +1,15 @@
+If ilData.$line>0
+	Calculate inSubTotalLine as ilData.$line-1
+Else
+	Calculate inSubTotalLine as ilData.$linecount
+End If
+
+If icBreakCol2='invoiceMonth'
+	Calculate icBreakValue2 as pick(mid(ilData.[inSubTotalLine].invoiceMonth,5,2),'','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
+Else
+	Calculate icBreakValue2 as ilData.[inSubTotalLine].[icBreakCol2]
+End If
+
+# Send to trace log {icBreakCol2 = [icBreakCol2] with value [icBreakValue2], inSubTotalLine=[inSubTotalLine]}
+
+Do default

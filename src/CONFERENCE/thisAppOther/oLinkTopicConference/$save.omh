@@ -14,6 +14,7 @@ If lbProceed
 		End If
 	Else
 		Do irTopic.$insert() Returns lbOK
+		Calculate lbTopicInserted as lbOK
 	End If
 	If lbOK
 		Do prTopic.$assignrow(irTopic) ## return result to calling object
@@ -33,17 +34,33 @@ If lbProceed
 				End If
 			Else
 				Do irConference.$insert() Returns lbOK
+				Calculate lbConferenceInserted as lbOK
 			End If
 			If lbOK
 				Do prConference.$assignrow(irConference)
 				Calculate irOrigConference as irConference
 				
-				Do irLinkRecord.$clear()
-				Do irLinkRecord.$assignrow(prLinkRecord) ## TPF_STATUS may have changed
-				Calculate irLinkRecord.TPF_TPC_REF as irTopic.[irTopic.icPrimaryKey]
-				Calculate irLinkRecord.TPF_CF_REF as irConference.[irConference.icPrimaryKey]
+				If lbTopicInserted
+					Do irLinkRecord.$clear()
+					
+					# a brand new link record is required
+					Calculate irLinkRecord.TPF_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+					Calculate irLinkRecord.TPF_CF_REF as irConference.[irConference.icPrimaryKey]
+				Else If prLinkRecord.[prLinkRecord.icPrimaryKey]>0
+					Do irLinkRecord.$assignrow(prLinkRecord) ## TPF_STATUS may have changed
+					# 2025-08-15  RSM  A rogue link record got in the database...
+					# This is some kludge code to prevent this situation from buggering up the linking logic.
+					If irLinkRecord.TPF_CF_REF>0|irLinkRecord.TPF_TPC_REF>0
+						# all good
+						Do irLinkRecord.$validation() Returns lbProceed
+					Else
+						# We have an invalid link record - ignore it
+						Calculate lbProceed as kTrue
+					End If
+				Else
+					Breakpoint
+				End If
 				
-				Do irLinkRecord.$validation() Returns lbProceed
 				If lbProceed
 					If irLinkRecord.[irLinkRecord.icPrimaryKey]>0
 						If pbChecked
@@ -59,6 +76,8 @@ If lbProceed
 					Else
 						If pbChecked
 							# record exists - leave as is
+							Calculate irLinkRecord.TPF_TPC_REF as irTopic.TPC_SEQ
+							Calculate irLinkRecord.TPF_CF_REF as prConference.CF_SEQ
 							Do irLinkRecord.$insert() Returns lbOK
 						Else
 							# record doesn't exists and list is not checked ## leave as is

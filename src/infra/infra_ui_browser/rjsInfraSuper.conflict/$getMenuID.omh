@@ -1,0 +1,5 @@
+# public subform method that can be called from its container
+# to return the application unique ID for the ToolsMenu
+# override this method in the subclass if the menu is customised
+
+Quit method 'default'

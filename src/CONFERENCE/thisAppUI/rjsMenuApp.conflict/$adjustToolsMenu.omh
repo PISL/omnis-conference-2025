@@ -1,0 +1,15 @@
+Do ilFormMenuOptions.$search($ref.formCode=pcClass,1,0,0,0) Returns lbFound
+If lbFound
+	Do ilToolsMenu.$clear()
+	
+	Calculate llCascade as ilFormMenuOptions.action
+	Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconAction,'',1,ilFormMenuOptions.identAction,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,inBackAlpha))
+	Calculate llCascade as ilFormMenuOptions.notification
+	Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconNotification,'',1,ilFormMenuOptions.identNotification,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,inBackAlpha))
+	Calculate llCascade as ilFormMenuOptions.search
+	Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconSearch,'',1,ilFormMenuOptions.identSearch,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,inBackAlpha))
+	Calculate llCascade as ilFormMenuOptions.help
+	Do ilToolsMenu.$add(kNavMenuTypeCascade,ilFormMenuOptions.iconHelp,'',1,ilFormMenuOptions.identHelp,,row(llCascade,kNavMenuCascadeFlagOpenOnParentEdge+kNavMenuCascadeFlagExpand,kNavMenuSideBottom,kNavMenuSideNone,#NULL,#NULL,inBackColour,inBackAlpha))
+	
+	Quit method llExtraActions.$linecount
+End If

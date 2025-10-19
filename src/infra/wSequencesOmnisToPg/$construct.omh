@@ -1,0 +1,9 @@
+# Do $DefineList(ilData,'tsysReferenceClobal')
+# Calculate $cinst.$enterable as kTrue
+# Do ioDBA.$CompareSchemasToTables()
+Do $defineList(lRow,'tuaUsers')
+Do lRow.$WhichDatabase() Returns lcDbDetails
+Calculate $cinst.$title as con('Sequence checking for ',lcDbDetails)
+
+Do $cinst.$refresh()
+Do $cinst.$behaviour()

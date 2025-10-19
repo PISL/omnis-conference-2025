@@ -1,0 +1,53 @@
+Do irTopic.$clear()
+Do irTopic.$assignrow(prTopic)
+Do irTopic.$validation() Returns lbProceed
+If lbProceed
+	If irTopic.[irTopic.icPrimaryKey]>0
+		Do toStrings.$HasRowBeenModified(irOrigTopic,irTopic) Returns lbModified
+		If lbModified
+			Do irTopic.$update() Returns lbOK
+		Else
+			# no change
+			Calculate lbOK as kTrue
+		End If
+	Else
+		Do irTopic.$insert() Returns lbOK
+		Calculate lbTopicInserted as lbOK
+	End If
+	
+	If lbOK
+		Calculate irOrigTopic as irTopic
+		Do prTopic.$assignrow(irTopic,kTrue)
+	Else
+		If irTopic.icValidationMessage<>''
+			Calculate icErrorMessage as con('validation error: ',irTopic.icValidationMessage)
+		Else If irTopic.irErrorSQL.NativeErrorText<>''
+			Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+		End If
+		
+		Quit method kFalse
+	End If
+End If
+
+
+If lbTopicInserted&prConference.CF_SEQ>0
+	# Create a link from the Topic to the Conference?
+	# If a conference record has been provided, link the two.
+	Do irLinkRecord.$clear()
+	# a brand new link record is required
+	Calculate irLinkRecord.TPF_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+	Calculate irLinkRecord.TPF_CF_REF as prConference.CF_SEQ
+	Do irLinkRecord.$insert() Returns lbOK
+	
+	If lbOK
+		Calculate irOrigLinkRecord as irLinkRecord
+	Else
+		If irLinkRecord.icValidationMessage<>''
+			Calculate icErrorMessage as con('validation error: ',irLinkRecord.icValidationMessage)
+		Else If irLinkRecord.irErrorSQL.NativeErrorText<>''
+			Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+End If
+
+Quit method lbOK

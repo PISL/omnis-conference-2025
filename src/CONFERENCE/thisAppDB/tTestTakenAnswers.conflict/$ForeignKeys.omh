@@ -1,0 +1,11 @@
+# Builds a list of foreign keys for the table
+Calculate llForeignKeyList as
+Do llForeignKeyList.$cols.$add('TABLE',kCharacter,kSimplechar,100)
+Do llForeignKeyList.$cols.$add('COLUMN',kCharacter,kSimplechar,100)
+Do llForeignKeyList.$cols.$add('FTABLE',kCharacter,kSimplechar,100)
+Do llForeignKeyList.$cols.$add('FCOLUMN',kCharacter,kSimplechar,100)
+
+Do llForeignKeyList.$add($cinst.$servertablenames(),'tta_ttk_ref',lrTestTaken.$servertablenames(),'ttk_seq')
+Do llForeignKeyList.$add($cinst.$servertablenames(),'tta_tsq_ref',lrQuestion.$servertablenames(),'tsq_seq')
+
+Quit method llForeignKeyList

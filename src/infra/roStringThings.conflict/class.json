@@ -1,0 +1,30 @@
+{
+	"classtype": "kRemoteObject",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 2,
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+
+	],
+	"properties": {
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2019-12-10 13:33:12",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"issupercomponent": false,
+		"moddate": "2019-12-10 13:36:54",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": ""
+	}
+}

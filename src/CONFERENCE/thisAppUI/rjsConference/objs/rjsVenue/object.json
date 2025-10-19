@@ -8,7 +8,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(255,255,255)",
 		"bordercolor": "RGB(16,3,0)",
-		"classname": "rjsVenue",
+		"classname": "rjsPerson",
 		"componentinfo": {
 
 		},
@@ -29,6 +29,8 @@
 		"objlink": 65537,
 		"parameters": "",
 		"preventlayoutanimation": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"tooltip": "",

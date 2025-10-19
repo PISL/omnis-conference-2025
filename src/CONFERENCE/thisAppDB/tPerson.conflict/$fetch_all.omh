@@ -1,0 +1,18 @@
+# Do $cinst.$fetch_(con("where PSN_GO_REF = ",$ctask.trGroupOrg.GO_SEQ))
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Calculate inID as $ctask.trGroupOrg.GO_SEQ
+Do $cinst.$Sql(,con('where PSN_GO_REF = @[inID]'),0,0)
+Do $cinst.$executesqlandfetch()
+
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do $cinst.$sort($ref.SortName,0)
+Quit method lbOK

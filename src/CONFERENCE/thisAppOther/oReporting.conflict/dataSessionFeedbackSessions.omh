@@ -1,0 +1,57 @@
+Do $ctask.toValues.$initOrg('ARA_RATING') Returns ilRatings
+Do $ctask.toValues.$initOrg('SPKR_FBACK') Returns ilFeedback
+
+# copied from rfSessionAttendance
+Do ilFeedbackValues.$cols.$add('code',kCharacter,kSimplechar,15)
+Do ilFeedbackValues.$cols.$add('score',kInteger,kShortint)
+Do ilFeedbackValues.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilFeedbackValues.$add(1002,0,'no comment')
+# Do ilFeedbackValues.$add(1003,1,'not applicable')
+Do ilFeedbackValues.$add(1004,20,'poor')
+Do ilFeedbackValues.$add(1005,30,'good')
+Do ilFeedbackValues.$add(1006,40,'very good')
+Do ilFeedbackValues.$add(1007,50,'excellent')
+
+Do $DefineList(lrAttendee,'tArrAttendee')
+Do lrAttendee.$reportFeedback(prConference.CF_SEQ) Returns ilData
+Do ilData.$sort($ref.PSN_SURNAME_SPKR,0,$ref.PSN_FIRST_NAME_SPKR,0,$ref.ARR_DATE,0,$ref.ARR_STARTTIME,0,$ref.TPC_TITLE,0,$ref.PSN_SURNAME_DG,0,$ref.PSN_FIRST_NAME_DG,0,$ref.AFB_SEQ,0)
+
+Do ilData.$cols.$add(ilRatings.RFO_DESC)
+Do ilData.$cols.$add('speakerName',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('delegateName',kCharacter,kSimplechar,100)
+Do ilData.$cols.$add('criteria',kCharacter,kSimplechar,40)
+Do ilData.$cols.$add('score',kCharacter,kSimplechar,20)
+
+Calculate lnDuplicateCheck as 1
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Calculate ilData.speakerName as con(ilData.PSN_SURNAME_SPKR,', ',ilData.PSN_FIRST_NAME_SPKR)
+	
+	If ilData.ARA_ANON
+		# Calculate ilData.PSN_SURNAME_DG as 'anon.'
+		# Calculate ilData.PSN_FIRST_NAME_DG as ''
+		Calculate ilData.delegateName as 'anon.'
+	Else
+		Calculate ilData.delegateName as con(ilData.PSN_SURNAME_DG,', ',ilData.PSN_FIRST_NAME_DG)
+	End If
+	If isnull(ilData.ARR_DATE)
+		Calculate ilData.ARR_DATE as dadd(kDay,ilData.ARR_DAYNO,ilData.CF_DATE_FROM)
+	End If
+	
+	# duplicatesblank does not seem to work - brute force !
+	If ilData.$line>1
+		# same delegate with same session
+		If ilData.delegateName=ilData.[lnDuplicateCheck].delegateName&ilData.ARA_SEQ=ilData.[lnDuplicateCheck].ARA_SEQ
+			Calculate ilData.delegateName as ''
+		Else
+			Calculate lnDuplicateCheck as ilData.$line
+		End If
+	End If
+	
+	Do ilFeedback.$search($ref.RFO_VALUE=ilData.AFB_RFO_VALUE,1,0,0,0)
+	Calculate ilData.criteria as ilFeedback.RFO_DESC
+	
+	Do ilFeedbackValues.$search($ref.score=ilData.AFB_SCORE,1,0,0,0)
+	Calculate ilData.score as ilFeedbackValues.desc
+	
+End While

@@ -1,0 +1,33 @@
+{
+	"ident": 1095,
+	"order": 16394,
+	"objtype": "kLabel",
+	"properties": {
+		"align": "kLeftJst",
+		"backcolor": "RGBA(kColorBackFill,255)",
+		"backpattern": 15,
+		"bordercolor": "RGBA(0,0,0,255)",
+		"componentinfo": {
+
+		},
+		"designactive": true,
+		"edgefloat": "kEFnone",
+		"effect": "kBorderNone",
+		"fieldstyle": "",
+		"font": 1,
+		"fontsize": 12,
+		"fontstyle": "kPlain",
+		"forecolor": "RGBA(kColorForeFill,255)",
+		"height": 16,
+		"left": 321,
+		"linestyle": 1,
+		"objlink": 131086,
+		"text": "ORG entries exist",
+		"textcolor": "kBlue",
+		"top": 47,
+		"userinfo": "",
+		"vertcentertext": false,
+		"visible": false,
+		"width": 130
+	}
+}

@@ -1,0 +1,15 @@
+# Using a context menu for feedback works for a desktop but not for a mobile device.
+# The values in ilFeedbackValues should reflect exactly what is in menu rmcFeedback
+Do ilFeedbackValues.$cols.$add('code',kCharacter,kSimplechar,15)
+Do ilFeedbackValues.$cols.$add('score',kInteger,kShortint)
+Do ilFeedbackValues.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilFeedbackValues.$add(1002,0,'no comment')
+# Do ilFeedbackValues.$add(1003,1,'not applicable')
+Do ilFeedbackValues.$add(1004,20,'poor')
+Do ilFeedbackValues.$add(1005,30,'good')
+Do ilFeedbackValues.$add(1006,40,'very good')
+Do ilFeedbackValues.$add(1007,50,'excellent')
+
+Calculate $cinst.$objs.rg_Feedback.$minvalue as 1
+Calculate $cinst.$objs.rg_Feedback.$maxvalue as ilFeedbackValues.$linecount
+Calculate $cinst.$objs.rg_Feedback.$text as toStrings.$ListToString(ilFeedbackValues,'desc')

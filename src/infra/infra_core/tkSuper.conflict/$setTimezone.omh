@@ -1,0 +1,25 @@
+If trCurrUser.USR_TZ<>''
+	Do $DefineList(llTimezones,'tvi_Timezones')
+	If pos('/',trCurrUser.USR_TZ)>0
+		# split the country / city code up
+		Calculate lcCountry as mid(trCurrUser.USR_TZ,1,pos('/',trCurrUser.USR_TZ)-1)
+		Calculate lcCity as mid(trCurrUser.USR_TZ,pos('/',trCurrUser.USR_TZ)+1,99)
+		Do llTimezones.$citySearch(lcCity,lcCountry)
+	Else
+		Do llTimezones.$citySearch(trCurrUser.USR_TZ)
+	End If
+	
+	If llTimezones.$linecount=1
+		# set the users timezone with PG
+		Do trCurrUser.$cols.$add('pg_timezone',kRow)
+		Calculate trCurrUser.pg_timezone as llTimezones.1
+		# If we used fixed db session like toFormSession, then we could set the timezone of this session.
+		# However if one uses session pools like we do here, then setting timezone has to be done in $ImmediateSession.
+		
+	Else If llTimezones.$linecount=0
+		# ignore - database default applies
+	Else
+		# multiple rows could be a bugger
+		Breakpoint
+	End If
+End If

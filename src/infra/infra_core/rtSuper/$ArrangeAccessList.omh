@@ -1,0 +1,74 @@
+Calculate llPermissions as $ctask.tlPermissions
+Do llPermissions.$cols.FormPrefix.$removeduplicates(kTrue)
+Calculate llPermissions.$line as 0
+While $Loop(llPermissions)
+	Switch low(llPermissions.FormPrefix)
+		# configuration forms
+		
+		# RSM  2025-04-15  copied from TRACKER.rtBusinessApp
+		# rather than have infra forms being checked and added to from application libraries
+		# let us have an infra superclass method of $ArrangeAccessList so all Application libraries apply infra resources consistently
+		
+		Case 'go' ## group organisations
+			Do tlAuthorisedForms.$add('FORM_GO','Group organisations','infra.rfbcBusinessConfig',0,10,1,lcGroupGlobal)
+		Case 'eo' ## external organisations (suppliers & customers)
+			Do tlAuthorisedForms.$add('FORM_EO','Suppliers','infra.rjsbcInteraction',0,30,1,lcGroupAdmin)
+			Do tlAuthorisedForms.$add('FORM_EO','Customers','infra.rjsbcInteraction',0,35,1,lcGroupAdmin)
+			Do tlAuthorisedForms.$add('FORM_SUPP','Suppliers','infra.rjsbcExtOrgs',0,30,1,lcGroupAdmin)
+			Do tlAuthorisedForms.$add('FORM_CUST','Customers','infra.rjsbcExtOrgs',0,35,1,lcGroupAdmin)
+			
+		Case 'prd' ## products
+			Do tlAuthorisedForms.$add('FORM_PRD','Products','infra.rjsbcInteraction',0,12,1,lcGroupGlobal)
+			Do tlAuthorisedForms.$add('FORM_PRD','Products','infra.rjsProducts',0,12,1,lcGroupGlobal)
+			
+		Case 'foh','fod' ## external organisations (suppliers & customers)
+			Do tlAuthorisedForms.$add('FORM_FOH','Financial invoices','infra.rjsbcInteraction',0,13,1,lcGroupFrequent)
+			Do tlAuthorisedForms.$add('FORM_FOH','Financial invoices preparation','infra.rjsFinInvOut',0,13,1,lcGroupFrequent)
+			
+		Case 'rfg' ## reference global
+			Do tlAuthorisedForms.$add('FORM_RFG','Global configuration','infra.rjsReferenceAll',0,15,1,lcGroupGlobal)
+		Case 'rfl' ## reference local
+			Do tlAuthorisedForms.$add('FORM_RFL','Site configuration','infra.rjsReferenceAll',0,16,1,lcGroupGlobal)
+		Case 'rfo' ## reference organisation
+			Do tlAuthorisedForms.$add('FORM_RFO','Organisation configuration','infra.rjsReferenceAll',0,17,1,lcGroupGlobal)
+			
+			# user access
+		Case 'usr' ## users
+			Do tlAuthorisedForms.$add('FORM_USERS','Users','infra.rjsUserAccess',0,20,1,lcGroupLowLevel)
+		Case 'rol','ur' ## roles   userRoles
+			Do tlAuthorisedForms.$add('FORM_ROLES','User access Roles','infra.rjsUserAccess',0,21,1,lcGroupLowLevel)
+		Case 'per' ## permissions
+			Do tlAuthorisedForms.$add('FORM_PERMISSIONS','User access Permissions','infra.rjsUserAccess',0,22,1,lcGroupLowLevel)
+			
+		Case 'elc' ## emailconfig
+			Do tlAuthorisedForms.$add('FORM_EMCONFIG','Email configuration','infra.rjsEmailConfig',0,30,1,lcGroupLowLevel)
+		Case 'uom' ## units of measurement
+			Do tlAuthorisedForms.$add('FORM_UOM','Units of measurement','infra.rjsUnitsOfMeasure',0,35,1,lcGroupLowLevel)
+			
+			# logs
+		Case 'sle' ## syslogerrors
+			Do tlAuthorisedForms.$add('FORM_ERRORS','System error logs','infra.rjsLogsAll',0,50,1,lcGroupLowLevel)
+		Case 'slv' ## syslogevents
+			Do tlAuthorisedForms.$add('FORM_EVENTS','System event logs','infra.rjsLogsAll',0,52,1,lcGroupLowLevel)
+		Case 'ae' ## syslogevents
+			Do tlAuthorisedForms.$add('FORM_ASYNCEM','System generated emails','infra.rjsLogsAll',0,54,1,lcGroupLowLevel)
+		Case 'smh' ## semaphors
+			Do tlAuthorisedForms.$add('FORM_SMH','Record locks (semaphores)','infra.rjsLogsAll',0,56,1,lcGroupLowLevel)
+			
+			# developer assistance
+		Case 'env' ## omnis environment details  RSM 2025-01-01
+			Do tlAuthorisedForms.$add('FORM_ENV','Environment','infra.rjsEnvironment',0,90,1,lcGroupGlobal)
+			
+		Default
+			# Breakpoint
+			Calculate lcUnassignedPrefixes as con(lcUnassignedPrefixes,pick(lcUnassignedPrefixes<>'','',', '),low(llPermissions.FormPrefix))
+	End Switch
+End While
+
+Do tlAuthorisedForms.$add('FORM_UP','User preferences','infra.rfUserInput',0,85,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_HELP','Help with using the system','infra.rfAdvisers',0,90,1,lcGroupVeryLast)
+Do tlAuthorisedForms.$add('FORM_FEEDBACK','','infra.rfUserInput','0','999',0)
+
+If lcUnassignedPrefixes<>''
+	Send to trace log These prefixes were ignored in [$clib().$name].[$cmethod().$name]: [lcUnassignedPrefixes]]
+End If

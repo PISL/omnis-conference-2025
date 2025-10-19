@@ -1,0 +1,78 @@
+Do $cinst.$objs.ilDayDisplay.$clearexceptions()
+# Day1 morning
+Do ilDayDisplay.$sendall($cinst.$objs.AMspeaker.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.AMtime))))
+Do ilDayDisplay.$sendall($cinst.$objs.AMtime.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.AMtime))))
+Do ilDayDisplay.$sendall($cinst.$objs.AMtitle.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.AMtime))))
+Do ilDayDisplay.$sendall($cinst.$objs.AMdesc.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.AMtime))))
+
+# day1 afternoon
+Do ilDayDisplay.$sendall($cinst.$objs.PMspeaker.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.PMtime))))
+Do ilDayDisplay.$sendall($cinst.$objs.PMtime.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.PMtime))))
+Do ilDayDisplay.$sendall($cinst.$objs.PMtitle.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.PMtime))))
+Do ilDayDisplay.$sendall($cinst.$objs.PMdesc.[ilDayDisplay.$line].$visible.$assign(not(isclear(ilDayDisplay.PMtime))))
+
+
+Quit method
+
+# Day1 morning
+Do ilDay1.$sendall($cinst.$objs.AMspeaker1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.AMtime))))
+Do ilDay1.$sendall($cinst.$objs.AMtime1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.AMtime))))
+Do ilDay1.$sendall($cinst.$objs.AMtitle1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.AMtime))))
+Do ilDay1.$sendall($cinst.$objs.AMdesc1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.AMtime))))
+
+# day1 afternoon
+Do ilDay1.$sendall($cinst.$objs.PMspeaker1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.PMtime))))
+Do ilDay1.$sendall($cinst.$objs.PMtime1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.PMtime))))
+Do ilDay1.$sendall($cinst.$objs.PMtitle1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.PMtime))))
+Do ilDay1.$sendall($cinst.$objs.PMdesc1.[ilDay1.$line].$visible.$assign(not(isclear(ilDay1.PMtime))))
+
+# day2 morning
+Do ilDay2.$sendall($cinst.$objs.AMspeaker2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.AMtime))))
+Do ilDay2.$sendall($cinst.$objs.AMtime2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.AMtime))))
+Do ilDay2.$sendall($cinst.$objs.AMtitle2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.AMtime))))
+Do ilDay2.$sendall($cinst.$objs.AMdesc2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.AMtime))))
+
+# day2 afternoon
+Do ilDay2.$sendall($cinst.$objs.PMspeaker2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.PMtime))))
+Do ilDay2.$sendall($cinst.$objs.PMtime2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.PMtime))))
+Do ilDay2.$sendall($cinst.$objs.PMtitle2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.PMtime))))
+Do ilDay2.$sendall($cinst.$objs.PMdesc2.[ilDay2.$line].$visible.$assign(not(isclear(ilDay2.PMtime))))
+
+
+# day3 morning
+Do ilDay3.$sendall($cinst.$objs.AMspeaker3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.AMtime))))
+Do ilDay3.$sendall($cinst.$objs.AMtime3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.AMtime))))
+Do ilDay3.$sendall($cinst.$objs.AMtitle3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.AMtime))))
+Do ilDay3.$sendall($cinst.$objs.AMdesc3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.AMtime))))
+
+# day3 afternoon
+Do ilDay3.$sendall($cinst.$objs.PMspeaker3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.PMtime))))
+Do ilDay3.$sendall($cinst.$objs.PMtime3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.PMtime))))
+Do ilDay3.$sendall($cinst.$objs.PMtitle3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.PMtime))))
+Do ilDay3.$sendall($cinst.$objs.PMdesc3.[ilDay3.$line].$visible.$assign(not(isclear(ilDay3.PMtime))))
+
+
+# day4 morning
+Do ilDay4.$sendall($cinst.$objs.AMspeaker4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.AMtime))))
+Do ilDay4.$sendall($cinst.$objs.AMtime4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.AMtime))))
+Do ilDay4.$sendall($cinst.$objs.AMtitle4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.AMtime))))
+Do ilDay4.$sendall($cinst.$objs.AMdesc4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.AMtime))))
+
+# day4 afternoon
+Do ilDay4.$sendall($cinst.$objs.PMspeaker4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.PMtime))))
+Do ilDay4.$sendall($cinst.$objs.PMtime4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.PMtime))))
+Do ilDay4.$sendall($cinst.$objs.PMtitle4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.PMtime))))
+Do ilDay4.$sendall($cinst.$objs.PMdesc4.[ilDay4.$line].$visible.$assign(not(isclear(ilDay4.PMtime))))
+
+
+# day5 morning
+Do ilDay5.$sendall($cinst.$objs.AMspeaker5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.AMtime))))
+Do ilDay5.$sendall($cinst.$objs.AMtime5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.AMtime))))
+Do ilDay5.$sendall($cinst.$objs.AMtitle5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.AMtime))))
+Do ilDay5.$sendall($cinst.$objs.AMdesc5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.AMtime))))
+
+# day5 afternoon
+Do ilDay5.$sendall($cinst.$objs.PMspeaker5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.PMtime))))
+Do ilDay5.$sendall($cinst.$objs.PMtime5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.PMtime))))
+Do ilDay5.$sendall($cinst.$objs.PMtitle5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.PMtime))))
+Do ilDay5.$sendall($cinst.$objs.PMdesc5.[ilDay5.$line].$visible.$assign(not(isclear(ilDay5.PMtime))))

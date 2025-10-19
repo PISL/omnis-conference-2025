@@ -1,9 +1,63 @@
 Calculate icDisplayMessage as ''
 
-If inCurrentTab=cnTabDelegate
+If inCurrentTab=cnTabDGPerson
 	# there is no save on the Delegate info pane
+	Do toStrings.$HasRowBeenModified(irOriginalRecord,irCurrentRecord,kTrue) Returns lcModifiedColumns
+	If lcModifiedColumns<>''
+		# On this tab there couldl be both DG data or PSN data that has been modified.
+		If pos('DG_',lcModifiedColumns)
+			If irCurrentRecord.[irCurrentRecord.icPrimaryKey]>0
+				Do irCurrentRecord.$update() Returns lbOK
+			Else
+				Do irCurrentRecord.$insert() Returns lbOK
+			End If
+			If lbOK
+				# see below
+			Else
+				If irCurrentRecord.icValidationMessage<>''
+					Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+				Else If irCurrentRecord.irErrorSQL.NativeErrorMessage<>''
+					Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorMessage
+				Else
+					Breakpoint
+					Calculate icDisplayMessage as 'something went wrong saving delegate data to database - no changes made'
+				End If
+			End If
+		End If
+	End If
 	
-Else If inCurrentTab=cnTabTopics
+	Do toStrings.$HasRowBeenModified(irPersonOrig,irPerson,kTrue) Returns lcModifiedColumns
+	If pos('PSN_',lcModifiedColumns)
+		If irPerson.[irPerson.icPrimaryKey]>0
+			Do irPerson.$update() Returns lbOK
+		Else
+			Do irPerson.$insert() Returns lbOK
+		End If
+		If lbOK
+			# see below
+		Else
+			If irPerson.icValidationMessage<>''
+				Calculate icDisplayMessage as irPerson.icValidationMessage
+			Else If irPerson.irErrorSQL.NativeErrorMessage<>''
+				Calculate icDisplayMessage as irPerson.irErrorSQL.NativeErrorMessage
+			Else
+				Breakpoint
+				Calculate icDisplayMessage as 'something went wrong saving person data to database - no changes made'
+			End If
+		End If
+	Else
+		Breakpoint
+	End If
+	
+	If lbOK
+		Calculate icMode as ''
+		Do irCurrentRecord.$assignrow(irPerson,kTrue)
+		Do ilDisplayRecords.$assignrow(irCurrentRecord)
+		
+		Do method $displayListClick
+	End If
+	
+Else If inCurrentTab=cnTabTopicsConf
 	# ilNewPerson is based on DG, not PSN
 	Do ioTopicPerson.$fetchTopicPerson(irTopic.TPC_SEQ,irCurrentRecord.DG_PSN_REF,lrTopic,lrPerson,lrLink) ## get the link record
 	If lrLink.[lrLink.icPrimaryKey]>0
@@ -28,4 +82,54 @@ Else If inCurrentTab=cnTabTopics
 		End If
 	End If
 	Quit method lbOK
+	
+Else If inCurrentTab=cnTabTopicEditor
+	# save the irTopic record
+	Do toStrings.$HasRowBeenModified(irTopicOrig,irTopic) Returns lbModified
+	If lbModified
+		# now connect Topic to Conference ilTopics
+		If icMode='ET'
+			Do irTopic.$update() Returns lbOK
+			If lbOK
+				Calculate irTopicOrig as irTopic
+			Else
+				If irTopic.icValidationMessage<>''
+					Calculate icDisplayMessage as irTopic.icValidationMessage
+				Else If irTopic.irErrorSQL.NativeErrorMessage<>''
+					Calculate icDisplayMessage as irTopic.irErrorSQL.NativeErrorMessage
+				Else
+					Breakpoint
+					Calculate icDisplayMessage as 'something went wrong saving to the database - no changes made'
+				End If
+				Quit method lbOK
+			End If
+			
+		Else If icMode='IT'
+			# Because this is a new topic, the selected row in ilTopics is potentially meaningless.
+			# But we will still use it as a precedent for linking new Topic to selected conference.
+			Do ioTopicConference.$saveNewTopic(irTopic,ilSearch1,) Returns lbOK
+			If lbOK
+				# We have just created a new Topic record in ioTopicConference but ioTopicPerson is not aware of this.
+				Do ioTopicPerson.$fetchTopicPerson(irTopic.TPC_SEQ,irPerson.PSN_SEQ,irTopic,irPerson,lrLink)
+				Do ioTopicPerson.$save(irTopic,irPerson,lrLink) Returns lbOK
+				If not(lbOK)
+					Calculate icDisplayMessage as ioTopicPerson.icErrorMessage
+				End If
+			Else
+				Calculate icDisplayMessage as ioTopicConference.icErrorMessage
+			End If
+			
+		Else
+			Breakpoint
+			Do $AppError(con(sys(85),': icMode has unexpected value of ',kDq,icMode,kDq))
+		End If
+		
+		
+	Else
+		# nothing was updated.  Pretend everything was fine.  :-)
+		Calculate lbOK as kTrue
+	End If
+	
+	Quit method lbOK
+	
 End If

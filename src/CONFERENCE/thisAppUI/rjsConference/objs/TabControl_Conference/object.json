@@ -90,7 +90,7 @@
 				"::tabtooltip": "",
 				"tabenabled": true,
 				"tabmenu": "",
-				"tabtext": "Venue",
+				"tabtext": "Persons attending",
 				"tabvisible": true
 			},
 			{
@@ -106,7 +106,7 @@
 				"::tabtooltip": "",
 				"tabenabled": true,
 				"tabmenu": "",
-				"tabtext": "Persons attending",
+				"tabtext": "Venue",
 				"tabvisible": true
 			}
 		]

@@ -1,8 +1,8 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 2270,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 11,
 	"superclass": "rjsInfraSuper",
 	"designtaskname": "rtBusinessApp",
 	"nextident": 1022,
@@ -152,8 +152,8 @@
 		},
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
-		"createdate": "2018-01-05 15:27:39",
-		"currentlayoutbreakpoint": 667,
+		"createdate": "2025-05-16 12:17:35",
+		"currentlayoutbreakpoint": 1024,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "UI container",
 		"designguides": "",
@@ -167,9 +167,9 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 336,
+		"left": 204,
 		"menulineheight": 0,
-		"moddate": "2024-12-26 11:35:00",
+		"moddate": "2025-08-15 12:55:09",
 		"okkeyobject": "pbSave",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -179,7 +179,7 @@
 			"type": 0,
 			"calc": "rjsInfraSuper subclass"
 		},
-		"top": 270,
+		"top": 168,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "",
@@ -213,8 +213,8 @@
 		"animatelayouttransitions"
 	],
 	"layout": {
-		"width": 1437,
-		"height": 749,
+		"width": 1443,
+		"height": 831,
 		"320": {
 			"height": 0,
 			"padding": 2

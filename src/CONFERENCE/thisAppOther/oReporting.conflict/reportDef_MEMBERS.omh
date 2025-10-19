@@ -1,0 +1,33 @@
+# Do ilDisplayRecords.$add('MEMBERS','Membership report','Lists all members as at a particular date','AS_AT_DATE,,outputText')
+
+Begin text block
+# begin json row
+Text:{
+# this is used as a prefix in the string table for the options below
+Text:"reportCode" : "MEMBERS"
+
+Text:, "title" : "Membership report"
+Text:, "description" : "Lists all members as at a particular date."
+
+# use 0 or 1, not no or yes - If this attribute is missing the default value is 1
+Text:, "output_pdf" : "1"
+# use 0 or 1, not no or yes
+Text:, "output_text" : "1"
+
+Text:, "datefrom_lbl" : "as at date"
+Text:, "datefrom_tt" : "Membership is relative to a particular date.  Specify the date you want here."
+Text:, "datefrom_min" : "dim['(']#D,-60)"
+Text:, "datefrom_max" : "dim['(']#D,12)"
+# e.g. lday(kMonth,#D)  fday(kYear,#D)  #D
+Text:, "datefrom_default" : "#D"
+
+# end json row
+Text:}
+End text block
+
+Get text block lcReportAttributes
+Do OJSON.$jsontolistorrow(lcReportAttributes,lcParamText) Returns lrReportAttributes
+If lcParamText<>''
+	Breakpoint
+End If
+Do method addToDisplayList ('ADMINISTRATION',lrReportAttributes.reportCode,lrReportAttributes.title,lrReportAttributes)

@@ -1,0 +1,29 @@
+Do method saveGeneric (irOriginalTravelInfo,irTravelDetails,irDelegate) Returns lbOK
+If lbOK
+	# delegate PAX and diet
+	Do method saveGeneric (irOriginalPaxDG,irPAX,irTravelDetails,'PX_ROLE','DG') Returns lbOK
+	If lbOK
+		Do method saveGeneric (irOriginalDietDG,irDietDG,irPAX) Returns lbOK
+		# spouse PAX and Diet
+		If lbOK&irDelegate.DG_OCCUPANCY='U'
+			Do method saveGeneric (irOriginalSpouse,irSpouse,irTravelDetails,'PX_ROLE','SPOUSE') Returns lbOK
+			If lbOK
+				Do method saveGeneric (irOriginalDietSpouse,irDietSpouse,irSpouse) Returns lbOK
+			End If
+		End If
+	End If
+End If
+
+# and save PSN details if a mobile number has been provided or changed
+If pick(isnull(irDelegate.PSN_PHONE),irDelegate.PSN_PHONE,'')<>pick(isnull(irDelegateOrig.PSN_PHONE),irDelegateOrig.PSN_PHONE,'')
+	Do $DefineList(lrPerson,'tPerson')
+	Do lrPerson.$fetch_pk(irDelegate.DG_PSN_REF)
+	Calculate lrPerson.PSN_PHONE as irDelegate.PSN_PHONE
+	Do lrPerson.$update() Returns lbOK
+End If
+
+If lbOK
+	Calculate icDisplayMessage as con('Thank you for providing travel information.',kCr,'Click close button to finish.')
+End If
+
+Quit method lbOK

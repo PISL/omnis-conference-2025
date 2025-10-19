@@ -1,0 +1,22 @@
+On evAfter
+	If icMode='IS'
+		If irCurrentSynonym.UOS_CODE=''
+			Do toStrings.$StringTableEntry('VAL_MANDATORY',icDisplayMessage,'cannot be empty')
+			Calculate icDisplayMessage as con(clLabels.label,' ',icDisplayMessage)
+			Do $cinst.$setcurfield($cobj,kTrue)
+			Quit event handler (Discard event)
+		Else If irCurrentSynonym.$CheckUnique($cobj().$name)>0
+			Do clLabels.$search($ref.objName=con('label_',$cobj().$name),1,0,0,0)
+			Do toStrings.$StringTableEntry('VAL_NOT_UNIQUE',icDisplayMessage,' must be unique')
+			Calculate icDisplayMessage as con(clLabels.label,' ',icDisplayMessage)
+			Calculate irCurrentSynonym.UOS_CODE as ''
+			Do $cinst.$setcurfield($cobj,kTrue)
+			
+			Quit event handler (Discard event)
+			# End If
+		Else
+			Calculate icDisplayMessage as ''
+		End If
+	End If
+	
+	Do $cinst.$behaviour()

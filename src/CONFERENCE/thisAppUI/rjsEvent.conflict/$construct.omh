@@ -1,0 +1,72 @@
+Do $cinst.$getBrowser() ## populate icPlatform used in TranslateText to decide on tab shortcuts
+Set reference irefContainer to $cinst.$container
+Do inherited
+Do method setTabColours
+
+# Enter your initialization code here
+Do $DefineList(ilDisplayRecords,'CONFERENCE.tConference')
+Calculate irCurrentRecord as ilDisplayRecords
+# The columns in mConfPriceOptions used to be stored in the Conference record.
+# This became redundant when pricing rules were introduced.
+Do $DefineList(irPrices,'CONFERENCE.mConfPriceOptions')
+# Do method DefinePricingRow ## irPrices
+
+Do $DefineList(ilVenues,'tVenue')
+Do ilVenues.$fetch_all()
+
+Do $DefineList(irProduct,'infra.tProducts')
+
+Do method TranslateText ## call this here to get the translations before setting superclass labels/values
+
+Calculate icFormHeading as $cell(clLabels,'objName','EVENT_Heading','label')
+Calculate icFormIntro as $cell(clLabels,'objName','EVENT_Intro','label')
+
+Do method UserPermissions
+
+Do $DefineList(ilTopics,'tTopics')
+Calculate irTopic as ilTopics
+
+# we need to get a definition of ilProductResolutionErrors in order to display it on th form at runtime
+Do ioResolve.$clearErrors()
+Calculate ilProductResolutionErrors as ioResolve.ilResolveErrors
+
+# find correct column number to display in list
+# Do ilDisplayRecords.$cols.$findname('CF_TITLE') Returns liColRef
+# Calculate lnDisplayListCol as liColRef.$ident
+
+Do toValues.$initInherited('DG_STATUS') Returns ilStatusDG
+# Because it is possible to remove Occuprancy options from event to event (e.g. shared for Burg Hemmersbach)
+# the following assumptions around which radio button number relates to which occupancy code is now buggy.
+# There is working code in ConfRegistration.
+Do toValues.$initInherited('DG_OCCUPANCY') Returns ilOccupancyDG
+# Calculate lcTemp as ''
+# While $Loop(ilOccupancyDG)
+# Calculate lcTemp as con(lcTemp,pick(lcTemp<>'','',','),ilOccupancyDG.RFO_DESC)
+# End While
+# Calculate $cinst.$objs.inPriceOccupancy.$text as lcTemp
+Do toValues.$ReturnCountries() Returns ilCountriesPSN
+
+Do $DefineList(ilPricingGrid,'tConfPricing')
+Calculate irProductPriceRule as ilPricingGrid
+
+Do method FetchRecords
+# no drop lists needed for this small group of records
+Do $cinst.$superText()
+Do $cinst.$superFoundList($cell(clLabels,'objName','disp_events','label'),'CF_TITLE')
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_CF.$currenttab as inCurrentTab
+Calculate $cinst.$objs.PagedPane.$currentpage as inCurrentTab
+
+Do ilMoveConfPrice.$cols.$add('code',kCharacter,kSimplechar,1)
+Do ilMoveConfPrice.$cols.$add('desc',kCharacter,kSimplechar,100)
+Do ilMoveConfPrice.$add('','move row')
+Do ilMoveConfPrice.$add('T','to top')
+Do ilMoveConfPrice.$add('U','up')
+Do ilMoveConfPrice.$add('D','down')
+Do ilMoveConfPrice.$add('B','to bottom')
+
+Do $cinst.$container().$initToolsMenu() Returns llMenuCommands ## use defaults, override $getMergeID() is this changes
+Do $cinst.$container().$setupToolsMenu($cinst.$getMenuID(),llMenuCommands)
+
+Do $cinst.$behaviour()

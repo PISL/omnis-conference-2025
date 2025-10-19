@@ -1,0 +1,6 @@
+# populate the list with all synonyms for the selected UOM
+If irCurrentRecord.UOM_SEQ>0
+	Do ilSynonyms.$fetchAllSynonyms(irCurrentRecord.UOM_SEQ)
+	Do ilSynonyms.$sendall($ref.display.$assign(con($sendallref.UOS_CODE,pick($sendallref.UOS_FACTOR<>0,'',con('  (x ',$sendallref.UOS_FACTOR,')')))))
+	Do ilSynonyms.$sort(low($ref.UOS_CODE))
+End If

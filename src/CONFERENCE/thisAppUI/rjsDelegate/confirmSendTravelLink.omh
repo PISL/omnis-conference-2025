@@ -1,0 +1,7 @@
+If isclear(irCurrentRecord.DG_EMAIL_TRAVEL_SENT)
+	
+	Do $cinst.$clientNoYesMsg('Proceed to send request travel details email?','CONFIRM ACTION','$sendEmailTravel')
+Else
+	Do $cinst.$clientNoYesMsg(con('Proceed to send request travel details email, even though it was already sent ',irCurrentRecord.DG_EMAIL_TRAVEL_SENT,'?'),'CONFIRM ACTION','$sendEmailTravel')
+	
+End If

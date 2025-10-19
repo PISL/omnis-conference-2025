@@ -1,0 +1,20 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	
+	# there is a chance that the person has attempted to register, gone to confirmation page
+	# then realised something has gone wrong (e.g. person has registered already).
+	# So they go BACK and enter somneone else in the registration and have to remove the previous person.
+	# Hence this button is now available.  However the previous person's details may already be in ilInvDetails.
+	# Don't worry about this.  Each call to REGISTER/CONFIRM clears the ilInvDetails list.
+	Do ilPersons.$remove(ilPersons.$line)
+	# identify the PRIMARY delegate
+	Do ilPersons.$search($ref.DIL_PRIMARY=1,1,0,0,0) Returns lbFound
+	If not(lbFound)
+		Calculate ilPersons.1.DIL_PRIMARY as 1
+	End If
+	# new restore a delegate on the form - first or last?
+	Calculate ilPersons.$line as 1 ## ilPersons.$linecount
+	Do method PersonsListToRegistration
+	
+	# Do method AddPerson
+	Do $cinst.$behaviour()

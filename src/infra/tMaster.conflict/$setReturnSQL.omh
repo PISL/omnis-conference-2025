@@ -1,0 +1,5 @@
+# Normally when a table class method runs we expect a result from the database.
+# By setting this ibReturnSQL to kTrue the developer is saying I want the SQLquery text, not the result.
+# This is expected to be used when obtaining a sql statement for use by a SQLWorker object.
+
+Calculate ibReturnSQL as pbReturnSqlStatement

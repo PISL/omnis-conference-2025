@@ -1,0 +1,7 @@
+On evClick
+	Calculate icDisplayMessage as ''
+	Do irFacility.$clear()
+	Calculate ilFacilityType.$line as 1
+	Calculate icMode as 'IF' ## insert facility
+	
+	Do $cinst.$behaviour()

@@ -1,0 +1,6 @@
+If len(icSearch)>=2|len(icSearch)=0 ## checking for len = 0 is the only way to get all the records back because neither of the drop list are available
+	Do method FetchRecords
+	
+	Do $cinst.$behaviour()
+	Do $cinst.$redraw()
+End If

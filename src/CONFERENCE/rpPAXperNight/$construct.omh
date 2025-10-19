@@ -1,0 +1,27 @@
+Do inherited
+
+# Enter your initialization code here
+Calculate irConference as prConference
+
+Calculate icReportTitle as con('PAX names per night',' - ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	If ilData.sameRoom
+		If ilData.DG_SEQ=ilData.[ilData.$line+1].DG_SEQ
+			Calculate inRoomCount as inRoomCount+1
+		End If
+	Else
+		Calculate inRoomCount as inRoomCount+1
+	End If
+	
+	Do $cinst.$printrecord()
+	
+	If ilData.$line<ilData.$linecount&ilData.date<>ilData.[ilData.$line+1].date
+		# new date next iteration of loop
+		Calculate inRoomCount as 0
+	End If
+End While

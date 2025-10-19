@@ -1,7 +1,7 @@
 {
 	"classtype": "kWindow",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
 	"internalversion": 6,
 	"designtaskname": "Startup_Task",
 	"nextident": 1088,
@@ -298,7 +298,7 @@
 		"minimizebox": false,
 		"minimizeiconid": 2006,
 		"minwidth": 0,
-		"moddate": "2025-05-07 09:41:41",
+		"moddate": "2025-10-14 10:47:54",
 		"modelessdata": true,
 		"movebehind": true,
 		"osdropflags": "kOSDROPnone",

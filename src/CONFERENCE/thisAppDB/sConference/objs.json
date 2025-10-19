@@ -446,5 +446,33 @@
 			"primarykey": false,
 			"userinfo": ""
 		}
+	},
+	{
+		"name": "CF_TZ_LOCAL",
+		"ident": 32158,
+		"order": 33,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "hour offset relative to UTC: winter = 1, summer = 2 (for central european time)",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
+	},
+	{
+		"name": "CF_TZ_SERVER",
+		"ident": 32159,
+		"order": 34,
+		"type": "kInteger",
+		"subtype": "k32bitint",
+		"sublen": 0,
+		"properties": {
+			"desc": "hour offset relative to UTC: winter = 0, summer = 1",
+			"nonull": false,
+			"primarykey": false,
+			"userinfo": ""
+		}
 	}
 ]

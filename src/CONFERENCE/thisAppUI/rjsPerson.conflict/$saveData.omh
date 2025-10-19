@@ -1,0 +1,74 @@
+If icMode='IP' ## insert person
+	Calculate irCurrentRecord.PSN_GO_REF as $ctask.trGroupOrg.GO_SEQ
+	Do irCurrentRecord.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+	Else
+		Do irCurrentRecord.$insert() Returns lbOK
+		If lbOK
+			# now add the new user to the current Group
+			Do irCurrentRecord.$displayName()
+			Do ilDisplayRecords.$add()
+			Calculate ilDisplayRecords.$line as ilDisplayRecords.$linecount
+			Do ilDisplayRecords.$assignrow($cinst.irCurrentRecord)
+			
+			Do method FetchRecords
+			Do ilDisplayRecords.$search($ref.PSN_SEQ=irCurrentRecord.PSN_SEQ,1,0,0,0)
+			
+			Calculate icMode as ''
+		Else
+			# Calculate icMode as '' ## remain in insert mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='EP' ## edit person
+	Do irCurrentRecord.$validation() Returns lbProceed
+	If not(lbProceed)
+		Calculate icDisplayMessage as irCurrentRecord.icValidationMessage
+	Else
+		Do irCurrentRecord.$update() Returns lbOK
+		If lbOK
+			Do irCurrentRecord.$displayName()
+			Calculate ilDisplayRecords.[ilDisplayRecords.$line] as irCurrentRecord
+			Calculate icMode as ''
+		Else
+			# Calculate icMode as '' ## remain in edit mode
+			Calculate icDisplayMessage as irCurrentRecord.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='IT' ## insert topic
+	Calculate irTopic.TPC_GO_REF as trGroupOrg.GO_SEQ
+	Do ioTopicPerson.$saveTopic(irTopic,irCurrentRecord) Returns lbOK
+	If lbOK
+		Do ilTopics.$add()
+		Calculate ilTopics.$line as ilTopics.$linecount
+		# Calculate ilTopics.[ilTopics.$line] as irTopic
+		Do ilTopics.$assignrow(irTopic,kTrue)
+		Calculate icMode as ''
+	Else
+		Calculate icDisplayMessage as ioTopicPerson.icErrorMessage
+		If icDisplayMessage=''
+			Calculate icDisplayMessage as irTopic.irErrorSQL.NativeErrorText
+		End If
+	End If
+	
+Else If icMode='ET' ## edit topic
+	Do ioTopicPerson.$saveTopic(irTopic,irCurrentRecord) Returns lbOK
+	
+	If ioTopicPerson.icErrorMessage<>''
+		# Calculate icDisplayMessage as irTopic.icValidationMessage
+		Calculate icDisplayMessage as ioTopicPerson.icErrorMessage
+	Else
+		# job done in ioTopicPerson
+		# Calculate ilTopics.[ilTopics.$line] as irTopic
+		Do ilTopics.$assignrow(irTopic,kTrue)
+		Calculate icMode as ''
+	End If
+	
+Else
+	Breakpoint
+End If
+
+Do $cinst.$behaviour()

@@ -1,8 +1,8 @@
 {
 	"classtype": "kTable",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 18,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 30,
 	"superclass": "infra.tMaster",
 	"designtaskname": "Startup_Task",
 	"cvardefs": [
@@ -51,7 +51,7 @@
 		"editordata": "",
 		"external": true,
 		"issupercomponent": false,
-		"moddate": "2020-01-04 15:58:23",
+		"moddate": "2025-08-12 16:27:18",
 		"showascheckedout": false,
 		"sqlclassname": "sPerson",
 		"userinfo": "",

@@ -1,0 +1,10 @@
+# get the form coulurs for a navigation menu
+Calculate irAttributes as OJSON.$jsontolistorrow(trFormColours.ANAVLIST)
+Calculate inBackAlpha as irAttributes.backalpha
+Calculate inBackColour as eval(irAttributes.backcolor)
+
+Do method setUserMenu
+Do method setToolsMenu
+Do method setOrgMenu
+
+Do method setMenuProperties

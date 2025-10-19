@@ -1,0 +1,15 @@
+If pnDisplayWhat=0
+	Do $cinst.$cols.$findname('EO_NAME') Returns liColRef
+	If liColRef
+		If $cinst.EO_NAME<>''
+			Calculate $cinst.DisplayName as con($cinst.EO_NAME,': ',$cinst.FOH_INV_NO)
+			Calculate lbDone as kTrue
+		End If
+	End If
+Else If pnDisplayWhat=1
+	Calculate $cinst.DisplayName as con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)
+	Calculate lbDone as kTrue
+End If
+If not(lbDone)
+	Calculate $cinst.DisplayName as con($cinst.PSN_SURNAME,', ',$cinst.PSN_FIRST_NAME)
+End If

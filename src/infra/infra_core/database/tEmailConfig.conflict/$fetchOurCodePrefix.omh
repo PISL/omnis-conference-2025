@@ -1,0 +1,64 @@
+If isclear(pcCodePrefix)
+	# report this
+	Calculate irErrorSQL.NativeErrorText as 'Missing code prefix'
+	Quit method kFalse
+Else
+	# using a "like" in the SQL
+	Calculate pcCodePrefix as con(upp(pcCodePrefix),'%')
+End If
+
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Calculate ldtStart as #D
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pcCodePrefix),$cinst.$type,0,ilRESTextensions))
+	Calculate inServiceMS as ddiff(kCentiSecond,ldtStart,#D)*10
+	Calculate inRESTserverMS as toWeb.inServerTime
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select [$cinst.$selectnames()]
+If icExtraColumns<>''
+	Sta: , [icExtraColumns]
+End If
+Sta:from [$cinst.$servertablenames]
+If icExtraColumns<>''
+	Sta: join [lrEmailText.$servertablenames] on ELT_ELC_REF = ELC_SEQ
+End If
+Sta:where   ELC_GO_REF = @[$ctask.trGroupOrg.GO_SEQ]
+Sta:and ELC_CODE like @[pcCodePrefix]
+If icExtraColumns<>''
+	If pcLangCode<>''
+		Sta: and  ELT_LANG = @[pcLangCode]
+	Else
+		Sta: and  ELT_LANG = ELC_DEFAULT_LANG
+	End If
+End If
+End statement
+
+Do $cinst.$executesqlandfetch() Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+While $Loop($cinst)
+	Do $cinst.$displayName()
+End While
+
+Quit method lbOK

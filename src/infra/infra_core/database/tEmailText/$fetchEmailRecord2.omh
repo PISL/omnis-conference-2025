@@ -1,0 +1,54 @@
+# 2025-09-08  RSM  For some reason the postgres function within method $fetchEmailRecord is not returning anything
+# So here is a backup method
+
+If tlDatabases.DAM='WebService'
+	# pass parameters to web service
+	# $callService (pFieldReference, row(TableClassName, CurrentMethodName, p1,...,pn) ) ## result will be returned in pFieldReference, row() contains the parameters for the call
+	Calculate ldtStart as #D
+	Do toWeb.$callFetch($cinst,irErrorSQL,row($cinst.$class().$name,$cmethod().$name,row(pCode,pcLanguage),$cinst.$type,0,ilRESTextensions))
+	Calculate inServiceMS as ddiff(kCentiSecond,ldtStart,#D)*10
+	Calculate inRESTserverMS as toWeb.inServerTime
+	If toWeb.irResponse.httpStatusCode=200
+		# the result should be in this object ## however there may be a SQL error
+		If irErrorSQL.NativeErrorText<>''
+			Quit method kFalse
+		End If
+		Quit method kTrue
+	Else
+		Quit method kFalse
+	End If
+End If
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select *
+Sta:from [lrConfig.$servertablenames()]
+Sta:join [$cinst.$servertablenames()] on ELT_ELC_REF = ELC_SEQ
+Sta:where ELC_CODE = @[pCode] 
+Sta:and ELC_GO_REF = @[trGroupOrg.GO_SEQ] 
+Sta:and ELC_ACTIVE = true
+Sta:and ELT_LANG = @[pcLanguage]
+Sta:and ELT_ACTIVE = true
+End statement
+
+Do $cinst.$executesqlandfetch(lrEmailRecord) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+If lrEmailRecord.ELC_SEQ>0
+	# we have a row so check ELT_LANG
+	If upp(lrEmailRecord.ELT_LANG)<>upp(pcLanguage)
+		Do $ctask.$LogError('EMAILTEXT','MISSING',con('No emailtext record found for Org ',trGroupOrg.GO_NAME_SHORT,' with config record ',pCode,' and language ',pcLanguage))
+	End If
+Else
+	Do $ctask.$LogError('EMAILCONFIG','MISSING',con('No active email config record found for Org ',trGroupOrg.GO_NAME_SHORT,' with config record ',pCode,' and language ',pcLanguage,'.  Has the ACTIVE flag been set for both config and text?'))
+End If
+
+Quit method lrEmailRecord

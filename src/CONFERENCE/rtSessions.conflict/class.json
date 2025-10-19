@@ -1,0 +1,128 @@
+{
+	"classtype": "kRemoteTask",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 10,
+	"superclass": "rtBusinessApp",
+	"nextident": 1,
+	"tvardefs": [
+		{
+			"name": "tlAuthorisedForms",
+			"order": 4,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "tlOpenConferences",
+			"order": 11,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "tlPermissions",
+			"order": 2,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "trChangingForm",
+			"order": 3,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "trCurrentConference",
+			"order": 9,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "trCurrentDelegate",
+			"order": 10,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "trCurrentForm",
+			"order": 6,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "trFormat",
+			"order": 12,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "trParameters",
+			"order": 8,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+		{
+			"name": "ilRemoteFormsOpen",
+			"order": 1,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irefForm",
+			"order": 3,
+			"type": "kItemref",
+			"subtype": "",
+			"sublen": 0
+		}
+	],
+	"properties": {
+		"basehttpresponseheaders": "",
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2017-10-30 11:44:06",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": true,
+		"htmltemplate": "",
+		"issupercomponent": false,
+		"localtestdata": "",
+		"localtime": true,
+		"maxtime": 0,
+		"maxusers": 0,
+		"moddate": "2019-06-07 10:48:51",
+		"restful": false,
+		"restfulapiname": "",
+		"showascheckedout": false,
+		"stringtable": "",
+		"suspendconditions": "kSuspendConditionNone",
+		"suspendedtimeout": 0,
+		"timeout": 2,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": "2",
+		"webservice": ""
+	},
+	"inheritedproperties": [
+		"designtaskname",
+		"componenticon"
+	]
+}

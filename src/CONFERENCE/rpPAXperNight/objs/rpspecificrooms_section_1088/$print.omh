@@ -1,0 +1,11 @@
+If ilData.$line>1
+	If ilData.DG_SEQ=ilData.[ilData.$line+1].DG_SEQ
+		Calculate #1 as not(ilData.sameRoom) ## no blank line
+	Else
+		Calculate #1 as 1 ## blank line
+	End If
+Else
+	Calculate #1 as 1 ## blank line
+End If
+
+Do default

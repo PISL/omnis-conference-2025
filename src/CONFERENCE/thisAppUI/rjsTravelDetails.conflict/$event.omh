@@ -1,0 +1,21 @@
+On evLayoutChanged
+	Calculate inBreakpoint as pBreakpoint
+	
+	# this ensures that the shuttle info is in the correct place when the breakpoint changes
+	Calculate $cinst.$objs.PagedPane.$objs.icShuttleServiceInfo.$left as pick(inBreakpoint<480,$cinst.$objs.PagedPane.$objs.ppTravelDietMusic.$left,$cinst.$objs.PagedPane.$objs.tcTravelDietMusicVert.$left)
+	Calculate $cinst.$objs.icShuttleServiceInfo.$visible as ibDisplayShuttleInfo
+	
+	Calculate $cinst.$objs.TP_SHUTTLE.$columncount as pick(inBreakpoint<480,3,1)
+	
+	Switch inBreakpoint
+		Case 320,480
+			Calculate $cinst.$objs.icDisplayMessage2.$fontsize as 10
+			Calculate $cinst.$objs.label_InternatDepart.$fontsize as 14
+			Calculate $cinst.$objs.label_VenueDepart.$fontsize as 14
+			
+		Default
+			Calculate $cinst.$objs.icDisplayMessage2.$fontsize as 12
+			Calculate $cinst.$objs.label_InternatDepart.$fontsize as 16
+			Calculate $cinst.$objs.label_VenueDepart.$fontsize as 16
+			
+	End Switch

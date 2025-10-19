@@ -1,0 +1,14 @@
+Do ilData.$add()
+Calculate ilData.$line as ilData.$linecount
+Calculate ilData.Section as ccSection3
+
+# ARR_FACILITY takes precedence over FCY_NAME
+If len(prSchedule.ARR_FACILITY)>0
+	Calculate ilData.ROOM as prSchedule.ARR_FACILITY
+Else If len(prSchedule.RoomDisplay)>0
+	Calculate ilData.ROOM as prSchedule.RoomDisplay
+Else If len(prSchedule.FCY_NAME)>0
+	Calculate ilData.ROOM as prSchedule.FCY_NAME
+End If
+Calculate ilData.DateSort as prSchedule.DateSort
+Calculate ilData.DateDisplay as prSchedule.DateDisplay

@@ -1,6 +1,6 @@
 {
 	"ident": 1043,
-	"order": 44,
+	"order": 42,
 	"objtype": "kComponent",
 	"componentlib": "jsEdit",
 	"componentctrl": "Edit Control",
@@ -18,6 +18,7 @@
 		"backalpha": 255,
 		"backcolor": "RGB(255,255,255)",
 		"bordercolor": "kColorDefault",
+		"bordericonstyle": null,
 		"borderradius": "0",
 		"componentinfo": {
 
@@ -71,6 +72,8 @@
 		"objlink": 262145,
 		"preventlayoutanimation": false,
 		"removefromtaborder": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"systemkeys": false,
@@ -87,8 +90,8 @@
 		"320": {
 			"left": 6,
 			"top": 397,
-			"width": 204,
-			"height": 64,
+			"width": 306,
+			"height": 275,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -98,8 +101,8 @@
 		"375": {
 			"left": 27,
 			"top": 397,
-			"width": 294,
-			"height": 64,
+			"width": 341,
+			"height": 251,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -107,10 +110,10 @@
 			"visible": true
 		},
 		"480": {
-			"left": 86,
-			"top": 268,
-			"width": 301,
-			"height": 47,
+			"left": 8,
+			"top": 296,
+			"width": 520,
+			"height": 224,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -118,10 +121,10 @@
 			"visible": true
 		},
 		"667": {
-			"left": 179,
-			"top": 270,
-			"width": 275,
-			"height": 93,
+			"left": 88,
+			"top": 296,
+			"width": 464,
+			"height": 144,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -131,7 +134,7 @@
 		"768": {
 			"left": 176,
 			"top": 400,
-			"width": 278,
+			"width": 408,
 			"height": 133,
 			"align": "kLeftJst",
 			"dragborder": false,
@@ -142,8 +145,8 @@
 		"1024": {
 			"left": 192,
 			"top": 424,
-			"width": 367,
-			"height": 68,
+			"width": 512,
+			"height": 128,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",
@@ -153,8 +156,8 @@
 		"1700": {
 			"left": 192,
 			"top": 424,
-			"width": 367,
-			"height": 68,
+			"width": 512,
+			"height": 184,
 			"align": "kLeftJst",
 			"dragborder": false,
 			"edgefloat": "kEFnone",

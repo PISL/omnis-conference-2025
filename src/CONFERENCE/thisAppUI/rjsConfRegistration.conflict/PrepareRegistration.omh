@@ -1,0 +1,68 @@
+Calculate lrPersonCheck as ilPersons
+Do lrPersonCheck.$clear()
+Do ioExternalOrgs.$init(irCustomer,irLinkCustToIntOrg) Returns lbOK
+# although there will usually be one delegate per submission
+# a corporation might nominate multiple delegates
+
+Calculate llDelegates as irDelegate
+Do llDelegates.$clear()
+
+Do method cosmetics
+# during a registration the following could occur:
+# there will be one Customer paying the bill
+# although typically one, there could be several people being registered by a company
+# there wil be a line in the invoiceDetails for each person registering
+# the named person might already be  in the database from another conference
+# the named Customer might already be in the database from another conference
+
+# at least one but possibly several people could register
+# the person identified in irRegistration may or may not be in ilPersons
+If irRegistration.PSN_EMAIL<>''
+	Do ilPersons.$search(low($ref.PSN_EMAIL)=low(irRegistration.PSN_EMAIL),1,0,0,0) Returns lbFound ## changing line number doesn't matter - see ilPersons.$line below
+	If not(lbFound)
+		Do method AddPerson (pbStayOnCurrentPane)
+	End If
+End If
+Calculate lnLineNo as ilPersons.$line ## keep line number and irRegistraion content in sync
+Calculate ilPersons.$line as 0
+While $Loop(ilPersons)
+	Do lrPersonCheck.$clear()
+	Do lrPersonCheck.$fetchOnVarious(#NULL,#NULL,ilPersons.PSN_EMAIL)
+	Calculate ilPersons.original as lrPersonCheck
+	If ilPersons.icWhichDays<>''
+		If ilPersons.$linecount>1
+			Calculate irRegistration.requirements as con(irRegistration.requirements,pick(irRegistration.requirements<>'','','; '),ilPersons.PSN_SURNAME,' arrive-depart = ',ilPersons.icWhichDays) ## icWhichDays
+		Else
+			Calculate irRegistration.requirements as con(irRegistration.requirements,pick(irRegistration.requirements<>'','','; '),'arrive-depart = ',ilPersons.icWhichDays) ## icWhichDays
+		End If
+	End If
+End While
+Calculate ilPersons.$line as lnLineNo ## keep line number and irRegistraion content in sync
+
+# only one customer
+Do irCustomer.$fetchOurCustomers(#NULL,irRegistration.EO_NAME)
+# prime the object properly ## and copy originals
+Do ioExternalOrgs.$fetch_pk(irCustomer.[irCustomer.icPrimaryKey],irCustomer,irLinkCustToIntOrg) Returns lbOK
+Calculate irCustomerOrig as irCustomer
+Calculate irLinkCustToIntOrgOrig as irLinkCustToIntOrg
+
+Calculate irCustomer.EO_NAME as irRegistration.EO_NAME
+Calculate irCustomer.EO_EMAIL as irRegistration.EO_EMAIL
+Calculate irCustomer.EO_ADDR_BILL as irRegistration.EO_ADDR_BILL
+Calculate irCustomer.EO_CONTACT as irRegistration.EO_CONTACT
+Calculate irCustomer.EO_VAT_NO as irRegistration.EO_VAT_NO
+
+Do toStrings.$HasRowBeenModified(irCustomer,irCustomerOrig) Returns ibCustomerModified
+
+# prepare initial invoice entries
+Do ioResolve.$productResolution(ilConferences,ilPersons) Returns ilInvDetails
+
+Calculate inTaxTotal as ilInvDetails.$cols.Tax.$total()
+Calculate inOurTotal as ilInvDetails.$cols.Price.$total()
+Calculate inInvoiceTotal as ilInvDetails.$cols.Total.$total()
+
+# for every person in llPersons there will be a delegate row created
+# for every delegate there will be a link record to the invoice header
+If not(pbStayOnCurrentPane)
+	Calculate $cinst.$objs.PagedPane.$currentpage as 2
+End If

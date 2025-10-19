@@ -1,0 +1,25 @@
+# Calculate $cinst.$objs.pbCancel.$visible as ilDisplayRecords.$line>0&ilDisplayRecords.reportCode<>''
+Calculate $cinst.$objs.pbPrint.$visible as ilDisplayRecords.$line>0&ilDisplayRecords.reportCode<>''&ilOrganisations.$line&ilConferences.$line
+
+Calculate $cinst.$bobjs.1029.$visible as pos('DATE_FROM',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.idFrom.$visible as pos('DATE_FROM',ilDisplayRecords.reportParams)
+
+Calculate $cinst.$bobjs.1030.$visible as pos('DATE_TO',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.idTo.$visible as pos('DATE_TO',ilDisplayRecords.reportParams)
+
+Calculate $cinst.$objs.label_as_at_date.$visible as pos('AS_AT_DATE',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.idFrom.$visible as pos('AS_AT_DATE',ilDisplayRecords.reportParams)
+
+Calculate $cinst.$bobjs.1031.$visible as pos('sortOrder',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.ilSortOptions.$visible as pos('sortOrder',ilDisplayRecords.reportParams)
+Calculate $cinst.$bobjs.1032.$visible as pos('filterOption',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.ilFilterOptions.$visible as pos('filterOption',ilDisplayRecords.reportParams)
+
+Calculate $cinst.$objs.ibCheckbox1.$visible as pos('checkbox1',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.ibCheckbox1.$text as toStrings.$TagContent(ilDisplayRecords.paramText,'checkbox1')
+
+Calculate $cinst.$objs.ibCheckbox2.$visible as pos('checkbox2',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.ibCheckbox2.$text as $ctask.toStrings.$TagContent(ilDisplayRecords.paramText,'checkbox2')
+
+Calculate $cinst.$objs.ibCheckbox3.$visible as pos('checkbox3',ilDisplayRecords.reportParams)
+Calculate $cinst.$objs.ibCheckbox3.$text as $ctask.toStrings.$TagContent(ilDisplayRecords.paramText,'checkbox3')

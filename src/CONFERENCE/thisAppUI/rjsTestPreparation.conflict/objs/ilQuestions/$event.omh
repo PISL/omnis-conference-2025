@@ -1,0 +1,9 @@
+On evClick
+	Do irQuestion.$assignrow(ilQuestions,kTrue)
+	Calculate irQuestionOrig as irQuestion
+	
+	Do method DropLists
+	# Do method FormatMC ('F')
+	Do ioArrangements.$prepareMultipleChoice('F',irQuestion) Returns ilMultipleChoiceOptions
+	
+	Do $cinst.$behaviour()

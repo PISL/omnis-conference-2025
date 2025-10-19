@@ -1,0 +1,7 @@
+If pRow.C1='refreshVar'
+	JavaScript:__form.set(lcVarName,jOmnis.copyValue(__form.get(lcVarName)));
+Else
+	# form specific code goes here
+End If
+
+Do $cinst.$clientcommand("closepush",row())

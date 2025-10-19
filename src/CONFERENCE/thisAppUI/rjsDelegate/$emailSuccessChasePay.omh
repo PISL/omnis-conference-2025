@@ -1,0 +1,7 @@
+If prFingerPrint.DG_SEQ>0
+	# Do method updateWorkflow (prFingerPrint.DG_SEQ,'DG_SPKR_CHECKTOPICS') Returns lbOK
+	#  There is nothing to record here at the moment.
+	# Do $cinst.$clientOkCancelMsg(con("operation ",irEmailConfig.elc_code," has been successful"))
+Else
+	Breakpoint
+End If

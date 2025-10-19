@@ -1,0 +1,6 @@
+Calculate icPrefix as 'TPF_'
+Calculate icPrimarykey as 'TPF_SEQ'
+Calculate ibHasSequence as kTrue
+Calculate icForeignKey as 'TPF_TPC_REF' ## also TPF_CF_REF
+
+Do inherited

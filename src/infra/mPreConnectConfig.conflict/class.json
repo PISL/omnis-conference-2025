@@ -1,0 +1,44 @@
+{
+	"classtype": "kMenu",
+	"omnisversion": "11.1",
+	"omnisbuild": 111037255,
+	"internalversion": 6,
+	"designtaskname": "tkIgnoreExternal",
+	"nextident": 1011,
+	"cvardefs": [
+
+	],
+	"ivardefs": [
+
+	],
+	"properties": {
+		"canremotedebugwhenlocked": false,
+		"collectperformancedata": false,
+		"componenticon": 0,
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2022-10-14 17:17:55",
+		"defaulticoncolor": "kColorDefault",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"enabled": true,
+		"external": true,
+		"helpfile": 0,
+		"helptext": "",
+		"inheritedorder": 0,
+		"issupercomponent": false,
+		"moddate": "2022-10-14 17:37:16",
+		"showascheckedout": false,
+		"title": {
+			"type": 0,
+			"calc": "Connection configuration"
+		},
+		"userinfo": "",
+		"users": "12345678",
+		"vcsrevision": 0,
+		"version": ""
+	}
+}

@@ -1,12 +1,12 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 2613,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 2914,
 	"superclass": "infra.rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1195,
-	"lastgroupident": 6,
+	"nextident": 1207,
+	"lastgroupident": 22,
 	"cvardefs": [
 		{
 			"name": "clLabels",
@@ -171,6 +171,14 @@
 			"sublen": 100
 		},
 		{
+			"name": "icSourceAsyncEvent",
+			"order": 80,
+			"type": "kCharacter",
+			"subtype": "kSimplechar",
+			"sublen": 15,
+			"desc": "We may generate an invoice for both SEND_INVOICE and for CHASE_PAY.  We need to know which one it came from."
+		},
+		{
 			"name": "icTextForClipboard",
 			"order": 35,
 			"type": "kCharacter",
@@ -255,13 +263,6 @@
 			"sublen": 0
 		},
 		{
-			"name": "iJSFormFile",
-			"order": 68,
-			"type": "kCharacter",
-			"subtype": "kSimplechar",
-			"sublen": 100000000
-		},
-		{
 			"name": "iJSMediaType",
 			"order": 75,
 			"type": "kCharacter",
@@ -285,6 +286,13 @@
 		{
 			"name": "ilDelegateLog",
 			"order": 64,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilEmailConfigs",
+			"order": 79,
 			"type": "kList",
 			"subtype": "",
 			"sublen": 0
@@ -430,13 +438,6 @@
 			"sublen": 0
 		},
 		{
-			"name": "ioEmailConfig",
-			"order": 78,
-			"type": "kObject",
-			"subtype": "infra.oEmailOW3",
-			"sublen": 0
-		},
-		{
 			"name": "ioNewOw3SendEmail",
 			"order": 67,
 			"type": "kObject",
@@ -472,22 +473,8 @@
 			"sublen": 0
 		},
 		{
-			"name": "irEmailChasePayment",
-			"order": 63,
-			"type": "kRow",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
 			"name": "irEmailConfig",
 			"order": 55,
-			"type": "kRow",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
-			"name": "irEmailInvoiceMessage",
-			"order": 24,
 			"type": "kRow",
 			"subtype": "",
 			"sublen": 0
@@ -509,34 +496,6 @@
 		{
 			"name": "irEmailMessageServer",
 			"order": 44,
-			"type": "kRow",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
-			"name": "irEmailTravelConfig",
-			"order": 76,
-			"type": "kRow",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
-			"name": "irEmailTravelFromAddress",
-			"order": 25,
-			"type": "kRow",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
-			"name": "irEmailTravelFromName",
-			"order": 26,
-			"type": "kRow",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
-			"name": "irEmailTravelMessage",
-			"order": 23,
 			"type": "kRow",
 			"subtype": "",
 			"sublen": 0
@@ -646,7 +605,7 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2018-04-17 16:27:16",
-		"currentlayoutbreakpoint": 1700,
+		"currentlayoutbreakpoint": 1024,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "",
 		"designguides": "",
@@ -663,9 +622,9 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 58,
+		"left": 258,
 		"menulineheight": 0,
-		"moddate": "2025-05-12 10:22:03",
+		"moddate": "2025-10-07 11:17:08",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -676,7 +635,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 4,
+		"top": 0,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "",
@@ -684,7 +643,7 @@
 		"vertscroll": false
 	},
 	"layout": {
-		"width": 1604,
+		"width": 1401,
 		"height": 1033,
 		"320": {
 			"height": 0,

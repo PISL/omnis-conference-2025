@@ -1,0 +1,83 @@
+# Breakpoint
+Calculate lcErrorCodeTableNotFound as '42P01'
+Calculate lcErrorCodeSequenceNotDefined as '55000'
+
+Do llResult.$cols.$add('found',kCharacter,kSimplechar,10)
+Do llResult.$cols.$add('name',kCharacter,kSimplechar,100)
+Do llResult.$cols.$add('value',kInteger,k64bitint)
+Do llResult.$cols.$add('common',kCharacter,kSimplechar,100)
+Do llResult.$cols.$add('error',kCharacter,kSimplechar,255)
+
+If ilOmnisSchemasInfra.$linecount>0
+	# do not $makelist again
+Else
+	Do infra.$tables.$makelist($ref.$name,$ref.$superclass) Returns ilOmnisSchemasInfra
+	Do [tcCurrentLibrary].$tables.$makelist($ref.$name,$ref.$superclass) Returns ilOmnisSchemasThisLib
+	
+	Do ilOmnisSchemasInfra.$cols.$add('exists',kBoolean)
+	Do ilOmnisSchemasThisLib.$cols.$add('exists',kBoolean)
+End If
+
+Do ilOmnisSchemasInfra.$search(left($ref.C1,1)='t',1,0,1,0)
+Do ilOmnisSchemasInfra.$remove(kListKeepSelected)
+Do ilOmnisSchemasInfra.$search(0)
+Do ilOmnisSchemasInfra.$search($ref.exists,1,0,1,0)
+
+Calculate ilOmnisSchemasInfra.$line as 0
+While $Loop(ilOmnisSchemasInfra,kTrue)
+	Do method determineFetch (ilOmnisSchemasInfra) Returns lbFetchMaxValue
+	
+	If lbFetchMaxValue
+		Do $defineList(lrTableInstance,ilOmnisSchemasInfra.C1)
+		If lrTableInstance.$servertablenames<>''
+			# Some table classes may refer to a schema class that does not have a servertabename set
+			# This happens when the schema class is used for structure definition in memory   e.g. when importing data, or a super class like tSysReferenceSuper
+			Calculate lcSequenceName as con(low(lrTableInstance.$servertablenames),'_seq')
+			Do lrTableInstance.$setDoNotReportTheseErrors(con(lcErrorCodeTableNotFound,kComma,lcErrorCodeSequenceNotDefined))
+			
+			Calculate lcReadSequence as con('select currval(',kSq,lcSequenceName,kSq,')')
+			Do lrTableInstance.$Execute(lcReadSequence,kFalse,kTrue) Returns lnValue
+			If lnValue>0
+				Do llResult.$add('',lcSequenceName,lnValue,ilOmnisSchemasInfra.common)
+			Else If lrTableInstance.irErrorSQL.NativeErrorCode<>''
+				Do llResult.$add('',lcSequenceName,lnValue,ilOmnisSchemasInfra.common,con(lrTableInstance.irErrorSQL.NativeErrorCode,': ',lrTableInstance.irErrorSQL.NativeErrorText))
+			Else If pbReportNoResult
+				Do llResult.$add('',lcSequenceName,lnValue,ilOmnisSchemasInfra.common,'no result')
+			End If
+		End If ## lrTableInstance.$servertablenames
+		# ALTER SEQUENCE  infra.emailconfig_seq START 100;
+	End If
+End While
+
+Do ilOmnisSchemasThisLib.$search(left($ref.C1,1)='t',1,0,1,0)
+Do ilOmnisSchemasThisLib.$remove(kListKeepSelected)
+Do ilOmnisSchemasThisLib.$search(0)
+Do ilOmnisSchemasThisLib.$search($ref.exists,1,0,1,0)
+
+Calculate ilOmnisSchemasThisLib.$line as 0
+While $Loop(ilOmnisSchemasThisLib,kTrue)
+	Do method determineFetch (ilOmnisSchemasThisLib) Returns lbFetchMaxValue
+	
+	If lbFetchMaxValue
+		Do $defineList(lrTableInstance,ilOmnisSchemasThisLib.C1)
+		If lrTableInstance.$servertablenames<>''
+			# Some table classes may refer to a schema class that does not have a servertabename set
+			# This happens when the schema class is used for structure definition in memory   e.g. when importing data, or a super class like tSysReferenceSuper
+			Calculate lcSequenceName as con(low(lrTableInstance.$servertablenames),'_seq')
+			Do lrTableInstance.$setDoNotReportTheseErrors(con(lcErrorCodeTableNotFound,kComma,lcErrorCodeSequenceNotDefined))
+			
+			Calculate lcReadSequence as con('select currval(',kSq,lcSequenceName,kSq,')')
+			Do lrTableInstance.$Execute(lcReadSequence,kFalse,kTrue) Returns lnValue
+			If lnValue>0
+				Do llResult.$add('',lcSequenceName,lnValue,ilOmnisSchemasThisLib.common)
+			Else If lrTableInstance.irErrorSQL.NativeErrorCode<>''
+				Do llResult.$add('',lcSequenceName,lnValue,ilOmnisSchemasThisLib.common,con(lrTableInstance.irErrorSQL.NativeErrorCode,': ',lrTableInstance.irErrorSQL.NativeErrorText))
+			Else If pbReportNoResult
+				Do llResult.$add('',lcSequenceName,lnValue,ilOmnisSchemasThisLib.common,'no result')
+			End If
+		End If ## lrTableInstance.$servertablenames
+		# ALTER SEQUENCE  infra.emailconfig_seq START 100;
+	End If
+End While
+
+Quit method llResult

@@ -236,7 +236,8 @@
 				"type": "kCharacter",
 				"subtype": "kSimplechar",
 				"sublen": 2,
-				"param": 4
+				"param": 4,
+				"initval": "'en'"
 			}
 		],
 		"lvardefs": [
@@ -1026,6 +1027,14 @@
 				"subtype": "",
 				"sublen": 0,
 				"param": 1
+			},
+			{
+				"name": "pcFilename",
+				"order": 14,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 2
 			}
 		],
 		"lvardefs": [
@@ -1164,6 +1173,14 @@
 				"subtype": "",
 				"sublen": 0,
 				"param": 1
+			},
+			{
+				"name": "pcFilename",
+				"order": 14,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100,
+				"param": 2
 			}
 		],
 		"lvardefs": [
@@ -1337,6 +1354,13 @@
 				"sublen": 0
 			},
 			{
+				"name": "lbinContentEncoded",
+				"order": 11,
+				"type": "kBinary",
+				"subtype": 0,
+				"sublen": 100000000
+			},
+			{
 				"name": "lbinDuplicate",
 				"order": 12,
 				"type": "kBinary",
@@ -1344,8 +1368,8 @@
 				"sublen": 100000000
 			},
 			{
-				"name": "lcBinContentEncoded",
-				"order": 11,
+				"name": "lcContentEncoded",
+				"order": 14,
 				"type": "kCharacter",
 				"subtype": "kSimplechar",
 				"sublen": 100000000
@@ -1363,6 +1387,13 @@
 				"type": "kCharacter",
 				"subtype": "kSimplechar",
 				"sublen": 50
+			},
+			{
+				"name": "lnLevel",
+				"order": 13,
+				"type": "kInteger",
+				"subtype": "k32bitint",
+				"sublen": 0
 			}
 		]
 	},

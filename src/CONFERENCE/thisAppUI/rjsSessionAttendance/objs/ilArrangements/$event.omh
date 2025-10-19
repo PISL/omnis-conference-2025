@@ -15,7 +15,12 @@ On evClick
 	# End If
 	Do method FetchFeedback
 	
-	Do method DisplaySessionInfo
+	Do method DisplaySessionInfo ## ilArrangements
 	
 	Do method TimeSlotCheck
+	
+	Calculate icFCY_NAME as ilArrangements.FCY_NAME
+	Calculate icFCY_LOCATION as ilArrangements.FCY_LOCATION
+	Calculate icTopicTitle as ilArrangements.TPC_TITLE
+	
 	Do $cinst.$behaviour()

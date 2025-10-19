@@ -1,0 +1,25 @@
+Calculate icValidationMessage as ''
+
+If $cinst.DSL_DG_REF>0
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' delegate reference (DSL_DG_REF) missing')
+End If
+
+If $cinst.DSL_STATUS_FROM<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' from status (DSL_STATUS_FROM) missing')
+End If
+If $cinst.DSL_STATUS_TO<>''
+	# good
+Else
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),' to status (DSL_STATUS_TO) missing')
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

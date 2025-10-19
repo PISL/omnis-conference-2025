@@ -1,11 +1,14 @@
 Do llData.$cols.$add(lrPerson.PSN_SEQ)
 Do llData.$cols.$add(lrPerson.PSN_SURNAME)
 Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_WEBSITE_LINK)
 
 Do llData.$cols.$add(lrTopics.TPC_SEQ)
 Do llData.$cols.$add(lrTopics.TPC_TITLE)
 Do llData.$cols.$add(lrTopics.TPC_ABSTRACT)
 Do llData.$cols.$add(lrTopics.TPC_DESC)
+Do llData.$cols.$add(lrTopics.TPC_BACKCOLOR)
+Do llData.$cols.$add(lrTopics.TPC_TEXTCOLOR)
 
 Do llData.$cols.$add($cinst.ARR_SEQ)
 Do llData.$cols.$add($cinst.ARR_DATE)
@@ -31,9 +34,9 @@ Else If not(ibGoodConnectionToDb)
 End If
 
 Begin statement
-Sta:select  PSN_SEQ, PSN_SURNAME, PSN_FIRST_NAME
+Sta:select  PSN_SEQ, PSN_SURNAME, PSN_FIRST_NAME, PSN_WEBSITE_LINK
 
-Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC
+Sta:, TPC_SEQ, TPC_TITLE, TPC_ABSTRACT, TPC_DESC, TPC_BACKCOLOR, TPC_TEXTCOLOR
 
 Sta:, ARR_SEQ, ARR_DATE, ARR_DAYNO, ARR_STARTTIME, ARR_ENDTIME, ARR_SLOT
 Sta:, ARR_ORDER, ARR_BOOKING_REQD, ARR_MAX_BOOKINGS

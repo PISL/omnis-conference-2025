@@ -1,0 +1,15 @@
+On evClick
+	Calculate ilDisplayList as ''
+	If ilSysValues.returnType=nam(kList)
+		Calculate ilDisplayList as ilSysValues.list
+	Else If ilSysValues.returnType=nam(kRow)
+		Do ilDisplayList.$cols.$add('name',kCharacter,kSimplechar,100)
+		Do ilDisplayList.$cols.$add('value',kCharacter,kSimplechar,1000)
+		Calculate lRow as ilSysValues.row
+		For lnColNo from 1 to lRow.$colcount step 1
+			Calculate lcName as lRow.$cols.[lnColNo].$name
+			Calculate lcValue as lRow.[lcName]
+			Do ilDisplayList.$add(lcName,lcValue)
+		End For
+	End If
+	Do $cinst.$behaviour()

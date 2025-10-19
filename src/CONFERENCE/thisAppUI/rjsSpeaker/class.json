@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 756,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 858,
 	"superclass": "infra.rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1049,
+	"nextident": 1083,
 	"lastgroupident": 0,
 	"cvardefs": [
 		{
@@ -16,7 +16,15 @@
 			"sublen": 0
 		},
 		{
-			"name": "cnTabDelegate",
+			"name": "cnConfTerms",
+			"order": 9,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnTabDGPerson",
 			"order": 2,
 			"type": "kInteger",
 			"subtype": "kShortint",
@@ -29,7 +37,7 @@
 			"type": "kInteger",
 			"subtype": "kShortint",
 			"sublen": 0,
-			"initval": "6"
+			"initval": "7"
 		},
 		{
 			"name": "cnTabHistory",
@@ -37,7 +45,15 @@
 			"type": "kInteger",
 			"subtype": "kShortint",
 			"sublen": 0,
-			"initval": "3"
+			"initval": "4"
+		},
+		{
+			"name": "cnTabTechnical",
+			"order": 7,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "5"
 		},
 		{
 			"name": "cnTabTextForClipboard",
@@ -45,10 +61,18 @@
 			"type": "kInteger",
 			"subtype": "kShortint",
 			"sublen": 0,
-			"initval": "5"
+			"initval": "6"
 		},
 		{
-			"name": "cnTabTopics",
+			"name": "cnTabTopicEditor",
+			"order": 8,
+			"type": "kInteger",
+			"subtype": "kShortint",
+			"sublen": 0,
+			"initval": "3"
+		},
+		{
+			"name": "cnTabTopicsConf",
 			"order": 3,
 			"type": "kInteger",
 			"subtype": "kShortint",
@@ -64,14 +88,6 @@
 			"subtype": "kSimplechar",
 			"sublen": 100000000,
 			"initval": "'Omnis Software'"
-		},
-		{
-			"name": "ibActiveConference",
-			"order": 24,
-			"type": "kBoolean",
-			"subtype": 0,
-			"sublen": 0,
-			"initval": "kFalse"
 		},
 		{
 			"name": "ibUserHasSemaphore",
@@ -105,6 +121,20 @@
 		{
 			"name": "ilArrangements",
 			"order": 25,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilColoursBackground",
+			"order": 30,
+			"type": "kList",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "ilColoursText",
+			"order": 29,
 			"type": "kList",
 			"subtype": "",
 			"sublen": 0
@@ -145,13 +175,6 @@
 			"sublen": 0
 		},
 		{
-			"name": "ilSubmittedTopics",
-			"order": 26,
-			"type": "kList",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
 			"name": "ilTopicDetail",
 			"order": 10,
 			"type": "kList",
@@ -173,13 +196,6 @@
 			"sublen": 0
 		},
 		{
-			"name": "ilWhoIsPaying",
-			"order": 16,
-			"type": "kList",
-			"subtype": "",
-			"sublen": 0
-		},
-		{
 			"name": "inCurrentTab",
 			"order": 1,
 			"type": "kInteger",
@@ -191,13 +207,6 @@
 			"order": 19,
 			"type": "kNumber",
 			"subtype": "k0dp",
-			"sublen": 0
-		},
-		{
-			"name": "ioTags",
-			"order": 23,
-			"type": "kObject",
-			"subtype": "infra.oTags",
 			"sublen": 0
 		},
 		{
@@ -215,6 +224,13 @@
 			"sublen": 0
 		},
 		{
+			"name": "irConference",
+			"order": 16,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
 			"name": "irLinkConference",
 			"order": 13,
 			"type": "kRow",
@@ -229,6 +245,20 @@
 			"sublen": 0
 		},
 		{
+			"name": "irPerson",
+			"order": 23,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irPersonOrig",
+			"order": 24,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
 			"name": "irSemaphore",
 			"order": 7,
 			"type": "kRow",
@@ -238,6 +268,13 @@
 		{
 			"name": "irTopic",
 			"order": 3,
+			"type": "kRow",
+			"subtype": "",
+			"sublen": 0
+		},
+		{
+			"name": "irTopicOrig",
+			"order": 31,
 			"type": "kRow",
 			"subtype": "",
 			"sublen": 0
@@ -277,7 +314,7 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2018-04-17 10:09:19",
-		"currentlayoutbreakpoint": 1700,
+		"currentlayoutbreakpoint": 375,
 		"defaultappearance": "kAppearanceiOS",
 		"desc": "",
 		"designguides": "",
@@ -294,9 +331,9 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 182,
+		"left": 223,
 		"menulineheight": 0,
-		"moddate": "2025-03-24 21:11:22",
+		"moddate": "2025-08-28 20:10:23",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -307,7 +344,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 16,
+		"top": 13,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "",
@@ -315,7 +352,7 @@
 		"vertscroll": false
 	},
 	"layout": {
-		"width": 1585,
+		"width": 1442,
 		"height": 874,
 		"320": {
 			"height": 0,

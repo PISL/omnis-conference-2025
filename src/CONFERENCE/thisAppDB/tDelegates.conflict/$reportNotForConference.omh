@@ -1,0 +1,50 @@
+Do llData.$cols.$add(lrPerson.PSN_SEQ)
+Do llData.$cols.$add(lrPerson.PSN_SURNAME)
+Do llData.$cols.$add(lrPerson.PSN_FIRST_NAME)
+Do llData.$cols.$add(lrPerson.PSN_EMAIL)
+Do llData.$cols.$add(lrPerson.PSN_COUNTRY)
+Do llData.$cols.$add('PreviousConferences',kCharacter,kSimplechar,255)
+Do llData.$cols.$add(lrCompany.EO_NAME)
+
+Do $cinst.$ImmediateSession(loSession,loStatement) Returns lbImmediateSession
+If lbImmediateSession
+	Do $cinst.$SetSession(loSession,loStatement)
+Else If not(ibGoodConnectionToDb)
+	Quit method kFalse
+End If
+
+Begin statement
+Sta:select distinct PSN_SEQ, PSN_SURNAME, PSN_FIRST_NAME, PSN_EMAIL, PSN_COUNTRY, CF_TITLE, EO_NAME
+Sta:from [$cinst.$servertablenames()]
+Sta:join [lrPerson.$servertablenames()] on  PSN_SEQ = DG_PSN_REF
+Sta:join [lrConference.$servertablenames()] on CF_SEQ = DG_CF_REF
+Sta:left outer join [lrDgInvLink.$servertablenames()] on DIL_DG_REF = DG_SEQ
+Sta:left outer join [lrFinvoice.$servertablenames()] on FOH_SEQ = DIL_FOH_REF
+Sta:left outer join [lrCompany.$servertablenames()] on EO_SEQ = FOH_EO_REF
+Sta:where PSN_SEQ in (
+
+Sta:select distinct DG_PSN_REF
+Sta:from [$cinst.$servertablenames()]
+Sta:where DG_CF_REF <> @[pnCF_SEQ]
+Sta:and    CF_GO_REF = @[trGroupOrg.GO_SEQ]
+Sta:and    CF_DATE_FROM < ( select CF_DATE_FROM from [lrConference.$servertablenames()] where CF_SEQ = @[pnCF_SEQ] )
+Sta:and    PSN_ACTIVE = 1
+
+Sta:except
+
+Sta:select distinct DG_PSN_REF
+Sta:from [$cinst.$servertablenames()]
+Sta:where DG_CF_REF = @[pnCF_SEQ]
+Sta:and    CF_GO_REF = @[trGroupOrg.GO_SEQ]
+# Sta: and   ( PSN_ACTIVE is null or PSN_ACTIVE = 0 )
+# end DG_SEQ in
+Sta:)
+End statement
+
+Do $cinst.$executesqlandfetch(llData) Returns lbOK
+If lbImmediateSession
+	Do $cinst.$SetSession(#NULL,#NULL,kTrue)
+End If
+
+Do llData.$sort($ref.PSN_SURNAME,0,$ref.PSN_FIRST_NAME,0)
+Quit method llData

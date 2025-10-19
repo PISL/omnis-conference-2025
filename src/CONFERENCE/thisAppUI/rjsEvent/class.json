@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 1058,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 1043,
 	"superclass": "infra.rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1175,
+	"nextident": 1179,
 	"lastgroupident": 0,
 	"cvardefs": [
 		{
@@ -367,7 +367,7 @@
 		"layouttype": "kLayoutTypeResponsive",
 		"left": 184,
 		"menulineheight": 0,
-		"moddate": "2025-05-12 10:22:03",
+		"moddate": "2025-10-05 22:27:39",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,

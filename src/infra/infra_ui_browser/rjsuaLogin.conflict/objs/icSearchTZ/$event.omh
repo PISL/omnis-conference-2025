@@ -1,0 +1,15 @@
+On evBefore
+	
+On evAfter
+	
+On evKeyPress
+	If icSearchTZ<>''
+		Do ilTimezones.$clear()
+		Do ilTimezones.$stringSearch(icSearchTZ)
+		If ilTimezones.$linecount=1
+			Calculate ilTimezones.$line as 1
+		Else
+			Calculate ilTimezones.$line as 0
+		End If
+	End If
+	Do $cinst.$behaviour()

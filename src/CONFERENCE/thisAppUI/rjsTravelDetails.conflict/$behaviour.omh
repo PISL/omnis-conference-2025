@@ -1,0 +1,12 @@
+Calculate $cinst.$objs.PagedPane.$objs.PSN_PHONE.$visible as irTravelDetails.TP_SHUTTLE>0
+Calculate $cinst.$objs.PagedPane.$objs.label_PSN_PHONE.$visible as irTravelDetails.TP_SHUTTLE>0
+
+Calculate $cinst.$objs.PagedPane.$objs.TP_MUSIC_INSTRUMENT.$visible as ilMusic.$linecount>0&ilMusic.$line>1
+Calculate $cinst.$objs.PagedPane.$objs.label_TP_MUSIC_INSTRUMENT.$visible as ilMusic.$linecount>0&ilMusic.$line>1
+
+Calculate $cinst.$objs.PagedPane.$objs.PX_NAME.$visible as irDelegate.DG_OCCUPANCY='U'
+Calculate $cinst.$objs.PagedPane.$objs.label_PX_NAME.$visible as irDelegate.DG_OCCUPANCY='U'
+Calculate $cinst.$objs.PagedPane.$objs.DR_REQUEST_spouse.$visible as irDelegate.DG_OCCUPANCY='U'
+Calculate $cinst.$objs.PagedPane.$objs.label_DR_REQUEST_spouse.$visible as irDelegate.DG_OCCUPANCY='U'
+
+Calculate $cinst.$objs.PagedPane.$objs.pbSave.$enabled as ibDataModified

@@ -1,0 +1,4 @@
+On evClick
+	Do method PersonsListToRegistration
+	Do $LogEvent('CONF_REG','GO_BACK',irRegistration.PSN_EMAIL)
+	Calculate $cinst.$objs.PagedPane.$currentpage as 1

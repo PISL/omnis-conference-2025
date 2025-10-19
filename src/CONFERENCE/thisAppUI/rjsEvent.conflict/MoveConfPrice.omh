@@ -1,0 +1,43 @@
+If ilPricingGrid.$line>0
+	Calculate lrTemp as ilPricingGrid
+	Calculate lnLineNo as ilPricingGrid.$line
+	Do ilPricingGrid.$remove(ilPricingGrid.$line)
+	
+	If ilMoveConfPrice.code='T' ## to top
+		Do ilPricingGrid.$addbefore(1)
+		Calculate ilPricingGrid.$line as 1
+		Do ilPricingGrid.$assignrow(lrTemp)
+		Calculate lnLineNo as ilPricingGrid.$line
+		
+	Else If ilMoveConfPrice.code='U' ## up
+		Do ilPricingGrid.$addbefore(lnLineNo-1)
+		Calculate ilPricingGrid.$line as lnLineNo-1
+		Do ilPricingGrid.$assignrow(lrTemp)
+		Calculate lnLineNo as ilPricingGrid.$line
+		
+	Else If ilMoveConfPrice.code='D' ## down
+		Do ilPricingGrid.$addafter(lnLineNo)
+		Calculate ilPricingGrid.$line as lnLineNo+1
+		Do ilPricingGrid.$assignrow(lrTemp)
+		Calculate lnLineNo as ilPricingGrid.$line
+		
+	Else If ilMoveConfPrice.code='B' ## to bottom
+		Do ilPricingGrid.$addafter(ilPricingGrid.$linecount)
+		Calculate ilPricingGrid.$line as ilPricingGrid.$linecount
+		Do ilPricingGrid.$assignrow(lrTemp)
+		Calculate lnLineNo as ilPricingGrid.$line
+		
+	Else If ilMoveConfPrice.code='' ## ignore
+		# do nothing
+	Else
+		Breakpoint
+	End If
+	
+	Calculate ilPricingGrid.$line as 0
+	While $Loop(ilPricingGrid)
+		Calculate ilPricingGrid.CFP_ORDER as ilPricingGrid.$line
+	End While
+	Calculate ilPricingGrid.$line as lnLineNo
+	
+	Calculate ilMoveConfPrice.$line as 1
+End If

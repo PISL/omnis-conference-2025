@@ -1,0 +1,14 @@
+
+Calculate inCurrentTab as 1
+Calculate $cinst.$objs.TabControl_ELC.$currenttab as inCurrentTab
+
+Do inherited
+
+Do ilLanguages.$clear()
+Calculate ilLanguages.$smartlist as kTrue
+
+Do ilLanguages.$add()
+Calculate ilLanguages.$line as ilLanguages.$linecount
+Calculate ilLanguages.ELT_LANG as irCurrentRecord.ELC_DEFAULT_LANG
+
+Do $cinst.$setcurfield('ELC_CODE',kTrue)

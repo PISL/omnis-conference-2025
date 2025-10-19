@@ -1,0 +1,26 @@
+# callback method from clientmessage - Yes
+Do irTopic.$getTablesWithChildren() Returns llTables
+
+Do irLinkTP.$clear()
+Calculate irLinkTP.TPP_TPC_REF as irTopic.TPC_SEQ
+Calculate irLinkTP.TPP_PSN_REF as irCurrentRecord.PSN_SEQ
+Do irLinkTP.$fetch_ck() Returns lbOK
+
+If irLinkTP.[irLinkTP.icPrimaryKey]>0
+	Do irLinkTP.$delete() Returns lbOK
+	If lbOK
+		If llTables.1.COUNT=1
+			Do irTopic.$delete_pk() Returns lbOK
+			If not(lbOK)
+				Calculate icDisplayMessage as irTopic.irErrorSQL.NativeErrorText
+			Else
+				Do ilTopics.$remove(ilTopics.$line)
+				Calculate ilTopics.$line as 0
+				Do irTopic.$clear()
+			End If
+		End If
+	End If
+End If
+
+Do $cinst.$behaviour()
+Do $cinst.$redraw()

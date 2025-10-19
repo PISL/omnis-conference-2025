@@ -1,0 +1,52 @@
+Calculate icValidationMessage as ''
+
+If $cinst.CF_GO_REF>0
+	# good
+Else
+	Do ilValidation.$add('CF_GO_REF_LBL','VAL_MISSING','foreign key CF_GO_REF missing',0)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'foreign key to group organisation (CF_GO_REF) missing')
+End If
+
+If $cinst.CF_VEN_REF>0
+	# good
+Else
+	Do ilValidation.$add('CF_VEN_REF_LBL','VAL_MISSING','foreign key CF_VEN_REF missing',0)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'venue (CF_VEN_REF) missing')
+End If
+
+If $cinst.CF_TITLE<>''
+	# good
+Else
+	Do ilValidation.$add('CF_TITLE_LBL','VAL_MISSING','CF_TITLE missing',0)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'conference name (CF_TITLE) missing')
+End If
+
+If $cinst.CF_DATE_FROM>dat('1 JAN 2010')
+	# good
+Else
+	Do ilValidation.$add('CF_DATE_FROM_LBL','VAL_MISSING','CF_DATE_FROM invalid',0)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'from date (CF_DATE_FROM) missing')
+End If
+
+If $cinst.CF_DATE_TO>dat('1 JAN 2010')
+	# good
+Else
+	Do ilValidation.$add('CF_DATE_TO_LBL','VAL_MISSING','CF_DATE_TO invalid',0)
+	Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'to date (CF_DATE_TO) missing')
+End If
+
+If $cinst.CF_DATE_FROM>dat('1 JAN 2010')&$cinst.CF_DATE_TO>dat('1 JAN 2010')
+	If $cinst.CF_DATE_FROM<=$cinst.CF_DATE_TO
+		# good
+	Else
+		Do ilValidation.$add('CF_DATE_FROM_LBL','VAL_INVALID','CF_DATE_FROM & CF_DATE_TO invalid',0)
+		Calculate lcMessage as con(lcMessage,pick(lcMessage<>'','',', '),'FROM date must be before or equal to TO date')
+	End If
+End If
+
+If lcMessage<>''
+	Calculate icValidationMessage as lcMessage
+	Quit method kFalse
+End If
+
+Quit method kTrue

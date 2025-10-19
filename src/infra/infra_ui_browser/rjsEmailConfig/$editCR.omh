@@ -1,6 +1,34 @@
-# Calculate inCurrentTab as 1
-# Calculate $cinst.$objs.TabControl_ELC.$currenttab as inCurrentTab
+If inCurrentTab=cnTabMessage
+	If pbInsertLangText
+		Calculate icMode as 'IM'
+		
+		Do ilLanguages.$add()
+		Calculate ilLanguages.$line as ilLanguages.$linecount
+		Calculate inLangTextLine as ilLanguages.$line
+		
+		Do ilLanguages.$defaults()
+		Calculate ilLanguages.ELT_ELC_REF as irCurrentRecord.ELC_SEQ
+		Calculate ilLanguages.ELT_LANG as irCurrentRecord.ELC_DEFAULT_LANG
+		
+		Calculate irLangText as ilLanguages
+		
+	Else
+		Calculate icMode as 'EM'
+		Calculate irLangText as ilLanguages
+		Do irLangText.$fetch_pk()
+	End If
+	# current tab stays as is - all other tabs disabled
+	Calculate irLangTextOrig as irLangText
+	
+Else
+	Calculate icMode as 'EC'
+	Calculate inCurrentTab as cnTabConfig
+	
+End If
 
-Do inherited ## irCurrentRecord
-
-Do $cinst.$setcurfield('ELC_CODE',kTrue)
+If icMode='EC'
+	# Do inherited will set icMode to E
+	Do inherited
+	Calculate icMode as 'EC'
+	Do $cinst.$setcurfield('ELC_CODE',kTrue)
+End If

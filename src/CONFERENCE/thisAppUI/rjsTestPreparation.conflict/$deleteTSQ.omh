@@ -1,0 +1,9 @@
+Do irQuestion.$delete_pk() Returns lbOK
+If not(lbOK)
+	Calculate icDisplayMessage as irQuestion.irErrorSQL.NativeErrorText
+Else
+	Do ilQuestions.$remove(ilQuestions.$line)
+	Calculate ilQuestions.$line as 0
+	Do irQuestion.$clear()
+	
+End If

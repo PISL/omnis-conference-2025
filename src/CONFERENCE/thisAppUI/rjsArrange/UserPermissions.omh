@@ -5,5 +5,6 @@ Do llPrivsUsedInThisForm.$add('dg_insert','canInsert')
 Do llPrivsUsedInThisForm.$add('dg_delete','canDelete')
 Do llPrivsUsedInThisForm.$add('dg_update','canEdit')
 Do llPrivsUsedInThisForm.$add('dg_del_cascade','canDeleteCascade')
+Do llPrivsUsedInThisForm.$add('arr_import','canImportArrangements')
 
 Do $cinst.$setPermissions(llPrivsUsedInThisForm) ## irUserRights

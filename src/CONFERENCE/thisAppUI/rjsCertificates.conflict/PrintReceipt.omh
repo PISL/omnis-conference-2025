@@ -1,0 +1,7 @@
+Begin reversible block
+	Calculate iAuthor as 'Platform Independent Systems Ltd'
+	Calculate iTitle as 'Payments Receipt'
+	Calculate iSubject as ''
+End reversible block
+
+Do method printPDF

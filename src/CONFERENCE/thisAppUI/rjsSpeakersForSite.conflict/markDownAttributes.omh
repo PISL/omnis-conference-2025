@@ -1,0 +1,66 @@
+# markdown attributes can be applied to any distinct markdown object in this form
+# provided there is an entry in RFO with class MD_SPK_SITE
+#          and a value for specific object e.g.
+
+# In this form the markdown objects are: PSN_SPEAKER_BIO , TPC_ABSTRACT , TPC_DESC_markdown
+
+# markdown specific attributes
+#   headingcolor   horzpadding
+#   imagebackheight   imagemaxheight   imagemaxwidth
+#   inlinecodebackcolor   inlinecodetextcolor   linkcolor   linkvisitedcolor
+#   quotebackcolor   quotetextcolor   rulecolor
+#   sidepanel   sidepanelmode
+#   tabbordercolor   tablebordercolor   tablemaxwidth   tableminwidth   vertpadding
+
+# other attributes
+#   alpha   backalpha   backcolor   effect   textcolor
+
+Do toValues.$initOrg('MD_SPK_SITE') Returns llAttributes
+
+Do llAttributes.$search($ref.RFO_VALUE='PSN_SPEAKER_BIO',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate lrAttribute as llAttributes
+	Do OJSON.$jsontolistorrow(lrAttribute.RFO_JSON) Returns lrObjectSpecificAttributes
+	If lrObjectSpecificAttributes.$colcount
+		Do method setMarkdownAttributes ('PSN_SPEAKER_BIO',lrObjectSpecificAttributes)
+		Calculate lbSpeakerBioSet as kTrue
+	End If
+End If
+
+Do llAttributes.$search($ref.RFO_VALUE='TPC_ABSTRACT',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate lrAttribute as llAttributes
+	Do OJSON.$jsontolistorrow(lrAttribute.RFO_JSON) Returns lrObjectSpecificAttributes
+	If lrObjectSpecificAttributes.$colcount
+		Do method setMarkdownAttributes ('TPC_ABSTRACT',lrObjectSpecificAttributes)
+		Calculate lbTopicAbstractSet as kTrue
+	End If
+End If
+
+Do llAttributes.$search($ref.RFO_VALUE='TPC_DESC_MD',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate lrAttribute as llAttributes
+	Do OJSON.$jsontolistorrow(lrAttribute.RFO_JSON) Returns lrObjectSpecificAttributes
+	If lrObjectSpecificAttributes.$colcount
+		Do method setMarkdownAttributes ('TPC_DESC_md',lrObjectSpecificAttributes)
+		Calculate lbTopicDescSet as kTrue
+	End If
+End If
+
+# A DEFAULT entry can be provided to apply to any markdown objects that don't have specific object assignment
+Do llAttributes.$search($ref.RFO_VALUE='DEFAULT',1,0,0,0) Returns lbFound
+If lbFound
+	Calculate lrAttribute as llAttributes
+	Do OJSON.$jsontolistorrow(lrAttribute.RFO_JSON) Returns lrObjectSpecificAttributes
+	If lrObjectSpecificAttributes.$colcount
+		If not(lbSpeakerBioSet)
+			Do method setMarkdownAttributes ('PSN_SPEAKER_BIO',lrObjectSpecificAttributes)
+		End If
+		If not(lbTopicAbstractSet)
+			Do method setMarkdownAttributes ('TPC_ABSTRACT',lrObjectSpecificAttributes)
+		End If
+		If not(lbTopicDescSet)
+			Do method setMarkdownAttributes ('TPC_DESC_md',lrObjectSpecificAttributes)
+		End If
+	End If
+End If

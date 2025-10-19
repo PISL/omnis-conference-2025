@@ -1,0 +1,2 @@
+Calculate inCountSelected as 0
+Do $cinst.$fetch_(#NULL,kTrue)

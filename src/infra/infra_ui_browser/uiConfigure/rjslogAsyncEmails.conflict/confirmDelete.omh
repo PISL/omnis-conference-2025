@@ -1,0 +1,6 @@
+Do ilDisplayRecords.$sendall(lnTotalSelected.$assign(lnTotalSelected+1),$sendallref.$selected)
+If lnTotalSelected
+	Do $cinst.$clientOkCancelMsg(con('Are you certain you wish to delete the ',lnTotalSelected,' selected email',pick(lnTotalSelected>1,'','s'),'?'),'Please confirm','deleteSelectedEmails','$deleteCancelled')
+Else
+	Calculate icDisplayMessage as 'No records selected for deletion'
+End If

@@ -1,0 +1,7 @@
+If irCurrentSpeaker.PSN_IMAGE_LINK<>''
+	Do $cinst.$objs.PSN_ImageLink.$html.$assign(con(icImageHtmlPre,kDq,irCurrentSpeaker.PSN_IMAGE_LINK,kDq,icImageHtmlPost)) Returns lbOK
+	Calculate $cinst.$objs.PSN_ImageLink.$visible as kTrue
+Else
+	Do $cinst.$objs.PSN_ImageLink.$html.$assign('') Returns lbOK
+	Calculate $cinst.$objs.PSN_ImageLink.$visible as kFalse
+End If

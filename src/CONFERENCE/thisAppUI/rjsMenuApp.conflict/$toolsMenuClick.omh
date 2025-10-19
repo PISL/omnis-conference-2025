@@ -1,0 +1,61 @@
+If pLineIdent>1000&pLineIdent<5000&not(pLineTag='infra.rjsDevFeedback')
+	# 1001 - 1999 : this is the Work Menu
+	# 2001 - 2999 : this is the Notifications Menu
+	# 3001 - 3999 : this is the Search Menu
+	# 4001 - 4999 : this is the Help Menu
+	If pLineIdent<2000
+		Calculate lnToolsMenuLine as 1
+	Else If pLineIdent<3000
+		Calculate lnToolsMenuLine as 2
+	Else If pLineIdent<4000
+		Calculate lnToolsMenuLine as 3
+	Else
+		Calculate lnToolsMenuLine as 4
+	End If
+	# check for a keyboard shortcut
+	# get the work menu list
+	Calculate llMenu as ilToolsMenu.[lnToolsMenuLine].info
+	Calculate llMenu as llMenu.1.C1
+	Do llMenu.$search($ref.ident=pLineIdent,1,0,0,0)
+	# set lcKey to the last character of the item description
+	Calculate lcKey as right(llMenu.desc,1)
+	Calculate lbFound as kFalse
+	# now search the KeyPress row to validate lcKey as a shortcut
+	For lnCol from 1 to irKeyPress.$colcount step 1
+		Calculate lcCol as irKeyPress.$cols.$findident(lnCol).$name
+		If irKeyPress.[lcCol]=lcKey
+			Calculate lbFound as kTrue
+			Break to end of loop
+		End If
+	End For
+	If lbFound
+		JavaScript:formName = sessionStorage.getItem("currentForm");
+		JavaScript:if (formName)  {
+		
+		# the following will be converted to JS at runtime
+		Calculate formName as replace(formName,"_","_form_") ## $cinst.$name = "formname_integer" but within the generated JS the id = "formname_form_integer"
+		Do method findForm (formName) Returns currentForm
+		
+		JavaScript:if (currentForm)  {
+		JavaScript:currentForm.callMethodEx('handleShortcutKey', eDoMethodFlags.clientOnly|eDoMethodFlags.noLog, lcKey);
+		JavaScript:}
+		JavaScript:}
+	Else ## RSM 12 MAR 18
+		# Adding support for menu items that do not have a keypress associated with them
+		# Virtually same as above except calling different method and passing different parameter.
+		JavaScript:formName = sessionStorage.getItem("currentForm");
+		JavaScript:if (formName)  {
+		
+		# the following will be converted to JS at runtime
+		Calculate formName as replace(formName,"_","_form_") ## $cinst.$name = "formname_integer" but within the generated JS the id = "formname_form_integer"
+		Do method findForm (formName) Returns currentForm
+		
+		JavaScript:if (currentForm)  {
+		JavaScript:currentForm.callMethodEx('handleMenuCall', eDoMethodFlags.clientOnly|eDoMethodFlags.noLog, pLineIdent);
+		JavaScript:}
+		JavaScript:}
+	End If
+	
+Else If pLineTag='infra.rjsDevFeedback'
+	Do $cinst.$navMenuClick(pLineTag,pLineIdent)
+End If

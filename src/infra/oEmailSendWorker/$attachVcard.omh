@@ -360,5 +360,9 @@ Text:END:VCARD(Carriage return,Linefeed)
 End text block
 
 Get text block icVcardSpec
+If len(pcFilename)=0
+	Calculate pcFilename as con(tcCurrentLibrary,'.vcf')
+End If
+Do ilMimeAppend.$add(1,'text','plain',pcFilename,icVcardSpec)
 
 Quit method kTrue

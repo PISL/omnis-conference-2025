@@ -374,7 +374,7 @@
 		]
 	},
 	{
-		"name": "reportDef_TRAVEL_DEETS_OT",
+		"name": "reportDef_TRAVEL_DEETS_DG",
 		"order": 12,
 		"pvardefs": [
 
@@ -395,15 +395,8 @@
 				"sublen": 10000
 			},
 			{
-				"name": "lnGroupByMax",
-				"order": 3,
-				"type": "kInteger",
-				"subtype": "kShortint",
-				"sublen": 0
-			},
-			{
 				"name": "lrReportAttributes",
-				"order": 4,
+				"order": 3,
 				"type": "kRow",
 				"subtype": "",
 				"sublen": 0
@@ -411,7 +404,7 @@
 		]
 	},
 	{
-		"name": "reportDef_MUSICIANS",
+		"name": "reportDef_TRAVEL_DEETS_OT",
 		"order": 13,
 		"pvardefs": [
 
@@ -448,19 +441,8 @@
 		]
 	},
 	{
-		"name": "---",
+		"name": "reportDef_MUSICIANS",
 		"order": 14,
-		"pvardefs": [
-
-		],
-		"lvardefs": [
-
-		],
-		"empty": true
-	},
-	{
-		"name": "reportDef_SESSION_FBACK",
-		"order": 15,
 		"pvardefs": [
 
 		],
@@ -496,7 +478,18 @@
 		]
 	},
 	{
-		"name": "reportDef_GENERAL_FBACK",
+		"name": "---",
+		"order": 15,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		],
+		"empty": true
+	},
+	{
+		"name": "reportDef_SESSION_FBACK",
 		"order": 16,
 		"pvardefs": [
 
@@ -533,7 +526,7 @@
 		]
 	},
 	{
-		"name": "reportDef_ATTENDEE_LIST",
+		"name": "reportDef_GENERAL_FBACK",
 		"order": 17,
 		"pvardefs": [
 
@@ -570,7 +563,7 @@
 		]
 	},
 	{
-		"name": "reportDef_ATTENDEE_COUNT",
+		"name": "reportDef_ATTENDEE_LIST",
 		"order": 18,
 		"pvardefs": [
 
@@ -607,7 +600,7 @@
 		]
 	},
 	{
-		"name": "reportDef_BOOKING_STATS",
+		"name": "reportDef_ATTENDEE_COUNT",
 		"order": 19,
 		"pvardefs": [
 
@@ -644,8 +637,45 @@
 		]
 	},
 	{
-		"name": "----",
+		"name": "reportDef_BOOKING_STATS",
 		"order": 20,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcParamText",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcReportAttributes",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lnGroupByMax",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "----",
+		"order": 21,
 		"pvardefs": [
 
 		],
@@ -656,7 +686,7 @@
 	},
 	{
 		"name": "reportDef_SPEAKER_INVITE",
-		"order": 21,
+		"order": 22,
 		"pvardefs": [
 
 		],
@@ -700,43 +730,6 @@
 	},
 	{
 		"name": "reportDef_SPEAKERS",
-		"order": 22,
-		"pvardefs": [
-
-		],
-		"lvardefs": [
-			{
-				"name": "lcParamText",
-				"order": 2,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 1000
-			},
-			{
-				"name": "lcReportAttributes",
-				"order": 1,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 10000
-			},
-			{
-				"name": "lnGroupByMax",
-				"order": 3,
-				"type": "kInteger",
-				"subtype": "kShortint",
-				"sublen": 0
-			},
-			{
-				"name": "lrReportAttributes",
-				"order": 4,
-				"type": "kRow",
-				"subtype": "",
-				"sublen": 0
-			}
-		]
-	},
-	{
-		"name": "reportDef_SPKR_HIST",
 		"order": 23,
 		"pvardefs": [
 
@@ -773,7 +766,7 @@
 		]
 	},
 	{
-		"name": "reportDef_TOPICS",
+		"name": "reportDef_SPKR_HIST",
 		"order": 24,
 		"pvardefs": [
 
@@ -810,49 +803,8 @@
 		]
 	},
 	{
-		"name": "reportDef_SPKR_COMPL",
+		"name": "reportDef_TOPICS",
 		"order": 25,
-		"pvardefs": [
-
-		],
-		"lvardefs": [
-			{
-				"name": "lcParamText",
-				"order": 2,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 1000
-			},
-			{
-				"name": "lcReportAttributes",
-				"order": 1,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 10000
-			},
-			{
-				"name": "lrReportAttributes",
-				"order": 3,
-				"type": "kRow",
-				"subtype": "",
-				"sublen": 0
-			}
-		]
-	},
-	{
-		"name": "-----",
-		"order": 26,
-		"pvardefs": [
-
-		],
-		"lvardefs": [
-
-		],
-		"empty": true
-	},
-	{
-		"name": "reportDef_ROOM_ALLOC",
-		"order": 27,
 		"pvardefs": [
 
 		],
@@ -888,7 +840,48 @@
 		]
 	},
 	{
-		"name": "reportDef_PAX",
+		"name": "reportDef_SPKR_COMPL",
+		"order": 26,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcParamText",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcReportAttributes",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "-----",
+		"order": 27,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		],
+		"empty": true
+	},
+	{
+		"name": "reportDef_ROOM_ALLOC",
 		"order": 28,
 		"pvardefs": [
 
@@ -925,7 +918,7 @@
 		]
 	},
 	{
-		"name": "reportDef_DIETREQ",
+		"name": "reportDef_PAX",
 		"order": 29,
 		"pvardefs": [
 
@@ -962,7 +955,7 @@
 		]
 	},
 	{
-		"name": "reportDef_SPKR_REQUESTS",
+		"name": "reportDef_PAX2",
 		"order": 30,
 		"pvardefs": [
 
@@ -983,15 +976,8 @@
 				"sublen": 10000
 			},
 			{
-				"name": "lnGroupByMax",
-				"order": 3,
-				"type": "kInteger",
-				"subtype": "kShortint",
-				"sublen": 0
-			},
-			{
 				"name": "lrReportAttributes",
-				"order": 4,
+				"order": 3,
 				"type": "kRow",
 				"subtype": "",
 				"sublen": 0
@@ -999,7 +985,7 @@
 		]
 	},
 	{
-		"name": "reportDef_LABELS",
+		"name": "reportDef_PAX_NIGHT_NAME",
 		"order": 31,
 		"pvardefs": [
 
@@ -1020,15 +1006,8 @@
 				"sublen": 10000
 			},
 			{
-				"name": "lnGroupByMax",
-				"order": 3,
-				"type": "kInteger",
-				"subtype": "kShortint",
-				"sublen": 0
-			},
-			{
 				"name": "lrReportAttributes",
-				"order": 4,
+				"order": 3,
 				"type": "kRow",
 				"subtype": "",
 				"sublen": 0
@@ -1036,7 +1015,7 @@
 		]
 	},
 	{
-		"name": "reportDef_WELCOME",
+		"name": "reportDef_DIETREQ",
 		"order": 32,
 		"pvardefs": [
 
@@ -1073,18 +1052,44 @@
 		]
 	},
 	{
-		"name": "------",
+		"name": "reportDef_SPKR_REQUESTS",
 		"order": 33,
 		"pvardefs": [
 
 		],
 		"lvardefs": [
-
-		],
-		"empty": true
+			{
+				"name": "lcParamText",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcReportAttributes",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lnGroupByMax",
+				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 4,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
 	},
 	{
-		"name": "reportDef_NOT_THIS_CONF",
+		"name": "reportDef_LABELS",
 		"order": 34,
 		"pvardefs": [
 
@@ -1105,8 +1110,15 @@
 				"sublen": 10000
 			},
 			{
-				"name": "lrReportAttributes",
+				"name": "lnGroupByMax",
 				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 4,
 				"type": "kRow",
 				"subtype": "",
 				"sublen": 0
@@ -1114,7 +1126,7 @@
 		]
 	},
 	{
-		"name": "reportDef_MEMBERS",
+		"name": "reportDef_WELCOME",
 		"order": 35,
 		"pvardefs": [
 
@@ -1135,8 +1147,15 @@
 				"sublen": 10000
 			},
 			{
-				"name": "lrReportAttributes",
+				"name": "lnGroupByMax",
 				"order": 3,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 4,
 				"type": "kRow",
 				"subtype": "",
 				"sublen": 0
@@ -1144,37 +1163,18 @@
 		]
 	},
 	{
-		"name": "reportDef_EVENT_STATS",
+		"name": "------",
 		"order": 36,
 		"pvardefs": [
 
 		],
 		"lvardefs": [
-			{
-				"name": "lcParamText",
-				"order": 2,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 1000
-			},
-			{
-				"name": "lcReportAttributes",
-				"order": 1,
-				"type": "kCharacter",
-				"subtype": "kSimplechar",
-				"sublen": 10000
-			},
-			{
-				"name": "lrReportAttributes",
-				"order": 3,
-				"type": "kRow",
-				"subtype": "",
-				"sublen": 0
-			}
-		]
+
+		],
+		"empty": true
 	},
 	{
-		"name": "reportDef_TKT_BREAKDOWN",
+		"name": "reportDef_NOT_THIS_CONF",
 		"order": 37,
 		"pvardefs": [
 
@@ -1204,7 +1204,7 @@
 		]
 	},
 	{
-		"name": "reportDef_VAT_RETURN",
+		"name": "reportDef_MEMBERS",
 		"order": 38,
 		"pvardefs": [
 
@@ -1234,18 +1234,37 @@
 		]
 	},
 	{
-		"name": "--------",
+		"name": "reportDef_EVENT_STATS",
 		"order": 39,
 		"pvardefs": [
 
 		],
 		"lvardefs": [
-
-		],
-		"empty": true
+			{
+				"name": "lcParamText",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcReportAttributes",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
 	},
 	{
-		"name": "reportDef_TASK_STATS",
+		"name": "reportDef_TKT_BREAKDOWN",
 		"order": 40,
 		"pvardefs": [
 
@@ -1275,7 +1294,7 @@
 		]
 	},
 	{
-		"name": "reportDef_TASK_STATS_DB",
+		"name": "reportDef_VAT_RETURN",
 		"order": 41,
 		"pvardefs": [
 
@@ -1305,7 +1324,7 @@
 		]
 	},
 	{
-		"name": "-------",
+		"name": "--------",
 		"order": 42,
 		"pvardefs": [
 
@@ -1316,8 +1335,79 @@
 		"empty": true
 	},
 	{
-		"name": "$conferenceList",
+		"name": "reportDef_TASK_STATS",
 		"order": 43,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcParamText",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcReportAttributes",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "reportDef_TASK_STATS_DB",
+		"order": 44,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+			{
+				"name": "lcParamText",
+				"order": 2,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 1000
+			},
+			{
+				"name": "lcReportAttributes",
+				"order": 1,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 10000
+			},
+			{
+				"name": "lrReportAttributes",
+				"order": 3,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
+		"name": "-------",
+		"order": 45,
+		"pvardefs": [
+
+		],
+		"lvardefs": [
+
+		],
+		"empty": true
+	},
+	{
+		"name": "$conferenceList",
+		"order": 46,
 		"pvardefs": [
 			{
 				"name": "pnGO_SEQ",
@@ -1325,7 +1415,8 @@
 				"type": "kInteger",
 				"subtype": "k64bitint",
 				"sublen": 0,
-				"param": 1
+				"param": 1,
+				"initval": "$ctask.trGroupOrg.GO_SEQ"
 			}
 		],
 		"lvardefs": [
@@ -1340,7 +1431,7 @@
 	},
 	{
 		"name": "$displayListClick",
-		"order": 44,
+		"order": 47,
 		"pvardefs": [
 			{
 				"name": "plDisplayList",
@@ -1394,7 +1485,7 @@
 	},
 	{
 		"name": "$searchLists",
-		"order": 45,
+		"order": 48,
 		"pvardefs": [
 			{
 				"name": "pretSearch1",
@@ -1439,7 +1530,7 @@
 	},
 	{
 		"name": "$printReport",
-		"order": 46,
+		"order": 49,
 		"pvardefs": [
 			{
 				"name": "plDisplayList",
@@ -1690,7 +1781,7 @@
 	},
 	{
 		"name": "sanitizeList",
-		"order": 47,
+		"order": 50,
 		"pvardefs": [
 			{
 				"name": "pList",
@@ -1737,7 +1828,7 @@
 	},
 	{
 		"name": "$printAsPDF",
-		"order": 48,
+		"order": 51,
 		"pvardefs": [
 
 		],
@@ -1747,7 +1838,7 @@
 	},
 	{
 		"name": "$printAsFatClient",
-		"order": 49,
+		"order": 52,
 		"pvardefs": [
 
 		],
@@ -1757,7 +1848,7 @@
 	},
 	{
 		"name": "$setTask",
-		"order": 50,
+		"order": 53,
 		"pvardefs": [
 			{
 				"name": "prefTask",
@@ -1774,7 +1865,7 @@
 	},
 	{
 		"name": "$checkTask",
-		"order": 51,
+		"order": 54,
 		"desc": "lbTaskFunctionExists",
 		"pvardefs": [
 
@@ -1791,7 +1882,7 @@
 	},
 	{
 		"name": "--- specific report",
-		"order": 52,
+		"order": 55,
 		"pvardefs": [
 
 		],
@@ -1802,7 +1893,7 @@
 	},
 	{
 		"name": "dataDelegates",
-		"order": 53,
+		"order": 56,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -1957,7 +2048,7 @@
 	},
 	{
 		"name": "dataPAX",
-		"order": 54,
+		"order": 57,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2014,8 +2105,66 @@
 		]
 	},
 	{
+		"name": "dataPaxPerNightNames",
+		"order": 58,
+		"pvardefs": [
+			{
+				"name": "prConference",
+				"order": 1,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0,
+				"param": 1
+			}
+		],
+		"lvardefs": [
+			{
+				"name": "lbSameRoom",
+				"order": 7,
+				"type": "kBoolean",
+				"subtype": 0,
+				"sublen": 0
+			},
+			{
+				"name": "lcDisplayName",
+				"order": 6,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 100
+			},
+			{
+				"name": "ldDate",
+				"order": 5,
+				"type": "kDate",
+				"subtype": "kDate2000",
+				"sublen": 0
+			},
+			{
+				"name": "llPAX",
+				"order": 3,
+				"type": "kList",
+				"subtype": "",
+				"sublen": 0
+			},
+			{
+				"name": "lnNight",
+				"order": 4,
+				"type": "kInteger",
+				"subtype": "kShortint",
+				"sublen": 0
+			},
+			{
+				"name": "lrDelegate",
+				"order": 2,
+				"type": "kRow",
+				"subtype": "",
+				"sublen": 0
+			}
+		]
+	},
+	{
 		"name": "dataDelegateEmails",
-		"order": 55,
+		"order": 59,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2032,7 +2181,7 @@
 	},
 	{
 		"name": "dataDietRequests",
-		"order": 56,
+		"order": 60,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2049,7 +2198,7 @@
 	},
 	{
 		"name": "dataMembers",
-		"order": 57,
+		"order": 61,
 		"pvardefs": [
 			{
 				"name": "pdDate",
@@ -2066,7 +2215,7 @@
 	},
 	{
 		"name": "dataMusicInfo",
-		"order": 58,
+		"order": 62,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2083,7 +2232,7 @@
 	},
 	{
 		"name": "dataTravelInfoArrive",
-		"order": 59,
+		"order": 63,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2092,6 +2241,14 @@
 				"subtype": "",
 				"sublen": 0,
 				"param": 1
+			},
+			{
+				"name": "pcReportCode",
+				"order": 4,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20,
+				"param": 2
 			}
 		],
 		"lvardefs": [
@@ -2113,7 +2270,7 @@
 	},
 	{
 		"name": "dataTravelInfoDepart",
-		"order": 60,
+		"order": 64,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2122,6 +2279,14 @@
 				"subtype": "",
 				"sublen": 0,
 				"param": 1
+			},
+			{
+				"name": "pcReportCode",
+				"order": 3,
+				"type": "kCharacter",
+				"subtype": "kSimplechar",
+				"sublen": 20,
+				"param": 2
 			}
 		],
 		"lvardefs": [
@@ -2136,7 +2301,7 @@
 	},
 	{
 		"name": "dataTopics",
-		"order": 61,
+		"order": 65,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2159,7 +2324,7 @@
 	},
 	{
 		"name": "dataSpeakers",
-		"order": 62,
+		"order": 66,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2234,7 +2399,7 @@
 	},
 	{
 		"name": "dataSpeakersHistorical",
-		"order": 63,
+		"order": 67,
 		"pvardefs": [
 			{
 				"name": "pbAllTopics",
@@ -2258,7 +2423,7 @@
 	},
 	{
 		"name": "dataSpecificRooms",
-		"order": 64,
+		"order": 68,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2281,7 +2446,7 @@
 	},
 	{
 		"name": "dataTicketBreakdown",
-		"order": 65,
+		"order": 69,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2304,7 +2469,7 @@
 	},
 	{
 		"name": "dataEmailText",
-		"order": 66,
+		"order": 70,
 		"pvardefs": [
 			{
 				"name": "pcSysOrgClass",
@@ -2349,7 +2514,7 @@
 	},
 	{
 		"name": "ArrivalAndDeparture",
-		"order": 67,
+		"order": 71,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2393,7 +2558,7 @@
 	},
 	{
 		"name": "newLine",
-		"order": 68,
+		"order": 72,
 		"pvardefs": [
 			{
 				"name": "prSchedule",
@@ -2410,7 +2575,7 @@
 	},
 	{
 		"name": "dataSpeakerRequests",
-		"order": 69,
+		"order": 73,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2433,7 +2598,7 @@
 	},
 	{
 		"name": "dataSpeakerCompletion",
-		"order": 70,
+		"order": 74,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2519,7 +2684,7 @@
 	},
 	{
 		"name": "dataSessionFeedbackSessions",
-		"order": 71,
+		"order": 75,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2549,7 +2714,7 @@
 	},
 	{
 		"name": "dataSessionFeedbackGeneral",
-		"order": 72,
+		"order": 76,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2572,7 +2737,7 @@
 	},
 	{
 		"name": "dataSessionBookingSummary",
-		"order": 73,
+		"order": 77,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2663,7 +2828,7 @@
 	},
 	{
 		"name": "dataRemoteTaskStats",
-		"order": 74,
+		"order": 78,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2701,7 +2866,7 @@
 	},
 	{
 		"name": "dataPrevDGsNotRegThisEvent",
-		"order": 75,
+		"order": 79,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2731,7 +2896,7 @@
 	},
 	{
 		"name": "dataArrangementCount",
-		"order": 76,
+		"order": 80,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2790,7 +2955,7 @@
 	},
 	{
 		"name": "dataArrangementBookings",
-		"order": 77,
+		"order": 81,
 		"pvardefs": [
 			{
 				"name": "prConference",
@@ -2827,7 +2992,7 @@
 	},
 	{
 		"name": "dataVATreturn",
-		"order": 78,
+		"order": 82,
 		"pvardefs": [
 			{
 				"name": "pdFrom",
@@ -2879,7 +3044,7 @@
 	},
 	{
 		"name": "--- external report request",
-		"order": 79,
+		"order": 83,
 		"pvardefs": [
 
 		],
@@ -2890,7 +3055,7 @@
 	},
 	{
 		"name": "$delegatesExternal",
-		"order": 80,
+		"order": 84,
 		"pvardefs": [
 			{
 				"name": "plDelegatesFromForm",
@@ -2954,7 +3119,7 @@
 	},
 	{
 		"name": "setPrintDestination",
-		"order": 81,
+		"order": 85,
 		"pvardefs": [
 			{
 				"name": "pnPrintDestination",
@@ -2999,7 +3164,7 @@
 	},
 	{
 		"name": "dataStatisticsAcrossEvents",
-		"order": 82,
+		"order": 86,
 		"pvardefs": [
 			{
 				"name": "plConference",
@@ -3255,7 +3420,7 @@
 	},
 	{
 		"name": "determineLabels",
-		"order": 83,
+		"order": 87,
 		"pvardefs": [
 			{
 				"name": "plLabels",
@@ -3288,7 +3453,7 @@
 	},
 	{
 		"name": "addLabelsToSummary",
-		"order": 84,
+		"order": 88,
 		"pvardefs": [
 			{
 				"name": "plStatistics",
@@ -3327,7 +3492,7 @@
 	},
 	{
 		"name": "$devMethod",
-		"order": 85,
+		"order": 89,
 		"pvardefs": [
 
 		],
@@ -3337,7 +3502,7 @@
 	},
 	{
 		"name": "textForEmail",
-		"order": 86,
+		"order": 90,
 		"pvardefs": [
 
 		],
@@ -3396,7 +3561,7 @@
 	},
 	{
 		"name": "--- COPYRIGHT ---",
-		"order": 87,
+		"order": 91,
 		"pvardefs": [
 
 		],

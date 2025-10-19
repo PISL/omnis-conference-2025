@@ -1,0 +1,5 @@
+On evAfter
+	Calculate icDisplayMessage as ''
+	If irRegistration.PSN_EMAIL=ilPersons.PSN_EMAIL
+		Calculate ilPersons.icWhichDays as icWhichDays
+	End If

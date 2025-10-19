@@ -1,0 +1,74 @@
+If ilSearch2.RFO_VALUE<>''&ilSearch2.RFO_VALUE<>'ALL'
+	If ilSearch2.RFO_CLASS='DG_STATUS'
+		If ilSearch2.RFO_VALUE='EX_CANCEL'
+			Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' ")
+		Else If ilSearch2.RFO_VALUE='ALL_UNPAID'
+			Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and DG_STATUS <> 'PAID' ")
+		Else
+			Calculate lcStatusCriteria as con(" DG_STATUS = '",ilSearch2.RFO_VALUE,"' ")
+		End If
+	Else If ilSearch2.RFO_CLASS='VIEW'
+		If ilSearch2.RFO_VALUE='ONLY_INVIS'
+			Calculate lcStatusCriteria as con(" PSN_SEX = 'O' ")
+		End If
+	Else If ilSearch2.RFO_CLASS='DG_ROLE'
+		Calculate lcStatusCriteria as con(" DG_ROLE = '",ilSearch2.RFO_VALUE,"' and DG_STATUS <> 'CANCEL' ")
+	Else If ilSearch2.RFO_CLASS='DG_OCCUPANCY'
+		Calculate lcStatusCriteria as con(" DG_OCCUPANCY = '",ilSearch2.RFO_VALUE,"' and DG_STATUS <> 'CANCEL' ")
+	Else If ilSearch2.RFO_CLASS='DG_REG_DATE'
+		Calculate lcStatusCriteria as con(" date_part('month',DG_REG_DATE) = ",ilSearch2.RFO_INT," and DG_STATUS <> 'CANCEL' ") ## ssysReferenceOrg
+	Else If ilSearch2.RFO_CLASS='DG_COUNTRY'
+		Calculate lcStatusCriteria as con(" DG_COUNTRY = '",ilSearch2.RFO_VALUE,"' and DG_STATUS <> 'CANCEL' ")
+		# Else If ilSearch2.RFO_CLASS='INV_NOT_SENT'
+		# Calculate lcStatusCriteria as con(" DG_EMAIL_INVOICE_SENT is null ")
+	End If
+	
+Else If ilSearch2.RFO_VALUE='ALL'
+	# leave lcStatusCriteria empty
+Else
+	# by default, exclude cancelled folk from the list
+	Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' ")
+End If
+If ilSearch2.RFO_CLASS='SUBQ'
+	If ilSearch2.RFO_VALUE='WITH_PAX'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and exists ( select 'x' from ",lrPax.$servertablenames()," where PX_DG_REF = DG_SEQ ) ")
+	Else If ilSearch2.RFO_VALUE='NO_PAX'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and not exists ( select 'x' from ",lrPax.$servertablenames()," where PX_DG_REF = DG_SEQ ) ")
+		
+	Else If ilSearch2.RFO_VALUE='INV_NOT_SENT'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and DG_EMAIL_INVOICE_SENT is null and DG_ROLE <> 'SPEAKER' ")
+	Else If ilSearch2.RFO_VALUE='TRAVEL_NOT_SENT'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and DG_EMAIL_TRAVEL_SENT is null")
+		
+	Else If ilSearch2.RFO_VALUE='WITH_TRAVEL'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and exists ( select 'x' from ",lrTravel.$servertablenames()," where TP_DG_REF = DG_SEQ ) ")
+	Else If ilSearch2.RFO_VALUE='NO_TRAVEL'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and not exists ( select 'x' from ",lrTravel.$servertablenames()," where TP_DG_REF = DG_SEQ ) ")
+	Else If ilSearch2.RFO_VALUE='TRAVEL0'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and exists ( select 'x' from ",lrTravel.$servertablenames()," where TP_DG_REF = DG_SEQ and TP_SHUTTLE = 0 ) ")
+	Else If ilSearch2.RFO_VALUE='TRAVEL1'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and exists ( select 'x' from ",lrTravel.$servertablenames()," where TP_DG_REF = DG_SEQ and TP_SHUTTLE = 1 ) ")
+	Else If ilSearch2.RFO_VALUE='TRAVEL2'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and exists ( select 'x' from ",lrTravel.$servertablenames()," where TP_DG_REF = DG_SEQ and TP_SHUTTLE = 2 ) ")
+		
+	Else If ilSearch2.RFO_VALUE='WITH_PAYMENT'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and exists ( select 'x' from ",lrReceipt.$servertablenames()," where PY_DG_REF = DG_SEQ ) ")
+	Else If ilSearch2.RFO_VALUE='NO_PAYMENT'
+		Calculate lcStatusCriteria as con(" DG_STATUS <> 'CANCEL' and DG_STATUS <> 'PAID' and not exists ( select 'x' from ",lrReceipt.$servertablenames()," where PY_DG_REF = DG_SEQ ) ")
+	Else If ilSearch2.RFO_VALUE='NO_PAY_EXSPKRS'
+		Calculate lcStatusCriteria as con(" ( DG_STATUS <> 'CANCEL' and DG_STATUS <> 'PAID' ) and DG_ROLE <> 'SPEAKER' and not exists ( select 'x' from ",lrReceipt.$servertablenames()," where PY_DG_REF = DG_SEQ ) ")
+	Else If ilSearch2.RFO_VALUE='FIRST_TIME'
+		Begin text block
+		Text:  upper['(']concat['(']psn_surname,', ',psn_first_name)) not in
+		Text:['(']select upper['(']concat['(']psn_surname,', ',psn_first_name)) 
+		Text:from conf.delegates 
+		Text:join conf.person on conf.delegates.dg_psn_ref=psn_seq 
+		# conf_past alias
+		Text:join conf.conference conf_past on conf.delegates.dg_cf_ref=conf_past.cf_seq 
+		Text:where conf_past.cf_date_from < conf_now.cf_date_from)
+		End text block
+		Get text block lcStatusCriteria
+	End If
+End If
+
+Quit method lcStatusCriteria

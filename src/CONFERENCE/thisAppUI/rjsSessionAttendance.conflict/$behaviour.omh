@@ -1,0 +1,93 @@
+Do method SituationContext
+If ibDelegateIsPresenter
+	Calculate icDisplayMessage as 'You are the Presenter of this session'
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'You are presenter'
+Else If ibMaxAttendeesReached
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Maximum attendees'
+Else If ilArrangements.$line>0&ilArrangements.ARR_BOOKING_REQD=0
+	Calculate icDisplayMessage as 'This session does not require registration'
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'n / a'
+	# Else If ibDateTimeFuture&not(ibCloseEnoughToRegister)
+	# Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Future time'
+Else If ibDateTimePast
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Past time'
+Else If ibDelegateAlreadySpeakingInThisTimeSlot
+	Calculate icDisplayMessage as 'You are Presenting during this time slot'
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Time conflict'
+Else If ibDelegateAlreadyAttending
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Registered'
+Else If ibDelegateAlreadyBookedForSelectedTime
+	# Calculate icDisplayMessage as con('You already booked for "',ilDelegateSessions.TPC_TITLE,'" ') ## Users session is now highlighted in list
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Time conflict'
+Else If not(ibWithinPreStartTime)
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Too early'
+Else
+	Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$text as 'Register'
+End If
+
+If inCurrentPage=cnPageSession
+	# on this pane the visibility of icDisplayMessage conflicts with icSessionInfo
+	If icDisplayMessage<>''
+		Calculate $cinst.$objs.PagedPane.$objs.icDisplayMessage2.$visible as kTrue
+		Calculate $cinst.$objs.PagedPane.$objs.icSessionInfo.$visible as kFalse
+	Else
+		Calculate $cinst.$objs.PagedPane.$objs.icDisplayMessage2.$visible as kFalse
+		Calculate $cinst.$objs.PagedPane.$objs.icSessionInfo.$visible as kTrue
+	End If
+End If
+
+# EurOmnis 2018 modified to allow registration/deregistration after the event
+# Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$enabled as ilArrangements.$line>0&(ibCloseEnoughToRegister|ibDuringConference)&not(ibDelegateIsPresenter)&not(ibMaxAttendeesReached)&not(ibDelegateAlreadyAttending)&not(ibDelegateAlreadyBookedForSelectedTime)&not(ibDelegateAlreadySpeakingInThisTimeSlot) ## &(ibTimeNow|ibTimeFuture)
+Calculate lbButtonEnabled as (ibWithinPreStartTime|ibWithinPostStartTime)&not(ibDelegateIsPresenter)&not(ibMaxAttendeesReached)&not(ibDelegateAlreadyAttending)&not(ibDelegateAlreadyBookedForSelectedTime)&not(ibDelegateAlreadySpeakingInThisTimeSlot)
+Calculate $cinst.$objs.PagedPane.$objs.pbRegisterForSession.$enabled as ilArrangements.$line>0&lbButtonEnabled ## &(ibTimeNow|ibTimeFuture)
+If ilArrangements.$line>0&lbButtonEnabled
+	Calculate $cinst.$objs.pbRegisterForSession.$text as 'Register'
+End If
+# the pbRemove button becomes disabled if delegate's session has already begun (with 20 minutes grace)
+# Calculate $cinst.$objs.PagedPane.$objs.pbRemove.$enabled as ilArrangements.$line>0&(ibDateToday|ibDateFuture)&(ibTimeNow|ibTimeFuture|ibCloseEnoughToRegister)&ilAttendees.ARA_DG_REF=irDelegate.DG_SEQ
+Calculate lbButtonEnabled as (ibWithinPreStartTime|ibWithinPostStartTime)&ilAttendees.ARA_DG_REF=irDelegate.DG_SEQ&not(ilAttFeedback)
+Calculate $cinst.$objs.PagedPane.$objs.pbRemove.$enabled as ilArrangements.$line>0&lbButtonEnabled
+
+# ARA_COMMENTS & ARA_RATING visible only if delegate matches person registered
+If inFeedbackMinutes>0 ## configured to handle feedback
+	# Calculate ibCanSeeRating as irAttendee.ARA_SEQ>0&irAttendee.ARA_DG_REF=irDelegate.DG_SEQ&(ibArrangementBeforeToday|(ibDateToday&ibTimePast))
+	Calculate ibCanSeeFeedback as kFalse
+	If irAttendee.ARA_SEQ>0
+		Calculate ibCanSeeFeedback as irAttendee.ARA_DG_REF=irDelegate.DG_SEQ ## speaker for this session
+	Else If ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF
+		Calculate ibCanSeeFeedback as kTrue ## person logged in has registered for this session
+	End If
+	If isnull(ibCanSeeFeedback)
+		Calculate ibCanSeeFeedback as kFalse
+	End If
+	
+	If ibCanSeeFeedback
+		# feedback can be viewable but not updateable
+		If ilArrangements.ARR_PSN_REF=irDelegate.DG_PSN_REF
+			# the person logged in is the speaker for the selected topic
+			# This person see the feedback provided by others - NOT GIVE FEEDBACK
+			Calculate lbEnableFeedback as ilViewFeedbackToSpeaker.$linecount>0 ## &(ibArrangementBeforeToday|(ibDateToday&ibTimePast&not(ibTimeNow)))
+		Else
+			Calculate lbEnableFeedback as irAttendee.ARA_DG_REF=irDelegate.DG_SEQ&ibFeedbackWithinRangeOfEvent
+		End If
+		
+	End If
+	
+	# ARA_COMMENTS & ARA_RATING enabled for rest of day from n minutes after start of session
+	Calculate $cinst.$objs.PagedPane.$objs.pbSessionFeedback.$visible as ibCanSeeFeedback
+	Calculate $cinst.$objs.PagedPane.$objs.pbSessionFeedback.$enabled as lbEnableFeedback
+	
+	Calculate $cinst.$objs.PagedPane.$objs.Anonymous.$enabled as lbEnableFeedback
+	Calculate $cinst.$objs.PagedPane.$objs.label_RateCriteria.$visible as lbEnableFeedback
+	Calculate $cinst.$objs.PagedPane.$objs.ilFeedback2.$enabled as lbEnableFeedback
+	Calculate $cinst.$objs.PagedPane.$objs.ilFeedback2.$backcolor as pick(lbEnableFeedback,rgb(238,238,255),kWhite)
+	Calculate $cinst.$objs.PagedPane.$objs.label_SelectFeedbackValue.$visible as lbEnableFeedback
+	Calculate $cinst.$objs.PagedPane.$objs.rg_Feedback.$visible as lbEnableFeedback
+	
+	Calculate $cinst.$objs.PagedPane.$objs.ARA_COMMENTS_entry.$enabled as lbEnableFeedback
+	Calculate $cinst.$objs.PagedPane.$objs.ARA_COMMENTS_entry.$backcolor as pick(lbEnableFeedback,rgb(238,238,255),kWhite)
+	
+	Calculate $cinst.$objs.PagedPane.$objs.pbGeneralFeedback.$visible as idTestDate>=ilConferences.CF_DATE_FROM&idTestDate<=ilConferences.CF_DATE_TO
+End If
+
+Calculate $cinst.$objs.PagedPane.$objs.rg_inSlot.$enabled as ilDates.$line>0

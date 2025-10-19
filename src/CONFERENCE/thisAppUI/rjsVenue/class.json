@@ -1,11 +1,11 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 249,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 241,
 	"superclass": "infra.rjsInfraRecords",
 	"designtaskname": "rtBusinessApp",
-	"nextident": 1066,
+	"nextident": 1068,
 	"lastgroupident": 0,
 	"cvardefs": [
 		{
@@ -109,9 +109,9 @@
 		"issupercomponent": false,
 		"layoutbreakpoints": "320,375,480,667,768,1024,1700",
 		"layouttype": "kLayoutTypeResponsive",
-		"left": 761,
+		"left": 289,
 		"menulineheight": 0,
-		"moddate": "2025-05-12 10:22:04",
+		"moddate": "2025-09-26 16:42:07",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -122,7 +122,7 @@
 			"type": 0,
 			"calc": "New remote form"
 		},
-		"top": 41,
+		"top": 4,
 		"userinfo": "",
 		"vcsrevision": 0,
 		"version": "",
@@ -130,7 +130,7 @@
 		"vertscroll": false
 	},
 	"layout": {
-		"width": 1301,
+		"width": 1438,
 		"height": 928,
 		"320": {
 			"height": 0,

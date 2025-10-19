@@ -1,0 +1,45 @@
+If irDelegate.DG_SEQ
+	Calculate lnCurrentLine as ilArrangements.$line
+	
+	Do ilAttendees.$reportAllSessionCounts(ilConferences.CF_SEQ,irDelegate.DG_SEQ) Returns llCounts
+	
+	Calculate ilArrangements.$line as 0
+	While $Loop(ilArrangements) ## $Loop(llCounts) - when user is clicking through sessions ilArrangements will be a filtered list and much smaller
+		# Do ilArrangements.$search($ref.ARR_SEQ=llCounts.ARR_SEQ,1,0,0,0) Returns lbFound
+		Do llCounts.$search($ref.ARR_SEQ=ilArrangements.ARR_SEQ,1,0,0,0) Returns lbFound
+		If lbFound
+			Calculate ilArrangements.countAll as llCounts.countAll
+			Calculate ilArrangements.countThisUser as llCounts.countThisUser
+			If ilArrangements.ARR_MAX_BOOKINGS
+				Calculate ilArrangements.displayCount as con(ilArrangements.countAll,'/',ilArrangements.ARR_MAX_BOOKINGS)
+			End If
+			If ilArrangements.countThisUser
+				Calculate ilArrangements.displayThisUser as '☞'
+			Else
+				Calculate ilArrangements.displayThisUser as ''
+			End If
+			Calculate llCounts.[llCounts.$line].$selected as kTrue
+		End If
+	End While
+	Do llCounts.$remove(kListKeepSelected)
+	
+	Calculate lnTotalSessionsBooked as llCounts.$cols.countAll.$total()
+	# how many arrangements have speakers assigned?
+	# Do ilArrangements.$search($ref.ARR_PSN_REF>0&left($ref.PSN_SURNAME,1)<>'_',1,0,1,0)
+	Do ilArrangements.$search($ref.ARR_PSN_REF>0&$ref.PSN_SEX<>'O',1,0,1,0)
+	Do ilArrangements.$search($ref.ARR_LEADER<>'',1,0,1,0)
+	Calculate lnNonScheduledSpeakers as inCountSpeakers-totc(ilArrangements,#LSEL)
+	Do ilArrangements.$search(0)
+	If inCountDelegates+lnNonScheduledSpeakers<>0
+		Calculate lnPercent as 100*lnTotalSessionsBooked/(inCountDelegates+lnNonScheduledSpeakers)
+	End If
+	Calculate icBookedTotal as ''
+	If lnPercent<>0
+		# Calculate icBookedTotal as con(lnTotalSessionsBooked,' of ',inCountDelegates+lnNonScheduledSpeakers,': ',lnPercent,'%')
+		Calculate icBookedTotal as con(lnTotalSessionsBooked,': ',lnPercent,'%')
+	Else
+		# Calculate icBookedTotal as con(lnTotalSessionsBooked,' of ',inCountDelegates+lnNonScheduledSpeakers)
+	End If
+	
+	Calculate ilArrangements.$line as lnCurrentLine
+End If

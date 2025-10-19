@@ -10,11 +10,11 @@ Do ilPayments.$clear()
 Do ilPayments.$fetchConnectedPayments(irCurrentRecord.DG_SEQ) Returns llPaymentsInAll
 Do llPaymentsInAll.$search($ref.PY_DG_REF=irCurrentRecord.DG_SEQ,1,0,0,0) Returns lbPaymentFound
 If llPaymentsInAll.$linecount>0
-	Do ilPayments.$add()
-	Calculate ilPayments.$line as 1
+	# Do ilPayments.$add()
+	# Calculate ilPayments.$line as 1
 	If lbPaymentFound
 		# there is a direct payment record
-		Do ilPayments.$assignrow(llPaymentsInAll)
+		Do ilPayments.$merge(llPaymentsInAll)
 		# no need to populate DisplayName
 	Else
 		# no direct link... which link to we point to?  For now, just first connection.

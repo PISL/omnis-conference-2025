@@ -1,0 +1,12 @@
+On evClick
+	If ilPermissionPrefixes.$line>0
+		If ibPermissionsFilteredOnPrefix
+			Do ilChoiceOfPermissions.$unfilter()
+		End If
+		If ilPermissionPrefixes.PER_PREFIX<>''
+			Do ilChoiceOfPermissions.$filter(left($ref.PER_LABEL,3)=ilPermissionPrefixes.PER_PREFIX)
+			Calculate ibPermissionsFilteredOnPrefix as kTrue
+		Else
+			Calculate ibPermissionsFilteredOnPrefix as kFalse
+		End If
+	End If

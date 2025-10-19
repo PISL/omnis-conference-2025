@@ -1,0 +1,60 @@
+On evClick ## Event Parameters - pRow( Itemreference )
+	Breakpoint
+	
+	Calculate lnWhichAddress as 1
+	If lnWhichAddress=1
+		Calculate lcServer as 'mail.omnisworld.org'
+		Calculate lcLogin as 'rob@omnisworld.org'
+		Calculate lcPassword as 'Br1nkman'
+	Else If lnWhichAddress=2
+		Calculate lcServer as 'imap.gmail.com' ## -1034
+		Calculate lcLogin as 'robertmostyn99@gmail.com'
+		Calculate lcPassword as 'gmail_Tra!nspott1ng'
+	Else If lnWhichAddress=3
+		Calculate lcServer as 'imap.gmail.com'
+		Calculate lcLogin as 'robertmostyn99@gmail.com'
+		Calculate lcPassword as 'gmail_Tra!nspott1ng'
+	End If
+	
+	Do llResponses.$cols.$add('content',kCharacter,kSimplechar,255)
+	Do ilMailHandshake.$clear()
+	
+	# IMAPConnect (lcServer,lcLogin,lcPassword,'$cinst.$MailProtocol',llResponses,2) Returns lnMailSocket
+	IMAPConnect (lcServer,lcLogin,lcPassword,'$cinst.$MailProtocol',llResponses) Returns lnMailSocket
+	If lnMailSocket>0
+		Do llMailBoxData.$cols.$add('HasChildren',kInteger,k32bitint)
+		Do llMailBoxData.$cols.$add('NoInferiors',kInteger,k32bitint)
+		Do llMailBoxData.$cols.$add('NoSelect',kInteger,k32bitint)
+		Do llMailBoxData.$cols.$add('Marked',kInteger,k32bitint)
+		Do llMailBoxData.$cols.$add('UnMarked',kInteger,k32bitint)
+		Do llMailBoxData.$cols.$add('Separator',kCharacter,kSimplechar,100)
+		Do llMailBoxData.$cols.$add('MailboxName',kCharacter,kSimplechar,100)
+		
+		Do ilMailHandshake.$clear()
+		IMAPListMailboxes (lnMailSocket,lcRefName,lcMailBoxName,llMailBoxData,'$cinst.$MailProtocol',llResponses) Returns lnStatus ## required before calling IMAPListMessages
+		
+		IMAPSelectMailbox (lnMailSocket) Returns lnStatus ## required before calling IMAPListMessages
+		
+		Do llMessageIDs.$cols.$add('UID',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('Size',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('InternalDate',kDate,kDatetime)
+		Do llMessageIDs.$cols.$add('Answered',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('Deleted',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('Draft',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('Flagged',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('Recent',kInteger,k32bitint)
+		Do llMessageIDs.$cols.$add('Seen',kInteger,k32bitint)
+		
+		Do ilMailHandshake.$clear()
+		IMAPListMessages (lnMailSocket,llMessageIDs,'$cinst.$MailProtocol') Returns lnStatus
+		
+		
+		IMAPRecvHeaders
+		IMAPRecvMessage
+		
+		IMAPSetMessageFlags
+		
+		IMAPDisconnect (lnMailSocket)
+	Else
+		
+	End If

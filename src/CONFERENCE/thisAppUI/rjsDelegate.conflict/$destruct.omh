@@ -1,0 +1,9 @@
+# Enter your termination code here
+If ibUserHasSemaphore
+	# just because irSemaphore has a value in it doesn't mean the semaphore belongs to this user
+	# The semaphore may belong to another user after calling $obtainSemaphore()
+	Do irSemaphore.$clearSemaphore() Returns lbOK
+End If
+
+# fllowing line throws "Notation not supported" in v11 35659
+# Do $cinst.$clientcommand("closepush",row())

@@ -1,0 +1,46 @@
+# the list returned may be all email addresses, or it could be in address/name pairs (every other line)
+If plHeaderRow.$linecount>1
+	# more than one lines in list, test for formatting
+	If pos('@',plHeaderRow.1.C1)>0&pos('@',plHeaderRow.2.C1)=0
+		# it is an email address with name pair
+		Calculate plHeaderRow.$line as 0
+		For plHeaderRow.$line from 1 to plHeaderRow.$linecount step 2
+			Do prefList.$add(plHeaderRow.C1,plHeaderRow.[plHeaderRow.$line+1].C1)
+		End For
+		
+	Else If plHeaderRow.$colcount=1&mod(plHeaderRow.$linecount,2)=0
+		# this is innappropriate use of JSONbut here I am being a smart arse, pandering to flexibility
+		# The assumption here is that the list is name/values pairs on alternate lines
+		For plHeaderRow.$line from 1 to plHeaderRow.$linecount step 2
+			Do prefList.$add(plHeaderRow.C1,prefList.[prefList.$line+1].C1)
+		End For
+		
+	Else
+		# we will assume all lines are list a email addresses
+		Breakpoint
+		Do prefList.$merge(plHeaderRow)
+	End If
+	
+Else If plHeaderRow.$linecount=1
+	For lnColNo from 1 to plHeaderRow.$colcount step 1
+		
+		If plHeaderRow.C[lnColNo].$type=kCharacter
+			Breakpoint untested
+			Do prefList.$add(lRow1.C[lnColNo])
+			
+		Else If plHeaderRow.C[lnColNo].$type=kList
+			Breakpoint untested
+			Do prefList.$merge(plHeaderRow.C[lnColNo])
+			
+		Else If plHeaderRow.C[lnColNo].$type=kRow
+			Calculate lRow1 as plHeaderRow.C[lnColNo]
+			Do prefList.$add(lRow1.C1.$name,lRow1.C1)
+			
+		End If
+		
+	End For
+	
+Else
+	# we will assume all lines are list a email addresses
+	Do prefList.$merge(plHeaderRow)
+End If

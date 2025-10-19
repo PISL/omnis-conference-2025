@@ -1,0 +1,18 @@
+On evLayoutChanged
+	Do inherited ## sets inBreakpoint
+	
+	If inBreakpoint>=1280
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 180
+	Else If inBreakpoint>=1024
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 216
+	Else If inBreakpoint>=768
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 272
+	Else If inBreakpoint>=667
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 328
+	Else If inBreakpoint>=480
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 336
+	Else If inBreakpoint>=375
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 376
+	Else If inBreakpoint>=320
+		Calculate $cinst.$objs.ilDayDisplay.$rowheight as 456
+	End If

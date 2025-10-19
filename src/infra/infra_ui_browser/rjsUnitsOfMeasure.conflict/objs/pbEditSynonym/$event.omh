@@ -1,0 +1,6 @@
+On evClick
+	Do irCurrentSynonym.$fetch_pk() ## reload data
+	Calculate icDisplayMessage as ''
+	Calculate icMode as 'ES' ## edit synonym
+	
+	Do $cinst.$behaviour()

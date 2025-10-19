@@ -1,0 +1,12 @@
+Calculate irConference as prConference
+Do inherited
+
+Calculate icReportTitle as con('Musicians at  ',irConference.CF_TITLE)
+Calculate icReportSubTitle as ''
+
+Calculate ilData as plData
+
+Calculate ilData.$line as 0
+While $Loop(ilData)
+	Do $cinst.$printrecord()
+End While

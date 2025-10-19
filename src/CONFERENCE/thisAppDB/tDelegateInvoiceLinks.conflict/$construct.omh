@@ -1,0 +1,7 @@
+Calculate icPrefix as 'DIL_'
+Calculate icPrimarykey as 'DIL_SEQ'
+
+Calculate icForeignKey as 'DIL_DG_REF'
+# Calculate icForeignKey as 'DIL_FOH_REF'
+
+Do inherited

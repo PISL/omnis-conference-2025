@@ -1,0 +1,30 @@
+# Enter your initialization code here
+Do $DefineList(irTopic,'tTopics')
+Do $DefineList(irLinkRecord,'tTopicConferenceLink')
+Do $DefineList(irConference,'CONFERENCE.tConference')
+
+Calculate irOrigTopic as irTopic
+Calculate irOrigLinkRecord as irLinkRecord
+Calculate irOrigConference as irConference
+
+Do $DefineList(ilJoinedFetch,'tTopicConferenceLink')
+
+For lnCol from 1 to lrTopic.$colcount step 1
+	Calculate lcColName as lrTopic.$cols.[lnCol].$name
+	If lnCol=1
+		Calculate lcColumns as lcColName
+	Else
+		Calculate lcColumns as con(lcColumns,',',lcColName)
+	End If
+End For
+Do ilJoinedFetch.$addLinkedCols(lcColumns)
+
+For lnCol from 1 to lrConference.$colcount step 1
+	Calculate lcColName as lrConference.$cols.[lnCol].$name
+	If lnCol=1
+		Calculate lcColumns as lcColName
+	Else
+		Calculate lcColumns as con(lcColumns,',',lcColName)
+	End If
+End For
+Do ilJoinedFetch.$addLinkedCols(lcColumns)

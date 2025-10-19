@@ -1,0 +1,22 @@
+On evClick
+	# Breakpoint
+	
+	Calculate ilAuthorisedForms.$line as pLineNumber
+	Calculate tlAuthorisedForms.$line as pLineNumber
+	
+	If tlAuthorisedForms.class<>'' ## blank lines now used for aestetic reasons
+		If tlAuthorisedForms.class=trCurrentForm.class&tlAuthorisedForms.code=trCurrentForm.code
+			# no change ## ignore
+		Else
+			# change of class or form
+			Do $changeOfForm()
+		End If
+		
+		Calculate trCurrentForm as tlAuthorisedForms
+	Else
+		If trCurrentForm.code<>''
+			# refect the blank line by pointing back to previous line in list
+			Do tlAuthorisedForms.$search($ref.code=trCurrentForm.code,1,0,0,0)
+			Calculate ilAuthorisedForms as tlAuthorisedForms
+		End If
+	End If

@@ -35,6 +35,8 @@
 		"objlink": 0,
 		"pagecount": 6,
 		"preventlayoutanimation": false,
+		"scrollshadowcolor": "RGB(0,0,0)",
+		"scrollshadowwidth": 0,
 		"scrolltochangepage": false,
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
@@ -96,7 +98,7 @@
 		"1024": {
 			"left": 224,
 			"top": 136,
-			"width": 776,
+			"width": 800,
 			"height": 528,
 			"dragborder": false,
 			"edgefloat": "kEFnone",

@@ -1,0 +1,86 @@
+Breakpoint not tested
+Calculate icErrorMessage as ''
+
+Do irTopic.$clear()
+Do irTopic.$assignrow(prTopic)
+Do irTopic.$validation() Returns lbProceed
+If lbProceed
+	If irTopic.[irTopic.icPrimaryKey]>0
+		Do toStrings.$HasRowBeenModified(irOrigTopic,irTopic) Returns lbModified
+		If lbModified
+			Do irTopic.$update() Returns lbOK
+		Else
+			# no change
+			Calculate lbOK as kTrue
+		End If
+	Else
+		Do irTopic.$insert() Returns lbOK
+	End If
+	If lbOK
+		Do prTopic.$assignrow(irTopic) ## return result to calling object
+		
+		Do irPerson.$clear()
+		Do irPerson.$assignrow(prPerson)
+		Do irPerson.$validation() Returns lbProceed
+		If lbProceed
+			If irPerson.[irPerson.icPrimaryKey]>0
+				Do toStrings.$HasRowBeenModified(irOrigPerson,irPerson) Returns lbModified
+				If lbModified
+					Do irPerson.$update() Returns lbOK
+				Else
+					# no change
+					Calculate lbOK as kTrue
+				End If
+			Else
+				Do irPerson.$insert() Returns lbOK
+			End If
+			If lbOK
+				Do prPerson.$assignrow(irPerson)
+				
+				Do irLinkRecord.$clear()
+				Do irLinkRecord.$assignrow(prLinkRecord) ## TPF_STATUS may have changed
+				Calculate irLinkRecord.TPP_TPC_REF as irTopic.[irTopic.icPrimaryKey]
+				Calculate irLinkRecord.TPP_PSN_REF as irPerson.[irPerson.icPrimaryKey]
+				
+				Do irLinkRecord.$validation() Returns lbProceed
+				If lbProceed
+					If irLinkRecord.[irLinkRecord.icPrimaryKey]>0
+						Do toStrings.$HasRowBeenModified(irOrigLinkRecord,irLinkRecord) Returns lbModified
+						If lbModified
+							Do irLinkRecord.$update() Returns lbOK
+						Else
+							# no change
+							Calculate lbOK as kTrue
+						End If
+					Else
+						Do irLinkRecord.$insert() Returns lbOK
+					End If
+					If lbOK
+						# good
+					Else
+						Calculate icErrorMessage as irLinkRecord.irErrorSQL.NativeErrorText
+						Quit method kFalse
+					End If
+				Else
+					Calculate icErrorMessage as con('validation error: ',irLinkRecord.icValidationMessage)
+					Quit method kFalse
+				End If
+			Else
+				Calculate icErrorMessage as irPerson.irErrorSQL.NativeErrorText
+				Quit method kFalse
+			End If ## not(lbOK) after irInvoiceHeader.$insert()
+		Else
+			Calculate icErrorMessage as con('validation error: ',irPerson.icValidationMessage)
+			Quit method kFalse
+		End If ## not(lbProceed) after irInvoiceHeader.$validation()
+		
+	Else ## not(lbOK) after irDelegate.$insert()
+		Calculate icErrorMessage as irTopic.irErrorSQL.NativeErrorText
+		Quit method kFalse
+	End If
+Else
+	Calculate icErrorMessage as con('validation error: ',irTopic.icValidationMessage)
+	Quit method kFalse
+End If
+
+Quit method kTrue

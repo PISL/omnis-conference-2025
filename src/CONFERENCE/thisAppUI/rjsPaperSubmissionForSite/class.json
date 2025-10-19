@@ -1,8 +1,8 @@
 {
 	"classtype": "kRemoteForm",
-	"omnisversion": "11.1",
-	"omnisbuild": 111037255,
-	"internalversion": 2008,
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 2009,
 	"superclass": "infra.rjsInfraBlank",
 	"designtaskname": "rtRegistration",
 	"nextident": 1283,
