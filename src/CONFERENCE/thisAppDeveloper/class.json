@@ -1,0 +1,22 @@
+{
+	"classtype": "kFolder",
+	"omnisversion": "11.2",
+	"omnisbuild": 112040173,
+	"internalversion": 0,
+	"properties": {
+		"componentinfo": {
+
+		},
+		"componenttype": "kCompStoreHidden",
+		"createdate": "2025-11-07 13:26:26",
+		"desc": "",
+		"editor": "",
+		"editordata": "",
+		"external": false,
+		"moddate": "2025-11-07 13:26:26",
+		"showascheckedout": false,
+		"userinfo": "",
+		"vcsrevision": 0,
+		"version": ""
+	}
+}
