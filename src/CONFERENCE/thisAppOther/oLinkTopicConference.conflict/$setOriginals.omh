@@ -1,3 +1,0 @@
-Do irOrigTopic.$assignrow(prTopic)
-Do irOrigConference.$assignrow(prConference)
-Do irOrigLinkRecord.$assignrow(prLink)

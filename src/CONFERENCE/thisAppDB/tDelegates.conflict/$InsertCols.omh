@@ -1,4 +1,0 @@
-If isnull($cinst.DG_INV_TO_EO_ONLY)
-	Calculate $cinst.DG_INV_TO_EO_ONLY as 0
-End If
-Do inherited

@@ -1,4 +1,0 @@
-On evClick
-	Calculate icDisplayMessage as ''
-	Do method FetchCustomer
-	Do $cinst.$behaviour()

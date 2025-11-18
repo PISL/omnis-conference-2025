@@ -1,3 +1,0 @@
-On evClick
-	Do irAwardee.$assignrow(ilDelegates,kTrue)
-	Do $cinst.$behaviour()

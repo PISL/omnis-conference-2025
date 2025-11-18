@@ -1,1 +1,0 @@
-Do ilCertType.$search($ref.RFO_VALUE=irCurrentRecord.CRT_TYPE,1,0,0,0)

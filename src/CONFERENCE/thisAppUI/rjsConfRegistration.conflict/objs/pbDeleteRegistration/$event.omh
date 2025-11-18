@@ -1,3 +1,0 @@
-On evClick
-	Do method DeleteRegistration
-	Do $cinst.$behaviour()

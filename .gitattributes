@@ -1,0 +1,3 @@
+# Added by gittools
+*.tsv diff=cr
+*.df1 binary

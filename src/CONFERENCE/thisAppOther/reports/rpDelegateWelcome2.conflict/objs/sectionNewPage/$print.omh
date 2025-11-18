@@ -1,5 +1,0 @@
-# If ibPrintBackPage
-Do default
-# Else
-# suppress static page
-# End If

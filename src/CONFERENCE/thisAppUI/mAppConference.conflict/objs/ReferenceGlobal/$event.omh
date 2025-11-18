@@ -1,2 +1,0 @@
-# Open window instance wRefGlobal/*/CEN (pcClassFromOtherWindowInstance,#NULL,prSelectedDatabase)
-Do $libs.infra.$windows.wRefGlobal.$open('*',kWindowCenter)

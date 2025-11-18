@@ -1,2 +1,0 @@
-Set reference irefCORETASK to $itasks.CONFERENCE
-Do $cinst.$behaviour()

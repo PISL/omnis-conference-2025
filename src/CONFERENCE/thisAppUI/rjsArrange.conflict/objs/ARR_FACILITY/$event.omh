@@ -1,7 +1,0 @@
-On evBefore
-	
-On evAfter
-	If irCurrentRecord.ARR_FACILITY<>''
-		Calculate irCurrentRecord.ARR_FCY_REF as #NULL
-		Calculate ilFacilities.$line as 1 ## not set
-	End If
