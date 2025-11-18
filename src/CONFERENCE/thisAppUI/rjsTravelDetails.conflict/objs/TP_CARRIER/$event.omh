@@ -1,5 +1,0 @@
-On evBefore
-	
-On evAfter
-	Do method DataModified
-	Do $cinst.$behaviour()

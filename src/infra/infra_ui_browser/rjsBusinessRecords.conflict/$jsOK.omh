@@ -1,2 +1,0 @@
-# empty callback method for $clientcommand alert messages
-# could be overloaded in the sub class or left empty

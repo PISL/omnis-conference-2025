@@ -1,3 +1,0 @@
-For inDataColNo from 1 to inDataColCount step 1
-	Calculate ilDataCols.[inDataColNo].data as ilContent.C[inDataColNo]
-End For

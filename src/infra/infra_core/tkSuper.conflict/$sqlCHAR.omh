@@ -1,6 +1,0 @@
-
-Do $ctask.tStringFields.$TMReplace(pValue,"'","''",pValue) ## Replace single ' with '' so they are found correctly
-
-Calculate queryValue as con("'",pValue,"'")
-
-Quit method queryValue

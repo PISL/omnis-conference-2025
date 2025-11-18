@@ -1,3 +1,0 @@
-If ibCrashTraceOn
-	Do oCrashTraceFile.$write(pClass,pMethod,pText) Returns lbOK
-End If

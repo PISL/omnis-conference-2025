@@ -1,3 +1,0 @@
-On evClick
-	# copy the value of ibOpenInNewWindow up to the task
-	Do $ctask.$setVar(nam(ibOpenInNewWindow),ibOpenInNewWindow)

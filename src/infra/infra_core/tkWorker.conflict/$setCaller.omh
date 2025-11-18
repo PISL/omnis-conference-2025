@@ -1,3 +1,0 @@
-# if irefCaller is set the $xxxxCompleted methods will call irefCaller.$xxxxCompleted, passing in the prParams if required
-Set reference irefCaller to prefCaller
-Calculate irCallerParams as prParams

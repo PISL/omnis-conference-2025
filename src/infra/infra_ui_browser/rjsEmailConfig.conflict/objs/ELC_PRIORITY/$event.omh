@@ -1,3 +1,0 @@
-On evClick
-	Calculate irCurrentRecord.ELC_PRIORITY as ilPriority.code
-	Do $cinst.$behaviour()

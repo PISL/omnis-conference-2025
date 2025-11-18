@@ -1,4 +1,0 @@
-On evClick
-	Do ioTags.$toggleSpecialTag(icConferenceTag) Returns ibConferenceTagSet
-	
-	Do $cinst.$behaviour()

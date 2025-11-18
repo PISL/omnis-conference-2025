@@ -1,3 +1,0 @@
-# $start([cOAUTH2authCode]) Run worker on background thread.Returns true if the worker was successfully started
-Calculate ibAsynchronous as kTrue
-Do inherited

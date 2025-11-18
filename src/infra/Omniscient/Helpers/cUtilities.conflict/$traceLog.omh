@@ -1,1 +1,0 @@
-Send to trace log [con(format("y-M-D H:N:S",getdatetime())," | [Omniscient | ",upp(pLevel),"] ",pMessage)]))

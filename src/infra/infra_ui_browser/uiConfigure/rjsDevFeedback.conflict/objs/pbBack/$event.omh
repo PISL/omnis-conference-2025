@@ -1,2 +1,0 @@
-On evClick
-	Do $cinst.$returnToForm() ## bypass the sending of email

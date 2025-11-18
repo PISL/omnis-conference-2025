@@ -1,6 +1,0 @@
-If isnull(pbIncludeAll)
-	# just return current setting
-Else
-	Calculate ibIncludeAll as pbIncludeAll
-End If
-Quit method ibIncludeAll

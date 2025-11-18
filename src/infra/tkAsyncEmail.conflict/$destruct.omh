@@ -1,3 +1,0 @@
-# Enter your termination code here
-Do ioSmtpWorker.$deleteref()
-Do iorTimeout.$deleteref()

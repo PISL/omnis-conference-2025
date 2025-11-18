@@ -1,3 +1,0 @@
-On evClick
-	Do method DataModified
-	Do $cinst.$behaviour()

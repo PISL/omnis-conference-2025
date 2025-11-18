@@ -1,2 +1,0 @@
-Do method $SingleLine (pEmail) Returns lcTemp
-Calculate pEmail as low(lcTemp)

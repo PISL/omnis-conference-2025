@@ -1,4 +1,0 @@
-Calculate $cinst.$objs.label_ilDisplayRecords.$text as pcLabelList
-
-Do ilDisplayRecords.$cols.$findname(pcDisplayCols) Returns liColRef
-Calculate $cinst.$objs.ilDisplayRecords.$listcolumn as liColRef.$ident

@@ -1,6 +1,0 @@
-Do ilDisplayRecords.$fetch_all()
-If ilDisplayRecords.irErrorSQL.NativeErrorText<>''
-	Calculate icDisplayMessage as ilDisplayRecords.irErrorSQL.NativeErrorText
-End If
-
-Do ilDisplayRecords.$sort($ref.VEN_NAME,0)

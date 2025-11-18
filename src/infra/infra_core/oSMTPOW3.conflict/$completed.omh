@@ -1,2 +1,0 @@
-# $completed(wResults) Method called when the request completes.wResults is a row containing the results of executing the request
-Do irefCallingInst.$completed(pRow)

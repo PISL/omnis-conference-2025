@@ -1,5 +1,0 @@
-If ivIsProcessing
-	Quit method
-End If
-
-Do ivSourceErrorProcessor.$fetchErrorBulk($cinst.$objref,"$onSourceBulkFetched")

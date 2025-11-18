@@ -1,4 +1,0 @@
-Calculate icPrefix as ' '
-Calculate icPrimarykey as 'TIMEZONE'
-Do inherited ## inherited sets ibHasSequence to kTrue
-Calculate ibHasSequence as kFalse

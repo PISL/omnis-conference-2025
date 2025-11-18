@@ -1,3 +1,0 @@
-On evClick
-	Do method moveViewUp
-	Do $cinst.$behaviour()

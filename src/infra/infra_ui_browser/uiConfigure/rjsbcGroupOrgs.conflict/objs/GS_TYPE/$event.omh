@@ -1,3 +1,0 @@
-On evClick
-	Calculate irCurrentStructure.GS_TYPE as ilStructureType.RFO_VALUE
-	Do $cinst.$behaviour()

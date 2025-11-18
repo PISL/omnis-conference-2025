@@ -1,3 +1,0 @@
-If $lastWindowCheck.$cando()
-	Do $lastWindowCheck()
-End If

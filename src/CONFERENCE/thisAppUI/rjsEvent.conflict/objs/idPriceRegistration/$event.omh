@@ -1,3 +1,0 @@
-On evAfter
-	Calculate icShowDate as jst(idPriceRegistration,'D:D m Y')
-	Do method FetchPrice ($cobj().$name)

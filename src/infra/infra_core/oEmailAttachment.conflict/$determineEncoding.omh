@@ -1,2 +1,0 @@
-Do iEncodingList.$search($ref.iEncoding='base64',1,0,0,0) Returns lbFound
-Quit method iEncodingList.iEncoding

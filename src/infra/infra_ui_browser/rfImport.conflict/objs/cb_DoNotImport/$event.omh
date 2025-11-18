@@ -1,7 +1,0 @@
-On evClick
-	If ibDoNotImportFirstLine
-		Calculate inRowsToIgnore as 1
-	Else
-		Calculate inRowsToIgnore as 0
-	End If
-	Do $cinst.$behaviour()

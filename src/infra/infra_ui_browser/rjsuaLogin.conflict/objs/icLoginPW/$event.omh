@@ -1,6 +1,0 @@
-On evAfter
-	Do $cinst.$behaviour()
-	Do $cinst.$setcurfield('pbLogin')
-	
-On evKeyPress
-	Do $cinst.$behaviour()

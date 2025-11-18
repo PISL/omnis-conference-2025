@@ -1,4 +1,0 @@
-Calculate ilDisplayRecords.$line as 0
-While $Loop(ilDisplayRecords)
-	Do ilDisplayRecords.$displayName(icFormatProduct)
-End While

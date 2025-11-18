@@ -1,2 +1,0 @@
-Do $cinst.$objs.CPN_EMAIL.[pnLine].$enabled.$assign(pbEnabled)
-Do $cinst.$objs.CPN_EMAIL.[pnLine].$textcolor.$assign(pick(pbEnabled,kGray,kColorDefault))

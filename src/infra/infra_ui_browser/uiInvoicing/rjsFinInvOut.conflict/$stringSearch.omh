@@ -1,4 +1,0 @@
-# if any text has been provided then clear the specific customer
-Calculate ilSearch1.$line as 0
-
-Do method fetchDisplayList

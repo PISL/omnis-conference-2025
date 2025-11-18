@@ -1,3 +1,0 @@
-On evAfter
-	Do method FeedbackModified
-	Do $cinst.$behaviour()

@@ -1,4 +1,0 @@
-Calculate ilSchemaCols.$line as 0
-While $Loop(ilSchemaCols)
-	Calculate $cinst.$objs.PagedPane.$objs.ilSchemaCols.$objs.pbSelected.[ilSchemaCols.$line].$text as ilSchemaCols.C2
-End While
