@@ -25,7 +25,13 @@ The "conf_obf" database holds the data for the conference application and the "s
 6. Restore the backup [stb](db/stb.backup) into it
 7. Assign role _developer to your own login id to access everything in stb and conf_obf
 
+
+### conf_obf
 *NB. conf_obf is an obfuscated version of the proper application database.*
+
+Note, the application has been updated since conf_obf was created, and as such expects extra columns to exist. These have been added to the latest version of conf_obf, but some may have been missed. If there are any columns missing they should be added to the Postgres database definition manually (as there is no automatic conversion tool). 
+
+### Libraries
 
 Both libraries, infra and CONFERENCE, are included [here](/libs) as well as exported JSON [here](/src).
 
