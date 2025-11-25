@@ -1,3 +1,0 @@
-Calculate inTotalPrice as ilDetails.$totc(ilDetails.Price)
-Calculate inTotalTax as ilDetails.$totc(ilDetails.Tax)
-Calculate inTotalInvoice as ilDetails.$totc(ilDetails.Total)

@@ -1,2 +1,0 @@
-Do irTopic.$assignrow(ilTopics,kTrue)
-Do ilTopicConferences.$fetch_fk(irTopic.TPC_SEQ)

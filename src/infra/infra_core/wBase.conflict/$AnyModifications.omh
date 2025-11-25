@@ -1,4 +1,0 @@
-# contents of record changing is much easier!
-Do toStrings.$HasRowBeenModified(irCurrentRecord,irCurrentOriginal) Returns ibModifiedRecord
-
-Do $cinst.$behaviour()

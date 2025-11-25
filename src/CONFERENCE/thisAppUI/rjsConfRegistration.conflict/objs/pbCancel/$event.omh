@@ -1,3 +1,0 @@
-On evClick
-	Calculate lcExitUrl as icURLexit
-	JavaScript:document.location.href=lcExitUrl;

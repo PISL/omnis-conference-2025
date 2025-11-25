@@ -1,3 +1,0 @@
-On evTabSelected
-	Calculate inSubTabTopic as pTabNumber
-	Do $cinst.$behaviour()

@@ -1,2 +1,0 @@
-Calculate inProgressValue as pnProgress
-Do $cinst.$objs.ProgressBar.$sendcarryon.$assign(inProgressValue)

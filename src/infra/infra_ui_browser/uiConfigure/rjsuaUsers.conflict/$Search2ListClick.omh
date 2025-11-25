@@ -1,5 +1,0 @@
-Calculate icDisplayMessage as ''
-
-Do method FetchRecords
-
-Do $cinst.$behaviour()

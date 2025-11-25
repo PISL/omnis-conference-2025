@@ -1,3 +1,0 @@
-Do $setVar('ibResponsive',kTrue) ## let the task know we are using the new UI
-
-Do inherited

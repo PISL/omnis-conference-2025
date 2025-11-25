@@ -1,2 +1,0 @@
-# called from forms when save/cancel is clicked
-Do ilEditStack.$remove(1)

@@ -1,4 +1,0 @@
-On evClick
-	Calculate ilContent.$line as ilContent.$line+1
-	Do method populateDataCols
-	Do $cinst.$behaviour()

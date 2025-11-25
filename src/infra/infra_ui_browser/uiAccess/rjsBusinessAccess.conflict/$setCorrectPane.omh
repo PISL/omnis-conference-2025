@@ -1,3 +1,0 @@
-If ilAuthorisedForms.code='FORM_HELP'
-	Calculate $cinst.$objs.PagedPane.$currentpage as cnPageHelp
-End If

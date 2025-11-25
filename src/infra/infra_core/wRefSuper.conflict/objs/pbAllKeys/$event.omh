@@ -1,3 +1,0 @@
-On evClick ## Event Parameters - pRow( Itemreference )
-	Do ilKeyCols.$search(1)
-	Do $cinst.$behaviour()

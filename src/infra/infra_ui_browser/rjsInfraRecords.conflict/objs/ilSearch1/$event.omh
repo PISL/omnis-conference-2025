@@ -1,3 +1,0 @@
-On evClick
-	Calculate ilSearch1.$line as pLineNumber
-	Do $cinst.$Search1ListClick()

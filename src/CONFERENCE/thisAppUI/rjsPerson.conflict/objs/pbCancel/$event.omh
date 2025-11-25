@@ -1,8 +1,0 @@
-On evClick
-	# Do irCurrentRecord.$clear()
-	# Do ilRolePermissions.$clear()
-	Calculate icDisplayMessage as ''
-	Calculate icMode as ''
-	Do $cinst.$displayListClick
-	# Do $cinst.$behaviour()
-	# Do $cinst.$redraw()

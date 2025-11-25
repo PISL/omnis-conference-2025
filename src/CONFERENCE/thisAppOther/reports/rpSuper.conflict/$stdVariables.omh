@@ -1,3 +1,0 @@
-Calculate icClassSignature as con($cinst().$name,'.',$ctask.trCurrUser.USR_SEQ)
-Calculate icNameOfCompany as $ctask.trGroupOrg.GO_NAME_SHORT
-Calculate icPrintedTimestamp as jst('printed: ',1,#D,'D:D m Y',' @ ',1,#T,'T:H:N')

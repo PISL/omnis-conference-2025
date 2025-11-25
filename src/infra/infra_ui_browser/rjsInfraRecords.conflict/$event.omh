@@ -1,3 +1,0 @@
-On evLayoutChanged
-	Do inherited ## Calculate inBreakpoint as pBreakpoint
-	Do $cinst.$behaviour()

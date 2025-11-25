@@ -1,5 +1,0 @@
-On evClick
-	Calculate icDisplayMessage as ''
-	Calculate icMode as ''
-	Do method printRules
-	Do $cinst.$behaviour()

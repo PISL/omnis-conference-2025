@@ -1,6 +1,0 @@
-On evClick
-	Do $ctask.$getFormColours() ## trFormColours
-	Do $cinst.$setFormColours()
-	
-	Do $cinst.$behaviour()
-	Do $cinst.$redraw()

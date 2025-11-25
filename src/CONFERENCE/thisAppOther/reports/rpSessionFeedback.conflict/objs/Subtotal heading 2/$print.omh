@@ -1,2 +1,0 @@
-Do ilRatings.$search($ref.RFO_VALUE=ilData.AFB_RFO_VALUE,1,0,0,0) ## ilOccupancy.RFO_DESC
-Do default

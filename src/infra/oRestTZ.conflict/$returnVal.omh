@@ -1,4 +1,0 @@
-Calculate pResponseHeaders as irResponseHeaders
-Calculate pResponse as irResponse
-Calculate pResultList as ilResult
-Quit method utf8tochar(irResponse.responseContent)

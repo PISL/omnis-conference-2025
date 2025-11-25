@@ -1,4 +1,0 @@
-On evBefore
-	
-On evAfter
-	Do method resolveCountry (irRegistration.EO_ADDR_BILL)

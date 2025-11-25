@@ -1,5 +1,0 @@
-On evClick
-	Do method taskLineClicked
-	
-	Do $cinst.$behaviour()
-	Do $cinst.$redraw()

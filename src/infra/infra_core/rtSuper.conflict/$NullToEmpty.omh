@@ -1,4 +1,0 @@
-If isnull(pValue)
-	Quit method ''
-End If
-Quit method pValue

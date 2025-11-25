@@ -1,3 +1,0 @@
-On evClick
-	Calculate irCurrentRecord.SF_TYPE as ilFeedbackType.RFL_VALUE
-	Do $cinst.$behaviour()

@@ -1,2 +1,0 @@
-Calculate idFrom as dadd(kDay,pNoOfDays,idFrom)
-Calculate idTo as dadd(kDay,pNoOfDays,idTo)

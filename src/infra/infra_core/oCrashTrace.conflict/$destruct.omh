@@ -1,3 +1,0 @@
-If ibCrashTraceOpen
-	Do oFileOps.$closefile() Returns lbOK
-End If

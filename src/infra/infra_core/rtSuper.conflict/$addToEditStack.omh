@@ -1,2 +1,0 @@
-# called from forms when Add/Edit is clicked
-Do ilEditStack.$add()

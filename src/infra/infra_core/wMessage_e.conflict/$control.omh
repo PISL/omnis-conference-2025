@@ -1,3 +1,0 @@
-On evClick
-	Calculate icTheResponse as $cobj().$text
-	Queue OK

@@ -1,3 +1,0 @@
-On evClick
-	Do $cinst.$anyModifications()
-	Do $cinst.$behaviour()

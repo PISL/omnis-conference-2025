@@ -1,3 +1,0 @@
-If ilData.TP_SEQ>0
-	Do default
-End If

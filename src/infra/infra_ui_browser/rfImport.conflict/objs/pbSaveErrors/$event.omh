@@ -1,3 +1,0 @@
-On evClick
-	# prepare for file import
-	Calculate $cinst.$objs.FileControl.$action as kJSFileActionDownload

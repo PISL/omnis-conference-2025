@@ -1,2 +1,0 @@
-Calculate $cinst.TPC_GO_REF as trGroupOrg.GO_SEQ
-Calculate $cinst.TPC_DURN_MINS as 3*60 ## 3hr session default

@@ -1,9 +1,0 @@
-On evClose
-	Do method $Save
-	Quit event handler (Pass to next handler)
-	
-On evCancel
-	Close window instance $cinst
-	
-On evOK
-	Do method $Save

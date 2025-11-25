@@ -1,3 +1,0 @@
-# $completed() Method called when the timer completes
-Do $cinst.$stoptimer()
-Do irefCaller.[icMethod]()

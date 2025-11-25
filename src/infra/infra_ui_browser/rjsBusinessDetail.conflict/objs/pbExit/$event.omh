@@ -1,4 +1,0 @@
-On evClick
-	# exit the Business HMI by navigating to myecocost.eu
-	
-	JavaScript:document.location.href=lcUrl;

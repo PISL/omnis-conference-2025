@@ -1,3 +1,0 @@
-If pIsOk
-	Do method handleSourceErrors (pIdentifier,pErrors)
-End If

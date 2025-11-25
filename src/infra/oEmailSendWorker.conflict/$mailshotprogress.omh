@@ -1,3 +1,0 @@
-If not(isnull(iMailshotProgressInst)) ## Should not be null, but just in case
-	Do iMailshotProgressInst.$mailshotprogress(pInfo)
-End If

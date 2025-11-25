@@ -1,3 +1,0 @@
-If ivFileOps.$isopen()
-	Do ivFileOps.$closefile()
-End If

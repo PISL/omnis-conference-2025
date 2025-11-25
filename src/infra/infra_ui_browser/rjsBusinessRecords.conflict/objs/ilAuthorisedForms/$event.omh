@@ -1,3 +1,0 @@
-On evClick
-	Calculate ilAuthorisedForms.$line as pLineNumber
-	Do $cinst.$mainMenuSelected()

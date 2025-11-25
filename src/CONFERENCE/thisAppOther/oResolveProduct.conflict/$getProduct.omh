@@ -1,5 +1,0 @@
-Do irProduct.$clear()
-If pcProductCode<>''
-	Do irProduct.$fetchIntCode(pcProductCode,kTrue)
-End If
-Quit method irProduct

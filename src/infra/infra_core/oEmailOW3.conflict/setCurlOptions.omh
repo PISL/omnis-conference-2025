@@ -1,3 +1,0 @@
-If $columnexists(irCurlOptions,"verifyPeer")
-	Do ilCurlOptions.$add(64,irCurlOptions.verifyPeer)
-End If

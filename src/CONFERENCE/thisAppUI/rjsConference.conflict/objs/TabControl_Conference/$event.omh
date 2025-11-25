@@ -1,3 +1,0 @@
-On evTabSelected
-	Calculate inCurrentTab as pTabNumber
-	Do method $adjustToolsMenu ## No use first time around.  $init in subform takes up the slack.

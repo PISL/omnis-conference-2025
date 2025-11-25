@@ -1,3 +1,0 @@
-Do ivJson.$get("logger").$set(pLoggerName)
-Do ivJson.$get("sdk").$get("name").$set(pLoggerName)
-Do ivJson.$get("sdk").$get("version").$set(pLoggerVersion)

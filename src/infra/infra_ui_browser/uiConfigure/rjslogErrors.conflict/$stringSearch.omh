@@ -1,5 +1,0 @@
-If len($cinst.icSearch)>=2
-	Do method FetchRecords
-End If
-
-Do $cinst.$behaviour()

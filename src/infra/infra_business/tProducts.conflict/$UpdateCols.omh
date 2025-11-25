@@ -1,5 +1,0 @@
-Do inherited
-
-If isnull($cinst.PRD_META)
-	Calculate $cinst.PRD_META as 0
-End If

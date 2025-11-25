@@ -1,2 +1,0 @@
-# Do $cinst.$rawxmltodisplayxml(iSoapResponseRaw,iSoapResponseTree,iSoapResponseText)
-Do method rawxmltodisplayxml (pRawXML,pTreeXML,pTextXML)

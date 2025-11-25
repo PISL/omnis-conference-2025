@@ -1,5 +1,0 @@
-If ilData.dataSource='ATT'
-	Do default
-Else
-	# suppress this section
-End If

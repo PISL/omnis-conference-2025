@@ -1,6 +1,0 @@
-On evClick
-	Calculate icDisplayMessage as ''
-	Do $cinst.$saveData()
-	
-	Do $cinst.$behaviour()
-	Do $cinst.$redraw()
