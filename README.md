@@ -10,9 +10,13 @@ ArtsMan's [jsoncpp](http://www2.artsman.com/omnis/Software/jsoncpp150.zip) xcomp
 
 ArtsMan's [ExcelFormat](http://www2.artsman.com/omnis/Software/Omnis-XL394.zip) xcomp
 
-A PostgreSQL v16 or later installation with two databases named conf_obf and stb plus some required roles. 
+A PostgreSQL v16 or later installation with two databases named conf_obf and stb, plus some required roles. 
 
-The "conf_obf" database holds the data for the conference application and the "stb" holds the Omnis string table entries for the application.
+### Recommended
+
+[GitTools](https://github.com/van-beek-nl/GitTools) for managing the JSON import and export of the libraries
+
+A Git GUI such as [Github Desktop](https://desktop.github.com/download/) or similar to assist with managing commits, branches, and so forth
 
 
 ## Installation and setup
@@ -20,16 +24,19 @@ The "conf_obf" database holds the data for the conference application and the "s
 1. Clone this repository
 2. Connect to your Postgres instance and run the [roles.sql](db/roles.sql) script to create the required login and group roles.
 3. Create a database called conf_obf
-4. Restore the backup [conf_obf](db/conf_obj.backup) into it (you may get an error reporting transaction_timeout but it can be ignored)
+4. Restore the backup [conf_obf](db/conf_obj.backup) into it (you may get an error reporting transaction_timeout, but it can be ignored)
 5. Create a database called stb
 6. Restore the backup [stb](db/stb.backup) into it
 7. Assign role _developer to your own login id to access everything in stb and conf_obf
+8. Open (or import) infra.lbs, then CONFERENCE.lbs (order is important). You may need to update database connection parameters (see [Libraries](#libraries) for full details on startup)
 
 
-### conf_obf
+### Databases
+The "conf_obf" database holds the data for the conference application and the "stb" holds the Omnis string table entries for the application.
+
 *NB. conf_obf is an obfuscated version of the proper application database.*
 
-Note, the application has been updated since conf_obf was created, and as such expects extra columns to exist. These have been added to the latest version of conf_obf, but some may have been missed. If there are any columns missing they should be added to the Postgres database definition manually (as there is no automatic conversion tool). 
+Note, the application has been updated since conf_obf was originally created, and as such expects extra columns to exist. conf_obf has been updated, but if there are any columns missing they should be added to the Postgres database definition manually (as there is no automatic conversion tool). 
 
 ### Libraries
 
@@ -42,7 +49,6 @@ infra must be open in Omnis before [CONFERENCE](libs/CONFERENCE.lbs) is opened. 
 [CONFERENCE.libini](libs/CONFERENCE.libini) is a sqllite database where the database connection and other variables are stored. Very briefly the Startup_Task in CONFERENCE.lbs will read CONFERENCE.libini to get the Host, database name, etc to automatically login to stb (to get stringtable entries) and conf_obf.
 
 There are two faces to the application: the administration of the conference and the public face. The public face is the primary concern of the project. To identify the public face classes look for classes beginning rjs... and ending in ...ForSite. There is no login required when using these classes.
-
 
 
 ** NOT RECOMMENDED **
