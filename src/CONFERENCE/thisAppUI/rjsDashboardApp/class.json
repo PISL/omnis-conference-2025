@@ -2,7 +2,7 @@
 	"classtype": "kRemoteForm",
 	"omnisversion": "11.2",
 	"omnisbuild": 112040173,
-	"internalversion": 33,
+	"internalversion": 38,
 	"superclass": "infra.rjsInfraDetail",
 	"designtaskname": "rtBusinessApp",
 	"nextident": 1010,
@@ -92,9 +92,9 @@
 		"componenttype": "kCompStoreHidden",
 		"contextmenu": "",
 		"createdate": "2018-04-17 14:43:59",
-		"currentlayoutbreakpoint": 1700,
+		"currentlayoutbreakpoint": 480,
 		"defaultappearance": "kAppearanceiOS",
-		"desc": "",
+		"desc": "Backoffice",
 		"designguides": "",
 		"designshowmobiletitle": true,
 		"disabledefaultcontextmenu": false,
@@ -111,7 +111,7 @@
 		"layouttype": "kLayoutTypeResponsive",
 		"left": 71,
 		"menulineheight": 0,
-		"moddate": "2023-01-26 10:59:57",
+		"moddate": "2025-12-19 08:51:59",
 		"okkeyobject": "",
 		"serverlessclient": false,
 		"showascheckedout": false,
@@ -139,7 +139,8 @@
 			"height": 0
 		},
 		"480": {
-			"height": 0
+			"height": 0,
+			"padding": 2
 		},
 		"667": {
 			"height": 0
