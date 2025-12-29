@@ -1,0 +1,57 @@
+{
+	"ident": 1008,
+	"order": 8,
+	"objtype": "kComponent",
+	"componentlib": "jsSwitch",
+	"componentctrl": "Switch Control",
+	"properties": {
+		"active": true,
+		"alpha": 255,
+		"ariadescribedby": "",
+		"arialabel": "",
+		"arialabelledby": "",
+		"backalpha": 255,
+		"backcolor": "kJSThemeColorBackground",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"dataname": "",
+		"defaultinactiveappearance": true,
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disabledefaultcontextmenu": false,
+		"disablesystemfocus": true,
+		"dropmode": "kAcceptNone",
+		"events": "",
+		"fieldstyle": "",
+		"justifyhoriz": "kLeftJst",
+		"justifyvert": "kJstVertMiddle",
+		"nexttabobject": "",
+		"objlink": 65540,
+		"preventlayoutanimation": false,
+		"removefromtaborder": false,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"switchcolor": "kJSThemeColorSecondary",
+		"switchoff": 0,
+		"switchon": 0,
+		"tooltip": "",
+		"userinfo": "",
+		"visible": true
+	},
+	"layout": {
+		"1600": {
+			"left": 47,
+			"top": 571,
+			"width": 48,
+			"height": 44,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

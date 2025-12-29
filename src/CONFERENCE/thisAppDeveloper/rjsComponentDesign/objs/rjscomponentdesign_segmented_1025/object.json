@@ -1,0 +1,87 @@
+{
+	"ident": 1025,
+	"order": 25,
+	"objtype": "kComponent",
+	"componentlib": "jsSegmented",
+	"componentctrl": "Segmented Control",
+	"properties": {
+		"active": true,
+		"alpha": 255,
+		"ariadescribedby": "",
+		"arialabel": "",
+		"arialabelledby": "",
+		"backalpha": 255,
+		"backcolor": "kJSThemeColorPrimary",
+		"bordercolor": "kJSThemeColorBorder",
+		"borderradius": "4",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"defaultinactiveappearance": true,
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disabledefaultcontextmenu": false,
+		"disablesystemfocus": false,
+		"displaystyle": "kJSSegmentStyleTextAboveIcon",
+		"dropmode": "kAcceptNone",
+		"effect": "kJSborderPlain",
+		"events": "",
+		"fieldstyle": "",
+		"focusedsegmentindicatorcolor": "kJSThemeColorSecondary",
+		"font": 1,
+		"fontsize": 11,
+		"fontstyle": "kPlain",
+		"hasshadow": false,
+		"hidedisabledsegments": false,
+		"nexttabobject": "",
+		"objlink": 393220,
+		"preventlayoutanimation": false,
+		"removefromtaborder": false,
+		"segmentbordercolor": "kColorDefault",
+		"segmentborderradius": 0,
+		"segmentcount": 2,
+		"segmenteffect": "kBorderPlain",
+		"segmentspacing": 0,
+		"segmentwidth": 0,
+		"selectedcolor": "kJSThemeColorPrimary",
+		"selectedsegment": 0,
+		"selectedtextcolor": "kColorDefault",
+		"showselectedsegment": false,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"textcolor": "kColorDefault",
+		"tooltip": "",
+		"userinfo": "",
+		"visible": true
+	},
+	"multivalueproperties": {
+		"selected": 2,
+		"properties": [
+			{
+				"segmentenabled": true,
+				"segmenticonid": 0,
+				"segmenttext": "Segment 1"
+			},
+			{
+				"segmentenabled": true,
+				"segmenticonid": 0,
+				"segmenttext": "Segment 2"
+			}
+		]
+	},
+	"layout": {
+		"1600": {
+			"left": 12,
+			"top": 325,
+			"width": 200,
+			"height": 44,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

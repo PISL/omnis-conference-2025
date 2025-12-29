@@ -1,0 +1,125 @@
+{
+	"ident": 1027,
+	"order": 27,
+	"objtype": "kComponent",
+	"componentlib": "jsToolbar",
+	"componentctrl": "Toolbar Control",
+	"properties": {
+		"::iconcolor": "kColorDefault",
+		"active": true,
+		"alpha": 255,
+		"ariadescribedby": "",
+		"arialabel": "",
+		"arialabelledby": "",
+		"backalpha": 255,
+		"backbutton": false,
+		"backcolor": "kJSThemeColorPrimary",
+		"borderradius": "0",
+		"clippopuptocontainer": false,
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"dataname": "",
+		"defaultinactiveappearance": true,
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disabledefaultcontextmenu": false,
+		"disablesystemfocus": false,
+		"displaystyle": "kJSToolbarStyleTextAboveIcon",
+		"dividercolor": "kJSThemeColorBorder",
+		"dropmode": "kAcceptNone",
+		"events": "",
+		"fieldstyle": "",
+		"font": 1,
+		"fontsize": 11,
+		"fontstyle": "kPlain",
+		"hasshadow": false,
+		"itemcount": 5,
+		"itemwidth": 50,
+		"menudirection": "0",
+		"nexttabobject": "",
+		"objlink": 393220,
+		"overflowcolor": "kColorDefault",
+		"overflowhovercolor": "kColorDefault",
+		"overflowhovertextcolor": "kColorDefault",
+		"overflowtextcolor": "kColorDefault",
+		"preventlayoutanimation": false,
+		"removefromtaborder": false,
+		"selectedcolor": "kJSThemeColorSecondary",
+		"selecteditem": 0,
+		"selectedlinecolor": "kColorDefault",
+		"selectedtextcolor": "kColorDefault",
+		"showdividers": true,
+		"showitemicons": true,
+		"showitemtext": true,
+		"showselecteditem": false,
+		"showtooltips": false,
+		"sidemenu": true,
+		"sidemenucolor": "kJSThemeColorSurface",
+		"sidemenuhovercolor": "kColorDefault",
+		"sidemenuhovertextcolor": "kColorDefault",
+		"sidemenutextcolor": "kColorDefault",
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"textcolor": "kColorDefault",
+		"titlefontsize": 16,
+		"toolbarhovercolor": "kColorDefault",
+		"toolbarhovertextcolor": "kColorDefault",
+		"toolbariconcolor": "kColorDefault",
+		"toolbartitle": "",
+		"tooltip": "",
+		"userinfo": "",
+		"verticaltoolbar": false,
+		"visible": true
+	},
+	"multivalueproperties": {
+		"selected": 1,
+		"properties": [
+			{
+				"itemenabled": false,
+				"itemiconid": 0,
+				"itemoverflow": false,
+				"itemtext": ""
+			},
+			{
+				"itemenabled": false,
+				"itemiconid": 0,
+				"itemoverflow": false,
+				"itemtext": ""
+			},
+			{
+				"itemenabled": false,
+				"itemiconid": 0,
+				"itemoverflow": false,
+				"itemtext": ""
+			},
+			{
+				"itemenabled": false,
+				"itemiconid": 0,
+				"itemoverflow": false,
+				"itemtext": ""
+			},
+			{
+				"itemenabled": false,
+				"itemiconid": 0,
+				"itemoverflow": false,
+				"itemtext": ""
+			}
+		]
+	},
+	"layout": {
+		"1600": {
+			"left": 23,
+			"top": 471,
+			"width": 272,
+			"height": 48,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

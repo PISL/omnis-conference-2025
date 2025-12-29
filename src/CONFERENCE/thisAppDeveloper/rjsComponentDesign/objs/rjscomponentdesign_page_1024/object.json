@@ -1,0 +1,56 @@
+{
+	"ident": 1024,
+	"order": 24,
+	"objtype": "kComponent",
+	"componentlib": "jsPage",
+	"componentctrl": "Page Control",
+	"properties": {
+		"::currentpage": 1,
+		"::pagecount": 5,
+		"active": true,
+		"alpha": 255,
+		"ariadescribedby": "",
+		"arialabel": "",
+		"arialabelledby": "",
+		"backalpha": 0,
+		"backcolor": "kJSThemeColorBackground",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"currentpageindicatorcolor": "kJSThemeColorPrimary",
+		"defaultinactiveappearance": true,
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disabledefaultcontextmenu": false,
+		"disablesystemfocus": false,
+		"dropmode": "kAcceptNone",
+		"events": "",
+		"fieldstyle": "",
+		"linkedobject": "",
+		"nexttabobject": "",
+		"objlink": 393220,
+		"pageindicatorcolor": "kColorDefault",
+		"preventlayoutanimation": false,
+		"removefromtaborder": false,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"tooltip": "",
+		"userinfo": "",
+		"visible": true
+	},
+	"layout": {
+		"1600": {
+			"left": 34,
+			"top": 195,
+			"width": 120,
+			"height": 44,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}
