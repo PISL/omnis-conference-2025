@@ -1,0 +1,59 @@
+{
+	"ident": 1030,
+	"order": 30,
+	"objtype": "kPagedPane",
+	"properties": {
+		"active": true,
+		"alpha": 255,
+		"animatetransitions": false,
+		"arialabel": "",
+		"arialabelledby": "",
+		"autoscroll": false,
+		"backalpha": 255,
+		"backcolor": "kJSThemeColorSurface",
+		"bordercolor": "kJSThemeColorBorder",
+		"borderradius": "0",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"currentpage": 1,
+		"dataname": "",
+		"desgroup": 1,
+		"designactive": true,
+		"deslock": false,
+		"disablesystemfocus": true,
+		"effect": "kJSborderPlain",
+		"enabled": true,
+		"events": "",
+		"fieldstyle": "",
+		"hasshadow": false,
+		"landmark": "kLandmarkNone",
+		"linestyle": 1,
+		"nexttabobject": "",
+		"objlink": 196612,
+		"pagecount": 2,
+		"preventlayoutanimation": false,
+		"scrollshadowcolor": "RGBA(kColorDefault,50)",
+		"scrollshadowwidth": 0,
+		"scrolltochangepage": false,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"tooltip": "",
+		"userinfo": "",
+		"visible": true
+	},
+	"layout": {
+		"1600": {
+			"left": 696,
+			"top": 155,
+			"width": 250,
+			"height": 150,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

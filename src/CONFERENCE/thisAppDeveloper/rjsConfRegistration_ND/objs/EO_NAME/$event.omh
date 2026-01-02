@@ -1,0 +1,8 @@
+On evBefore
+	
+On evAfter
+	Calculate icDisplayMessage as ''
+	If irRegistration.EO_NAME<>''
+		Do method FetchCustomer (kTrue)
+	End If
+	Do $cinst.$behaviour()

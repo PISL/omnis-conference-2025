@@ -1,0 +1,109 @@
+Calculate icDisplayMessage as ''
+
+If ilConferences.CF_SEQ>0
+	# good
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'Selected conference missing')
+End If
+
+If ilPersons.$linecount=0
+	If irRegistration.PSN_EMAIL<>''
+		Do ioFormat.$FormatEmail(irRegistration.PSN_EMAIL) Returns icValidationText
+		If icValidationText=''
+			# good
+			Do method AddPerson
+		Else
+			# there is only one person being registered
+			Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),icValidationText)
+			Quit method kFalse
+		End If
+	End If
+End If
+
+# potentially multiple registrants to check
+Calculate ilPersons.$line as 0
+While $Loop(ilPersons)
+	Do irRegistration.$assignrow(ilPersons,kTrue)
+	Calculate lcWhichLine as con(pick(ilPersons.$line,'','first','second','third','fourth','fifth','sixth','seventh'),' delegate')
+	
+	If irRegistration.PSN_FIRST_NAME<>''
+		# good
+	Else
+		# If ilPersons.$linecount=0
+		Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),lcWhichLine,' first name missing')
+		# End If
+	End If
+	
+	If irRegistration.PSN_SURNAME<>''
+		# good
+	Else
+		# If ilPersons.$linecount=0
+		Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),lcWhichLine,' surname missing')
+		# End If
+	End If
+	
+	If irRegistration.PSN_EMAIL<>''
+		# good
+		Do ioFormat.$FormatEmail(irRegistration.PSN_EMAIL) Returns icValidationText
+		If icValidationText='' ## pos('@',irRegistration.PSN_EMAIL)>0
+			# good
+		Else
+			Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),lcWhichLine,' ',icValidationText)
+		End If
+	Else
+		# If ilPersons.$linecount=0
+		Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),lcWhichLine,' email missing')
+		# End If
+	End If
+	
+	If irRegistration.PSN_COUNTRY<>''
+		# good
+	Else
+		Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),lcWhichLine,' country missing')
+	End If
+End While
+
+If irRegistration.EO_NAME<>''
+	# good
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'payee name missing')
+End If
+
+If irRegistration.EO_ADDR_BILL<>''
+	# good
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'payee address missing')
+End If
+
+If irRegistration.EO_CO_ISO3_REF<>''
+	# good
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'payee country missing')
+End If
+
+# Do method TestForMultipleDelegates Returns lbMultipleDelegates
+Do method TestForMultiplePrimaries Returns lbMultiplePrimaries
+If lbMultiplePrimaries
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'only 1 primary delegate allowed')
+Else
+	If tot(ilPersons,ilPersons.DIL_PRIMARY)=1
+		# good
+	Else
+		If irRegistration.DIL_PRIMARY=1
+			# good
+		Else
+			Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'there must be at least 1 primary delegate')
+		End If
+	End If
+End If
+
+Do method TestForMatchedFullTimeEducation Returns lbFullTimeEducationOK
+If not(lbFullTimeEducationOK)
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',', '),'for each Full Time education delegate there must be a Single delegate to share with')
+End If
+
+If icDisplayMessage<>''
+	Quit method kFalse
+End If
+
+Quit method kTrue

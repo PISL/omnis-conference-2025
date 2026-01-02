@@ -1,0 +1,397 @@
+# start saving results
+Calculate llDelegates as irDelegate
+Do llDelegates.$cols.$add(irLinkDelegateToInvoice.DIL_PRIMARY)
+Do llDelegates.$clear()
+# irCustomer  ilPersons  ilInvDetails
+
+Do $DefineList(lrPAX,'tPAX')
+Do $DefineList(lrDiet,'tDietRequests')
+
+# TRANSACTION
+# The following records are inserted or updated in this method, which could fail,
+# most likely on delegate already registered.
+
+# Do irLinkDelegateToInvoice.$insert()
+# There is also the customer record in entExtOrg but this is handled in object ioExternalOrgs ## so we will leave that there.
+Do ilPersons.$beginTransaction(#NULL,loSession,loStatement)
+Do irDelegate.$SetSession(loSession,loStatement)
+Do irInvHeader.$SetSession(loSession,loStatement)
+Do ilInvDetails.$SetSession(loSession,loStatement)
+Do irLinkDelegateToInvoice.$SetSession(loSession,loStatement)
+# if a dietary request is provided then a premature PAX record will be created
+Do lrPAX.$SetSession(loSession,loStatement)
+Do lrDiet.$SetSession(loSession,loStatement)
+
+# CUSTOMER record
+If irCustomer.EO_SEQ>0&ibCustomerModified
+	Do ioExternalOrgs.$update(irCustomer,irLinkCustToIntOrg,irCustomerOrig,irLinkCustToIntOrgOrig) Returns lbOK
+Else If isclear(irCustomer.EO_SEQ)
+	Calculate irCustomer.EO_COMMENT as con('online registration ',#D,' <',ilPersons.1.PSN_SURNAME,', ',ilPersons.1.PSN_FIRST_NAME,'>')
+	# Do ioExternalOrgs.$init(irCustomer.EO_NAME,'C') Returns lrLinkCustToIntOrg.EOL_FINACCT_CUID
+	Do ioExternalOrgs.$generateIntCode(irCustomer.EO_NAME,'C') Returns irLinkCustToIntOrg.EOL_FINACCT_CUID
+	Do ioExternalOrgs.$insert(irCustomer,irLinkCustToIntOrg) Returns lbOK
+Else
+	Calculate lbOK as kTrue
+End If
+If not(lbOK)
+	Calculate icDisplayMessage as ioExternalOrgs.icErrorMessage
+	If icDisplayMessage=''
+		Calculate icDisplayMessage as 'failed to insert customer record'
+	End If
+	Quit method kFalse
+End If
+
+If irCustomer.EO_SEQ>0
+	# continue
+Else
+	Calculate icDisplayMessage as con(icDisplayMessage,pick(icDisplayMessage<>'','',kCr),'failed to create customer record - registration incomplete')
+	Quit method kFalse
+End If
+
+# ensure each Person record exists, then insert a delegate record for each one
+Calculate lrPerson as ilPersons
+Calculate ilPersons.$line as 0
+While $Loop(ilPersons)
+	# create a Person and Delegate record
+	Calculate lbOK as kFalse
+	Calculate lrTemp as ilPersons.original
+	Calculate lcActionPerson as ''
+	
+	Do lrDiet.$clear()
+	Do lrPAX.$clear()
+	Do lrPerson.$clear()
+	If lrTemp.PSN_SEQ>0
+		Do lrPerson.$assignrow(lrTemp)
+	End If
+	
+	Calculate lrPersonOrig as lrPerson
+	# ilPersons.PSN_SEQ should be empty - it has the contents of what user has supplied in the form
+	Calculate lrDiet.DR_REQUEST as ilPersons.DR_REQUEST
+	Calculate lrPerson.DIL_PRIMARY as ilPersons.DIL_PRIMARY ## do this or we lose DIL_PRIMARY in $assignrow below
+	
+	Calculate lrPerson.PSN_SURNAME as ilPersons.PSN_SURNAME
+	Calculate lrPerson.PSN_FIRST_NAME as ilPersons.PSN_FIRST_NAME
+	Calculate lrPerson.PSN_EMAIL as ilPersons.PSN_EMAIL
+	Calculate lrPerson.PSN_COUNTRY as ilPersons.PSN_COUNTRY
+	Calculate lrPerson.PSN_SPOUSE_NAME as ilPersons.PSN_SPOUSE_NAME
+	Do toStrings.$HasRowBeenModified(lrPerson,lrPersonOrig,'','','PSN_FIRST_NAME,PSN_SURNAME,PSN_EMAIL,PSN_COUNTRY,PSN_SEX') Returns lbModified
+	
+	If lrPerson.PSN_SEQ>0&lbModified
+		Calculate lcActionPerson as 'U'
+		Do lrPerson.$update() Returns lbOK
+	Else If isclear(lrPerson.PSN_SEQ)
+		Calculate lcActionPerson as 'I'
+		Calculate lrPerson.PSN_GO_REF as trGroupOrg.GO_SEQ
+		Calculate lrPerson.PSN_ACTIVE as 1
+		Do lrPerson.$insert() Returns lbOK
+	Else If lrPerson.PSN_SEQ>0&not(lbModified)
+		# this is fine ## proceed
+		Calculate lcActionPerson as 'N' ## no action
+		Calculate lbOK as kTrue
+	Else If lrPersonOrig.PSN_SEQ>0&lbModified
+		# theoretically impossible but happened while debugging
+		Breakpoint
+	Else
+		Breakpoint
+	End If
+	If lbOK
+		Do ilPersons.$assignrow(lrPerson,kTrue)
+		Calculate ilPersons.modified as kFalse
+		
+		# now create a delegate row for each one
+		Calculate irDelegate.DG_SEQ as #NULL
+		Calculate irDelegate.DG_PSN_REF as ilPersons.PSN_SEQ
+		Calculate irDelegate.DG_COUNTRY as ilPersons.PSN_COUNTRY
+		Calculate irDelegate.DG_COMMENT as #NULL
+		
+		# If ilPersons.$line=1
+		# foreign keys
+		Calculate irDelegate.DG_CF_REF as ilConferences.CF_SEQ
+		Calculate irDelegate.DG_EO_REF as irCustomer.EO_SEQ
+		
+		# data
+		Calculate ilOccupancy.$line as inDG_OCCUPANCY+1
+		Calculate irDelegate.DG_REG_DATE as #D
+		Calculate irDelegate.DG_OCCUPANCY as ilOccupancy.RFO_VALUE
+		If inExtras=ikExtraSpouse
+			Calculate irDelegate.DG_COMMENT as '+ spouse'
+		Else If inExtras=ikExtraFamily
+			Calculate irDelegate.DG_COMMENT as '+ spouse & family'
+		End If
+		If irRegistration.requirements<>''
+			Calculate irDelegate.DG_COMMENT as con(irDelegate.DG_COMMENT,pick(irDelegate.DG_COMMENT<>'','',kCr),irRegistration.requirements)
+		End If
+		# Calculate irDelegate.DG_INT_PRODCODE as ilInvDetails.1.PRD_INT_PRODCODE ## superceded by invoice detail lines
+		Calculate irDelegate.DG_COUNTRY as ilPersons.PSN_COUNTRY ## to ensure historical consistency with country statistics
+		# Calculate lrDelegate.DG_COMPANY_NAME as ## superceded by linking delegate to invoice
+		# Calculate irDelegate.DG_RATE as ## superceded by invoice detail lines
+		# Calculate irDelegate.DG_AMOUNT_DUE as ## superceded by invoice detail lines
+		# Calculate irDelegate.DG_MEMBERSHIP_DUE as ## superceded by invoice details and membership table altogether
+		If ilPersons.$linecount>1
+			Calculate irDelegate.DG_GROUP as irCustomer.EO_NAME ## easier to see at a glance who might be travelling together
+		End If
+		If ilOccupancy.[inDG_OCCUPANCY+1].RFO_VALUE='P' ## sPeaker
+			Calculate irDelegate.DG_ROLE as 'SPEAKER'
+			Calculate irDelegate.DG_STATUS as 'STIPEND'
+		Else
+			Calculate irDelegate.DG_ROLE as 'DG'
+			Calculate irDelegate.DG_STATUS as 'REG_UNPAID' ## REG_UNPAID & SPEAKER are relevant DG_STATUS values
+		End If
+		# End If
+		
+		# now create the delegate record ## linking person to conference and payee (customer)
+		Do irDelegate.$insert() Returns lbOK
+		If lbOK
+			# we will have to create a link record between each delegate and the invoice ## so store these chaps
+			Do llDelegates.$add()
+			Calculate llDelegates.$line as llDelegates.$linecount
+			Do llDelegates.$assignrow(irDelegate)
+			Calculate llDelegates.DIL_PRIMARY as ilPersons.DIL_PRIMARY
+			
+			Do lrPAX.$clear()
+			Calculate lrPAX.PX_DG_REF as irDelegate.DG_SEQ
+			Calculate lrPAX.PX_ROLE as 'DG'
+			Do lrPAX.$defaults()
+			Do lrPAX.$insert() Returns lbPaxOK
+			If lbPaxOK
+				If lrDiet.DR_REQUEST<>''
+					Calculate lrDiet.DR_PX_REF as lrPAX.PX_SEQ
+					Do lrDiet.$insert() Returns lbPaxOK
+				End If
+			End If
+		Else
+			# failed Delegate record
+			If irDelegate.irErrorSQL.NativeErrorCode=23505 ## 23505
+				# duplicate entry - Person has already registered for this event
+				If #D=dat('30 JUN 2016')
+					Calculate icDisplayMessage as con(ilPersons.PSN_FIRST_NAME,' ',ilPersons.PSN_SURNAME,' has already registered for this event',kCr,irDelegate.irErrorSQL.NativeErrorText)
+				Else
+					Calculate icDisplayMessage as con(ilPersons.PSN_FIRST_NAME,' ',ilPersons.PSN_SURNAME,' has already registered for this event')
+				End If
+				Calculate lnDuplicateDelegateLineNo as ilPersons.$line
+			Else
+				Calculate icDisplayMessage as irDelegate.irErrorSQL.NativeErrorText
+				If icDisplayMessage=''
+					Calculate icDisplayMessage as irDelegate.icValidationMessage
+					If icDisplayMessage=''
+						Calculate icDisplayMessage as 'failed to insert delegate record'
+					End If
+				End If
+				Do irDelegate.$fetch_ck() ## for DeleteRegistration button which is usually hidden
+			End If
+			Calculate lbTransactionFailed as kTrue
+			Break to end of loop
+			# Quit method
+		End If
+	Else ## failed Person record
+		Calculate icDisplayMessage as lrPerson.irErrorSQL.NativeErrorText
+		If icDisplayMessage=''
+			Calculate icDisplayMessage as lrPerson.icValidationMessage
+			If icDisplayMessage=''
+				If lcActionPerson='U'
+					Calculate icDisplayMessage as 'failed to update person record'
+				Else If lcActionPerson='I'
+					Calculate icDisplayMessage as 'failed to insert person record'
+				Else
+					Calculate icDisplayMessage as con('Business logic error with action code "',lcActionPerson,'" ')
+				End If
+			End If
+		End If
+		Calculate lbTransactionFailed as kTrue
+		# Quit method
+	End If
+End While
+
+If not(lbTransactionFailed)
+	# Person and Delegate in tact
+	# now write out the invoice data, linking invoice header to each delegate
+	Do irInvHeader.$clear()
+	Calculate irInvHeader.FOH_GO_REF as trGroupOrg.GO_SEQ
+	Calculate irInvHeader.FOH_EO_REF as irCustomer.EO_SEQ
+	# Calculate irInvHeader.FOH_INV_NO as ## generated in $insert() method
+	Calculate irInvHeader.FOH_ADDR_SHIP as irCustomer.EO_ADDR_SHIP
+	Calculate irInvHeader.FOH_ADDR_BILL as irCustomer.EO_ADDR_BILL
+	Calculate irInvHeader.FOH_CUST_NAME as irCustomer.EO_NAME
+	Calculate irInvHeader.FOH_DATE as #D
+	# Calculate irInvHeader.FOH_INSTRUCTIONS as lrCustomer.EO_INSTRUCTIONS
+	Calculate irInvHeader.FOH_INSTRUCTIONS as con(ilConferences.CF_TITLE,': ',ilConferences.CF_DATE_FROM,' - ',ilConferences.CF_DATE_TO)
+	Calculate irInvHeader.FOH_STATUS as 'ORIGINAL'
+	If irRegistration.FOH_CUST_PO<>''
+		Calculate irInvHeader.FOH_CUST_PO as irRegistration.FOH_CUST_PO
+	End If
+	Calculate irInvHeader.FOH_CURRENCY as ilConferences.CF_CURRENCY
+	Do irInvHeader.$insert(trGroupOrg.GO_NAME_SHORT) Returns lbOK
+	
+	If not(lbOK)
+		Calculate icDisplayMessage as irInvHeader.irErrorSQL.NativeErrorText
+		If icDisplayMessage=''
+			Calculate icDisplayMessage as irInvHeader.icValidationMessage
+			If icDisplayMessage=''
+				Calculate icDisplayMessage as 'failed to insert invoice header record'
+			End If
+		End If
+		Calculate lbTransactionFailed as kTrue
+		# Quit method
+	Else
+		Calculate ilInvDetails.$line as 0
+		While $Loop(ilInvDetails)
+			Calculate lrInvDetail as ilInvDetails
+			Calculate lrInvDetail.FOD_FOH_REF as irInvHeader.FOH_SEQ
+			Calculate lrInvDetail.FOD_ORDER as ilInvDetails.$line
+			Do lrInvDetail.$insert() Returns lbOK
+			If not(lbOK)
+				Calculate icDisplayMessage as lrInvDetail.irErrorSQL.NativeErrorText
+				If icDisplayMessage=''
+					Calculate icDisplayMessage as lrInvDetail.icValidationMessage
+					If icDisplayMessage=''
+						Calculate icDisplayMessage as 'failed to insert invoice detail record'
+					End If
+				End If
+				Calculate lbTransactionFailed as kTrue
+				Break to end of loop
+				# Quit method
+			End If
+		End While
+		
+		If not(lbTransactionFailed)
+			Calculate llDelegates.$line as 0
+			While $Loop(llDelegates)
+				Calculate irLinkDelegateToInvoice.DIL_SEQ as #NULL
+				Calculate irLinkDelegateToInvoice.DIL_DG_REF as llDelegates.DG_SEQ
+				Calculate irLinkDelegateToInvoice.DIL_FOH_REF as irInvHeader.FOH_SEQ
+				Calculate irLinkDelegateToInvoice.DIL_PRIMARY as llDelegates.DIL_PRIMARY
+				Do irLinkDelegateToInvoice.$insert() Returns lbOK
+				If not(lbOK)
+					Calculate icDisplayMessage as irLinkDelegateToInvoice.irErrorSQL.NativeErrorText
+					If icDisplayMessage=''
+						Calculate icDisplayMessage as irLinkDelegateToInvoice.icValidationMessage
+						If icDisplayMessage=''
+							Calculate icDisplayMessage as 'failed to insert invoice to delegate link record'
+						End If
+					End If
+					Calculate lbTransactionFailed as kTrue
+					Break to end of loop
+					# Quit method
+				End If
+			End While
+		End If ## not(lbTransactionFailed)
+	End If ## Else on not(lbOK)
+End If ## not(lbTransactionFailed)
+
+# database work done
+If lbTransactionFailed
+	Do ilPersons.$rollbackTransaction(#NULL,loSession,loStatement)
+	Do $LogError('CONF_REG','ROLLBACK',con(irRegistration.PSN_EMAIL,kCr,icDisplayMessage))
+Else
+	Do ilPersons.$commitTransaction(#NULL,loSession,loStatement)
+	# if there have multiple people registered the PSN_EMAIL and DG_SEQ may not correspond.
+	# And not align with the CONF_REG,START $LogEvent
+	Do $LogEvent('CONF_REG','COMMIT',irRegistration.PSN_EMAIL,': ',irDelegate.DG_SEQ)
+End If
+Calculate lrPerson as #NULL ## destroys session object within
+
+Do irDelegate.$SetSession(#NULL,#NULL,kTrue)
+Do irInvHeader.$SetSession(#NULL,#NULL,kTrue)
+Do ilInvDetails.$SetSession(#NULL,#NULL,kTrue)
+Do irLinkDelegateToInvoice.$SetSession(#NULL,#NULL,kTrue)
+Do lrPAX.$SetSession(#NULL,#NULL,kTrue)
+Do lrDiet.$SetSession(#NULL,#NULL,kTrue)
+
+If lbTransactionFailed
+	If lnDuplicateDelegateLineNo>0
+		Do ilPersons.$remove(lnDuplicateDelegateLineNo)
+		Calculate ilPersons.$line as 0
+		
+		Calculate irRegistration.PSN_EMAIL as ''
+		Calculate irRegistration.PSN_FIRST_NAME as ''
+		Calculate irRegistration.PSN_SURNAME as ''
+		Calculate irRegistration.PSN_COUNTRY as ''
+		Calculate irRegistration.PSN_PHOTOID_TYPE as ''
+		Calculate irRegistration.PSN_PHOTOID_NO as ''
+		Calculate irRegistration.PSN_SPOUSE_NAME as ''
+		Calculate ilCountriesPSN.$line as 0
+		# leave the irRegistration.EO_NAME details in memory
+		Calculate ibFormHasBeenUsed as kFalse
+		
+		Calculate $cinst.$objs.PagedPane.$currentpage as 1 ## back to initial form
+	End If
+	Quit method ## so we don't send email and stay on current tab
+End If
+
+# send off email
+Do toValues.$ReturnCurrencies('',ilConferences.CF_CURRENCY) Returns lrCurrency
+# Do method constants ## ilBankDetails
+Do toValues.$initOrg(con('BANK_AC_',ilConferences.CF_CURRENCY)) Returns ilBankDetails
+
+Calculate lcTextForEmail as con('Dear ',ilPersons.1.PSN_FIRST_NAME,' ',ilPersons.1.PSN_SURNAME,',')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr,'Thank you for your registration to ',ilConferences.CF_TITLE,' produced by ',$ctask.trGroupOrg.GON_NAME_FULL,'.')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr,'The total charge for the registration is: ')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,'Our charge: ',lrCurrency.isoCode,' ',inOurTotal,' ')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,'V.A.T. : ',lrCurrency.isoCode,' ',inTaxTotal,' ')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,'Total cost: ',lrCurrency.isoCode,' ',inInvoiceTotal,' ')
+
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr,'Please note the following details for a direct bank transfer:')
+
+Calculate ilBankDetails.$line as 0
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr)
+While $Loop(ilBankDetails)
+	Calculate lcTextForEmail as con(lcTextForEmail,ilBankDetails.RFO_DESC,kCr)
+End While
+
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr,'Be sure to use the following invoice number as the bank transfer REFERENCE:')
+If irInvHeader.FOH_INV_NO>0
+	Calculate icRegistrationReference as con('INV ',irInvHeader.FOH_INV_NO)
+Else
+	Calculate icRegistrationReference as con('DG ',irDelegate.DG_SEQ)
+End If
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,icRegistrationReference)
+# If irRegistration.pleaseSendInvoice
+# Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr,'Your request for an invoice to be emailed to you has been noted.')
+# End If
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr)
+Calculate lcTextForEmail as con(lcTextForEmail,'We aim to provide a shuttle service to facilitate an easier arrival experience for delegates.  Please note that we MUST BE INFORMED of your arrival plans at least 1 week before the conference in order to provide a reasonable shuttle service.  Failure to provide this information will compromise the effectiveness of this service.')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr)
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,kCr,'Regards,')
+Calculate lcTextForEmail as con(lcTextForEmail,kCr,'The Euromnis Organising Committee')
+
+Do llBCCs.$cols.$add('address',kCharacter,kSimplechar,255)
+Do toValues.$initOrg('EMAIL_CONF_BCC') Returns llInternalEmails
+If llInternalEmails.$linecount>0
+	While $Loop(llInternalEmails)
+		Do llBCCs.$add(llInternalEmails.RFO_DESC)
+	End While
+Else
+	Do llBCCs.$add('mostyn@platformis.net')
+End If
+# Calculate lcBCC as 'info@omnisworld.org,robertmostyn99@gmail.com'
+# Calculate lcBCC as 'robertmostyn99@gmail.com'
+If 1=0
+	IMAPConnect
+Else If 1=1
+	Breakpoint
+	
+	# async email
+	# Do $EmailInitialise('SMTPW_REGN') Returns lnEmailStatus
+	# Do $SendEmail(ilPersons.1.PSN_EMAIL,con('Confirm registration for ',ilConferences.CF_TITLE),lcTextForEmail,#NULL,llBCCs,#NULL) Returns lnEmailStatus
+	
+	# the following is obviously unfinished code, failing in v11 35659
+	# email worker
+	Do loEmailWorker
+	
+Else If
+	# Do loEmailWorker.$initialiseServer('SMTPW_REGN') Returns lbOK
+	# If lbOK
+	# # Do loEmailWorker.$setCallback($cinst,'$emailResult')
+	# #
+	# # # message content
+	# # Do loEmailWorker.$initMessageRow(lrContent)
+	# # Calculate lrContent.char as lcTextForEmail
+	# # Do loEmailWorker.$messagePart(lrContent)
+	# #
+	# # Do loEmailWorker.$sendMessage(ilPersons.1.PSN_EMAIL,con('Confirm registration for ',ilConferences.CF_TITLE)) Returns lnEmailStatus
+	# #
+	# End If
+End If
+
+
+Calculate $cinst.$objs.PagedPane.$currentpage as 3

@@ -1,0 +1,55 @@
+If trGroupOrg.GO_NAME_SHORT='OmnisWorld'
+	Begin text block
+	Text:Sterling account(Carriage return)
+	Text:(Carriage return)
+	Text:Bank name : HSBC(Carriage return)
+	Text:10 High Street, Barnstaple(Carriage return)
+	Text:Devon  EX31 1BQ(Carriage return)
+	Text:United Kingdom(Carriage return)
+	Text:(Carriage return)
+	Text:Sort Code : 40-09-13      Account Number : 71724312(Carriage return)
+	Text:IBAN : GB30MIDL40091371724312(Carriage return)
+	Text:BIC : MIDLGB2117N(Carriage return)
+	End text block
+	Get text block icBankDetailsGBP
+	
+	Begin text block
+	Text:Euro Account(Carriage return)
+	Text:(Carriage return)
+	Text:HSBC International branch(Carriage return)
+	Text:8 Canada Square,  London   E14 5HQ(Carriage return)
+	Text:United Kingdom(Carriage return)
+	Text:(Carriage return)
+	Text:Sort Code: 40-05-15      Account Number : 73218543(Carriage return)
+	Text:IBAN : GB78MIDL40051573218543(Carriage return)
+	Text:BIC - SWIFT : MIDLGB22(Carriage return)
+	End text block
+	Get text block icBankDetailsEUR
+	
+	Calculate ilBankDetails as ''
+	Do ilBankDetails.$cols.$add('line',kCharacter,kSimplechar,100)
+	If ilConferences.CF_CURRENCY='£'
+		Do ilBankDetails.$add('Sterling account')
+		Do ilBankDetails.$add('')
+		Do ilBankDetails.$add('Bank name : HSBC')
+		Do ilBankDetails.$add('10 High Street, Barnstaple')
+		Do ilBankDetails.$add('Devon  EX31 1BQ')
+		Do ilBankDetails.$add('United Kingdom')
+		Do ilBankDetails.$add('')
+		Do ilBankDetails.$add('Sort Code : 40-09-13𯿿       Account Number : 71724312')
+		Do ilBankDetails.$add('IBAN : GB30MIDL40091371724312𯿿')
+		Do ilBankDetails.$add('BIC : MIDLGB2117N')
+		
+	Else If ilConferences.CF_CURRENCY='€'
+		Do ilBankDetails.$add('Euro account')
+		Do ilBankDetails.$add('')
+		Do ilBankDetails.$add('HSBC International branch')
+		Do ilBankDetails.$add('8 Canada Square,  London   E14 5HQ')
+		Do ilBankDetails.$add('United Kingdom')
+		Do ilBankDetails.$add('')
+		Do ilBankDetails.$add('Sort Code: 40-05-15𯿿      Account Number : 73218543')
+		Do ilBankDetails.$add('IBAN : GB78MIDL40051573218543')
+		Do ilBankDetails.$add('BIC - SWIFT : MIDLGB22')
+		
+	End If
+End If

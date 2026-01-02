@@ -1,0 +1,58 @@
+{
+	"ident": 1031,
+	"order": 31,
+	"objtype": "kScrollbox",
+	"properties": {
+		"active": true,
+		"alpha": 255,
+		"arialabel": "",
+		"arialabelledby": "",
+		"autoscroll": false,
+		"backalpha": 255,
+		"backcolor": "kJSThemeColorSurface",
+		"bordercolor": "kJSThemeColorBorder",
+		"borderradius": "0",
+		"componentinfo": {
+
+		},
+		"contextmenu": "",
+		"cssclassname": "",
+		"desgroup": 0,
+		"designactive": true,
+		"deslock": false,
+		"disablesystemfocus": false,
+		"effect": "kJSborderNone",
+		"enabled": true,
+		"events": "",
+		"fieldstyle": "",
+		"font": 1,
+		"hasshadow": false,
+		"label": "",
+		"labelfontsize": 8,
+		"labeltextcolor": "kColorDefault",
+		"landmark": "kLandmarkNone",
+		"linestyle": 1,
+		"nexttabobject": "",
+		"objlink": 196612,
+		"preventlayoutanimation": false,
+		"scrollshadowcolor": "RGBA(kColorDefault,50)",
+		"scrollshadowwidth": 0,
+		"sidepanel": false,
+		"sidepanelmode": "kSidePanelModeNone",
+		"tooltip": "",
+		"userinfo": "",
+		"visible": true
+	},
+	"layout": {
+		"1600": {
+			"left": 196,
+			"top": 338,
+			"width": 420,
+			"height": 267,
+			"dragborder": false,
+			"edgefloat": "kEFnone",
+			"errortextpos": "kJSErrorTextPosUnder",
+			"visible": true
+		}
+	}
+}

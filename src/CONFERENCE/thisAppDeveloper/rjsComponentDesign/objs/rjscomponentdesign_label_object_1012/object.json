@@ -36,7 +36,7 @@
 		"sidepanel": false,
 		"sidepanelmode": "kSidePanelModeNone",
 		"tagtype": "kJSLabelTypeLabel",
-		"text": "label",
+		"text": "PagedPane",
 		"textcolor": "kColorDefault",
 		"textishtml": false,
 		"tooltip": "",
@@ -47,8 +47,8 @@
 	},
 	"layout": {
 		"1600": {
-			"left": 43,
-			"top": 38,
+			"left": 32,
+			"top": 56,
 			"width": 120,
 			"height": 25,
 			"align": "kLeftJst",

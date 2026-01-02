@@ -83,7 +83,7 @@
 		"visible": true
 	},
 	"multivalueproperties": {
-		"selected": 6,
+		"selected": 5,
 		"properties": [
 			{
 				"::tabiconid": 0,
@@ -106,7 +106,7 @@
 				"::tabtooltip": "",
 				"tabenabled": true,
 				"tabmenu": "",
-				"tabtext": "Labels",
+				"tabtext": "Containers",
 				"tabvisible": true
 			},
 			{

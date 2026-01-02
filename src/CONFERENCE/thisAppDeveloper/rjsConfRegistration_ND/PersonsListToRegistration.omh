@@ -1,0 +1,29 @@
+Calculate irRegistration.PSN_SURNAME as ilPersons.PSN_SURNAME
+Calculate irRegistration.PSN_FIRST_NAME as ilPersons.PSN_FIRST_NAME
+Calculate irRegistration.PSN_EMAIL as ilPersons.PSN_EMAIL
+Calculate irRegistration.PSN_COUNTRY as ilPersons.PSN_COUNTRY
+If irRegistration.PSN_COUNTRY<>ilCountriesPSN.REF_VALUE
+	Do ilCountriesPSN.$search($ref.REF_VALUE=irRegistration.PSN_COUNTRY,1,0,0,0)
+End If
+Calculate irRegistration.PSN_PHOTOID_TYPE as ilPersons.PSN_PHOTOID_TYPE
+If ilPhotoIdTypes.$colcount ## fix notation error
+	If irRegistration.PSN_PHOTOID_TYPE<>ilPhotoIdTypes.REF_VALUE
+		Do ilPhotoIdTypes.$search($ref.REF_VALUE=irRegistration.PSN_PHOTOID_TYPE,1,0,0,0)
+	End If
+End If
+Calculate irRegistration.PSN_PHOTOID_NO as ilPersons.PSN_PHOTOID_NO
+Calculate irRegistration.PSN_SPOUSE_NAME as ilPersons.PSN_SPOUSE_NAME
+
+Calculate irRegistration.DR_REQUEST as ilPersons.DR_REQUEST
+Calculate irRegistration.DIL_PRIMARY as ilPersons.DIL_PRIMARY
+
+Calculate inDG_OCCUPANCY as ilPersons.inDG_OCCUPANCY
+Calculate inExtras as ilPersons.inExtras
+Calculate inMembership as ilPersons.inMembership
+Calculate inNoDays as ilPersons.inNoDays
+Calculate icWhichDays as ilPersons.icWhichDays
+Calculate inPSN_SEX as ilPersons.inPSN_SEX
+
+If irRegistration.EO_CO_ISO3_REF<>ilCountriesEO.REF_VALUE
+	Do ilCountriesEO.$search($ref.REF_VALUE=irRegistration.EO_CO_ISO3_REF,1,0,0,0)
+End If
